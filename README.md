@@ -1,3 +1,5 @@
+![](http://tinyissue.com/assets/images/giant-preview.png)
+
 # Installing Tiny Issue v1.0
 
 * Create a MySQL Database
