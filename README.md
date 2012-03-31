@@ -1,4 +1,4 @@
-Installing Tiny Issue v1.0
+# Installing Tiny Issue v1.0
 
 * Create a MySQL Database
 * Make /app/assets/uploads/ write-able (CHMOD 777)
@@ -7,7 +7,7 @@ Installing Tiny Issue v1.0
 
 Enjoy!
 
-Requirements:
+## Requirements:
 
 * Tested on: Apache, IIS
 * PHP 5.3+
@@ -16,7 +16,7 @@ Requirements:
 * MCrypt Extension for PHP
 * Javascript Enabled - Tiny Issue also uses heavy Javascript to make it easier to use
 
-Main Developers:
+### Main Developers:
 
 * Michael Hasselbring (mikelbring)
 * Zachary Hoover
