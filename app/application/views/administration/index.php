@@ -34,20 +34,6 @@
 			<th>Version Release Date</th>
 			<td><?php echo $release_date = Config::get('tinyissue.release_date'); ?></td>
 		</tr>
-
-		<?php if($newest_version !== false && strtotime($release_date) < strtotime(date('m-d-Y', $newest_version->released_at))): ?>
-		<tr>
-			<th style="color: red;">Newest Release</th>
-			<td style="color: red;">
-				<?php echo $newest_version->name; ?>
-				(<?php echo date('m-d-Y', strtotime($newest_version->released_at)); ?>)
-			</td>
-		</tr>
-		<?php endif; ?>
 	</table>
-	
-	<p style="margin-top: 25px;">
-		<a href="https://secure.realizetheweb.com/download/tinyissue">Check for updates on Tiny Issue Download Portal</a>
-	</p>
 
 </div>
