@@ -1,6 +1,4 @@
-Here is a giant screenshot:
-
-[Tiny Issue Version 1.0 Preview](http://tinyissue.com/assets/images/giant-preview.png)
+![](http://tinyissue.com/assets/images/giant-preview.png)
 
 # Installing Tiny Issue v1.0
 
