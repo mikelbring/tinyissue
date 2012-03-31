@@ -1,3 +1,4 @@
 .idea*
 _IDE_HELPER.php
 config.app.php
+.DS_Store
