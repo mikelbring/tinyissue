@@ -23,3 +23,6 @@ Enjoy!
 * [Michael Hasselbring](http://michaelhasselbring.com)
 * [Zachary Hoover](http://zachoover.com)
 * Suthan Sangaralingham (Designer)
+
+## Todo
+* Upgrade it to the latest Laravel (3.x)
