@@ -20,6 +20,6 @@ Enjoy!
 
 ### Main Developers:
 
-* Michael Hasselbring (@mikelbring)
-* Zachary Hoover
+* [Michael Hasselbring](http://michaelhasselbring.com)
+* [Zachary Hoover](http://zachoover.com)
 * Suthan Sangaralingham (Designer)
