@@ -30,7 +30,7 @@ class install
 		return $check_db;
 	}
 
-	public function create_tables($_POST)
+	public function create_tables()
 	{
 		foreach($this->mysql_structure as $query)
 		{
