@@ -49,7 +49,7 @@ $paths['storage'] = 'app/storage';
 // --------------------------------------------------------------
 // The path to the vendor directory.
 // --------------------------------------------------------------
-$paths['vendor'] = 'vendor/storage';
+$paths['vendor'] = 'app/vendor';
 
 // --------------------------------------------------------------
 // The path to the public directory.
