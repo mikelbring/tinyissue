@@ -4,7 +4,7 @@ return array(
 CREATE TABLE IF NOT EXISTS `activity` (
   `id` int(11) unsigned NOT NULL auto_increment,
   `description` varchar(255) character set latin1 default NULL,
-  `key` varchar(255) character set latin1 default NULL,
+  `activity` varchar(255) character set latin1 default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 

@@ -1,9 +1,9 @@
 ![](http://tinyissue.com/assets/images/giant-preview.png)
 
-# Installing Tiny Issue v1.0
+# Installing Tiny Issue v1.1
 
 - Create a MySQL Database
-- Make /app/uploads/ write-able (CHMOD 777)
+- Make /uploads/ write-able (CHMOD 777)
 - Open /install/ in your browser
 - Delete or rename /install/
 
@@ -25,4 +25,3 @@ Enjoy!
 - Suthan Sangaralingham (Designer)
 
 ## Todo
-- Upgrade it to the latest Laravel (3.x)
