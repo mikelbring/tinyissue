@@ -44,7 +44,7 @@ class Project extends Eloquent {
 
    public function users()
    {
-      return $this->has_and_belongs_to_many('\User', 'projects_users', 'project_id', 'user_id');
+      return $this->has_many_and_belongs_to('\User', 'projects_users', 'project_id', 'user_id');
    }
 
 	public function users_not_in()
@@ -80,7 +80,9 @@ class Project extends Eloquent {
 		WHERE project_id = ? AND assigned_to = ? AND status = 1
 		';
 
-		return \DB::first($sql, array($this->id, $user_id))->total;
+		$result = \DB::first($sql, array($this->id, $user_id));
+
+		return !$result ? 0 : $result->total;
 	}
 
 	/**
@@ -126,6 +128,14 @@ class Project extends Eloquent {
 			{
 			  $comments[$activity->action_id] = Project\Issue\Comment::find($activity->action_id);
 			}
+
+			if($activity->type_id == 5)
+			{
+				if(!isset($users[$activity->action_id]))
+				{
+				  $users[$activity->action_id] = User::find($activity->action_id);
+				}
+			}
 		}
 
 		/* Loop through the projects and activity again, building the views for each activity */
@@ -136,8 +146,7 @@ class Project extends Eloquent {
 			switch($row->type_id)
 			{
 				case 2:
-
-					$return[] = View::make('activity/' . $activity_type[$row->type_id]->key, array(
+					$return[] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issues[$row->item_id],
 						'project' => $this,
 						'user' => $users[$row->user_id],
@@ -149,7 +158,7 @@ class Project extends Eloquent {
 
 				case 5:
 
-					$return[] = View::make('activity/' . $activity_type[$row->type_id]->key, array(
+					$return[] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issues[$row->item_id],
 						'project' => $this,
 						'user' => $users[$row->user_id],
@@ -161,7 +170,7 @@ class Project extends Eloquent {
 
 				default:
 
-					$return[] = View::make('activity/' . $activity_type[$row->type_id]->key, array(
+					$return[] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issues[$row->item_id],
 						'project' => $this,
 						'user' => $users[$row->user_id],
@@ -203,7 +212,7 @@ class Project extends Eloquent {
     * @param   int  $id
     * @return  void
     */
-   public static function load($id)
+   public static function load_project($id)
    {
       static::$current = static::find($id);
    }
@@ -301,10 +310,10 @@ class Project extends Eloquent {
       $project->delete();
 
       /* Delete all children from the project */
-      Project\Issue::where('project_id', '=', $id);
-      Project\Issue\Comment::where('project_id', '=', $id);
-      Project\User::where('project_id', '=', $id);
-		User\Activity::where('parent_id', '=', $id);
+      Project\Issue::where('project_id', '=', $id)->delete();
+      Project\Issue\Comment::where('project_id', '=', $id)->delete();
+      Project\User::where('project_id', '=', $id)->delete();
+		User\Activity::where('parent_id', '=', $id)->delete();
    }
 
 }

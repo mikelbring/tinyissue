@@ -26,7 +26,7 @@ class Comment extends  \Eloquent {
     * @param  \Project\Issue  $issue
     * @return Comment
     */
-   public static function create($input, $project, $issue)
+   public static function create_comment($input, $project, $issue)
    {
       $fill = array(
          'created_by' => \Auth::user()->id,

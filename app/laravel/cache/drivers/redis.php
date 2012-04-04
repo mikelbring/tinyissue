@@ -5,14 +5,14 @@ class Redis extends Driver {
 	/**
 	 * The Redis database instance.
 	 *
-	 * @var Redis
+	 * @var Laravel\Redis
 	 */
 	protected $redis;
 
 	/**
 	 * Create a new Redis cache driver instance.
 	 *
-	 * @param  Redis  $redis
+	 * @param  Laravel\Redis  $redis
 	 * @return void
 	 */
 	public function __construct(\Laravel\Redis $redis)
@@ -60,9 +60,21 @@ class Redis extends Driver {
 	 */
 	public function put($key, $value, $minutes)
 	{
-		$this->redis->set($key, serialize($value));
+		$this->forever($key, $value);
 
 		$this->redis->expire($key, $minutes * 60);
+	}
+
+	/**
+	 * Write an item to the cache that lasts forever.
+	 *
+	 * @param  string  $key
+	 * @param  mixed   $value
+	 * @return void
+	 */
+	public function forever($key, $value)
+	{
+		$this->redis->set($key, serialize($value));
 	}
 
 	/**

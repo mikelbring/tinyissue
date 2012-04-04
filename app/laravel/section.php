@@ -12,40 +12,35 @@ class Section {
 	/**
 	 * The last section on which injection was started.
 	 *
-	 * @var string
+	 * @var array
 	 */
-	protected static $last;
+	public static $last = array();
 
 	/**
 	 * Start injecting content into a section.
-	 *
-	 * After calling this method, the "stop" method may be used to stop injecting
-	 * content. A raw string may also be passed as the second argument, and will
-	 * cause the given string to be injected into the section directly without
-	 * using output buffering.
 	 *
 	 * <code>
 	 *		// Start injecting into the "header" section
 	 *		Section::start('header');
 	 *
-	 *		// Inject a raw string into the "header" section
+	 *		// Inject a raw string into the "header" section without buffering
 	 *		Section::start('header', '<title>Laravel</title>');
 	 * </code>
 	 *
-	 * @param  string  $section
-	 * @param  string  $content
+	 * @param  string          $section
+	 * @param  string|Closure  $content
 	 * @return void
 	 */
 	public static function start($section, $content = '')
 	{
-		if ($content == '')
+		if ($content === '')
 		{
-			ob_start();
-
-			static::$last = $section;
+			ob_start() and static::$last[] = $section;
 		}
-
-		static::append($section, $content);
+		else
+		{
+			static::append($section, $content);
+		}
 	}
 
 	/**
@@ -68,13 +63,25 @@ class Section {
 	}
 
 	/**
+	 * Stop injecting content into a section and return its contents.
+	 *
+	 * @return string
+	 */
+	public static function yield_section()
+	{
+		return static::yield(static::stop());
+	}
+
+	/**
 	 * Stop injecting content into a section.
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public static function stop()
 	{
-		static::append(static::$last, ob_get_clean());
+		static::append($last = array_pop(static::$last), ob_get_clean());
+
+		return $last;
 	}
 
 	/**
@@ -88,10 +95,12 @@ class Section {
 	{
 		if (isset(static::$sections[$section]))
 		{
-			$content = static::$sections[$section].PHP_EOL.$content;
+			static::$sections[$section] = str_replace('@parent', $content, static::$sections[$section]);
 		}
-
-		static::$sections[$section] = $content;
+		else
+		{
+			static::$sections[$section] = $content;
+		}
 	}
 
 	/**

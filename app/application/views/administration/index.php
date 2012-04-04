@@ -28,7 +28,7 @@
 		</tr>
 		<tr>
 			<th>Tiny Issue Version</th>
-			<td><?php echo Config::get('tinyissue.version'); ?></td>
+			<td>v<?php echo Config::get('tinyissue.version'); ?></td>
 		</tr>
 		<tr>
 			<th>Version Release Date</th>

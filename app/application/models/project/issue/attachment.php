@@ -5,7 +5,12 @@ class Attachment extends \Eloquent {
 	public static $table = 'projects_issues_attachments';
 	public static $timestamps = true;
 
-
+	/**
+	 * Upload the attachment
+	 *
+	 * @param  array  $input
+	 * @return bool
+	 */
 	public static function upload($input)
 	{
 		$path = \Config::get('application.upload_path');
@@ -35,6 +40,8 @@ class Attachment extends \Eloquent {
 		$attachment = new static;
 		$attachment->fill($fill);
 		$attachment->save();
+
+		return true;
 	}
 
 	/**

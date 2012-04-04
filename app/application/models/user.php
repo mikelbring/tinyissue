@@ -172,7 +172,7 @@ class User extends Eloquent {
             {
                case 2:
 
-                  $return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->key, array(
+                  $return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
                      'issue' => $issues[$row->item_id],
                      'project' => $projects[$project_id],
                      'user' => $users[$row->user_id],
@@ -184,7 +184,7 @@ class User extends Eloquent {
 
 					case 5:
 
-						$return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->key, array(
+						$return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
 							'issue' => $issues[$row->item_id],
 							'project' => $projects[$project_id],
 							'user' => $users[$row->user_id],
@@ -196,7 +196,7 @@ class User extends Eloquent {
 
                default:
 
-                  $return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->key, array(
+                  $return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
                      'issue' => $issues[$row->item_id],
                      'project' => $projects[$project_id],
                      'user' => $users[$row->user_id],
@@ -303,7 +303,7 @@ class User extends Eloquent {
 		$user->fill($insert)->save();
 
       /* Send Activation email */
-		Mail::send_email(View::make('templates/email/new_user',array(
+		Mail::send_email(View::make('email.new_user',array(
 			'email' => $info['email'],
 			'password' => $password
 		)), $info['email'], 'Your Tiny Issue Account');
@@ -324,7 +324,7 @@ class User extends Eloquent {
 	{
 		$update = array(
 			'email' => '',
-			'deleted' => '1'
+			'deleted' => 1
 		);
 
 		User::find($id)->fill($update)->save();

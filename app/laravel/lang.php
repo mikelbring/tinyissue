@@ -26,11 +26,18 @@ class Lang {
 	/**
 	 * All of the loaded language lines.
 	 *
-	 * The array is keyed by [$language][$file].
+	 * The array is keyed by [$bundle][$language][$file].
 	 *
 	 * @var array
 	 */
 	protected static $lines = array();
+
+	/**
+	 * The language loader event name.
+	 *
+	 * @var string
+	 */
+	const loader = 'laravel.language.loader';
 
 	/**
 	 * Create a new Lang instance.
@@ -54,6 +61,9 @@ class Lang {
 	 *		// Create a new language line instance for a given line
 	 *		$line = Lang::line('validation.required');
 	 *
+	 *		// Create a new language line for a line belonging to a bundle
+	 *		$line = Lang::line('admin::messages.welcome');
+	 *
 	 *		// Specify some replacements for the language line
 	 *		$line = Lang::line('validation.required', array('attribute' => 'email'));
 	 * </code>
@@ -65,19 +75,25 @@ class Lang {
 	 */
 	public static function line($key, $replacements = array(), $language = null)
 	{
-		if (is_null($language))
-		{
-			$language = Config::$items['application']['language'];
-		}
+		if (is_null($language)) $language = Config::get('application.language');
 
 		return new static($key, $replacements, $language);
 	}
 
 	/**
-	 * Get the language line as a string.
+	 * Determine if a language line exists.
 	 *
-	 * If a language is specified, it should correspond to a directory
-	 * within your application language directory.
+	 * @param  string  $key
+	 * @param  string  $language
+	 * @return bool
+	 */
+	public static function has($key, $language = null)
+	{
+		return ! is_null(static::line($key, array(), $language)->get());
+	}
+
+	/**
+	 * Get the language line as a string.
 	 *
 	 * <code>
 	 *		// Get a language line
@@ -98,92 +114,134 @@ class Lang {
 	{
 		if (is_null($language)) $language = $this->language;
 
-		list($file, $line) = $this->parse($this->key);
+		list($bundle, $file, $line) = $this->parse($this->key);
 
-		if ( ! $this->load($file))
+		// If the file doesn't exist, we'll just return the default value that was
+		// given to the method. The default value is also returned even when the
+		// file exists and the file does not actually contain any lines.
+		if ( ! static::load($bundle, $language, $file))
 		{
-			return ($default instanceof Closure) ? call_user_func($default) : $default;
+			return value($default);
 		}
 
-		return $this->replace(Arr::get(static::$lines[$language][$file], $line, $default));
-	}
+		$lines = static::$lines[$bundle][$language][$file];
 
-	/**
-	 * Make all necessary replacements on a language line.
-	 *
-	 * Replacements place-holder are prefixed with a colon, and are replaced
-	 * with the appropriate value based on the replacement array set for the
-	 * language line instance.
-	 *
-	 * @param  string  $line
-	 * @return string
-	 */
-	protected function replace($line)
-	{
-		foreach ($this->replacements as $key => $value)
+		$line = array_get($lines, $line, $default);
+
+		// If the line is not a string, it probably means the developer asked for
+		// the entire langauge file and the value of the requested value will be
+		// an array containing all of the lines in the file.
+		if (is_string($line))
 		{
-			$line = str_replace(':'.$key, $value, $line);
+			foreach ($this->replacements as $key => $value)
+			{
+				$line = str_replace(':'.$key, $value, $line);
+			}
 		}
 
 		return $line;
 	}
 
 	/**
-	 * Parse a language key into its file and line segments.
+	 * Parse a language key into its bundle, file, and line segments.
 	 *
-	 * Language keys are formatted similarly to configuration keys. The first
-	 * segment represents the language file, while the second segment
-	 * represents a language line within that file.
+	 * Language lines follow a {bundle}::{file}.{line} naming convention.
 	 *
 	 * @param  string  $key
 	 * @return array
 	 */
 	protected function parse($key)
 	{
-		if (count($segments = explode('.', $key)) > 1)
-		{
-			return array($segments[0], implode('.', array_slice($segments, 1)));
-		}
+		$bundle = Bundle::name($key);
 
-		throw new \InvalidArgumentException("Invalid language line [$key].");
+		$segments = explode('.', Bundle::element($key));
+
+		// If there are not at least two segments in the array, it means that
+		// the developer is requesting the entire language line array to be
+		// returned. If that is the case, we'll make the item "null".
+		if (count($segments) >= 2)
+		{
+			$line = implode('.', array_slice($segments, 1));
+
+			return array($bundle, $segments[0], $line);
+		}
+		else
+		{
+			return array($bundle, $segments[0], null);
+		}
 	}
 
 	/**
 	 * Load all of the language lines from a language file.
 	 *
-	 * If the language file is successfully loaded, true will be returned.
-	 *
+	 * @param  string  $bundle
+	 * @param  string  $language
 	 * @param  string  $file
 	 * @return bool
 	 */
-	protected function load($file)
+	public static function load($bundle, $language, $file)
 	{
-		if (isset(static::$lines[$this->language][$file])) return true;
-
-		$language = array();
-
-		if (file_exists($path = LANG_PATH.$this->language.'/'.$file.EXT))
+		if (isset(static::$lines[$bundle][$language][$file]))
 		{
-			$language = array_merge($language, require $path);
+			return true;
 		}
 
-		// If language lines were actually found, they will be loaded into
-		// the array containing all of the lines for all languages and files.
-		// The array is keyed by the language and the file name.
-		if (count($language) > 0)
+		// We use a "loader" event to delegate the loading of the language
+		// array, which allows the develop to organize the language line
+		// arrays for their application however they wish.
+		$lines = Event::first(static::loader, func_get_args());
+
+		static::$lines[$bundle][$language][$file] = $lines;
+
+		return count($lines) > 0;
+	}
+
+	/**
+	 * Load a language array from a language file.
+	 *
+	 * @param  string  $bundle
+	 * @param  string  $language
+	 * @param  string  $file
+	 * @return array
+	 */
+	public static function file($bundle, $language, $file)
+	{
+		$lines = array();
+
+		// Language files can belongs to the application or to any bundle
+		// that is installed for the application. So, we'll need to use
+		// the bundle's path when looking for the file.
+		$path = static::path($bundle, $language, $file);
+
+		if (file_exists($path))
 		{
-			static::$lines[$this->language][$file] = $language;
+			$lines = require $path;
 		}
-		
-		return isset(static::$lines[$this->language][$file]);		
+
+		return $lines;
+	}
+
+	/**
+	 * Get the path to a bundle's language file.
+	 *
+	 * @param  string  $bundle
+	 * @param  string  $language
+	 * @param  string  $file
+	 * @return string
+	 */
+	protected static function path($bundle, $language, $file)
+	{
+		return Bundle::path($bundle)."language/{$language}/{$file}".EXT;
 	}
 
 	/**
 	 * Get the string content of the language line.
+	 *
+	 * @return string
 	 */
 	public function __toString()
 	{
-		return $this->get();
+		return (string) $this->get();
 	}
 
 }

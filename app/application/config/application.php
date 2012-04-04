@@ -1,44 +1,6 @@
 <?php
 
-$config = require PUBLIC_PATH . 'config.app.php';
-
 return array(
-
-
-	/*
-	|--------------------------------------------------------------------------
-	| MySQL Database Information
-	|--------------------------------------------------------------------------
-	*/
-
-	'database' => 'mysql',
-
-	'connections' => array(
-
-		'mysql' => array(
-			'driver'   => 'mysql',
-			'host'     => $config['mysql']['host'],
-			'database' => $config['mysql']['database'],
-			'username' => $config['mysql']['username'],
-			'password' => $config['mysql']['password'],
-			'charset'  => 'utf8',
-		),
-
-	),
-
-	/*
-	|--------------------------------------------------------------------------
-	| Application Settings
-	|--------------------------------------------------------------------------
-	*/
-
-	'url' => '',
-
-	'index' => !$config['mod_rewrite'] ? 'index.php' : '',
-
-	'key' => $config['key'],
-
-	'timezone' => $config['timezone'],
 
 	/*
 	|--------------------------------------------------------------------------
@@ -46,8 +8,8 @@ return array(
 	|--------------------------------------------------------------------------
 	*/
 
-	'upload_path' => PUBLIC_PATH . 'app/assets/uploads/',
-	'attachment_path' => '/app/assets/uploads/',
+	'upload_path' => path('public') . 'uploads/',
+	'attachment_path' => '/uploads/',
 
 	'image_extensions' => array(
 		'jpg', 'jpeg', 'JPG', 'JPEG',
@@ -82,8 +44,8 @@ return array(
 		 */
 
 		'from' => array(
-			'name' => $config['mail']['name'],
-			'email' => $config['mail']['email']
+			'name' => '',
+			'email' => ''
 		),
 
 		/**
@@ -107,39 +69,139 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| Core Configuration
+	| Application URL
 	|--------------------------------------------------------------------------
+	|
+	| The URL used to access your application without a trailing slash. The URL
+	| does not have to be set. If it isn't we'll try our best to guess the URL
+	| of your application.
+	|
 	*/
 
-	'login_skip' => array(
-		'user/login',
-		'ajax/project/issue/upload-attachment'
-	),
+	'url' => '',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Application Index
+	|--------------------------------------------------------------------------
+	|
+	| If you are including the "index.php" in your URLs, you can ignore this.
+	| However, if you are using mod_rewrite to get cleaner URLs, just set
+	| this option to an empty string and we'll take care of the rest.
+	|
+	*/
+
+	'index' => 'index.php',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Application Key
+	|--------------------------------------------------------------------------
+	|
+	| This key is used by the encryption and cookie classes to generate secure
+	| encrypted strings and hashes. It is extremely important that this key
+	| remain secret and should not be shared with anyone. Make it about 32
+	| characters of random gibberish.
+	|
+	| The "auto_key" option tells Laravel to automatically set this key value
+	| if one has not already been set. This is generally done on the first
+	| request to the Laravel splash screen.
+	|
+	*/
+
+	'key' => 'YourSecretKeyGoesHere!',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Application Character Encoding
+	|--------------------------------------------------------------------------
+	|
+	| The default character encoding used by your application. This encoding
+	| will be used by the Str, Text, Form, and any other classes that need
+	| to know what type of encoding to use for your awesome application.
+	|
+	*/
 
 	'encoding' => 'UTF-8',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Application Language
+	|--------------------------------------------------------------------------
+	|
+	| The default language of your application. This language will be used by
+	| Lang library as the default language when doing string localization.
+	|
+	*/
+
 	'language' => 'en',
+
+	/*
+	|--------------------------------------------------------------------------
+	| SSL Link Generation
+	|--------------------------------------------------------------------------
+	|
+	| Many sites use SSL to protect their users data. However, you may not be
+	| able to use SSL on your development machine, meaning all HTTPS will be
+	| broken during development.
+	|
+	| For this reason, you may wish to disable the generation of HTTPS links
+	| throughout your application. This option does just that. All attempts
+	| to generate HTTPS links will generate regular HTTP links instead.
+	|
+	*/
+
 	'ssl' => true,
 
+	/*
+	|--------------------------------------------------------------------------
+	| Application Timezone
+	|--------------------------------------------------------------------------
+	|
+	| The default timezone of your application. The timezone will be used when
+	| Laravel needs a date, such as when writing to a log file or travelling
+	| to a distant star at warp speed.
+	|
+	*/
+
+	'timezone' => 'UTC',
+
+	/*
+	|--------------------------------------------------------------------------
+	| Class Aliases
+	|--------------------------------------------------------------------------
+	|
+	| Here, you can specify any class aliases that you would like registered
+	| when Laravel loads. Aliases are lazy-loaded, so feel free to add!
+	|
+	| Aliases make it more convenient to use namespaced classes. Instead of
+	| referring to the class using its full namespace, you may simply use
+	| the alias defined here.
+	|
+	*/
+
 	'aliases' => array(
-		'Arr'        => 'Laravel\\Arr',
+		'Auth'       => 'Laravel\\Auth',
 		'Asset'      => 'Laravel\\Asset',
 		'Autoloader' => 'Laravel\\Autoloader',
-		'Benchmark'  => 'Laravel\\Benchmark',
-		'Cache'      => 'Laravel\\Cache\\Manager',
+		'Blade'      => 'Laravel\\Blade',
+		'Bundle'     => 'Laravel\\Bundle',
+		'Cache'      => 'Laravel\\Cache',
 		'Config'     => 'Laravel\\Config',
 		'Controller' => 'Laravel\\Routing\\Controller',
 		'Cookie'     => 'Laravel\\Cookie',
 		'Crypter'    => 'Laravel\\Crypter',
-		'DB'         => 'Laravel\\Database\\Manager',
+		'DB'         => 'Laravel\\Database',
 		'Eloquent'   => 'Laravel\\Database\\Eloquent\\Model',
-		'File'       => 'Laravel\\File',
+		'Event'      => 'Laravel\\Event',
+		'Filter'     => 'Laravel\\Routing\\Filter',
 		'Form'       => 'Laravel\\Form',
 		'Hash'       => 'Laravel\\Hash',
 		'HTML'       => 'Laravel\\HTML',
-		'Inflector'  => 'Laravel\\Inflector',
 		'Input'      => 'Laravel\\Input',
 		'IoC'        => 'Laravel\\IoC',
 		'Lang'       => 'Laravel\\Lang',
+		'Log'        => 'Laravel\\Log',
 		'Memcached'  => 'Laravel\\Memcached',
 		'Paginator'  => 'Laravel\\Paginator',
 		'URL'        => 'Laravel\\URL',
@@ -147,9 +209,14 @@ return array(
 		'Redis'      => 'Laravel\\Redis',
 		'Request'    => 'Laravel\\Request',
 		'Response'   => 'Laravel\\Response',
+		'Route'      => 'Laravel\\Routing\\Route',
+		'Router'     => 'Laravel\\Routing\\Router',
+		'Schema'     => 'Laravel\\Database\\Schema',
 		'Section'    => 'Laravel\\Section',
-		'Session'    => 'Laravel\\Facades\\Session',
+		'Session'    => 'Laravel\\Session',
 		'Str'        => 'Laravel\\Str',
+		'Task'       => 'Laravel\\CLI\\Tasks\\Task',
+		'URI'        => 'Laravel\\URI',
 		'Validator'  => 'Laravel\\Validator',
 		'View'       => 'Laravel\\View',
 	),

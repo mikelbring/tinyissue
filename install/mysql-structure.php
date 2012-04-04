@@ -77,6 +77,8 @@ CREATE TABLE IF NOT EXISTS `projects_users` (
   `user_id` bigint(20) default '0',
   `project_id` bigint(20) default '0',
   `role_id` bigint(20) default '0',
+	`created_at` datetime default NULL,
+ 	`updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 
@@ -84,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `projects_users` (
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` bigint(20) unsigned NOT NULL auto_increment,
   `name` varchar(255) character set latin1 default NULL,
-  `key` varchar(255) character set latin1 default NULL,
+  `role` varchar(255) character set latin1 default NULL,
   `description` varchar(255) character set latin1 default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
@@ -189,7 +191,7 @@ INSERT IGNORE INTO `roles_permissions` (`id`, `role_id`, `permission_id`) VALUES
 	(20, 4, 4);",
 
 " #Insert Activity Types
-INSERT IGNORE INTO `activity` (`id`, `description`, `key`)
+INSERT IGNORE INTO `activity` (`id`, `description`, `activity`)
 VALUES
 	(1,'Opened a new issue','create-issue'),
 	(2,'Commented on a issue','comment'),

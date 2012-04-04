@@ -1,27 +1,35 @@
 <?php namespace Laravel;
 
-use Laravel\Session\Payload as Session;
-
 class Form {
 
 	/**
 	 * All of the label names that have been created.
 	 *
-	 * These names are stored so that input elements can automatically be assigned
-	 * an ID based on the corresponding label name.
+	 * @var array
+	 */
+	public static $labels = array();
+	
+	/**
+	 * The registered custom macros.
 	 *
 	 * @var array
 	 */
-	protected static $labels = array();
+	public static $macros = array();
+
+    /**
+     * Registers a custom macro.
+     *
+     * @param  string   $name
+     * @param  Closure  $input
+     * @return void
+     */
+	public static function macro($name, $macro)
+	{
+		static::$macros[$name] = $macro;
+	}
 
 	/**
 	 * Open a HTML form.
-	 *
-	 * If PUT or DELETE is specified as the form method, a hidden input field will be generated
-	 * containing the request method. PUT and DELETE are not supported by HTML forms, so the
-	 * hidden field will allow us to "spoof" PUT and DELETE requests.
-	 *
-	 * Unless specified, the "accept-charset" attribute will be set to the application encoding.
 	 *
 	 * <code>
 	 *		// Open a "POST" form to the current request URI
@@ -51,6 +59,9 @@ class Form {
 		
 		$attributes['action'] = static::action($action, $https);
 
+		// If a character encoding has not been specified in the attributes, we will
+		// use the default encoding as specified in the application configuration
+		// file for the "accept-charset" attribute.
 		if ( ! array_key_exists('accept-charset', $attributes))
 		{
 			$attributes['accept-charset'] = Config::get('application.encoding');
@@ -58,19 +69,19 @@ class Form {
 
 		$append = '';
 
+		// Since PUT and DELETE methods are not actually supported by HTML forms,
+		// we'll create a hidden input element that contains the request method
+		// and set the actual request method variable to POST.
 		if ($method == 'PUT' or $method == 'DELETE')
 		{
 			$append = static::hidden(Request::spoofer, $method);
 		}
 
-		return '<form'.HTML::attributes($attributes).'>'.$append.PHP_EOL;
+		return '<form'.HTML::attributes($attributes).'>'.$append;
 	}
 
 	/**
 	 * Determine the appropriate request method to use for a form.
-	 *
-	 * Since PUT and DELETE requests are spoofed using POST requests, we will substitute
-	 * POST for any PUT or DELETE methods. Otherwise, the specified method will be used.
 	 *
 	 * @param  string  $method
 	 * @return string
@@ -155,7 +166,7 @@ class Form {
 	 */
 	public static function token()
 	{
-		return static::input('hidden', Session::csrf_token, IoC::core('session')->token());
+		return static::input('hidden', Session::csrf_token, Session::token());
 	}
 
 	/**
@@ -179,14 +190,11 @@ class Form {
 
 		$value = HTML::entities($value);
 
-		return '<label for="'.$name.'"'.$attributes.'>'.$value.'</label>'.PHP_EOL;
+		return '<label for="'.$name.'"'.$attributes.'>'.$value.'</label>';
 	}
 
 	/**
 	 * Create a HTML input element.
-	 *
-	 * If an ID attribute is not specified and a label has been generated matching the input
-	 * element name, the label name will be used as the element ID.
 	 *
 	 * <code>
 	 *		// Create a "text" input element named "email"
@@ -196,6 +204,7 @@ class Form {
 	 *		echo Form::input('text', 'email', 'example@gmail.com');
 	 * </code>
 	 *
+	 * @param  string  $type
 	 * @param  string  $name
 	 * @param  mixed   $value
 	 * @param  array   $attributes
@@ -209,7 +218,7 @@ class Form {
 
 		$attributes = array_merge($attributes, compact('type', 'name', 'value', 'id'));
 
-		return '<input'.HTML::attributes($attributes).'>'.PHP_EOL;
+		return '<input'.HTML::attributes($attributes).'>';
 	}
 
 	/**
@@ -314,6 +323,19 @@ class Form {
 	{
 		return static::input('number', $name, $value, $attributes);
 	}
+	
+	/**
+	 * Create a HTML date input element.
+	 *
+	 * @param  string  $name
+	 * @param  string  $value
+	 * @param  array   $attributes
+	 * @return string
+	 */		
+	public static function date($name, $value = null, $attributes = array())
+	{
+		return static::input('date', $name, $value, $attributes);
+	}
 
 	/**
 	 * Create a HTML file input element.
@@ -345,7 +367,7 @@ class Form {
 
 		if ( ! isset($attributes['cols'])) $attributes['cols'] = 50;
 
-		return '<textarea'.HTML::attributes($attributes).'>'.HTML::entities($value).'</textarea>'.PHP_EOL;
+		return '<textarea'.HTML::attributes($attributes).'>'.HTML::entities($value).'</textarea>';
 	}
 
 	/**
@@ -378,7 +400,7 @@ class Form {
 			$html[] = static::option($value, $display, $selected);
 		}
 
-		return '<select'.HTML::attributes($attributes).'>'.implode('', $html).'</select>'.PHP_EOL;
+		return '<select'.HTML::attributes($attributes).'>'.implode('', $html).'</select>';
 	}
 
 	/**
@@ -386,12 +408,19 @@ class Form {
 	 *
 	 * @param  string  $value
 	 * @param  string  $display
-	 * @return string  $selected
+	 * @param  string  $selected
 	 * @return string
 	 */
 	protected static function option($value, $display, $selected)
 	{
-		$selected = ($value == $selected) ? 'selected' : null;
+		if (is_array($selected))
+		{
+			$selected = (in_array($value, $selected)) ? 'selected' : null;
+		}
+		else
+		{
+			$selected = ($value == $selected) ? 'selected' : null;
+		}
 
 		$attributes = array('value' => HTML::entities($value), 'selected' => $selected);
 
@@ -490,14 +519,13 @@ class Form {
 	/**
 	 * Create a HTML image input element.
 	 *
-	 * The URL::to_asset method will be called on the given URL.
-	 *
 	 * <code>
 	 *		// Create an image input element
 	 *		echo Form::image('img/submit.png');
 	 * </code>
 	 *
 	 * @param  string  $url
+	 * @param  string  $name
 	 * @param  array   $attributes
 	 * @return string
 	 */
@@ -511,21 +539,17 @@ class Form {
 	/**
 	 * Create a HTML button element.
 	 *
-	 * @param  string  $name
 	 * @param  string  $value
 	 * @param  array   $attributes
 	 * @return string
 	 */
 	public static function button($value, $attributes = array())
 	{
-		return '<button'.HTML::attributes($attributes).'>'.HTML::entities($value).'</button>'.PHP_EOL;
+		return '<button'.HTML::attributes($attributes).'>'.HTML::entities($value).'</button>';
 	}
 
 	/**
 	 * Determine the ID attribute for a form element.
-	 *
-	 * An explicitly specified ID in the attributes takes first precedence, then
-	 * the label names will be checked for a label matching the element name.
 	 *
 	 * @param  string  $name
 	 * @param  array   $attributes
@@ -533,6 +557,9 @@ class Form {
 	 */
 	protected static function id($name, $attributes)
 	{
+		// If an ID has been explicitly specified in the attributes, we will
+		// use that ID. Otherwise, we will look for an ID in the array of
+		// label names so labels and their elements have the same ID.
 		if (array_key_exists('id', $attributes))
 		{
 			return $attributes['id'];
@@ -542,6 +569,23 @@ class Form {
 		{
 			return $name;
 		}
+	}
+
+	/**
+	 * Dynamically handle calls to custom macros.
+	 *
+	 * @param  string  $method
+	 * @param  array   $parameters
+	 * @return mixed
+	 */
+	public static function __callStatic($method, $parameters)
+	{
+	    if (isset(static::$macros[$method]))
+	    {
+	        return call_user_func_array(static::$macros[$method], $parameters);
+	    }
+	    
+	    throw new \Exception("Method [$method] does not exist.");
 	}
 
 }

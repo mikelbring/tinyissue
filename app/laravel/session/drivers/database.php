@@ -3,7 +3,7 @@
 use Laravel\Config;
 use Laravel\Database\Connection;
 
-class Database implements Driver, Sweeper {
+class Database extends Driver implements Sweeper {
 
 	/**
 	 * The database connection.
@@ -101,7 +101,7 @@ class Database implements Driver, Sweeper {
 	 */
 	private function table()
 	{
-		return $this->connection->table(Config::$items['session']['table']);		
+		return $this->connection->table(Config::get('session.table'));		
 	}
 	
 }

@@ -1,6 +1,6 @@
 <?php namespace Laravel\Session\Drivers;
 
-class File implements Driver, Sweeper {
+class File extends Driver implements Sweeper {
 
 	/**
 	 * The path to which the session files should be written.
@@ -71,7 +71,11 @@ class File implements Driver, Sweeper {
 	 */
 	public function sweep($expiration)
 	{
-		foreach (glob($this->path.'*') as $file)
+		$files = glob($this->path.'*');
+
+		if ($files === false) return;
+
+		foreach ($files as $file)
 		{
 			if (filetype($file) == 'file' and filemtime($file) < $expiration)
 			{

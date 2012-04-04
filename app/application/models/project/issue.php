@@ -130,7 +130,7 @@ class Issue extends \Eloquent {
     * @param   int   $id
     * @return  Issue
     */
-   public static function load($id)
+   public static function load_issue($id)
    {
       static::$current = static::find($id);
 
@@ -144,7 +144,7 @@ class Issue extends \Eloquent {
     * @param  \Project  $project
     * @return Issue
     */
-   public static function create($input, $project)
+   public static function create_issue($input, $project)
    {
 		$rules = array(
 			'title' => 'required|max:200',
@@ -202,7 +202,8 @@ class Issue extends \Eloquent {
 		GROUP BY i.id
 		';
 
-		$open_issues = (int) \DB::first($sql)->total;
+		$count = \DB::first($sql);
+		$open_issues = !$count ? 0 : $count->total;
 
 		/* Count Closed Issues - If the project is closed, so is the issue */
 		$sql = '
@@ -213,7 +214,8 @@ class Issue extends \Eloquent {
 		GROUP BY i.id
 		';
 
-		$closed_issues_open_project = (int) \DB::first($sql)->total;
+		$count = (int) \DB::first($sql);
+		$closed_issues_open_project = !$count ? 0 : $count->total;
 
 		$sql = '
 		SELECT COUNT(i.id) AS total
@@ -223,7 +225,8 @@ class Issue extends \Eloquent {
 		GROUP BY i.id
 		';
 
-		$issues_closed_project = (int) \DB::first($sql)->total;
+		$count = (int) \DB::first($sql);
+		$issues_closed_project = !$count ? 0 : $count->total;
 
 		$closed_issues = ($closed_issues_open_project + $issues_closed_project);
 

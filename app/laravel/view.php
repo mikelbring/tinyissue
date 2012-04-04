@@ -1,8 +1,6 @@
-<?php namespace Laravel;
+<?php namespace Laravel; use Closure, ArrayAccess;
 
-use Closure;
-
-class View {
+class View implements ArrayAccess {
 
 	/**
 	 * The name of the view.
@@ -23,17 +21,49 @@ class View {
 	 *
 	 * @var string
 	 */
-	protected $path;
+	public $path;
 
 	/**
-	 * All of the view composers for the application.
+	 * All of the shared view data.
 	 *
 	 * @var array
 	 */
-	protected static $composers;
+	public static $shared = array();
+
+	/**
+	 * All of the registered view names.
+	 *
+	 * @var array
+	 */
+	public static $names = array();
+
+	/**
+	 * The Laravel view loader event name.
+	 *
+	 * @var string
+	 */
+	const loader = 'laravel.view.loader';
+
+	/**
+	 * The Laravel view engine event name.
+	 *
+	 * @var string
+	 */
+	const engine = 'laravel.view.engine';
 
 	/**
 	 * Create a new view instance.
+	 *
+	 * <code>
+	 *		// Create a new view instance
+	 *		$view = new View('home.index');
+	 *
+	 *		// Create a new view instance of a bundle's view
+	 *		$view = new View('admin::home.index');
+	 *
+	 *		// Create a new view instance with bound data
+	 *		$view = new View('home.index', array('name' => 'Taylor'));
+	 * </code>
 	 *
 	 * @param  string  $view
 	 * @param  array   $data
@@ -43,20 +73,32 @@ class View {
 	{
 		$this->view = $view;
 		$this->data = $data;
-		$this->path = $this->path($view);
 
-		// If a session driver has been specified, we will bind an instance of
-		// the validation error message container to every view. If an errors
-		// instance exists in the session, we will use that instance.
-		//
-		// This makes the implementation of the Post/Redirect/Get pattern very
-		// convenient since each view can assume it has a message container.
-		if (Config::$items['session']['driver'] !== '' and IoC::core('session')->started())
+		// In order to allow developers to load views outside of the normal loading
+		// conventions, we'll allow for a raw path to be given in place of the
+		// typical view name, giving total freedom on view loading.
+		if (starts_with($view, 'path: '))
 		{
-			$this->data['errors'] = IoC::core('session')->get('errors', function()
+			$this->path = substr($view, 6);
+		}
+		else
+		{
+			$this->path = $this->path($view);
+		}
+
+		// If a session driver has been specified, we will bind an instance of the
+		// validation error message container to every view. If an error instance
+		// exists in the session, we will use that instance.
+		if ( ! isset($this->data['errors']))
+		{
+			if (Session::started() and Session::has('errors'))
 			{
-				return new Messages;
-			});
+				$this->data['errors'] = Session::get('errors');
+			}
+			else
+			{
+				$this->data['errors'] = new Messages;
+			}
 		}
 	}
 
@@ -68,29 +110,57 @@ class View {
 	 */
 	protected function path($view)
 	{
+		list($bundle, $view) = Bundle::parse($view);
+
 		$view = str_replace('.', '/', $view);
 
-		foreach (array(EXT, BLADE_EXT) as $extension)
+		// We delegate the determination of view paths to the view loader event
+		// so that the developer is free to override and manage the loading
+		// of views in any way they see fit for their application.
+		$path = Event::first(static::loader, array($bundle, $view));
+
+		if ( ! is_null($path))
 		{
-			if (file_exists($path = VIEW_PATH.$view.$extension))
-			{
-				return $path;
-			}
+			return $path;
 		}
 
-		throw new \RuntimeException("View [$view] does not exist.");
+		throw new \Exception("View [$view] doesn't exist.");
+	}
+
+	/**
+	 * Get the path to a view using the default folder convention.
+	 *
+	 * @param  string  $bundle
+	 * @param  string  $view
+	 * @param  string  $directory
+	 * @return string
+	 */
+	public static function file($bundle, $view, $directory)
+	{
+		$directory = str_finish($directory, DS);
+
+		// Views may have either the default PHP file extension of the "Blade"
+		// extension, so we will need to check for both in the view path
+		// and return the first one we find for the given view.
+		if (file_exists($path = $directory.$view.EXT))
+		{
+			return $path;
+		}
+		elseif (file_exists($path = $directory.$view.BLADE_EXT))
+		{
+			return $path;
+		}
 	}
 
 	/**
 	 * Create a new view instance.
 	 *
-	 * The name of the view given to this method should correspond to a view
-	 * within your application views directory. Dots or slashes may used to
-	 * reference views within sub-directories.
-	 *
 	 * <code>
 	 *		// Create a new view instance
 	 *		$view = View::make('home.index');
+	 *
+	 *		// Create a new view instance of a bundle's view
+	 *		$view = View::make('admin::home.index');
 	 *
 	 *		// Create a new view instance with bound data
 	 *		$view = View::make('home.index', array('name' => 'Taylor'));
@@ -106,16 +176,14 @@ class View {
 	}
 
 	/**
-	 * Create a new view instance from a view name.
-	 *
-	 * View names are defined in the application composers file.
+	 * Create a new view instance of a named view.
 	 *
 	 * <code>
-	 *		// Create an instance of the "layout" named view
-	 *		$view = View::of('layout');
+	 *		// Create a new named view instance
+	 *		$view = View::of('profile');
 	 *
-	 *		// Create an instance of the "layout" view with bound data
-	 *		$view = View::of('layout', array('name' => 'Taylor'));
+	 *		// Create a new named view instance with bound data
+	 *		$view = View::of('profile', array('name' => 'Taylor'));
 	 * </code>
 	 *
 	 * @param  string  $name
@@ -124,68 +192,91 @@ class View {
 	 */
 	public static function of($name, $data = array())
 	{
-		if ( ! is_null($view = static::name($name)))
-		{
-			return static::make($view, $data);
-		}
-
-		throw new \OutOfBoundsException("Named view [$name] is not defined.");
+		return new static(static::$names[$name], $data);
 	}
 
 	/**
-	 * Find the key for a view by name.
+	 * Assign a name to a view.
 	 *
-	 * The view "key" is the string that should be passed into the "make" method and
-	 * should correspond with the location of the view within the application views
-	 * directory, such as "home.index" or "home/index".
+	 * <code>
+	 *		// Assign a name to a view
+	 *		View::name('partials.profile', 'profile');
 	 *
+	 *		// Resolve an instance of a named view
+	 *		$view = View::of('profile');
+	 * </code>
+	 *
+	 * @param  string  $view
 	 * @param  string  $name
+	 * @return void
+	 */
+	public static function name($view, $name)
+	{
+		static::$names[$name] = $view;
+	}
+
+	/**
+	 * Register a view composer with the Event class.
+	 *
+	 * <code>
+	 *		// Register a composer for the "home.index" view
+	 *		View::composer('home.index', function($view)
+	 *		{
+	 *			$view['title'] = 'Home';
+	 *		});
+	 * </code>
+	 *
+	 * @param  string   $view
+	 * @param  Closure  $composer
+	 * @return void
+	 */
+	public static function composer($view, $composer)
+	{
+		Event::listen("laravel.composing: {$view}", $composer);
+	}
+
+	/**
+	 * Get the rendered contents of a partial from a loop.
+	 *
+	 * @param  string  $view
+	 * @param  array   $data
+	 * @param  string  $iterator
+	 * @param  string  $empty
 	 * @return string
 	 */
-	protected static function name($name)
+	public static function render_each($view, array $data, $iterator, $empty = 'raw|')
 	{
-		static::composers();
+		$result = '';
 
-		foreach (static::$composers as $key => $value)
+		// If is actually data in the array, we will loop through the data and
+		// append an instance of the partial view to the final result HTML,
+		// passing in the iterated value of the data array.
+		if (count($data) > 0)
 		{
-			if ($name === $value or $name === Arr::get((array) $value, 'name'))
+			foreach ($data as $key => $value)
 			{
-				return $key;
+				$with = array('key' => $key, $iterator => $value);
+
+				$result .= render($view, $with);
 			}
 		}
-	}
 
-	/**
-	 * Call the composer for the view instance.
-	 *
-	 * @param  View  $view
-	 * @return void
-	 */
-	protected static function compose(View $view)
-	{
-		static::composers();
-
-		if (isset(static::$composers[$view->view]))
+		// If there is no data in the array, we will render the contents of
+		// the "empty" view. Alternative, the "empty view" can be a raw
+		// string that is prefixed with "raw|" for convenience.
+		else
 		{
-			foreach ((array) static::$composers[$view->view] as $key => $value)
+			if (starts_with($empty, 'raw|'))
 			{
-				if ($value instanceof Closure) return call_user_func($value, $view);
+				$result = substr($empty, 4);
+			}
+			else
+			{
+				$result = render($empty);
 			}
 		}
-	}
 
-	/**
-	 * Load the view composers for the application.
-	 *
-	 * For better testing flexiblity, we load the composers from the IoC container.
-	 *
-	 * @return void
-	 */
-	protected static function composers()
-	{
-		if ( ! is_null(static::$composers)) return;
-
-		static::$composers = require APP_PATH.'composers'.EXT;
+		return $result;
 	}
 
 	/**
@@ -195,54 +286,79 @@ class View {
 	 */
 	public function render()
 	{
-		static::compose($this);
+		// To allow bundles or other pieces of the application to modify the
+		// view before it is rendered, we'll fire an event, passing in the
+		// view instance so it can modified.
+		$composer = "laravel.composing: {$this->view}";
 
-		// All nested views and responses are evaluated before the main view.
-		// This allows the assets used by the nested views to be added to the
-		// asset container before the main view is evaluated and dumps the
-		// links to the assets.
-		foreach ($this->data as &$data) 
+		Event::fire($composer, array($this));
+
+		// If there are listeners to the view engine event, we'll pass them
+		// the view so they can render it according to their needs, which
+		// allows easy attachment of other view parsers.
+		if (Event::listeners(static::engine))
 		{
-			if ($data instanceof View or $data instanceof Response)
-			{
-				$data = $data->render();
-			}
+			$result = Event::first(static::engine, array($this));
+
+			if ($result !== false) return $result;
 		}
 
-		ob_start() and extract($this->data, EXTR_SKIP);
+		return $this->get();
+	}
 
-		// If the view is Bladed, we need to check the view for modifications
-		// and get the path to the compiled view file. Otherwise, we'll just
-		// use the regular path to the view.
-		$view = (strpos($this->path, BLADE_EXT) !== false) ? $this->compile() : $this->path;
+	/**
+	 * Get the evaluated contents of the view.
+	 *
+	 * @return string
+	 */
+	public function get()
+	{
+		$__data = $this->data();
 
-		try { include $view; } catch (\Exception $e) { ob_get_clean(); throw $e; }
+		ob_start() and extract($__data, EXTR_SKIP);
+
+		// We'll include the view contents for parsing within a catcher
+		// so we can avoid any WSOD errors. If an exception occurs we
+		// will throw it out to the exception handler.
+		try
+		{
+			include $this->path;
+		}
+
+		// If we caught an exception, we'll silently flush the output
+		// buffer so that no partially rendered views get thrown out
+		// to the client and confuse the user.
+		catch (\Exception $e)
+		{
+			ob_get_clean(); throw $e;
+		}
 
 		return ob_get_clean();
 	}
 
 	/**
-	 * Compile the Bladed view and return the path to the compiled view.
+	 * Get the array of view data for the view instance.
 	 *
-	 * @return string
+	 * The shared view data will be combined with the view data.
+	 *
+	 * @return array
 	 */
-	protected function compile()
+	public function data()
 	{
-		// For simplicity, compiled views are stored in a single directory by
-		// the MD5 hash of their name. This allows us to avoid recreating the
-		// entire view directory structure within the compiled directory.
-		$compiled = STORAGE_PATH.'views/'.md5($this->view);
+		$data = array_merge($this->data, static::$shared);
 
-		// The view will only be re-compiled if the view has been modified
-		// since the last compiled version of the view was created or no
-		// compiled view exists. Otherwise, the path will be returned
-		// without re-compiling.
-		if ( ! file_exists($compiled) or (filemtime($this->path) > filemtime($compiled)))
+		// All nested views and responses are evaluated before the main view.
+		// This allows the assets used by nested views to be added to the
+		// asset container before the main view is evaluated.
+		foreach ($data as $key => $value) 
 		{
-			file_put_contents($compiled, Blade::compile($this->path));
+			if ($value instanceof View or $value instanceof Response)
+			{
+				$data[$key] = $value->render();
+			}
 		}
 
-		return $compiled;
+		return $data;
 	}
 
 	/**
@@ -254,9 +370,6 @@ class View {
 	 *
 	 *		// Equivalent functionality using the "with" method
 	 *		$view = View::make('foo')->with('footer', View::make('partials.footer'));
-	 *
-	 *		// Bind a view instance with data
-	 *		$view = View::make('foo')->nest('footer', 'partials.footer', array('name' => 'Taylor'));
 	 * </code>
 	 *
 	 * @param  string  $key
@@ -278,14 +391,83 @@ class View {
 	 * @param  mixed   $value
 	 * @return View
 	 */
-	public function with($key, $value)
+	public function with($key, $value = null)
 	{
-		$this->data[$key] = $value;
+		if (is_array($key))
+		{
+			$this->data = array_merge($this->data, $key);
+		}
+		else
+		{
+			$this->data[$key] = $value;
+		}
+
 		return $this;
 	}
 
 	/**
-	 * Magic Method for getting items from the view data.
+	 * Add a key / value pair to the shared view data.
+	 *
+	 * Shared view data is accessible to every view created by the application.
+	 *
+	 * @param  string  $key
+	 * @param  mixed   $value
+	 * @return View
+	 */
+	public function shares($key, $value)
+	{
+		static::share($key, $value);
+		return $this;
+	}
+
+	/**
+	 * Add a key / value pair to the shared view data.
+	 *
+	 * Shared view data is accessible to every view created by the application.
+	 *
+	 * @param  string  $key
+	 * @param  mixed   $value
+	 * @return void
+	 */
+	public static function share($key, $value)
+	{
+		static::$shared[$key] = $value;
+	}
+
+	/**
+	 * Implementation of the ArrayAccess offsetExists method.
+	 */
+	public function offsetExists($offset)
+	{
+		return array_key_exists($offset, $this->data);
+	}
+
+	/**
+	 * Implementation of the ArrayAccess offsetGet method.
+	 */
+	public function offsetGet($offset)
+	{
+		if (isset($this[$offset])) return $this->data[$offset];
+	}
+
+	/**
+	 * Implementation of the ArrayAccess offsetSet method.
+	 */
+	public function offsetSet($offset, $value)
+	{
+		$this->data[$offset] = $value;
+	}
+
+	/**
+	 * Implementation of the ArrayAccess offsetUnset method.
+	 */
+	public function offsetUnset($offset)
+	{
+		unset($this->data[$offset]);
+	}
+
+	/**
+	 * Magic Method for handling dynamic data access.
 	 */
 	public function __get($key)
 	{
@@ -293,27 +475,19 @@ class View {
 	}
 
 	/**
-	 * Magic Method for setting items in the view data.
+	 * Magic Method for handling the dynamic setting of data.
 	 */
 	public function __set($key, $value)
 	{
-		$this->with($key, $value);
+		$this->data[$key] = $value;
 	}
 
 	/**
-	 * Magic Method for determining if an item is in the view data.
+	 * Magic Method for checking dynamically-set data.
 	 */
 	public function __isset($key)
 	{
-		return array_key_exists($key, $this->data);
-	}
-
-	/**
-	 * Magic Method for removing an item from the view data.
-	 */
-	public function __unset($key)
-	{
-		unset($this->data[$key]);
+		return isset($this->data[$key]);
 	}
 
 	/**
@@ -324,27 +498,6 @@ class View {
 	public function __toString()
 	{
 		return $this->render();
-	}
-
-	/**
-	 * Magic Method for handling the dynamic creation of named views.
-	 *
-	 * <code>
-	 *		// Create an instance of the "layout" named view
-	 *		$view = View::of_layout();
-	 *
-	 *		// Create an instance of a named view with data
-	 *		$view = View::of_layout(array('name' => 'Taylor'));
-	 * </code>
-	 */
-	public static function __callStatic($method, $parameters)
-	{
-		if (strpos($method, 'of_') === 0)
-		{
-			return static::of(substr($method, 3), Arr::get($parameters, 0, array()));
-		}
-
-		throw new \BadMethodCallException("Method [$method] is not defined on the View class.");
 	}
 
 }
