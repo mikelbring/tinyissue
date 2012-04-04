@@ -34,10 +34,11 @@ Laravel\Event::listen(Laravel\Config::loader, function($bundle, $file) use ($con
 				'timezone' => $config_app['timezone'],
 				'key' => $config_app['key'],
 				'index' => !$config_app['mod_rewrite'] ? 'index.php' : '',
+				'mail' => $load['mail']
 			);
 
-			$config['mail']['from'] = $config_app['mail']['name'];
-			$config['mail']['email'] = $config_app['mail']['email'];
+			$config['mail']['from']['name'] = $config_app['mail']['name'];
+			$config['mail']['from']['email'] = $config_app['mail']['email'];
 
 			$load =  $config + $load;
 
