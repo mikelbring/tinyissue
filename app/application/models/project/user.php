@@ -121,7 +121,7 @@ class User extends \Eloquent {
 
 		if($all)
 		{
-			if($user->permission('manager') || $user->permission('administration'))
+			if($user->permission('project-all'))
 			{
 				return \Project::where('status', '=', 1)
 						->order_by('name', 'ASC')
@@ -144,11 +144,16 @@ class User extends \Eloquent {
 		return $projects;
 	}
 
-	public static function inactive_projects($all = false)
+	public static function inactive_projects($all = false, $user = null)
 	{
+		if(is_null($user))
+		{
+			$user = \Auth::user();
+		}
+
 		if($all)
 		{
-			if(\Auth::user()->permission('manager') || \Auth::user()->permission('administration'))
+			if($user->permission('project-all'))
 			{
 				return \Project::where('status', '=', 0)
 						->order_by('name', 'ASC')

@@ -1,22 +1,31 @@
-<?php namespace Laravel; use Closure;
+<?php namespace Laravel; defined('DS') or die('No direct script access.');
+
+use Closure;
 
 class Config {
 
 	/**
 	 * All of the loaded configuration items.
 	 *
-	 * The configuration arrays are keyed by their owning file name.
+	 * The configuration arrays are keyed by their owning bundle and file.
 	 *
 	 * @var array
 	 */
 	public static $items = array();
 
 	/**
-	 * The paths to the configuration files.
+	 * A cache of the parsed configuration items.
 	 *
 	 * @var array
 	 */
-	public static $paths = array(SYS_CONFIG_PATH, CONFIG_PATH, ENV_CONFIG_PATH);
+	public static $cache = array();
+
+	/**
+	 * The configuration loader event name.
+	 *
+	 * @var string
+	 */
+	const loader = 'laravel.config.loader';
 
 	/**
 	 * Determine if a configuration item or file exists.
@@ -25,7 +34,7 @@ class Config {
 	 *		// Determine if the "session" configuration file exists
 	 *		$exists = Config::has('session');
 	 *
-	 *		// Determine if the "timezone" option exists in the "application" configuration
+	 *		// Determine if the "timezone" option exists in the configuration
 	 *		$exists = Config::has('application.timezone');
 	 * </code>
 	 *
@@ -46,29 +55,36 @@ class Config {
 	 *		// Get the "session" configuration array
 	 *		$session = Config::get('session');
 	 *
+	 *		// Get a configuration item from a bundle's configuration file
+	 *		$name = Config::get('admin::names.first');
+	 *
 	 *		// Get the "timezone" option from the "application" configuration file
 	 *		$timezone = Config::get('application.timezone');
 	 * </code>
 	 *
 	 * @param  string  $key
-	 * @param  string  $default
+	 * @param  mixed   $default
 	 * @return array
 	 */
 	public static function get($key, $default = null)
 	{
-		list($file, $key) = static::parse($key);
+		list($bundle, $file, $item) = static::parse($key);
 
-		if ( ! static::load($file))
-		{
-			return ($default instanceof Closure) ? call_user_func($default) : $default;
-		}
+		if ( ! static::load($bundle, $file)) return value($default);
 
-		$items = static::$items[$file];
+		$items = static::$items[$bundle][$file];
 
 		// If a specific configuration item was not requested, the key will be null,
-		// meaning we need to return the entire array of configuration item from the
+		// meaning we'll to return the entire array of configuration item from the
 		// requested configuration file. Otherwise we can return the item.
-		return (is_null($key)) ? $items : Arr::get($items, $key, $default);
+		if (is_null($item))
+		{
+			return $items;
+		}
+		else
+		{
+			return array_get($items, $item, $default);
+		}
 	}
 
 	/**
@@ -77,6 +93,9 @@ class Config {
 	 * <code>
 	 *		// Set the "session" configuration array
 	 *		Config::set('session', $array);
+	 *
+	 *		// Set a configuration option that belongs by a bundle
+	 *		Config::set('admin::names.first', 'Taylor');
 	 *
 	 *		// Set the "timezone" option in the "application" configuration file
 	 *		Config::set('application.timezone', 'UTC');
@@ -88,61 +107,102 @@ class Config {
 	 */
 	public static function set($key, $value)
 	{
-		list($file, $key) = static::parse($key);
+		list($bundle, $file, $item) = static::parse($key);
 
-		static::load($file);
+		static::load($bundle, $file);
 
-		if (is_null($key))
+		// If the item is null, it means the developer wishes to set the entire
+		// configuration array to a given value, so we will pass the entire
+		// array for the bundle into the array_set method.
+		if (is_null($item))
 		{
-			Arr::set(static::$items, $file, $value);
+			array_set(static::$items[$bundle], $file, $value);
 		}
 		else
 		{
-			Arr::set(static::$items[$file], $key, $value);
+			array_set(static::$items[$bundle][$file], $item, $value);
 		}
 	}
 
 	/**
-	 * Parse a configuration key and return its file and key segments.
+	 * Parse a key and return its bundle, file, and key segments.
 	 *
-	 * The first segment of a configuration key represents the configuration
-	 * file, while the remaining segments represent an item within that file.
-	 * If no item segment is present, null will be returned for the item value
-	 * indicating that the entire configuration array should be returned.
+	 * Configuration items are named using the {bundle}::{file}.{item} convention.
 	 *
 	 * @param  string  $key
 	 * @return array
 	 */
 	protected static function parse($key)
 	{
-		$segments = explode('.', $key);
+		// First, we'll check the keyed cache of configuration items, as this will
+		// be the fastest method of retrieving the configuration option. After an
+		// item is parsed, it is always stored in the cache by its key.
+		if (array_key_exists($key, static::$cache))
+		{
+			return static::$cache[$key];
+		}
 
+		$bundle = Bundle::name($key);
+
+		$segments = explode('.', Bundle::element($key));
+
+		// If there are not at least two segments in the array, it means that the
+		// developer is requesting the entire configuration array to be returned.
+		// If that is the case, we'll make the item field "null".
 		if (count($segments) >= 2)
 		{
-			return array($segments[0], implode('.', array_slice($segments, 1)));
+			$parsed = array($bundle, $segments[0], implode('.', array_slice($segments, 1)));
 		}
 		else
 		{
-			return array($segments[0], null);
+			$parsed = array($bundle, $segments[0], null);
 		}
+
+		return static::$cache[$key] = $parsed;
 	}
 
 	/**
 	 * Load all of the configuration items from a configuration file.
 	 *
+	 * @param  string  $bundle
 	 * @param  string  $file
 	 * @return bool
 	 */
-	public static function load($file)
+	public static function load($bundle, $file)
 	{
-		if (isset(static::$items[$file])) return true;
+		if (isset(static::$items[$bundle][$file])) return true;
 
+		// We allow a "config.loader" event to be registered which is responsible for
+		// returning an array representing the configuration for the bundle and file
+		// requested. This allows many types of config "drivers".
+		$config = Event::first(static::loader, func_get_args());
+
+		// If configuration items were actually found for the bundle and file we
+		// will add them to the configuration array and return true, otherwise
+		// we will return false indicating the file was not found.
+		if (count($config) > 0)
+		{
+			static::$items[$bundle][$file] = $config;
+		}
+
+		return isset(static::$items[$bundle][$file]);
+	}
+
+	/**
+	 * Load the configuration items from a configuration file.
+	 *
+	 * @param  string  $bundle
+	 * @param  string  $file
+	 * @return array
+	 */
+	public static function file($bundle, $file)
+	{
 		$config = array();
 
-		// Configuration files cascade. Typically, the system configuration array is
-		// loaded first, followed by the application array, providing the convenient
-		// cascading of configuration options from system to application.
-		foreach (static::$paths as $directory)
+		// Configuration files cascade. Typically, the bundle configuration array is
+		// loaded first, followed by the environment array, providing the convenient
+		// cascading of configuration options across environments.
+		foreach (static::paths($bundle) as $directory)
 		{
 			if ($directory !== '' and file_exists($path = $directory.$file.EXT))
 			{
@@ -150,9 +210,28 @@ class Config {
 			}
 		}
 
-		if (count($config) > 0) static::$items[$file] = $config;
+		return $config;
+	}
 
-		return isset(static::$items[$file]);
+	/**
+	 * Get the array of configuration paths that should be searched for a bundle.
+	 *
+	 * @param  string  $bundle
+	 * @return array
+	 */
+	protected static function paths($bundle)
+	{
+		$paths[] = Bundle::path($bundle).'config/';
+
+		// Configuration files can be made specific for a given environment. If an
+		// environment has been set, we will merge the environment configuration
+		// in last, so that it overrides all other options.
+		if (isset($_SERVER['LARAVEL_ENV']))
+		{
+			$paths[] = $paths[count($paths) - 1].$_SERVER['LARAVEL_ENV'].'/';
+		}
+
+		return $paths;
 	}
 
 }

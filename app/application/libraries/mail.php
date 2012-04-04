@@ -9,7 +9,7 @@ class Mail {
     */
 	private static function transport($default = null)
 	{
-		require APP_PATH . 'packages/Swift/lib/swift_required.php';
+		require path('vendor') . 'Swift/lib/swift_required.php';
 
 		$options = Config::get('application.mail');
 

@@ -2,7 +2,7 @@
 
 use Laravel\Crypter;
 
-class Cookie implements Driver {
+class Cookie extends Driver {
 
 	/**
 	 * The name of the cookie used to store the session payload.
@@ -23,9 +23,7 @@ class Cookie implements Driver {
 	{
 		if (\Laravel\Cookie::has(Cookie::payload))
 		{
-			$cookie = Crypter::decrypt(\Laravel\Cookie::get(Cookie::payload));
-
-			return unserialize($cookie);
+			return unserialize(Crypter::decrypt(\Laravel\Cookie::get(Cookie::payload)));
 		}
 	}
 

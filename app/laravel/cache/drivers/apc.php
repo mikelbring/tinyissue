@@ -39,7 +39,7 @@ class APC extends Driver {
 	 */
 	protected function retrieve($key)
 	{
-		if ( ! is_null($cache = apc_fetch($this->key.$key)))
+		if (($cache = apc_fetch($this->key.$key)) !== false)
 		{
 			return $cache;
 		}
@@ -61,6 +61,18 @@ class APC extends Driver {
 	public function put($key, $value, $minutes)
 	{
 		apc_store($this->key.$key, $value, $minutes * 60);
+	}
+
+	/**
+	 * Write an item to the cache that lasts forever.
+	 *
+	 * @param  string  $key
+	 * @param  mixed   $value
+	 * @return void
+	 */
+	public function forever($key, $value)
+	{
+		return $this->put($key, $value, 0);
 	}
 
 	/**

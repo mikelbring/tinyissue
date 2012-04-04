@@ -44,7 +44,7 @@
 							<a href="javascript:void(0);" class="edit">Edit</a>
 						</li>
 						<li class="delete-comment">
-						<a href="<?php echo $issue->to('delete-comment/' . $row->id); ?>" class="delete">Delete</a>
+						<a href="<?php echo $issue->to('delete_comment?comment=' . $row->id); ?>" class="delete">Delete</a>
 						</li>
 					</ul>
 					<?php endif; ?>
@@ -114,7 +114,7 @@
 					</div>
 				</li>
 				<li>
-					<a href="<?php echo Project\Issue::current()->to('status/0'); ?>" onclick="return confirm('Are you sure you want to close this issue?');" class="close">Close Issue</a>
+					<a href="<?php echo Project\Issue::current()->to('status?status=0'); ?>" onclick="return confirm('Are you sure you want to close this issue?');" class="close">Close Issue</a>
 				</li>
 			</ul>
 		<?php endif; ?>
@@ -155,7 +155,7 @@
 	</p>
 
 	<p>
-		<a href="<?php echo Project\Issue::current()->to('status/1'); ?>" class="button success">Reopen</a>
+		<a href="<?php echo Project\Issue::current()->to('status?status=1'); ?>" class="button success">Reopen</a>
 	</p>
 
 	<?php endif; ?>

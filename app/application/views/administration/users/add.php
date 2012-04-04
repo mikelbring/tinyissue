@@ -12,7 +12,7 @@
 					First Name
 				</th>
 				<td>
-					<input type="text" name="firstname" value="<?php echo Input::old('firstname', $user->firstname); ?>" />
+					<input type="text" name="firstname" value="<?php echo Input::old('firstname'); ?>" />
 
 					<?php echo $errors->first('firstname', '<span class="error">:message</span>'); ?>
 				</td>
@@ -22,7 +22,7 @@
 					Last Name
 				</th>
 				<td>
-					<input type="text" name="lastname" value="<?php echo Input::old('lastname',$user->lastname);?>" />
+					<input type="text" name="lastname" value="<?php echo Input::old('lastname');?>" />
 
 					<?php echo $errors->first('lastname', '<span class="error">:message</span>'); ?>
 				</td>
@@ -32,7 +32,7 @@
 					Email
 				</th>
 				<td>
-					<input type="text" name="email" value="<?php echo Input::old('email',$user->email)?>" />
+					<input type="text" name="email" value="<?php echo Input::old('email')?>" />
 
 					<?php echo $errors->first('email', '<span class="error">:message</span>'); ?>
 				</td>

@@ -21,7 +21,7 @@
 			</a>
 		</li>
 		<li <?php echo $active == 'assigned' ? 'class="active"' : ''; ?>>
-			<a href="<?php echo Project::current()->to('issues/assigned'); ?>?status=1">
+			<a href="<?php echo Project::current()->to('assigned'); ?>?status=1">
 			<?php echo $assigned_count == 1 ? '1 Issue Assigned to you' : $assigned_count . ' Issues assigned to you'; ?>
 			</a>
 		</li>

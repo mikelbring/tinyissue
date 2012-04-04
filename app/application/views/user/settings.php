@@ -11,7 +11,7 @@
 			<tr>
 				<th>First Name</th>
 				<td>
-					<input type="text" name="firstname" value="<?php echo Input::old('firstname', $user->firstname); ?>" autocomplete="off" />
+					<input type="text" name="firstname" value="<?php echo Input::old('firstname', $user->firstname); ?>" autocomplete="off" style="width: 300px;" />
 
 					<?php echo $errors->first('firstname', '<span class="error">:message</span>'); ?>
 				</td>
@@ -19,7 +19,7 @@
 			<tr>
 				<th>Last Name</th>
 				<td>
-					<input type="text" name="lastname" value="<?php echo Input::old('lastname',$user->lastname);?>" autocomplete="off" />
+					<input type="text" name="lastname" value="<?php echo Input::old('lastname',$user->lastname);?>" autocomplete="off" style="width: 300px;" />
 
 					<?php echo $errors->first('lastname', '<span class="error">:message</span>'); ?>
 				</td>
@@ -27,7 +27,7 @@
 			<tr>
 				<th>Email</th>
 				<td>
-					<input type="text" name="email" value="<?php echo Input::old('email',$user->email)?>"  autocomplete="off" />
+					<input type="text" name="email" value="<?php echo Input::old('email',$user->email)?>"  autocomplete="off" style="width: 300px;" />
 
 					<?php echo $errors->first('email', '<span class="error">:message</span>'); ?>
 				</td>
@@ -40,7 +40,7 @@
 			<tr>
 				<th>New Password</th>
 				<td>
-					<input type="password" name="password" value="" autocomplete="off" />
+					<input type="password" name="password" value="" autocomplete="off" style="width: 300px;" />
 
 					<?php echo $errors->first('password', '<span class="error">:message</span>'); ?>
 				</td>
@@ -48,7 +48,7 @@
 			<tr>
 				<th>Confirm</th>
 				<td>
-					<input type="password" name="password_confirmation" value="" autocomplete="off" />
+					<input type="password" name="password_confirmation" value="" autocomplete="off" style="width: 300px;" />
 				</td>
 			</tr>
 			<tr>

@@ -8,7 +8,7 @@ $(function() {
 
 	$('#upload').uploadify({
 		'uploader' : baseurl + '/app/assets/js/uploadify/uploadify.swf',
-		'script' : siteurl + 'ajax/project/issue/upload-attachment',
+		'script' : siteurl + 'ajax/project/issue_upload_attachment',
 		'scriptData' : {
 			session : session,
 			project_id : project,
@@ -33,7 +33,7 @@ $(function() {
 		var id = attachment.attr('rel');
 		var filename = $('#' + id).find('span').html();
 
-		$.post(siteurl + 'ajax/project/issue/remove-attachment', {
+		$.post(siteurl + 'ajax/project/issue_remove_attachment', {
 			filename : filename,
 			upload_token : upload_token,
 			project_id : project
@@ -82,7 +82,7 @@ $(function() {
 
 		saving_toggle();
 
-		$.post(current_url + '/edit-comment', {
+		$.post(current_url + '/edit_comment', {
 			body: discussion.find('#' + id + ' textarea').val(),
 			id: id,
 			csrf_token: $('input[name=csrf_token]').val()
@@ -113,7 +113,7 @@ function init_sidebar_autocomplete(project){
 
 		var users = $('.sidebar-users');
 
-		$.getJSON(siteurl + 'ajax/project/inactive-users?project_id=' + project, function(data){
+		$.getJSON(siteurl + 'ajax/project/inactive_users?project_id=' + project, function(data){
 			var suggestions = [];
 
 			$.each(data, function(key, value){
@@ -127,7 +127,7 @@ function init_sidebar_autocomplete(project){
 				select: function (event, ui){
 					saving_toggle();
 
-					$.post(siteurl + 'ajax/project/add-user', {
+					$.post(siteurl + 'ajax/project/add_user', {
 						user_id : ui.item.id,
 						project_id : project
 					}, function(data){
@@ -159,7 +159,7 @@ function remove_project_user(user_id, project_id){
 
 	saving_toggle();
 
-	$.post(siteurl + 'ajax/project/remove-user', {
+	$.post(siteurl + 'ajax/project/remove_user', {
 		user_id : user_id,
 		project_id : project_id
 	}, function(data){
@@ -188,7 +188,7 @@ function issue_assign_change(user_id, issue_id){
 }
 
 function assign_issue_to_user(user_id, issue_id, callback){
-   $.post(siteurl + 'ajax/project/issue/assign', {
+   $.post(siteurl + 'ajax/project/issue_assign', {
       user_id : user_id,
       issue_id : issue_id
    }, function(){

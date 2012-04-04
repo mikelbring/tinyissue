@@ -13,7 +13,7 @@
 		</li>
 		<li <?php echo $active == 'archived' ? 'class="active"' : ''; ?>>
 			<a href="<?php echo URL::to('projects'); ?>?status=0">
-				<?php echo $archived_count == 1 ? '1 Archived Project' : $achived_count . ' Archived Projects'; ?>
+				<?php echo $archived_count == 1 ? '1 Archived Project' : $archived_count . ' Archived Projects'; ?>
 			</a>
 		</li>
 	</ul>
@@ -35,7 +35,7 @@
 
 					<?php if(count($projects) == 0): ?>
 					<li>
-						You do not have any projects. <a href="<?php echo URL::to('project/new'); ?>">Create a new project!</a>
+						You do not have any projects. <a href="<?php echo URL::to('projects/new'); ?>">Create a new project!</a>
 					</li>
 					<?php endif; ?>
 				</ul>
