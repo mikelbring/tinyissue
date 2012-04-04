@@ -23,12 +23,14 @@
 					<?php echo $errors->first('body', '<span class="error">:message</span>'); ?>
 				</td>
 			</tr>
+			<?php if(Auth::user()->permission('issue-modify')): ?>
 			<tr>
 				<th>Assigned To</th>
 				<td>
 					<?php echo Form::select('assigned_to', array(0 => '') + Project\User::dropdown($project->users()->get())); ?>
 				</td>
 			</tr>
+			<?php endif; ?>
 			<tr>
 				<th>Attachments</th>
 				<td>

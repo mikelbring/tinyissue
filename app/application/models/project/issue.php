@@ -163,11 +163,15 @@ class Issue extends \Eloquent {
 
       $fill = array(
          'created_by' => \Auth::user()->id,
-         'assigned_to' => $input['assigned_to'],
          'project_id' => $project->id,
          'title' => $input['title'],
          'body' => $input['body']
       );
+
+		if(\Auth::user()->permission('issue-modify'))
+		{
+			$fill['assigned_to'] = $input['assigned_to'];
+		}
 
       $issue = new static;
       $issue->fill($fill);
