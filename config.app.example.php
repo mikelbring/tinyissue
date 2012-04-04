@@ -1,7 +1,7 @@
 <?php
 
 return array(
-	
+
 	/**
 	 * You can define your URL or leave blank to let us figure it out
 	 * 	- Sometimes in non-apache setups you need to define your url
