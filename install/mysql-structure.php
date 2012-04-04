@@ -160,7 +160,7 @@ INSERT IGNORE INTO `permissions` (`id`, `permission`, `description`, `auto_has`)
 
 
 "#Insert Roles Data
-INSERT IGNORE INTO `roles` (`id`, `name`, `key`, `description`)
+INSERT IGNORE INTO `roles` (`id`, `name`, `role`, `description`)
 VALUES
 	(1,'User','user','Only can read the issues in the projects they are assigned to'),
 	(2,'Developer','developer','Can update issues in the projects they are assigned to'),
