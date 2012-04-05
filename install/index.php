@@ -15,6 +15,7 @@ require './install.php';
 
 $install = new install();
 $database_check = $install->check_connect();
+$requirement_check = $install->check_requirements();
 
 if(!$database_check['error'])
 {
@@ -76,6 +77,15 @@ if(!$database_check['error'])
 			<tr>
 				<td colspan="2">
 					<h2>Installation</h2>
+				<?php
+				if ($requirement_check) {
+					echo "Please install all required extensions.<br />";
+					foreach ($requirement_check as $key => $value) {
+						echo $value;
+					}
+					die();
+				}
+				?>
 				<?php
 				if($database_check['error'])
 				{
