@@ -33,18 +33,22 @@ class install
 	public function check_requirements()
 	{
 		$errors = array();
-		if (!extension_loaded('pdo'))
+
+		if(!extension_loaded('pdo'))
 		{
-			$errors[] = '<strong>pdo extension not found.<strong>';
+			$errors[] = 'pdo extension not found.';
 		}
-		if (!extension_loaded('pdo_mysql')) 
+
+		if(!extension_loaded('pdo_mysql'))
 		{
-			$errors[] = '<strong>mysql driver not found.<strong>';
+			$errors[] = 'mysql driver for pdo not found .';
 		}
-		if (!extension_loaded('mcrypt')) 
+
+		if(!extension_loaded('mcrypt'))
 		{
-			$errors[] = '<strong>mcrypt extension not found.<strong>';
+			$errors[] = 'mcrypt extension not found.';
 		}
+
 		return $errors;	
 	}
 
