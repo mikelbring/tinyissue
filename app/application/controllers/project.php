@@ -108,22 +108,22 @@ class Project_Controller extends Base_Controller {
 
 	public function post_edit()
 	{
-		 /* Delete the project */
+		/* Delete the project */
 		if(Input::get('delete'))
-      {
-         Project::delete_project(Project::current());
+		{
+			Project::delete_project(Project::current());
 
-         return Redirect::to('projects')
-               ->with('notice', 'The project has been deleted.');
-      }
+			return Redirect::to('projects')
+				->with('notice', 'The project has been deleted.');
+		}
 
-      /* Update the project */
+		/* Update the project */
 		$update = Project::update_project(Input::all(), Project::current());
 
 		if($update['success'])
 		{
 			return Redirect::to(Project::current()->to('edit'))
-					->with('notice', 'Project has been updated!');
+				->with('notice', 'Project has been updated!');
 		}
 
 		return Redirect::to(Project::current()->to('edit'))

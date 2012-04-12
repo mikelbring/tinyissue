@@ -16,8 +16,8 @@ class Login_Controller extends Controller {
 			return Redirect::to(Input::get('return', '/'));
 		}
 
-	  return Redirect::to('login')
-			  ->with('error', 'Whoops, your username or password did not match.');
+		return Redirect::to('login')
+			->with('error', 'Whoops, your username or password did not match.');
 	}
 
 }

@@ -15,6 +15,7 @@ require './install.php';
 
 $install = new install();
 $database_check = $install->check_connect();
+$requirement_check = $install->check_requirements();
 
 if(!$database_check['error'])
 {
@@ -76,13 +77,21 @@ if(!$database_check['error'])
 			<tr>
 				<td colspan="2">
 					<h2>Installation</h2>
-				<?php
-				if($database_check['error'])
-				{
-					echo 'Please fix your config.app.php - '.$database_check['error'];
-					die();
-				}
-				?>
+
+				<?php	if(count($requirement_check) > 0): ?>
+
+					<strong>Please install all required extensions</strong><br />
+
+					<?php foreach ($requirement_check as $key => $value): ?>
+						<?php echo $value; ?><br />
+					<?php endforeach; ?>
+
+				<?php die(); endif; ?>
+
+				<?php	if(count($database_check['error']) > 0): ?>
+					Please fix your config.app.php - <?php echo $database_check['error']; ?>
+				<?php die(); endif;?>
+
 				Thank you for using Tiny Issue.  Your config file looks good.  Please fill out the form below to set up your administrator account and we will finish up the install.
 				</td>
 			</tr>

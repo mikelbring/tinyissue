@@ -30,6 +30,28 @@ class install
 		return $check_db;
 	}
 
+	public function check_requirements()
+	{
+		$errors = array();
+
+		if(!extension_loaded('pdo'))
+		{
+			$errors[] = 'pdo extension not found.';
+		}
+
+		if(!extension_loaded('pdo_mysql'))
+		{
+			$errors[] = 'mysql driver for pdo not found .';
+		}
+
+		if(!extension_loaded('mcrypt'))
+		{
+			$errors[] = 'mcrypt extension not found.';
+		}
+
+		return $errors;	
+	}
+
 	public function create_tables()
 	{
 		foreach($this->mysql_structure as $query)
