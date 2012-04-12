@@ -74,15 +74,10 @@ class Project extends Eloquent {
 			$user_id = \Auth::user()->id;
 		}
 
-		$sql = '
-		SELECT COUNT(id) AS `total`
-		FROM projects_issues
-		WHERE project_id = ? AND assigned_to = ? AND status = 1
-		';
-
-		$result = \DB::first($sql, array($this->id, $user_id));
-
-		return !$result ? 0 : $result->total;
+		return \Project\Issue::where('project_id', '=', $this->id)
+			->where('assigned_to', '=', $user_id)
+			->where('status', '=', 1)
+			->count();
 	}
 
 	/**
@@ -116,24 +111,31 @@ class Project extends Eloquent {
 		{
 			if(!isset($issues[$activity->item_id]))
 			{
-			  $issues[$activity->item_id] = Project\Issue::find($activity->item_id);
+				$issues[$activity->item_id] = Project\Issue::find($activity->item_id);
 			}
 
 			if(!isset($users[$activity->user_id]))
 			{
-			  $users[$activity->user_id] = User::find($activity->user_id);
+				$users[$activity->user_id] = User::find($activity->user_id);
 			}
 
 			if(!isset($comments[$activity->action_id]))
 			{
-			  $comments[$activity->action_id] = Project\Issue\Comment::find($activity->action_id);
+				$comments[$activity->action_id] = Project\Issue\Comment::find($activity->action_id);
 			}
 
 			if($activity->type_id == 5)
 			{
 				if(!isset($users[$activity->action_id]))
 				{
-				  $users[$activity->action_id] = User::find($activity->action_id);
+					if($activity->action_id > 0)
+					{
+						$users[$activity->action_id] =  User::find($activity->action_id);
+					}
+					else
+					{
+						$users[$activity->action_id] = array();
+					}
 				}
 			}
 		}

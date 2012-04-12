@@ -5,7 +5,12 @@
 	</div>
 
 	<div class="data">
-		<a href="<?php echo $issue->to(); ?>"><?php echo $issue->title; ?></a> was reassigned to <strong><?php echo $assigned->firstname . ' ' . $assigned->lastname; ?></strong>
+		<a href="<?php echo $issue->to(); ?>"><?php echo $issue->title; ?></a> was reassigned to
+		<?php if($activity->action_id > 0): ?>
+		<strong><?php echo $assigned->firstname . ' ' . $assigned->lastname; ?></strong>
+		<?php else: ?>
+		<strong>No one</strong>
+		<?php endif; ?>
 		by
 		<strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong>
 
