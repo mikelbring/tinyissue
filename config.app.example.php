@@ -23,10 +23,41 @@ return array(
 	 * Mail Settings
 	 * - Put in the name and email you would like email from Tiny Issue to come from
 	 * - This is usually only for setting up new accounts
+	 *
+	 * Default Mail Transport
+	 *	|
+	 *	| Possible Values
+	 *	| 	mail (PHP Mail Function)
+	 *	| 	sendmail (Sendmail)
+	 *	| 	smtp (Define Custom SMTP)
+	 *
 	 */
 	'mail' => array(
-		'name' => 'Your E-Mail Name',
-		'email' => 'name@domain.com'
+
+		'from' => array(
+			'name' => 'Your E-Mail Name',
+			'email' => 'name@domain.com',
+		),
+
+		'transport' => 'mail',
+
+		/**
+		 * Transport Settings
+		 *
+		 * Transport settings if using sendmail or SMTP
+		 */
+
+		'sendmail' => array(
+			'path' => ''
+		),
+
+		'smtp' => array(
+			'server' => '',
+			'port' => 25,
+			'username' => '',
+			'password' => '',
+		),
+
 	),
 
 	/**
@@ -46,6 +77,5 @@ return array(
 	 * False if you are not
 	 */
 	'mod_rewrite' => false,
-
 
 );

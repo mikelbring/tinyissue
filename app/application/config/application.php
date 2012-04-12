@@ -19,56 +19,6 @@ return array(
 
 	/*
 	|--------------------------------------------------------------------------
-	| Mail Settings
-	|--------------------------------------------------------------------------
-	|
-	| Default Mail Transport
-	|
-	| Possible Values
-	| 	mail (PHP Mail Function)
-	| 	sendmail (Sendmail)
-	| 	smtp (Define Custom SMTP)
-	|
-	*/
-
-	'mail' => array(
-
-		'transport' => 'mail',
-
-		/*
-		 * Default Mail From
-		 *
-		 * Possible Value
-		 * 	name => Joe Bob
-		 * 	email => joe@bob.com
-		 */
-
-		'from' => array(
-			'name' => '',
-			'email' => ''
-		),
-
-		/**
-		 * Transport Settings
-		 *
-		 * Transport Settings If Using Sendmail Or SMTP
-		 */
-
-		'sendmail' => array(
-			'path' => ''
-		),
-
-		'smtp' => array(
-			'server' => '',
-			'port' => 25,
-			'username' => '',
-			'password' => '',
-		),
-
-	),
-
-	/*
-	|--------------------------------------------------------------------------
 	| Application URL
 	|--------------------------------------------------------------------------
 	|
