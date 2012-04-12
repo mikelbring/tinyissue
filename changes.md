@@ -6,6 +6,8 @@
 - Feature: Added ability to edit a issue title / body
 - Feature: Autolink URLs in comment and issue body
 - Will now check for installation when going to root by seeing if config.app.php exists
+- Included .htaccess for modrewrite
+- Added more mail settings to config
 
 ## Tiny Issue v1.1.1
 
