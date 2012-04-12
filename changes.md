@@ -5,6 +5,7 @@
 - Feature: Requirement check on installation
 - Feature: Added ability to edit a issue title / body
 - Feature: Autolink URLs in comment and issue body
+- Will now check for installation when going to root by seeing if config.app.php exists
 
 ## Tiny Issue v1.1.1
 

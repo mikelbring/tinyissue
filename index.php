@@ -1,34 +1,14 @@
 <?php
-/**
- * Laravel - A PHP Framework For Web Artisans
- *
- * @package  Laravel
- * @version  3.1.4
- * @author   Taylor Otwell <taylorotwell@gmail.com>
- * @link     http://laravel.com
- */
 
-// --------------------------------------------------------------
-// Tick... Tock... Tick... Tock...
-// --------------------------------------------------------------
+/* Redirect if we have not installed */
+if(!file_exists(__DIR__ . 'config.app.php'))
+{
+	header('Location: ./install');
+}
+
 define('LARAVEL_START', microtime(true));
-
-// --------------------------------------------------------------
-// Indicate that the request is from the web.
-// --------------------------------------------------------------
 $web = true;
-
-// --------------------------------------------------------------
-// Set the core Laravel path constants.
-// --------------------------------------------------------------
 require 'app/paths.php';
-
-// --------------------------------------------------------------
-// Unset the temporary web variable.
-// --------------------------------------------------------------
 unset($web);
 
-// --------------------------------------------------------------
-// Launch Laravel.
-// --------------------------------------------------------------
 require path('sys').'laravel.php';
