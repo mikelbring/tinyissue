@@ -1,5 +1,10 @@
 # Tiny Issue Change Log
 
+## Tiny Issue v1.2
+
+- Feature: Requirement check on installation
+- Feature: Added ability to edit a issue title / body
+
 ## Tiny Issue v1.1.1
 
 - Bug fix: Your issue count was not returning the right value
@@ -12,7 +17,7 @@
 ## Tiny Issue v1.1
 
 - Upgraded Laravel 2.x to Laravel 3.1.4, should fix some bugs related to PHP 5.4
-- Added a URL option in the config to specify your URL, should fix path bug on non-apache servers
+- Bug fix: Added a URL option in the config to specify your URL, should fix path bug on non-apache servers
 
 ### Upgrading from v1.0
 

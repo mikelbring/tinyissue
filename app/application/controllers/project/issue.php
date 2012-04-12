@@ -11,7 +11,7 @@ class Project_Issue_Controller extends Base_Controller {
 		$this->filter('before', 'project');
 		$this->filter('before', 'issue')->except('new');
 		$this->filter('before', 'permission:issue-modify')
-				->only(array('edit_comment', 'delete_comment', 'status'));
+				->only(array('edit_comment', 'delete_comment', 'status', 'edit'));
 	}
 
 	/**
@@ -82,6 +82,35 @@ class Project_Issue_Controller extends Base_Controller {
 
 		return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
 			->with('notice', 'Your comment has been added!');
+	}
+
+	/**
+	 * Edit a issue
+	 *
+	 * @return View
+	 */
+	public function get_edit()
+	{
+		return $this->layout->nest('content', 'project.issue.edit', array(
+			'issue' => Project\Issue::current(),
+			'project' => Project::current()
+		));
+	}
+
+	public function post_edit()
+	{
+		$update = Project\Issue::current()->update_issue(Input::all());
+
+		if(!$update['success'])
+		{
+			return Redirect::to(Project\Issue::current()->to('edit'))
+				->with_input()
+				->with_errors($update['errors'])
+				->with('notice-error', 'Whoops, we have a few errors.');
+		}
+
+		return Redirect::to(Project\Issue::current()->to())
+			->with('notice', 'This issue has been updated!');
 	}
 
 	/**
