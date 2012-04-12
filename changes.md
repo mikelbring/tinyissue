@@ -4,6 +4,7 @@
 
 - Feature: Requirement check on installation
 - Feature: Added ability to edit a issue title / body
+- Feature: Autolink URLs in comment and issue body
 
 ## Tiny Issue v1.1.1
 
