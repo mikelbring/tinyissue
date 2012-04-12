@@ -1,5 +1,14 @@
 # Tiny Issue Change Log
 
+## Tiny Issue v1.1.1
+
+- Bug fix: Your issue count was not returning the right value
+- Bug fix: The activity view was not account for issues assigned to no one
+
+### Upgrading from v1.1
+
+- Replace the app folder
+
 ## Tiny Issue v1.1
 
 - Upgraded Laravel 2.x to Laravel 3.1.4, should fix some bugs related to PHP 5.4
