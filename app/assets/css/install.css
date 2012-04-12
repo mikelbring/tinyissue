@@ -20,6 +20,7 @@ h2{
 	font-size: 22px;
 	margin-bottom: 15px;
 }
+strong{font-weight: bold;}
 input[type=text],input[type=password],select{
     padding:3px;
     color:#000;
