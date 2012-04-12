@@ -103,6 +103,49 @@ class Issue extends \Eloquent {
       $this->save();
    }
 
+	/**
+	 * Update the given issue
+	 *
+	 * @param  array  $input
+	 * @return array
+	 */
+	public function update_issue($input)
+	{
+		$rules = array(
+			'title' => 'required|max:200',
+			'body' => 'required'
+		);
+
+		$validator = \Validator::make($input, $rules);
+
+		if($validator->invalid())
+		{
+			return array(
+				'success' => false,
+				'errors' => $validator
+			);
+		}
+
+		$fill = array(
+			'title' => $input['title'],
+			'body' => $input['body'],
+			'assigned_to' => $input['assigned_to']
+		);
+
+		/* Add to activity log for assignment if changed */
+		if($input['assigned_to'] != $this->assigned_to)
+		{
+			\User\Activity::add(5, $this->project_id, $this->id, \Auth::user()->id);
+		}
+
+		$this->fill($fill);
+		$this->save();
+
+		return array(
+			'success' => true
+		);
+	}
+
    /******************************************************************
   	 * Static methods for working with issues
   	 ******************************************************************/

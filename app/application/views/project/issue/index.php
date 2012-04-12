@@ -1,6 +1,12 @@
 <h3>
 	<a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue">New Issue</a>
-   <a href="<?php echo $issue->to(); ?>"><?php echo $issue->title; ?></a>
+
+	<?php if(Auth::user()->permission('issue-modify')): ?>
+	<a href="<?php echo $issue->to('edit'); ?>" class="edit-issue"><?php echo $issue->title; ?></a>
+	<?php else: ?>
+	<a href="<?php echo $issue->to(); ?>"><?php echo $issue->title; ?></a>
+	<?php endif; ?>
+
 	<span>on project <a href="<?php echo $project->to(); ?>"><?php echo $project->name; ?></a></span>
 </h3>
 
