@@ -21,7 +21,7 @@
 				</div>
 
 				<div class="issue">
-					<?php echo nl2br(stripslashes($issue->body)); ?>
+					<?php echo Project\Issue\Comment::format($issue->body); ?>
 				</div>
 
 				<ul class="attachments">
@@ -59,7 +59,7 @@
 				</div>
 
 				<div class="issue">
-					<?php echo nl2br(stripslashes($row->comment)); ?>
+					<?php echo Project\Issue\Comment::format($row->comment); ?>
 				</div>
 
 				<?php if(Auth::user()->permission('issue-modify')): ?>
