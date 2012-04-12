@@ -1,6 +1,6 @@
 ![](http://tinyissue.com/assets/images/giant-preview.png)
 
-# Installing Tiny Issue v1.1
+# Installing Tiny Issue v1.1.1
 
 - Create a MySQL Database
 - Make /uploads/ write-able (CHMOD 777)
@@ -24,4 +24,3 @@ Enjoy!
 - [Zachary Hoover](http://zachoover.com)
 - Suthan Sangaralingham (Designer)
 
-## Todo
