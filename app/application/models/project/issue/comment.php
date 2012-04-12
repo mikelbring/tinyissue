@@ -92,4 +92,18 @@ class Comment extends  \Eloquent {
 
 		return true;
 	}
+
+	/**
+	 * Modify $body format for displaying
+	 *
+	 * @param  string  $body
+	 * @return string
+	 */
+	public static function format($body)
+	{
+		/* Autolink URLs */
+		$body = preg_replace('@(https?://([-\w\.]+)+(:\d+)?(/([\w/_\.]*(\?\S+)?)?)?)@', '<a href="$1" target="_blank">$1</a>', $body);
+
+		return nl2br(stripslashes($body));
+	}
 }
