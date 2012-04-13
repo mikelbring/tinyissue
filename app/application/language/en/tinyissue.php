@@ -15,6 +15,7 @@ return array(
 	'active_projects_description' => 'Quick list of your active projects',
 	'saving' => 'Saving',
 	'projects_description' => 'List of all your projects',
+	'new' => 'New',
 	'active' => 'Active',
 	'archived' => 'Archived',
 	'archived_projects' => 'Archived Projects',
