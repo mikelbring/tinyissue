@@ -3,7 +3,7 @@
 
 		<?php if(!$activity): ?>
 		<p>
-			This project does not have any activity!
+			<?php echo __('tinyissue.no_activity');?>
 		</p>
 		<?php else: ?>
 		<ul class="activity">

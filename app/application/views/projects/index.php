@@ -1,6 +1,6 @@
 <h3>
-	Projects
-	<span>List of all your projects</span>
+	<?php echo __('tinyissue.projects');?>
+	<span><?php echo __('tinyissue.projects_description');?></span>
 </h3>
 
 <div class="pad">
@@ -8,13 +8,13 @@
 	<ul class="tabs">
 		<li <?php echo $active == 'active' ? 'class="active"' : ''; ?>>
 			<a href="<?php echo URL::to('projects'); ?>">
-				<?php echo $active_count == 1 ? '1 Active Project' : $active_count . ' Active Projects'; ?>
+				<?php echo $active_count == 1 ? '1 '.__('tinyissue.active').' '.__('tinyissue.project') : $active_count . ' '.__('tinyissue.active').' '.__('tinyissue.projects'); ?>
 			</a>
 		</li>
 		<li <?php echo $active == 'archived' ? 'class="active"' : ''; ?>>
 			<a href="<?php echo URL::to('projects'); ?>?status=0">
-				<?php echo $archived_count == 1 ? '1 Archived Project' : $archived_count . ' Archived Projects'; ?>
-			</a>
+				<?php echo $archived_count == 1 ? '1 '.__('tinyissue.archived').' '.__('tinyissue.project') : $archived_count . ' '.__('tinyissue.archived').' '.__('tinyissue.projects'); ?>
+				</a>
 		</li>
 	</ul>
 
@@ -29,13 +29,13 @@
 					?>
 					<li>
 						<a href="<?php echo $row->to(); ?>"><?php echo $row->name; ?></a><br />
-						<?php echo $issues == 1 ? '1 Open Issue' : $issues . ' Open Issues'; ?>
+						<?php echo $issues == 1 ? '1 '. __('tinyissue.open_issue') : $issues . ' '. __('tinyissue.open_issues'); ?>
 					</li>
 					<?php endforeach; ?>
 
 					<?php if(count($projects) == 0): ?>
 					<li>
-						You do not have any projects. <a href="<?php echo URL::to('projects/new'); ?>">Create a new project!</a>
+						<?php echo __('tinyissue.you_do_not_have_any_projects'); ?> <a href="<?php echo URL::to('projects/new'); ?>"><?php echo __('tinyissue.create_project'); ?></a>
 					</li>
 					<?php endif; ?>
 				</ul>
