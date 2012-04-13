@@ -2,7 +2,7 @@
 	<div class="inside-pad">
 
 		<?php if(!$issues): ?>
-		<p>This project does not have any issues!</p>
+		<p><?php echo __('tinyissue.no_issues'); ?></p>
 		<?php else: ?>
 		<ul class="issues">
 			<?php foreach($issues as $row):  ?>
@@ -12,12 +12,12 @@
 				<div class="data">
 					<a href="<?php echo $row->to(); ?>"><?php echo $row->title; ?></a>
 					<div class="info">
-						Created by
+						<?php echo __('tinyissue.created_by'); ?>
 						<strong><?php echo $row->user->firstname . ' ' . $row->user->lastname; ?></strong>
 						<?php echo Time::age(strtotime($row->created_at)); ?>
 
 						<?php if(!is_null($row->updated_by)): ?>
-						- Updated by <strong><?php echo $row->updated->firstname . ' ' . $row->updated->lastname; ?></strong>
+						- <?php __('tinyissue.updated_by'); ?> <strong><?php echo $row->updated->firstname . ' ' . $row->updated->lastname; ?></strong>
 						<?php echo Time::age(strtotime($row->updated_at)); ?>
 						<?php endif; ?>
 					</div>
