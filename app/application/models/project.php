@@ -2,8 +2,8 @@
 
 class Project extends Eloquent {
 
-   public static $table = 'projects';
-   public static $timestamps = true;
+	public static $table = 'projects';
+	public static $timestamps = true;
 
 	/**********************************************************
 	 * Methods to use with loaded Project
@@ -190,12 +190,12 @@ class Project extends Eloquent {
 	 * Static methods for working with projects
 	 ******************************************************************/
 
-   /**
-    * Current loaded Project
-    *
-    * @var Project
-    */
-   private static $current = null;
+	/**
+	 * Current loaded Project
+	 *
+	 * @var Project
+	 */
+	private static $current = null;
 
 	/**
 	* Return the current loaded Project object
