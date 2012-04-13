@@ -34,7 +34,7 @@ class Projects_Controller extends Base_Controller {
 
 		return Redirect::to('projects/new')
 			->with_errors($create['errors'])
-			->with('notice-error', 'Whoops, we have some errors below.');
+			->with('notice-error', __('tinyissue.we_have_some_errors'));
 	}
 
 }
