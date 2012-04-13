@@ -2,41 +2,41 @@
 
 class User extends Eloquent {
 
-   public static $table = 'users';
-   public static $timestamps = true;
+	public static $table = 'users';
+	public static $timestamps = true;
 
 
-   /**********************************************************
-    * Methods to use with loaded User
-    **********************************************************/
+	/**********************************************************
+	* Methods to use with loaded User
+	**********************************************************/
 
 	/**
-	 * Checks to see if $this user is current user
-	 *
-	 * @return bool
-	 */
+	* Checks to see if $this user is current user
+	*
+	* @return bool
+	*/
 	public function me()
 	{
 		return $this->id == Auth::user()->id;
 	}
 
 	/**
-	 * Check to see if current user has given permission
-	 *
-	 * @param  string  $key
-	 * @return bool
-	 */
+	* Check to see if current user has given permission
+	*
+	* @param  string  $key
+	* @return bool
+	*/
 	public function permission($key)
 	{
 		return (bool) \Role\Permission::has_permission($key, $this->role_id);
 	}
 
 	/**
-	 * Check to see if current user has permission to see project
-	 *
-	 * @param  int   $project_id
-	 * @return bool
-	 */
+	* Check to see if current user has permission to see project
+	*
+	* @param  int   $project_id
+	* @return bool
+	*/
 	public function project_permission($project_id = null)
 	{
 		if(is_null($project_id))
@@ -58,27 +58,27 @@ class User extends Eloquent {
 	}
 
 	/**
-	 * Select all issues assigned to a user
-	 *
-	 * @param int $status
-	 * @return mixed
-	 */
+	* Select all issues assigned to a user
+	*
+	* @param int $status
+	* @return mixed
+	*/
 	public function issues($status = 1)
 	{
 		return $this->has_many('Project\Issue', 'created_by')
-				->where('status', '=', 1)
-				->where('assigned_to', '=', $this->id);
+			->where('status', '=', 1)
+			->where('assigned_to', '=', $this->id);
 	}
 
-   /**
-    * Build the user's dashboard
-    *
-    * @param  int    $activity_limit
-    * @return array
-    */
-   public function dashboard($activity_limit = 5)
-   {
-      $dashboard =  $users = $issues = $projects = $comments = $activity_type = array();
+	/**
+	* Build the user's dashboard
+	*
+	* @param  int    $activity_limit
+	* @return array
+	*/
+	public function dashboard($activity_limit = 5)
+	{
+		$dashboard =  $users = $issues = $projects = $comments = $activity_type = array();
 
 		/* Load the activity types */
 		foreach(Activity::all() as $row)
@@ -87,36 +87,36 @@ class User extends Eloquent {
 		}
 
 		/* Loop through all the active projects */
-      foreach(Project\User::active_projects() as $project)
-      {
-         $dashboard[$project->id] = array();
-         $projects[$project->id] = $project;
+		foreach(Project\User::active_projects() as $project)
+		{
+			$dashboard[$project->id] = array();
+			$projects[$project->id] = $project;
 
-         /* Loop through all the logic from the project and cache all the needed data so we don't load the same data twice */
-         foreach(User\Activity::where('parent_id', '=', $project->id)->order_by('created_at', 'DESC')->take($activity_limit)->get() as $activity)
-         {
-            $dashboard[$project->id][] = $activity;
+			/* Loop through all the logic from the project and cache all the needed data so we don't load the same data twice */
+			foreach(User\Activity::where('parent_id', '=', $project->id)->order_by('created_at', 'DESC')->take($activity_limit)->get() as $activity)
+			{
+				$dashboard[$project->id][] = $activity;
 
-            switch($activity->type_id)
-            {
-               case 2:
+				switch($activity->type_id)
+				{
+					case 2:
 
-                 if(!isset($issues[$activity->item_id]))
-                 {
-                    $issues[$activity->item_id] = Project\Issue::find($activity->item_id);
-                 }
+						if(!isset($issues[$activity->item_id]))
+						{
+							$issues[$activity->item_id] = Project\Issue::find($activity->item_id);
+						}
 
-                 if(!isset($users[$activity->user_id]))
-                 {
-                    $users[$activity->user_id] = static::find($activity->user_id);
-                 }
+						if(!isset($users[$activity->user_id]))
+						{
+							$users[$activity->user_id] = static::find($activity->user_id);
+						}
 
-                 if(!isset($comments[$activity->action_id]))
-                 {
-                    $comments[$activity->action_id] = Project\Issue\Comment::find($activity->action_id);
-                 }
+						if(!isset($comments[$activity->action_id]))
+						{
+							$comments[$activity->action_id] = Project\Issue\Comment::find($activity->action_id);
+						}
 
-                 break;
+						break;
 
 					case 5:
 
@@ -138,97 +138,95 @@ class User extends Eloquent {
 
 						break;
 
-               default:
+					default:
 
-                  if(!isset($issues[$activity->item_id]))
-                  {
-                     $issues[$activity->item_id] = Project\Issue::find($activity->item_id);
-                  }
+						if(!isset($issues[$activity->item_id]))
+						{
+							$issues[$activity->item_id] = Project\Issue::find($activity->item_id);
+						}
 
-                  if(!isset($users[$activity->user_id]))
-                  {
-                     $users[$activity->user_id] = static::find($activity->user_id);
-                  }
+						if(!isset($users[$activity->user_id]))
+						{
+							$users[$activity->user_id] = static::find($activity->user_id);
+						}
 
-                  break;
-            }
+						break;
+				}
+			}
+		}
 
-         }
-      }
+		/* Loop through the projects and activity again, building the views for each activity */
+		$return = array();
 
-      /* Loop through the projects and activity again, building the views for each activity */
-      $return = array();
+		foreach($dashboard as $project_id => $activity)
+		{
+			$return[$project_id] = array(
+				'project' => $projects[$project_id],
+				'activity' => array()
+			);
 
-      foreach($dashboard as $project_id => $activity)
-      {
-         $return[$project_id] = array(
-            'project' => $projects[$project_id],
-            'activity' => array()
-         );
-
-         foreach($activity as $row)
-         {
-            switch($row->type_id)
-            {
-               case 2:
-
-                  $return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
-                     'issue' => $issues[$row->item_id],
-                     'project' => $projects[$project_id],
-                     'user' => $users[$row->user_id],
-                     'comment' => $comments[$row->action_id],
-                     'activity' => $row
-                  ));
-
-                  break;
-
-					case 5:
+			foreach($activity as $row)
+			{
+				switch($row->type_id)
+				{
+					case 2:
 
 						$return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
 							'issue' => $issues[$row->item_id],
 							'project' => $projects[$project_id],
 							'user' => $users[$row->user_id],
-							'assigned' => $users[$row->action_id],
+							'comment' => $comments[$row->action_id],
 							'activity' => $row
 						));
 
-						break;
+					break;
 
-               default:
+				case 5:
 
-                  $return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
-                     'issue' => $issues[$row->item_id],
-                     'project' => $projects[$project_id],
-                     'user' => $users[$row->user_id],
-                     'activity' => $row
-                  ));
+					$return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
+						'issue' => $issues[$row->item_id],
+						'project' => $projects[$project_id],
+						'user' => $users[$row->user_id],
+						'assigned' => $users[$row->action_id],
+						'activity' => $row
+					));
 
-                  break;
-            }
+					break;
 
-         }
-      }
+				default:
 
-      return $return;
-   }
+					$return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
+						'issue' => $issues[$row->item_id],
+						'project' => $projects[$project_id],
+						'user' => $users[$row->user_id],
+						'activity' => $row
+					));
 
-   /******************************************************************
-  	 * Static methods for working with users
-  	 ******************************************************************/
+					break;
+				}
+			}
+		}
+
+		return $return;
+	}
+
+	/******************************************************************
+	* Static methods for working with users
+	******************************************************************/
 
 	/**
-	 * Update a user
-	 *
-	 * @param  array  $info
-	 * @param  int    $id
-	 * @return array
-	 */
+	* Update a user
+	*
+	* @param  array  $info
+	* @param  int    $id
+	* @return array
+	*/
 	public static function update_user($info, $id)
 	{
 		$rules = array(
-		    'firstname' => array('required', 'max:50'),
-		    'lastname' => array('required', 'max:50'),
-		    'email' => array('required', 'email'),
+			'firstname' => array('required', 'max:50'),
+			'lastname' => array('required', 'max:50'),
+			'email' => array('required', 'email'),
 		);
 
 		/* Validate the password */
@@ -268,17 +266,17 @@ class User extends Eloquent {
 	}
 
 	/**
-	 * Add a new user
-	 *
-	 * @param  array  $info
-	 * @return array
-	 */
+	* Add a new user
+	*
+	* @param  array  $info
+	* @return array
+	*/
 	public static function add_user($info)
 	{
 		$rules = array(
-		    'firstname' => array('required', 'max:50'),
-		    'lastname' => array('required', 'max:50'),
-		    'email' => array('required', 'email', 'unique:users'),
+			'firstname' => array('required', 'max:50'),
+			'lastname' => array('required', 'max:50'),
+			'email' => array('required', 'email', 'unique:users'),
 		);
 
 		$validator = Validator::make($info, $rules);
@@ -302,11 +300,13 @@ class User extends Eloquent {
 		$user = new User;
 		$user->fill($insert)->save();
 
-      /* Send Activation email */
-		Mail::send_email(View::make('email.new_user',array(
+		/* Send Activation email */
+		$view = View::make('email.new_user',array(
 			'email' => $info['email'],
 			'password' => $password
-		)), $info['email'], 'Your Tiny Issue Account');
+		));
+
+		Mail::send_email($view, $info['email'], 'Your Tiny Issue Account');
 
 		return array(
 			'success' => true,
@@ -315,11 +315,11 @@ class User extends Eloquent {
 	}
 
 	/**
-	 * Soft deletes a user and empties the email
-	 *
-	 * @param  int   $id
-	 * @return bool
-	 */
+	* Soft deletes a user and empties the email
+	*
+	* @param  int   $id
+	* @return bool
+	*/
 	public static function delete_user($id)
 	{
 		$update = array(

@@ -5,47 +5,47 @@ class Project extends Eloquent {
    public static $table = 'projects';
    public static $timestamps = true;
 
-   /**********************************************************
-    * Methods to use with loaded Project
-    **********************************************************/
+	/**********************************************************
+	 * Methods to use with loaded Project
+	 **********************************************************/
 
-   /**
-    * Generate a URL for the active project
-    *
-    * @param  string  $url
-    * @return string
-    */
-   public function to($url = '')
-   {
-      return URL::to('project/' . $this->id . (($url) ? '/'. $url : ''));
-   }
+	/**
+	* Generate a URL for the active project
+	*
+	* @param  string  $url
+	* @return string
+	*/
+	public function to($url = '')
+	{
+		return URL::to('project/' . $this->id . (($url) ? '/'. $url : ''));
+	}
 
-   /**
-    * Returns all issues related to project
-    *
-    * @return mixed
-    */
+	/**
+	* Returns all issues related to project
+	*
+	* @return mixed
+	*/
 	public function issues()
 	{
 		return $this->has_many('Project\Issue', 'project_id');
 	}
 
-   /**
-    * Assign a user to a project
-    *
-    * @param  int   $user_id
-    * @param  int   $role_id
-    * @return void
-    */
-   public function assign_user($user_id, $role_id = 0)
-   {
-      Project\User::assign($user_id, $this->id, $role_id);
-   }
+	/**
+	* Assign a user to a project
+	*
+	* @param  int   $user_id
+	* @param  int   $role_id
+	* @return void
+	*/
+	public function assign_user($user_id, $role_id = 0)
+	{
+		Project\User::assign($user_id, $this->id, $role_id);
+	}
 
-   public function users()
-   {
-      return $this->has_many_and_belongs_to('\User', 'projects_users', 'project_id', 'user_id');
-   }
+	public function users()
+	{
+		return $this->has_many_and_belongs_to('\User', 'projects_users', 'project_id', 'user_id');
+	}
 
 	public function users_not_in()
 	{
@@ -57,16 +57,16 @@ class Project extends Eloquent {
 		}
 
 		return User::where_not_in('id', $users)
-				->where('deleted', '=', 0)
-				->get();
+			->where('deleted', '=', 0)
+			->get();
 	}
 
 	/**
-	 * Counts the project's issues assigned to the given user
-	 *
-	 * @param  int  $user_id
-	 * @return int
-	 */
+	* Counts the project's issues assigned to the given user
+	*
+	* @param  int  $user_id
+	* @return int
+	*/
 	public function count_assigned_issues($user_id = null)
 	{
 		if(is_null($user_id))
@@ -81,11 +81,11 @@ class Project extends Eloquent {
 	}
 
 	/**
-	 * Select activity for a project
-	 *
-	 * @param  int    $activity_limit
-	 * @return array
-	 */
+	* Select activity for a project
+	*
+	* @param  int    $activity_limit
+	* @return array
+	*/
 	public function activity($activity_limit)
 	{
 		$users = $issues = $comments = $activity_type = array();
@@ -98,9 +98,9 @@ class Project extends Eloquent {
 
 		/* Loop through all the logic from the project and cache all the needed data so we don't load the same data twice */
 		$project_activity = User\Activity::where('parent_id', '=', $this->id)
-				->order_by('created_at', 'DESC')
-				->take($activity_limit)
-				->get();
+			->order_by('created_at', 'DESC')
+			->take($activity_limit)
+			->get();
 
 		if(!$project_activity)
 		{
@@ -181,15 +181,14 @@ class Project extends Eloquent {
 
 					break;
 			}
-
 		}
 
 		return $return;
 	}
 
-   /******************************************************************
-  	 * Static methods for working with projects
-  	 ******************************************************************/
+	/******************************************************************
+	 * Static methods for working with projects
+	 ******************************************************************/
 
    /**
     * Current loaded Project
@@ -198,79 +197,79 @@ class Project extends Eloquent {
     */
    private static $current = null;
 
-   /**
-    * Return the current loaded Project object
-    *
-    * @return Project
-    */
-   public static function current()
-   {
-      return static::$current;
-   }
+	/**
+	* Return the current loaded Project object
+	*
+	* @return Project
+	*/
+	public static function current()
+	{
+		return static::$current;
+	}
 
-   /**
-    * Load a new Project into $current, based on the $id
-    *
-    * @param   int  $id
-    * @return  void
-    */
-   public static function load_project($id)
-   {
-      static::$current = static::find($id);
-   }
+	/**
+	* Load a new Project into $current, based on the $id
+	*
+	* @param   int  $id
+	* @return  void
+	*/
+	public static function load_project($id)
+	{
+		static::$current = static::find($id);
+	}
 
-   /**
-    * Create a new project
-    *
-    * @param  array  $input
-    * @return array
-    */
-   public static function create_project($input)
-   {
-      $rules = array(
-         'name' => 'required|max:250'
-      );
+	/**
+	* Create a new project
+	*
+	* @param  array  $input
+	* @return array
+	*/
+	public static function create_project($input)
+	{
+		$rules = array(
+			'name' => 'required|max:250'
+		);
 
-      $validator = \Validator::make($input, $rules);
+		$validator = \Validator::make($input, $rules);
 
-      if(!$validator->valid())
-      {
-         return array(
-            'success' => false,
-            'errors' => $validator
-         );
-      }
+		if(!$validator->valid())
+		{
+			return array(
+				'success' => false,
+				'errors' => $validator
+			);
+		}
 
 		$fill = array(
-         'name' => $input['name'],
+			'name' => $input['name'],
 		);
 
 		$project = new project;
 		$project->fill($fill);
 		$project->save();
 
-      /* Assign selected users to the project */
-      if(isset($input['user']) && count($input['user']) > 0)
-      {
-         foreach($input['user'] as $id)
-         {
-            $project->assign_user($id);
-         }
-      }
+		/* Assign selected users to the project */
+		if(isset($input['user']) && count($input['user']) > 0)
+		{
+			foreach($input['user'] as $id)
+			{
+				$project->assign_user($id);
+			}
+		}
 
-      return array(
-         'project' => $project,
-         'success' => true
-      );
-   }
+		return array(
+			'project' => $project,
+			'success' => true
+		);
+	}
 
 	/**
-	 * Update a project
-	 *
-	 * @param array     $input
-	 * @param \Project  $project
-	 * @return array
-	 */
+	* Update a project
+	*
+	* @param array     $input
+	* @param \Project  $project
+	* @return array
+	*/
 	public static function update_project($input, $project)
 	{
 		$rules = array(
@@ -289,7 +288,7 @@ class Project extends Eloquent {
 
 		$fill = array(
 			'name' => $input['name'],
-         'status' => $input['status']
+			'status' => $input['status']
 		);
 
 		$project->fill($fill);
@@ -300,22 +299,22 @@ class Project extends Eloquent {
 		);
 	}
 
-   /**
-    * Delete a project and it's children
-    *
-    * @param  Project  $project
-    * @return void
-    */
-   public static function delete_project($project)
-   {
-      $id = $project->id;
-      $project->delete();
+	/**
+	* Delete a project and it's children
+	*
+	* @param  Project  $project
+	* @return void
+	*/
+	public static function delete_project($project)
+	{
+		$id = $project->id;
+		$project->delete();
 
-      /* Delete all children from the project */
-      Project\Issue::where('project_id', '=', $id)->delete();
-      Project\Issue\Comment::where('project_id', '=', $id)->delete();
-      Project\User::where('project_id', '=', $id)->delete();
+		/* Delete all children from the project */
+		Project\Issue::where('project_id', '=', $id)->delete();
+		Project\Issue\Comment::where('project_id', '=', $id)->delete();
+		Project\User::where('project_id', '=', $id)->delete();
 		User\Activity::where('parent_id', '=', $id)->delete();
-   }
+	}
 
 }

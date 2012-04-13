@@ -5,18 +5,18 @@ class Setting extends \Eloquent {
 	public static $table = 'user';
 
 	/**
-	 * Updates the users settings, validates the fields
-	 *
-	 * @param  array  $info
-	 * @param  id     $id
-	 * @return array
-	 */
-	public static function update_user_settings($info,$id)
+	* Updates the users settings, validates the fields
+	*
+	* @param  array  $info
+	* @param  int    $user_id
+	* @return array
+	*/
+	public static function update_user_settings($info, $user_id)
 	{
 		$rules = array(
-			 'firstname'  => array('required', 'max:50'),
-			 'lastname'  => array('required', 'max:50'),
-			 'email' => array('required', 'email'),
+			'firstname'  => array('required', 'max:50'),
+			'lastname'  => array('required', 'max:50'),
+			'email' => array('required', 'email'),
 		);
 
 		/* Validate the password */
@@ -48,11 +48,10 @@ class Setting extends \Eloquent {
 			$update['password'] = \Hash::make($info['password']);
 		}
 
-		\User::find($id)->fill($update)->save();
+		\User::find($user_id)->fill($update)->save();
 
 		return array(
 			'success' => true
 		);
-
 	}
 }

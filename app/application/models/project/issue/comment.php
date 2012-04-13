@@ -6,8 +6,8 @@ class Comment extends  \Eloquent {
 	public static $timestamps = true;
 
 	/**
-	 * @return User
-	 */
+	* @return \User
+	*/
 	public function user()
 	{
 		return $this->belongs_to('\User', 'created_by');
@@ -18,36 +18,36 @@ class Comment extends  \Eloquent {
 		return $this->has_many('Project\Issue\Attachment', 'comment_id');
 	}
 
-   /**
-    * Create a new comment
-    *
-    * @param  array           $input
-    * @param  \Project        $project
-    * @param  \Project\Issue  $issue
-    * @return Comment
-    */
-   public static function create_comment($input, $project, $issue)
-   {
-      $fill = array(
-         'created_by' => \Auth::user()->id,
-         'project_id' => $project->id,
-         'issue_id' => $issue->id,
-         'comment' => $input['comment'],
-      );
+	/**
+	* Create a new comment
+	*
+	* @param  array           $input
+	* @param  \Project        $project
+	* @param  \Project\Issue  $issue
+	* @return Comment
+	*/
+	public static function create_comment($input, $project, $issue)
+	{
+		$fill = array(
+			'created_by' => \Auth::user()->id,
+			'project_id' => $project->id,
+			'issue_id' => $issue->id,
+			'comment' => $input['comment'],
+		);
 
-      $comment = new static;
-      $comment->fill($fill);
-      $comment->save();
+		$comment = new static;
+		$comment->fill($fill);
+		$comment->save();
 
-      /* Add to user's activity log */
-      \User\Activity::add(2, $project->id, $issue->id, $comment->id);
+		/* Add to user's activity log */
+		\User\Activity::add(2, $project->id, $issue->id, $comment->id);
 
 
 		/* Add attachments to issue */
 		$query = '
-			UPDATE `projects_issues_attachments`
-			SET issue_id = ?, comment_id = ?
-			WHERE upload_token = ? AND uploaded_by = ?';
+		UPDATE `projects_issues_attachments`
+		SET issue_id = ?, comment_id = ?
+		WHERE upload_token = ? AND uploaded_by = ?';
 
 		\DB::query($query, array($issue->id, $comment->id, $input['token'], \Auth::user()->id));
 
@@ -56,15 +56,15 @@ class Comment extends  \Eloquent {
 		$issue->updated_by = \Auth::user()->id;
 		$issue->save();
 
-      return $comment;
-   }
+		return $comment;
+	}
 
 	/**
-	 * Delete a comment and its attachments
-	 *
-	 * @param int    $comment
-	 * @return bool
-	 */
+	* Delete a comment and its attachments
+	*
+	* @param int    $comment
+	* @return bool
+	*/
 	public static function delete_comment($comment)
 	{
 		\User\Activity::where('action_id', '=', $comment)->delete();
@@ -94,11 +94,11 @@ class Comment extends  \Eloquent {
 	}
 
 	/**
-	 * Modify $body format for displaying
-	 *
-	 * @param  string  $body
-	 * @return string
-	 */
+	* Modify $body format for displaying
+	*
+	* @param  string  $body
+	* @return string
+	*/
 	public static function format($body)
 	{
 		/* Autolink URLs */
