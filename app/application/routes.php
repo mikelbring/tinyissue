@@ -20,7 +20,8 @@ Route::controller(array(
 	'user',
 	'administration.users',
 	'administration',
-	'ajax.project'
+	'ajax.project',
+	'search'
 ));
 
 

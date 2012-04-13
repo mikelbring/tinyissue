@@ -107,6 +107,7 @@ return array(
 	'you_put_no_comment' =>'You did not put in a comment!',
 	'user_deleted' => 'User Deleted',
 	'user_updated' => 'User Updated',
-	'user_added' => 'User Added'
+	'user_added' => 'User Added',
+	'search' => 'Search'
 
 );
