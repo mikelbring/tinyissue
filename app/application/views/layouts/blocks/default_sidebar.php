@@ -1,6 +1,6 @@
 <h2>
 	<?php if(Auth::user()->permission('project-create')): ?>
-	<a href="<?php echo URL::to('projects/new'); ?>" class="add" title="New Project">New</a>
+	<a href="<?php echo URL::to('projects/new'); ?>" class="add" title="New Project"><?php __('tinyissue.new'); ?></a>
 	<?php endif; ?>
 	<?php echo __('tinyissue.active_projects');?>
 	<span><?php echo __('tinyissue.active_projects_description');?></span>
