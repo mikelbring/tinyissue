@@ -128,7 +128,7 @@ class Project_Issue_Controller extends Base_Controller {
 					->fill(array('comment' => Input::get('body')))
 					->save();
 
-			return nl2br(stripslashes(Input::get('body')));
+			return Project\Issue\Comment::format(Input::get('body'));
 		}
 	}
 
