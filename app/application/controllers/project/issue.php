@@ -36,11 +36,11 @@ class Project_Issue_Controller extends Base_Controller {
 			return Redirect::to(Project::current()->to('issue/new'))
 				->with_input()
 				->with_errors($issue['errors'])
-				->with('notice-error', 'Whoops, we have a few errors.');
+				->with('notice-error', __('tinyissue.we_have_some_errors'));
 		}
 
 		return Redirect::to($issue['issue']->to())
-			->with('notice', 'Issue has been created!');
+			->with('notice', __('tinyissue.issue_has_been_created'));
 	}
 
 	/**
@@ -75,13 +75,13 @@ class Project_Issue_Controller extends Base_Controller {
 		if(!Input::get('comment'))
 		{
 			return Redirect::to(Project\Issue::current()->to() . '#new-comment')
-				->with('notice-error', 'You did not put in a comment!');
+				->with('notice-error', __('tinyissue.you_put_no_comment'));
 		}
 
 		$comment = \Project\Issue\Comment::create_comment(Input::all(), Project::current(), Project\Issue::current());
 
 		return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
-			->with('notice', 'Your comment has been added!');
+			->with('notice', __('tinyissue.your_comment_added'));
 	}
 
 	/**
@@ -106,11 +106,11 @@ class Project_Issue_Controller extends Base_Controller {
 			return Redirect::to(Project\Issue::current()->to('edit'))
 				->with_input()
 				->with_errors($update['errors'])
-				->with('notice-error', 'Whoops, we have a few errors.');
+				->with('notice-error', __('tinyissue.we_have_some_errors'));
 		}
 
 		return Redirect::to(Project\Issue::current()->to())
-			->with('notice', 'This issue has been updated!');
+			->with('notice', __('tinyissue.issue_has_been_updated'));
 	}
 
 	/**
@@ -143,7 +143,7 @@ class Project_Issue_Controller extends Base_Controller {
 		Project\Issue\Comment::delete_comment(Input::get('comment'));
 
 		return Redirect::to(Project\Issue::current()->to())
-			->with('notice', "Comment Deleted");
+			->with('notice', __('tinyissue.comment_deleted'));
 	}
 
 	/**
@@ -158,11 +158,11 @@ class Project_Issue_Controller extends Base_Controller {
 
 		if($status == 0)
 		{
-			$message = 'This issue has been closed. It is now read-only.';
+			$message = __('tinyissue.issue_has_been_closed');
 		}
 		else
 		{
-			$message = 'This issue has been reopened. You can now work the issue.';
+			$message = __('tinyissue.issue_has_been_reopened');
 		}
 
 		Project\Issue::current()->change_status($status);

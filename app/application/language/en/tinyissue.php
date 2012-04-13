@@ -92,6 +92,21 @@ return array(
 	'update_user' => 'Update User',
 	'update_user_description' => 'Change the information for user',
 	'role' => 'Role',
-	'add_user' => 'Add User'
+	'add_user' => 'Add User',
+	'password_incorrect' => 'Whoops, your username or password did not match.',
+	'we_have_some_errors' => 'Whoops, we have some errors below.',
+	'project_has_been_updated' => 'Project has been updated!',
+	'project_has_been_deleted'=>'The project has been deleted.',
+	'settings_updated' => 'Settings Updated',
+	'issue_has_been_created' => 'Issue has been created!',
+	'issue_has_been_reopened' => 'This issue has been reopened. You can now work the issue.',
+	'issue_has_been_closed' => 'This issue has been closed. It is now read-only.',
+	'issue_has_been_updated' => 'This issue has been updated!',
+	'comment_deleted' => 'Comment Deleted',
+	'your_comment_added' => 'Your comment has been added!',
+	'you_put_no_comment' =>'You did not put in a comment!',
+	'user_deleted' => 'User Deleted',
+	'user_updated' => 'User Updated',
+	'user_added' => 'User Added'
 
 );
