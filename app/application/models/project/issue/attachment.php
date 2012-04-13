@@ -6,11 +6,11 @@ class Attachment extends \Eloquent {
 	public static $timestamps = true;
 
 	/**
-	 * Upload the attachment
-	 *
-	 * @param  array  $input
-	 * @return bool
-	 */
+	* Upload the attachment
+	*
+	* @param  array  $input
+	* @return bool
+	*/
 	public static function upload($input)
 	{
 		$path = \Config::get('application.upload_path');
@@ -45,17 +45,17 @@ class Attachment extends \Eloquent {
 	}
 
 	/**
-	 * Remove a attachment that is pending from a issue/comment
-	 *
-	 * @param  array  $input
-	 * @return void
-	 */
+	* Remove a attachment that is pending from a issue/comment
+	*
+	* @param  array  $input
+	* @return void
+	*/
 	public static function remove_attachment($input)
 	{
 		static::where('uploaded_by', '=', \Auth::user()->id)
-				->where('upload_token', '=', $input['upload_token'])
-				->where('filename', '=', $input['filename'])
-				->delete();
+			->where('upload_token', '=', $input['upload_token'])
+			->where('filename', '=', $input['filename'])
+			->delete();
 
 		$path = \Config::get('application.upload_path') . $input['project_id'] . '/' . $input['upload_token'];
 
@@ -63,12 +63,12 @@ class Attachment extends \Eloquent {
 	}
 
 	/**
-	 * Delete the physical file of an attachment
-	 *
-	 * @param  string  $path
-	 * @param  string  $filename
-	 * @return void
-	 */
+	* Delete the physical file of an attachment
+	*
+	* @param  string  $path
+	* @param  string  $filename
+	* @return void
+	*/
 	public static function delete_file($path, $filename)
 	{
 		@unlink($path . '/' . $filename);
