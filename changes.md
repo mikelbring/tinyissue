@@ -9,6 +9,10 @@
 - Config: Added more mail settings to config
 - Included .htaccess for mod-rewrite
 
+### Upgrading from v1.1.1
+
+- Replace the `app` folder
+
 ## Tiny Issue v1.1.1
 
 - Bug fix: Your issue count was not returning the right value
@@ -16,7 +20,7 @@
 
 ### Upgrading from v1.1
 
-- Replace the app folder
+- Replace the `app` folder
 
 ## Tiny Issue v1.1
 
