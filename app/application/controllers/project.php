@@ -130,4 +130,29 @@ class Project_Controller extends Base_Controller {
 			->with_errors($update['errors'])
 			->with('notice-error', 'Whoops, we have some errors below.');
 	}
+
+	public function get_export(){
+		$issues = Project::current()->issues; 
+		$headers = XlsExport::headers(Project::current()->name);
+		$content = XlsExport::open();
+		$content .= XlsExport::write_text(0,0,Project::current()->name);
+		$content .= XlsExport::write_text(1,0, "Id");
+		$content .= XlsExport::write_text(1,1,'Title');
+		$content .= XlsExport::write_text(1,2,'Body');
+		$content .= XlsExport::write_text(1,3,'Status');
+		$content .= XlsExport::write_text(1,4,'Assigned To');
+		$row = 2;
+		foreach ($issues as $key => $issue) {
+			$content .= XlsExport::write_text($row,0,$issue->id);
+			$content .= XlsExport::write_text($row,1,$issue->title);
+			$content .= XlsExport::write_text($row,2,$issue->body);
+			$content .= XlsExport::write_text($row,3,$issue->status==1 ? "open" : "closed");
+			if (isset($issue->assigned->firstname)) {
+				$content .= XlsExport::write_text($row,4,$issue->assigned->firstname . " " . $issue->assigned->lastname);
+			}
+			$row++;
+		}
+		$content .= XlsExport::close();
+		return Response::make($content,200,$headers);
+	}
 }

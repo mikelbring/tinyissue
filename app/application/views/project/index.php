@@ -25,6 +25,9 @@
 			<?php echo $assigned_count == 1 ? '1 Issue Assigned to you' : $assigned_count . ' Issues assigned to you'; ?>
 			</a>
 		</li>
+		<li <?php echo $active == "export" ? 'class="active"' : ''; ?>>
+			<a href="<?php echo Project::current()->to('export'); ?>">export</a>
+		</li> 
 	</ul>
 
 	<div class="inside-tabs">
