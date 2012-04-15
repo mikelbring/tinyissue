@@ -49,6 +49,11 @@ class install
 			$errors[] = 'mcrypt extension not found.';
 		}
 
+		if(version_compare(PHP_VERSION, '5.3.0', '<'))
+		{
+			$errors[] = 'PHP too old for Tiny Issue. PHP 5.3.0 or above is needed.';
+		}
+
 		return $errors;	
 	}
 
