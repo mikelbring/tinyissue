@@ -1,7 +1,7 @@
 <?php
 
 /* Redirect if we have not installed */
-if(!file_exists(__DIR__ . 'config.app.php'))
+if(!file_exists(__DIR__ . '/config.app.php'))
 {
 	header('Location: ./install');
 }
@@ -12,3 +12,6 @@ require 'app/paths.php';
 unset($web);
 
 require path('sys').'laravel.php';
+
+?>
+
