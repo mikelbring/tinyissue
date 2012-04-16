@@ -15,6 +15,7 @@ require './install.php';
 
 $install = new install();
 $database_check = $install->check_connect();
+
 $requirement_check = $install->check_requirements();
 
 if(!$database_check['error'])
@@ -27,7 +28,7 @@ if(!$database_check['error'])
 
 			if($finish)
 			{
-				header('location: complete.php');
+				header('location: complete.php?' . $finish);
 				die();
 			}
 		}

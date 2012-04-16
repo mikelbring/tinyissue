@@ -43,14 +43,14 @@ Laravel\Event::listen(Laravel\Config::loader, function($bundle, $file) use ($con
 
 		case 'database':
 
-			$config['connections']['mysql'] = array(
-				'host' => $config_app['mysql']['host'],
-				'database' => $config_app['mysql']['database'],
-				'username' => $config_app['mysql']['username'],
-				'password' => $config_app['mysql']['password'],
+			$config['connections']['sqlsrv'] = array(
+				'host' => $config_app['sqlsrv']['host'],
+				'database' => $config_app['sqlsrv']['database'],
+				'username' => $config_app['sqlsrv']['username'],
+				'password' => $config_app['sqlsrv']['password'],
 				'charset'  => 'utf8',
 				'prefix'   => '',
-				'driver' => 'mysql'
+				'driver' => 'sqlsrv'
 			);
 
 			$load = $config + $load;
