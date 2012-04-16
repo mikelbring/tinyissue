@@ -2,7 +2,7 @@
 return array(
 "--Create Activity Table
 CREATE TABLE activity (
-  id int NOT NULL,
+  id int identity NOT NULL,
   \"description\" varchar(255),
   activity varchar(255),
   PRIMARY KEY (id)
@@ -10,7 +10,7 @@ CREATE TABLE activity (
 
 "--Create Permissions Table
 CREATE TABLE permissions (
-  id bigint NOT NULL,
+  id bigint identity NOT NULL,
   permission varchar(255),
   \"description\" text,
   auto_has varchar(255),
@@ -19,7 +19,7 @@ CREATE TABLE permissions (
 
 "--Create Projects Table
 CREATE TABLE projects (
-  id bigint NOT NULL,
+  id bigint identity NOT NULL,
   name varchar(255),
   \"status\" tinyint,
   created_at datetime,
@@ -29,7 +29,7 @@ CREATE TABLE projects (
 
 "--Create Projects Issues Table
 CREATE TABLE projects_issues (
-  id bigint NOT NULL,
+  id bigint identity NOT NULL,
   created_by bigint,
   closed_by bigint,
   updated_by bigint,
@@ -46,7 +46,7 @@ CREATE TABLE projects_issues (
 
 "--Create Projects Issues Attachments Table
 CREATE TABLE projects_issues_attachments (
-  id bigint NOT NULL,
+  id bigint identity NOT NULL,
   issue_id bigint,
   comment_id bigint default '0',
   uploaded_by bigint,
@@ -61,7 +61,7 @@ CREATE TABLE projects_issues_attachments (
 
 "--Create Projects Issues Comments Table
 CREATE TABLE projects_issues_comments (
-  id bigint NOT NULL,
+  id bigint identity NOT NULL,
   created_by bigint default '0',
   project_id bigint,
   issue_id bigint,
@@ -73,7 +73,7 @@ CREATE TABLE projects_issues_comments (
 
 "--Create Projects Users Table
 CREATE TABLE projects_users (
-  id bigint NOT NULL,
+  id bigint identity NOT NULL,
   user_id bigint default '0',
   project_id bigint default '0',
   role_id bigint default '0',
@@ -84,7 +84,7 @@ CREATE TABLE projects_users (
 
 "--Create Roles Table
 CREATE TABLE roles (
-  id bigint NOT NULL,
+  id bigint identity NOT NULL,
   name varchar(255),
   role varchar(255),
   description varchar(255),
@@ -93,7 +93,7 @@ CREATE TABLE roles (
 
 "--Create Roles Permissions Table
 CREATE TABLE roles_permissions (
-  id bigint NOT NULL,
+  id bigint identity NOT NULL,
   role_id bigint default NULL,
   permission_id bigint,
   PRIMARY KEY  (id)
@@ -109,7 +109,7 @@ CREATE TABLE sessions (
 
 "--Create Settings Table
 CREATE TABLE settings (
-  id int NOT NULL,
+  id int identity NOT NULL,
   \"key\" varchar(255),
   value text,
   name varchar(255),
@@ -132,7 +132,7 @@ CREATE TABLE users (
 
 "--Create Users Activity Table
 CREATE TABLE users_activity (
-  id bigint NOT NULL,
+  id bigint identity NOT NULL,
   user_id bigint default NULL,
   parent_id bigint default NULL,
   item_id bigint default NULL,
