@@ -1,3 +1,5 @@
+# All content below belongs to the "Main Developers" listed below. This is an attempt at making Tiny Issue work in and IIS+PHP+MSSQL environment.
+
 ![](http://tinyissue.com/assets/images/giant-preview.png)
 
 # Installing Tiny Issue v1.2
