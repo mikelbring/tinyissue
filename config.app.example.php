@@ -10,9 +10,11 @@ return array(
 
 
 	/**
-	 * Fill out your MySQL database settings
+	 * Fill out your MSSQL database settings
+	 * host should be in the form HOSTNAME\INSTANCE_NAME,PORT
 	 */
-	'mysql' => array(
+	'sqlsrv' => array(
+	  'driver' => 'sqlsrv',
 		'host'  => 'localhost',
 		'database' => 'database_name',
 		'username' => 'database_user',

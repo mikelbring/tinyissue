@@ -88,7 +88,7 @@ class Issue extends \Eloquent {
 		if($status == 0)
 		{
 			$this->closed_by = \Auth::user()->id;
-			$this->closed_at = \DB::raw('NOW()');
+			$this->closed_at = \DB::raw('CURRENT_TIMESTAMP');
 
 			/* Add to activity log */
 			\User\Activity::add(3, $this->project_id, $this->id);
@@ -225,7 +225,7 @@ class Issue extends \Eloquent {
 
 		/* Add attachments to issue */
 		$query = '
-		UPDATE `projects_issues_attachments`
+		UPDATE projects_issues_attachments
 		SET issue_id = ?
 		WHERE upload_token = ? AND uploaded_by = ?';
 

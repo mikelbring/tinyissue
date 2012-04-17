@@ -45,14 +45,14 @@ class Comment extends  \Eloquent {
 
 		/* Add attachments to issue */
 		$query = '
-		UPDATE `projects_issues_attachments`
+		UPDATE projects_issues_attachments
 		SET issue_id = ?, comment_id = ?
 		WHERE upload_token = ? AND uploaded_by = ?';
 
 		\DB::query($query, array($issue->id, $comment->id, $input['token'], \Auth::user()->id));
 
 		/* Update the project */
-		$issue->updated_at = \DB::raw('NOW()');
+		$issue->updated_at = \DB::raw('CURRENT_TIMESTAMP');
 		$issue->updated_by = \Auth::user()->id;
 		$issue->save();
 
