@@ -224,12 +224,7 @@ class Issue extends \Eloquent {
 		\User\Activity::add(1, $project->id, $issue->id);
 
 		/* Add attachments to issue */
-		$query = '
-		UPDATE projects_issues_attachments
-		SET issue_id = ?
-		WHERE upload_token = ? AND uploaded_by = ?';
-
-		\DB::query($query, array($issue->id, $input['token'], \Auth::user()->id));
+		\DB::table('projects_issues_attachments')->where('upload_token', '=', $input['token'])->where('uploaded_by', '=', \Auth::user()->id)->update(array('issue_id' => $issue->id));
 
 		/* Return success and issue object */
 		return array(
