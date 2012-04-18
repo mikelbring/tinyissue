@@ -47,7 +47,7 @@ class Comment extends  \Eloquent {
 		\DB::table('projects_issues_attachments')->where('upload_token', '=', $input['token'])->where('uploaded_by', '=', \Auth::user()->id)->update(array('issue_id' => $issue->id, 'comment_id' => $comment->id));
 
 		/* Update the project */
-		$issue->updated_at = \DB::raw(date('Y-m-d H:i:s'));
+		$issue->updated_at = date('Y-m-d H:i:s');
 		$issue->updated_by = \Auth::user()->id;
 		$issue->save();
 
