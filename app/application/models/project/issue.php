@@ -88,7 +88,7 @@ class Issue extends \Eloquent {
 		if($status == 0)
 		{
 			$this->closed_by = \Auth::user()->id;
-			$this->closed_at = \DB::raw(date('Y-m-d H:i:s'));
+			$this->closed_at = date('Y-m-d H:i:s');
 
 			/* Add to activity log */
 			\User\Activity::add(3, $this->project_id, $this->id);
