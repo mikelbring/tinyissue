@@ -17,7 +17,7 @@ class Login_Controller extends Controller {
 		}
 
 		return Redirect::to('login')
-			->with('error', 'Whoops, your username or password did not match.');
+			->with('error',  __('tinyissue.password_incorrect'));
 	}
 
 }

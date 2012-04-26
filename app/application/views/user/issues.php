@@ -1,6 +1,6 @@
 <h3>
-	Your Issues
-	<span>Issues that are assigned to you</span>
+	<?php echo __('tinyissue.your_issues'); ?>
+	<span><?php echo __('tinyissue.your_issues_description'); ?></span>
 </h3>
 
 <div class="pad">
@@ -15,17 +15,17 @@
 			<ul class="issues">
 				<?php foreach($project['issues'] as $row):  ?>
 				<li>
-					<a href="" class="comments"><?php echo $row->comments()->count(); ?></a>
-					<a href="" class="id">#<?php echo $row->id; ?></a>
+					<a href="<?php echo $row->to(); ?>" class="comments"><?php echo $row->comments()->count(); ?></a>
+					<a href="<?php echo $row->to(); ?>" class="id">#<?php echo $row->id; ?></a>
 					<div class="data">
 						<a href="<?php echo $row->to(); ?>"><?php echo $row->title; ?></a>
 						<div class="info">
-							Created by
+							<?php echo __('tinyissue.created_by'); ?>
 							<strong><?php echo $row->user->firstname . ' ' . $row->user->lastname; ?></strong>
 							<?php echo Time::age(strtotime($row->created_at)); ?>
 
 							<?php if(!is_null($row->updated_by)): ?>
-							- Updated by <strong><?php echo $row->updated->firstname . ' ' . $row->updated->lastname; ?></strong>
+							- <?php echo __('tinyissue.updated_by'); ?> <strong><?php echo $row->updated->firstname . ' ' . $row->updated->lastname; ?></strong>
 							<?php echo Time::age(strtotime($row->updated_at)); ?>
 							<?php endif; ?>
 						</div>
