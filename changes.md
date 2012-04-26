@@ -1,5 +1,12 @@
 # Tiny Issue Change Log
 
+## Tiny Issue v1.2.1
+
+- Minor bug fixes
+- Convert raw queries to query builder
+- Added localization, now we have a language file for all text
+- Added additional requirement checks in installer
+
 ## Tiny Issue v1.2
 
 - Feature: Requirement check on installation
