@@ -9,8 +9,8 @@
 </h2>
 
 <ul>
-	<li><strong><?php echo Project::current()->issues()->where('status', '=', 1)->count(); ?></strong> Open Issues</li>
-	<li><strong><?php echo Project::current()->issues()->where('status', '=', 0)->count(); ?></strong> Closed Issues</li>
+	<li><a href="<?php echo Project::current()->to('issues'); ?>"><?php echo Project::current()->issues()->where('status', '=', 1)->count(); ?> Open Issues</a></li>
+	<li><a href="<?php echo Project::current()->to('issues'); ?>?status=0"><?php echo Project::current()->issues()->where('status', '=', 0)->count(); ?> Closed Issues</a></li>
 </ul>
 
 <h2>
