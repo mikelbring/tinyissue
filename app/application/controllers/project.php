@@ -114,7 +114,7 @@ class Project_Controller extends Base_Controller {
 			Project::delete_project(Project::current());
 
 			return Redirect::to('projects')
-				->with('notice', 'The project has been deleted.');
+				->with('notice', __('tinyissue.project_has_been_deleted'));
 		}
 
 		/* Update the project */
@@ -123,11 +123,11 @@ class Project_Controller extends Base_Controller {
 		if($update['success'])
 		{
 			return Redirect::to(Project::current()->to('edit'))
-				->with('notice', 'Project has been updated!');
+				->with('notice', __('tinyissue.project_has_been_updated'));
 		}
 
 		return Redirect::to(Project::current()->to('edit'))
 			->with_errors($update['errors'])
-			->with('notice-error', 'Whoops, we have some errors below.');
+			->with('notice-error', __('tinyissue.we_have_some_errors'));
 	}
 }

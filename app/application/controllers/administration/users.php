@@ -30,11 +30,11 @@ class Administration_Users_Controller extends Base_Controller {
 			return Redirect::to('administration/users/add/')
 				->with_input()
 				->with_errors($add['errors'])
-				->with('notice-error', 'Whoops, we have a few errors.');
+				->with('notice-error', __('tinyissue.we_have_some_errors'));
 		}
 
 		return Redirect::to('administration/users')
-			->with('notice', 'User Added');
+			->with('notice', __('tinyissue.user_added'));
 	}
 
 	public function get_edit($user_id)
@@ -53,11 +53,11 @@ class Administration_Users_Controller extends Base_Controller {
 			return Redirect::to('administration/users/edit/' . $user_id)
 				->with_input()
 				->with_errors($update['errors'])
-				->with('notice-error', 'Whoops, we have a few errors.');
+				->with('notice-error', __('tinyissue.we_have_some_errors'));
 		}
 
 		return Redirect::to('administration/users')
-			->with('notice', 'User Updated');
+			->with('notice', __('tinyissue.user_updated'));
 	}
 
 	public function get_delete($user_id)
@@ -65,6 +65,6 @@ class Administration_Users_Controller extends Base_Controller {
 		User::delete_user($user_id);
 
 		return Redirect::to('administration/users')
-				->with('notice','User Deleted');
+				->with('notice', __('tinyissue.user_deleted'));
 	}
 }

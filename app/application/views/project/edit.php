@@ -1,8 +1,8 @@
 <h3>
-	<a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue">New Issue</a>
+	<a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue"><?php echo __('tinyissue.new_issue'); ?></a>
 
-	Update <?php echo Project::current()->name; ?>
-	<span>Change the name, status or delete this project</span>
+	<?php echo __('tinyissue.update'); ?> <?php echo Project::current()->name; ?>
+	<span><?php echo __('tinyissue.update_project_description'); ?></span>
 </h3>
 
 
@@ -12,18 +12,18 @@
 
 		<table class="form" style="width: 80%;">
 			<tr>
-				<th style="width: 10%;">Name</th>
+				<th style="width: 10%;"><?php echo __('tinyissue.name'); ?></th>
 				<td><input type="text" style="width: 98%;" name="name" value="<?php echo Input::old('name', Project::current()->name); ?>" /></td>
 			</tr>
 			<tr>
-				<th>Status</th>
+				<th><?php echo __('tinyissue.status') ?></th>
 				<td><?php echo Form::select('status', array(1 => 'Open', 0 => 'Archived'), Project::current()->status); ?></td>
 			</tr>
 			<tr>
 				<th></th>
 				<td>
-					<input type="submit" value="Update" />
-					<input type="submit" name="delete" value="Delete <?php echo Project::current()->name; ?>" onclick="return confirm('Are you sure you want to delete this project? There is no going back!');" />
+					<input type="submit" value="<?php echo __('tinyissue.update'); ?>" />
+					<input type="submit" name="delete" value="<?php echo __('tinyissue.delete'); ?> <?php echo Project::current()->name; ?>" onclick="return confirm('<?php echo __('tinyissue.delete_project_confirm'); ?>');" />
 				</td>
 			</tr>
 		</table>

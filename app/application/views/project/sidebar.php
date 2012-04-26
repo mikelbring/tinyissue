@@ -1,21 +1,21 @@
 
 <h2>
 	<?php if(Auth::user()->permission('project-modify')): ?>
-	<a href="<?php echo Project::current()->to('edit'); ?>" class="edit">Edit</a>
+	<a href="<?php echo Project::current()->to('edit'); ?>" class="edit"><?php echo __('tinyissue.edit');?></a>
 	<?php endif; ?>
 
 	<?php echo HTML::link(Project::current()->to(), Project::current()->name); ?>
-	<span>Assign users and edit the project</span>
+	<span><?php echo __('tinyissue.assign_users_and_edit_the_project');?></span>
 </h2>
 
 <ul>
-	<li><a href="<?php echo Project::current()->to('issues'); ?>"><?php echo Project::current()->issues()->where('status', '=', 1)->count(); ?> Open Issues</a></li>
-	<li><a href="<?php echo Project::current()->to('issues'); ?>?status=0"><?php echo Project::current()->issues()->where('status', '=', 0)->count(); ?> Closed Issues</a></li>
+	<li><a href="<?php echo Project::current()->to('issues'); ?>"><?php echo Project::current()->issues()->where('status', '=', 1)->count(); ?> <?php echo __('tinyissue.open_issues');?></a></li>
+	<li><a href="<?php echo Project::current()->to('issues'); ?>?status=0"><?php echo Project::current()->issues()->where('status', '=', 0)->count(); ?> <?php echo __('tinyissue.closed_issues');?></a></li>
 </ul>
 
 <h2>
-	Assigned Users
-	<span>Users assigned to this project</span>
+	<?php echo __('tinyissue.assigned_users');?>
+	<span><?php echo __('tinyissue.assigned_users_description');?></span>
 </h2>
 
 <ul class="sidebar-users">
@@ -23,7 +23,7 @@
 
 	<li id="project-user<?php echo $row->id; ?>">
 		<?php if(Auth::user()->permission('project-modify')): ?>
-		<a href="javascript:void(0);" onclick="remove_project_user(<?php echo $row->id; ?>, <?php echo Project::current()->id; ?>);" class="delete">Remove</a>
+		<a href="javascript:void(0);" onclick="remove_project_user(<?php echo $row->id; ?>, <?php echo Project::current()->id; ?>);" class="delete"><?php echo __('tinyissue.remove');?></a>
 		<?php endif; ?>
 		<?php echo $row->firstname . ' ' . $row->lastname; ?>
 	</li>
@@ -32,6 +32,6 @@
 
 <?php if(Auth::user()->permission('project-modify')): ?>
 
-	<input type="text" id="add-user-project" placeholder="Assign a user" onmouseover="init_sidebar_autocomplete(<?php echo Project::current()->id; ?>);" />
+	<input type="text" id="add-user-project" placeholder="<?php echo __('tinyissue.assign_a_user');?>" onmouseover="init_sidebar_autocomplete(<?php echo Project::current()->id; ?>);" />
 
 <?php endif; ?>

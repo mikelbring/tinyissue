@@ -1,6 +1,6 @@
 <h3>
-	Add User
-	<span>Add a new user</span>
+	<?php echo __('tinyissue.add_user'); ?>
+	<span><?php echo __('tinyissue.add_new_user'); ?></span>
 </h3>
 
 <div class="pad">
@@ -9,7 +9,7 @@
 		<table class="form">
 			<tr>
 				<th>
-					First Name
+					<?php echo __('tinyissue.first_name'); ?>
 				</th>
 				<td>
 					<input type="text" name="firstname" value="<?php echo Input::old('firstname'); ?>" />
@@ -19,7 +19,7 @@
 			</tr>
 			<tr>
 				<th>
-					Last Name
+					<?php echo __('tinyissue.last_name'); ?>
 				</th>
 				<td>
 					<input type="text" name="lastname" value="<?php echo Input::old('lastname');?>" />
@@ -29,7 +29,7 @@
 			</tr>
 			<tr>
 				<th>
-					Email
+					<?php echo __('tinyissue.email'); ?>
 				</th>
 				<td>
 					<input type="text" name="email" value="<?php echo Input::old('email')?>" />
@@ -39,7 +39,7 @@
 			</tr>
 			<tr>
 				<th>
-					Role
+					<?php echo __('tinyissue.role'); ?>
 				</th>
 				<td>
 					<?php echo Form::select('role_id',Role::dropdown(), Input::old('role_id')); ?>
@@ -48,7 +48,7 @@
 				<tr>
 					<th></th>
 					<td>
-						<input type="submit" value="Add User" class="button	primary"/>
+						<input type="submit" value="<?php echo __('tinyissue.add_user'); ?>" class="button	primary"/>
 					</td>
 				</tr>
 		</table>
