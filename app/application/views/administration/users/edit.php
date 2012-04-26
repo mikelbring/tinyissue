@@ -1,6 +1,6 @@
 <h3>
-	Update User
-	<span>Change the information for user</span>
+	<?php echo __('tinyissue.update_user'); ?>
+	<span><?php echo __('tinyissue.update_user_description'); ?></span>
 </h3>
 
 <div class="pad">
@@ -9,7 +9,7 @@
 
 		<table class="form">
 			<tr>
-				<th>First Name</th>
+				<th><?php echo __('tinyissue.first_name'); ?></th>
 				<td>
 					<input type="text" name="firstname" value="<?php echo Input::old('firstname', $user->firstname); ?>" autocomplete="off" />
 
@@ -17,7 +17,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>Last Name</th>
+				<th><?php echo __('tinyissue.last_name'); ?></th>
 				<td>
 					<input type="text" name="lastname" value="<?php echo Input::old('lastname',$user->lastname);?>" autocomplete="off" />
 
@@ -25,7 +25,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>Email</th>
+				<th><?php echo __('tinyissue.email'); ?></th>
 				<td>
 					<input type="text" name="email" value="<?php echo Input::old('email',$user->email)?>"  autocomplete="off" />
 
@@ -33,18 +33,18 @@
 				</td>
 			</tr>
 			<tr>
-				<th>Role</th>
+				<th><?php echo __('tinyissue.role'); ?></th>
 				<td>
 					<?php echo Form::select('role_id',Role::dropdown(),$user->role_id); ?>
 				</td>
 			</tr>
 			<tr>
 				<th colspan="2">
-					Only complete if changing password
+					<?php echo __('tinyissue.only_complete_if_changing_password'); ?>
 				</th>
 			</tr>
 			<tr>
-				<th>New Password</th>
+				<th><?php echo __('tinyissue.new_password'); ?></th>
 				<td>
 					<input type="password" name="password" value="" autocomplete="off" />
 
@@ -52,7 +52,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>Confirm</th>
+				<th><?php echo __('tinyissue.confirm'); ?></th>
 				<td>
 					<input type="password" name="password_confirmation" value="" autocomplete="off" />
 				</td>
@@ -60,7 +60,7 @@
 			<tr>
 				<th></th>
 				<td>
-					<input type="submit" value="Update" class="button	primary"/>
+					<input type="submit" value="<?php echo __('tinyissue.update'); ?>" class="button	primary"/>
 				</td>
 			</tr>
 		</table>
