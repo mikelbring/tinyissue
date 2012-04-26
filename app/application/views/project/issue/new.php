@@ -1,6 +1,6 @@
 <h3>
-	Create a new issue
-	<span>Create a new issue in project <a href="<?php echo $project->to(); ?>"><?php echo $project->name; ?></a></span>
+	<?php echo __('tinyissue.create_a_new_issue'); ?>
+	<span><?php echo __('tinyissue.create_a_new_issue_in'); ?> <a href="<?php echo $project->to(); ?>"><?php echo $project->name; ?></a></span>
 </h3>
 
 <div class="pad">
@@ -9,7 +9,7 @@
 
 		<table class="form" style="width: 100%;">
 			<tr>
-				<th style="width: 10%">Title</th>
+				<th style="width: 10%"><?php echo __('tinyissue.title'); ?></th>
 				<td>
 					<input type="text" name="title" style="width: 98%;" />
 
@@ -17,7 +17,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th>Issue</th>
+				<th><?php echo __('tinyissue.issue'); ?></th>
 				<td>
 					<textarea name="body" style="width: 98%; height: 150px;"></textarea>
 					<?php echo $errors->first('body', '<span class="error">:message</span>'); ?>
@@ -25,14 +25,14 @@
 			</tr>
 			<?php if(Auth::user()->permission('issue-modify')): ?>
 			<tr>
-				<th>Assigned To</th>
+				<th><?php echo __('tinyissue.assigned_to'); ?></th>
 				<td>
 					<?php echo Form::select('assigned_to', array(0 => '') + Project\User::dropdown($project->users()->get())); ?>
 				</td>
 			</tr>
 			<?php endif; ?>
 			<tr>
-				<th>Attachments</th>
+				<th><?php echo __('tinyissue.attachments'); ?></th>
 				<td>
 					<input id="upload" type="file" name="file_upload" />
 
@@ -41,7 +41,7 @@
 			</tr>
 			<tr>
 				<th></th>
-				<td><input type="submit" value="Create Issue" class="button primary" /></td>
+				<td><input type="submit" value="<?php echo __('tinyissue.create_issue'); ?>" class="button primary" /></td>
 			</tr>
 		</table>
 
