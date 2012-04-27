@@ -7,6 +7,10 @@
 - Added localization, now we have a language file for all text
 - Added additional requirement checks in installer
 
+### Upgrading from v1.2
+
+- Replace the `app` folder
+
 ## Tiny Issue v1.2
 
 - Feature: Requirement check on installation
