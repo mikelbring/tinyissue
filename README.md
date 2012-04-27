@@ -1,6 +1,6 @@
 ![](http://tinyissue.com/assets/images/giant-preview.png)
 
-# Installing Tiny Issue v1.2
+# Installing Tiny Issue v1.2.1
 
 - Create a MySQL Database
 - Make /uploads/ write-able (CHMOD 777)
@@ -17,6 +17,11 @@ Enjoy!
 - PDO Extension for PHP (MySQL)
 - MCrypt Extension for PHP
 - Javascript Enabled - Tiny Issue also uses heavy Javascript to make it easier to use
+
+### How to contribute
+
+We welcome and appreciate all contributions. The `develop` branch is the branch you should base all pull requests and development off of.
+The `master` branch is tagged releases only.
 
 ### Main Developers:
 
