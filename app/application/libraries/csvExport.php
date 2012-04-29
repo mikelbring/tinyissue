@@ -5,7 +5,9 @@ class CsvExport{
 	public static function headers($filename){
 		return array(
 			"Pragma" => "public",
-			"Content-type" => "application/x-msdownload",
+			"Content-Type" => "application/force-download",
+			"Content-Type" => "application/octet-stream",
+			"Content-Type" => "application/download",
 			"Content-Disposition" => "attachment; filename=" . $filename . ".csv",
 			"Pragma" => "no-cache",
 			"Expires" => "0",
