@@ -1,7 +1,7 @@
 <h3>
-	<a href="<?php echo URL::to('administration/users/add');?>" class="addnewuser">Add a new user</a>
-	Users
-	<span>Add, modify and delete application wide users</span>
+	<a href="<?php echo URL::to('administration/users/add');?>" class="addnewuser"><?php echo __('tinyissue.add_new_user'); ?></a>
+	<?php echo __('tinyissue.users'); ?>
+	<span><?php echo __('tinyissue.users_description'); ?></span>
 </h3>
 
 <div class="pad">
@@ -21,11 +21,11 @@
 					<ul>
 						<?php if(!$user->me()): ?>
 						<li class="delete">
-							<a href="<?php echo URL::to('administration/users/delete/' . $user->id);?>" onClick="return confirm('Are you sure you wish to delete this user?');" class="button tiny error right">Delete</a>
+							<a href="<?php echo URL::to('administration/users/delete/' . $user->id);?>" onClick="return confirm('<?php echo __('tinyissue.delete_user_confirm'); ?>');" class="button tiny error right"><?php echo __('tinyissue.delete'); ?></a>
 						</li>
 						<?php endif; ?>
 						<li class="edit">
-							<a href="<?php echo URL::to('administration/users/edit/' . $user->id);?>">Edit</a>
+							<a href="<?php echo URL::to('administration/users/edit/' . $user->id);?>"><?php echo __('tinyissue.edit'); ?></a>
 						</li>
 					</ul>
 

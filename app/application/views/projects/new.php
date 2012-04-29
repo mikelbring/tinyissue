@@ -1,6 +1,6 @@
 <h3>
-	Create a new project
-	<span>Create a new project and select users to assign to it. You can assign users later as well.</span>
+	<?php echo __('tinyissue.create_a_new_project');?>
+	<span><?php echo __('tinyissue.create_a_new_project_description');?></span>
 </h3>
 
 <div class="pad">
@@ -8,14 +8,14 @@
 	<form method="post" action="" id="submit-project">
 		<table class="form" style="width: 80%;">
 			<tr>
-				<th style="width: 10%;">Name</th>
+				<th style="width: 10%;"><?php echo __('tinyissue.name');?></th>
 				<td><input type="text" name="name" style="width: 90%;" /></td>
 			</tr>
 		</table>
 
 		<ul class="assign-users" style="display: none">
 			<li class="project-user<?php echo Auth::user()->id; ?>">
-				<a href="javascript:void(0);" onclick="$('.project-user<?php echo Auth::user()->id; ?>').remove();" class="delete">Remove</a>
+				<a href="javascript:void(0);" onclick="$('.project-user<?php echo Auth::user()->id; ?>').remove();" class="delete"><?php echo __('tinyissue.remove');?></a>
 				<?php echo Auth::user()->firstname . ' ' . Auth::user()->lastname; ?>
 				<input type="hidden" name="user[]" value="<?php echo Auth::user()->id; ?>" />
 			</li>
@@ -24,7 +24,7 @@
 
 	<table class="form" style="width: 80%;">
 		<tr>
-			<th style="width: 10%;">Assign Users</th>
+			<th style="width: 10%;"><?php echo __('tinyissue.assign_users');?></th>
 			<td>
 				<input type="text" id="add-user-project" style="margin: 0;" placeholder="Assign a user" />
 
@@ -39,7 +39,7 @@
 		</tr>
 		<tr>
 			<th></th>
-			<td><input type="submit" onclick="$('#submit-project').submit();" value="Create Project"  /></td>
+			<td><input type="submit" onclick="$('#submit-project').submit();" value="<?php echo __('tinyissue.create_project');?>"  /></td>
 		</tr>
 	</table>
 
