@@ -96,9 +96,17 @@ class Comment extends  \Eloquent {
 	*/
 	public static function format($body)
 	{
-		/* Autolink URLs */
-		$body = preg_replace('@((https?://)?([-\w]+\.[-\w\.]+)+\w(:\d+)?(/([-\w/_\.]*(\?\S+)?)?)*)@', '<a href="$1" target="_blank">$1</a>', $body);
+		$pattern  = '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
+		$callback = create_function('$matches', '
+			$url       = array_shift($matches);
+			$url_parts = parse_url($url);
+			
+			$text = parse_url($url, PHP_URL_HOST) . parse_url($url, PHP_URL_PATH);
+			$text = preg_replace("/^www./", "", $text);
+			
+			return sprintf(\'<a href="%s">%s</a>\', $url, $text);
+	     ');
 
-		return nl2br(stripslashes($body));
+	     return nl2br(preg_replace_callback($pattern, $callback, $body));
 	}
 }
