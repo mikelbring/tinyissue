@@ -2,7 +2,7 @@ $(function(){
 
 	var users = $('.assign-users');
 
-	$.getJSON(siteurl + 'ajax/project/inactive-users?project_id=0', function(data){
+	$.getJSON(siteurl + 'ajax/project/inactive_users?project_id=0', function(data){
 		var suggestions = [];
 
 		$.each(data, function(key, value){
