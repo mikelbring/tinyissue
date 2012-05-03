@@ -3,24 +3,24 @@ return array(
 "# Create Activity Table
 CREATE TABLE IF NOT EXISTS `activity` (
   `id` int(11) unsigned NOT NULL auto_increment,
-  `description` varchar(255) character set latin1 default NULL,
-  `activity` varchar(255) character set latin1 default NULL,
+  `description` varchar(255) character set UTF8 default NULL,
+  `activity` varchar(255) character set UTF8 default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 
 	"# Create Permissions Table
 CREATE TABLE IF NOT EXISTS `permissions` (
   `id` bigint(20) unsigned NOT NULL auto_increment,
-  `permission` varchar(255) character set latin1 default NULL,
-  `description` text character set latin1,
-  `auto_has` varchar(255) character set latin1 default NULL,
+  `permission` varchar(255) character set UTF8 default NULL,
+  `description` text character set UTF8,
+  `auto_has` varchar(255) character set UTF8 default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 
 	"# Create Projects Table
 CREATE TABLE IF NOT EXISTS `projects` (
   `id` bigint(20) unsigned NOT NULL auto_increment,
-  `name` varchar(255) character set latin1 default NULL,
+  `name` varchar(255) character set UTF8 default NULL,
   `status` tinyint(2) default '1',
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
@@ -36,8 +36,8 @@ CREATE TABLE IF NOT EXISTS `projects_issues` (
   `assigned_to` bigint(20) default NULL,
   `project_id` bigint(20) default NULL,
   `status` tinyint(2) default '1',
-  `title` varchar(255) character set latin1 default NULL,
-  `body` text character set latin1,
+  `title` varchar(255) character set UTF8 default NULL,
+  `body` text character set UTF8,
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   `closed_at` datetime default NULL,
@@ -51,9 +51,9 @@ CREATE TABLE IF NOT EXISTS `projects_issues_attachments` (
   `comment_id` bigint(20) default '0',
   `uploaded_by` bigint(20) default NULL,
   `filesize` bigint(20) default NULL,
-  `filename` varchar(250) character set latin1 default NULL,
-  `fileextension` varchar(255) character set latin1 default NULL,
-  `upload_token` varchar(100) character set latin1 default NULL,
+  `filename` varchar(250) character set UTF8 default NULL,
+  `fileextension` varchar(255) character set UTF8 default NULL,
+  `upload_token` varchar(100) character set UTF8 default NULL,
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
@@ -65,7 +65,7 @@ CREATE TABLE IF NOT EXISTS `projects_issues_comments` (
   `created_by` bigint(20) default '0',
   `project_id` bigint(20) default NULL,
   `issue_id` bigint(20) default '0',
-  `comment` text character set latin1,
+  `comment` text character set UTF8,
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
@@ -85,9 +85,9 @@ CREATE TABLE IF NOT EXISTS `projects_users` (
 "# Create Roles Table
 CREATE TABLE IF NOT EXISTS `roles` (
   `id` bigint(20) unsigned NOT NULL auto_increment,
-  `name` varchar(255) character set latin1 default NULL,
-  `role` varchar(255) character set latin1 default NULL,
-  `description` varchar(255) character set latin1 default NULL,
+  `name` varchar(255) character set UTF8 default NULL,
+  `role` varchar(255) character set UTF8 default NULL,
+  `description` varchar(255) character set UTF8 default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 
@@ -101,18 +101,18 @@ CREATE TABLE IF NOT EXISTS `roles_permissions` (
 
 "# Create Sessions Table
 CREATE TABLE IF NOT EXISTS `sessions` (
-  `id` varchar(40) character set latin1 NOT NULL,
+  `id` varchar(40) character set UTF8 NOT NULL,
   `last_activity` int(10) NOT NULL,
-  `data` text character set latin1 NOT NULL,
+  `data` text character set UTF8 NOT NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 
 "# Create Settings Table
 CREATE TABLE IF NOT EXISTS `settings` (
   `id` int(11) NOT NULL auto_increment,
-  `key` varchar(255) character set latin1 default NULL,
-  `value` text character set latin1,
-  `name` varchar(255) character set latin1 default NULL,
+  `key` varchar(255) character set UTF8 default NULL,
+  `value` text character set UTF8,
+  `name` varchar(255) character set UTF8 default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `users_activity` (
   `item_id` bigint(20) default NULL,
   `action_id` bigint(20) default NULL,
   `type_id` int(11) default NULL,
-  `data` text character set latin1,
+  `data` text character set UTF8,
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
