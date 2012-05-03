@@ -120,7 +120,7 @@
 					</div>
 				</li>
 				<li>
-					<a href="<?php echo Project\Issue::current()->to('status?status=0'); ?>" onclick="return confirm('<?php echo __('close_issue_confirm'); ?>');" class="close"><?php echo __('tinyissue.close_issue'); ?></a>
+					<a href="<?php echo Project\Issue::current()->to('status?status=0'); ?>" onclick="return confirm('<?php echo __('tinyissue.close_issue_confirm'); ?>');" class="close"><?php echo __('tinyissue.close_issue'); ?></a>
 				</li>
 			</ul>
 		<?php endif; ?>
