@@ -10,9 +10,11 @@ return array(
 
 
 	/**
-	 * Fill out your MySQL database settings
+	 * Fill out your database settings. Make sure that the driver is correct: 'mysql' for MySQL, 'sqlsrv' for MSSQL,
+	 * 'pgsql' for PostgreSQL, or 'sqlite' for SQLite
 	 */
-	'mysql' => array(
+	'database' => array(
+	  'driver' => 'mysql'
 		'host'  => 'localhost',
 		'database' => 'database_name',
 		'username' => 'database_user',
