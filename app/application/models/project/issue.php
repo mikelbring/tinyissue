@@ -59,7 +59,7 @@ class Issue extends \Eloquent {
 		$activities = array();
 
 
-		foreach(\User\Activity::where('item_id', '=', $issue->id)->order_by('created_at', 'DESC')->take($activity_limit)->get() as $activity)
+		foreach(\User\Activity::where('item_id', '=', $issue->id)->order_by('created_at', 'ASC')->get() as $activity)
 		{
 			$activities[] = $activity;
 
@@ -117,7 +117,7 @@ class Issue extends \Eloquent {
 			{
 				case 2:
 
-					$return[] = \View::make('activity/' . $activity_type[$row->type_id]->activity, array(
+					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issue,
 						'project' => $project,
 						'user' => $users[$row->user_id],
@@ -127,9 +127,21 @@ class Issue extends \Eloquent {
 
 				break;
 
-			case 5:
+				case 3:
 
-				$return[] = \View::make('activity/' . $activity_type[$row->type_id]->activity, array(
+				$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
+					'issue' => $issue,
+					'project' => $project,
+					'user' => $users[$row->user_id],
+					'activity' => $row
+				));
+				
+				break;
+
+
+				case 5:
+
+				$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
 					'issue' => $issue,
 					'project' => $project,
 					'user' => $users[$row->user_id],
@@ -139,9 +151,9 @@ class Issue extends \Eloquent {
 
 				break;
 
-			default:
+				default:
 
-				$return[] = \View::make('activity/' . $activity_type[$row->type_id]->activity, array(
+				$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
 					'issue' => $issue,
 					'project' => $project,
 					'user' => $users[$row->user_id],

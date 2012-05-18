@@ -17,7 +17,7 @@
 			<div class="insides">
 				<div class="topbar">
 					<strong><?php echo $issue->user->firstname . ' ' . $issue->user->lastname; ?></strong>
-					<?php echo __('tinyissue.opened_this_issue'); ?> <?php echo Time::age(strtotime($issue->created_at)); ?>
+					<?php echo __('tinyissue.opened_this_issue'); ?>  <?php echo date('F jS \a\t g:i A', strtotime($issue->created_at)); ?>
 				</div>
 
 				<div class="issue">
@@ -40,73 +40,10 @@
 			</div>
 		</li>
 
-
-
-<div class="blue-box">
-	<div class="inside-pad">
-		<ul class="activity">
-			<?php foreach($issue->activity() as $activity): ?>
-				<?php echo $activity; ?>
-			<?php endforeach; ?>
-		</ul>
-	</div>
-</div>
-
-
-
-
-
-
-
-		
-		<?php foreach($issue->comments()->get() as $row): ?>
-		<li id="comment<?php echo $row->id; ?>" class="comment">
-			<div class="insides">
-				<div class="topbar">
-					<?php if(Auth::user()->permission('issue-modify')): ?>
-					<ul>
-						<li class="edit-comment">
-							<a href="javascript:void(0);" class="edit">Edit</a>
-						</li>
-						<li class="delete-comment">
-						<a href="<?php echo $issue->to('delete_comment?comment=' . $row->id); ?>" class="delete">Delete</a>
-						</li>
-					</ul>
-					<?php endif; ?>
-					<strong><?php echo $row->user->firstname . ' ' . $row->user->lastname; ?></strong>
-					<?php echo __('tinyissue.commented'); ?> <?php echo Time::age(strtotime($row->created_at)); ?>
-				</div>
-
-				<div class="issue">
-					<?php echo Project\Issue\Comment::format($row->comment); ?>
-				</div>
-
-				<?php if(Auth::user()->permission('issue-modify')): ?>
-				<div class="comment-edit">
-					<textarea name="body" style="width: 98%; height: 90px;"><?php echo stripslashes($row->comment); ?></textarea>
-					<div class="right">
-						<a href="javascript:void(0);" class="action save"><?php echo __('tinyissue.save'); ?></a>
-						<a href="javascript:void(0);" class="action cancel"><?php echo __('tinyissue.cancel'); ?></a>
-					</div>
-				</div>
-				<?php endif; ?>
-
-				<ul class="attachments">
-					<?php foreach($row->attachments()->get() as $attachment): ?>
-					<li>
-						<?php if(in_array($attachment->fileextension, Config::get('application.image_extensions'))): ?>
-							<a href="<?php echo URL::base() . Config::get('application.attachment_path') . $project->id . '/' . $attachment->upload_token . '/' . urlencode($attachment->filename) ?>" title="<?php echo $attachment->filename; ?>"><img src="<?php echo URL::base() . Config::get('application.attachment_path') . $project->id . '/' . $attachment->upload_token . '/' . $attachment->filename; ?>" style="max-width: 100px;"  alt="<?php echo $attachment->filename; ?>" /></a>
-						<?php else: ?>
-							<a href="<?php echo URL::base() . Config::get('application.attachment_path') . $project->id . '/' . $attachment->upload_token . '/' . urlencode($attachment->filename); ?>" title="<?php echo $attachment->filename; ?>"><?php echo $attachment->filename; ?></a>
-						<?php endif; ?>
-					</li>
-					<?php endforeach; ?>
-				</ul>
-
-				<div class="clr"></div>
-			</div>
-		</li>
+		<?php foreach($issue->activity() as $activity): ?>
+			<?php echo $activity; ?>
 		<?php endforeach; ?>
+
 	</ul>
 
 	<?php if(Project\Issue::current()->status == 1): ?>
@@ -170,18 +107,6 @@
 		</form>
 
 	</div>
-
-
-	<?php else: ?>
-
-	<p>
-		<?php echo __('tinyissue.closed_by'); ?> <?php echo Project\Issue::current()->closer->firstname . ' ' . Project\Issue::current()->closer->lastname; ?>
-		<?php echo __('tinyissue.on'); ?> <?php echo Project\Issue::current()->closed_at; ?>
-	</p>
-
-	<p>
-		<a href="<?php echo Project\Issue::current()->to('status?status=1'); ?>" class="button success"><?php echo __('tinyissue.reopen'); ?></a>
-	</p>
 
 	<?php endif; ?>
 
