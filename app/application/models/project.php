@@ -101,7 +101,7 @@ class Project extends Eloquent {
 			->order_by('created_at', 'DESC')
 			->take($activity_limit)
 			->get();
-
+			
 		if(!$project_activity)
 		{
 			return null;

@@ -39,7 +39,26 @@
 				<div class="clr"></div>
 			</div>
 		</li>
-
+		
+		<?php foreach($issue->activity() as $item):?>
+			<li>
+				<div class="insides">
+					<div class="topbar">
+						<strong><?php echo $item->activity->user->firstname . ' ' . $item->activity->user->lastname ?></strong>
+					</div>
+					<?php echo Time::age(strtotime($item->activity->created_at))?>
+				 </div>
+ 				<div class="issue">
+					<pre>
+					<?php foreach($item['activity'] as $activity): ?>
+						<?php var_dump($activity); ?>
+					<?php endforeach; ?>
+					</pre>
+ 				</div>
+		 	</li>
+			<hr />
+		<?php endforeach;?>
+		
 		<?php foreach($issue->comments()->get() as $row): ?>
 		<li id="comment<?php echo $row->id; ?>" class="comment">
 			<div class="insides">
