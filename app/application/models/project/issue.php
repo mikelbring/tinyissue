@@ -41,99 +41,117 @@ class Issue extends \Eloquent {
 		return $this->belongs_to('\User', 'closed_by');
 	}
 	
-	public function activity()
+	public function activity($activity_limit = 5)
 	{
 	
-		$users = $issues = $comments = $activity_type = array();	
+		$users = $comments = $activity_type = array();	
+
+		$issue = $this;
+		$project_id = $this->project_id;
+		$project = \Project::find($project_id);
 		
-		foreach(\User\Activity::all() as $row)
+		foreach(\Activity::all() as $row)
 		{
 			$activity_type[$row->id] = $row;
 		}
-				
-		$issue_activity = \User\Activity::where('item_id', '=', $this->id)
-			->order_by('created_at', 'DESC')
-			->get();
-		
-		foreach($issue_activity as $activity)
+
+
+		$activities = array();
+
+
+		foreach(\User\Activity::where('item_id', '=', $issue->id)->order_by('created_at', 'DESC')->take($activity_limit)->get() as $activity)
 		{
-		
-			// can I just load this directly?
-			if(!isset($issues[$activity->item_id]))
-			{
-				$issues[$activity->item_id] = Issue::find($activity->item_id);
-			}
-			
-			if(!isset($users[$activity->user_id]))
-			{
-				$users[$activity->user_id] = User::find($activity->user_id);
-			}
-			
-			if(!isset($comments[$activity->action_id]))
-			{
-				$comments[$activity->action_id] = Issue\Comment::find($activity->action_id);
-			}
-			
-			if($activity->type_id == 5)
-			{
-				if(!isset($users[$activity->action_id]))
-				{
-					if($activity->action_id > 0)
-					{
-						$users[$activity->action_id] =  User::find($activity->action_id);
-					}
-					else
-					{
-						$users[$activity->action_id] = array();
-					}
-				}
-			}
-		}
-						
-		/* Loop through the projects and activity again, building the views for each activity */
-		$return = array();
-		
-		foreach($issue_activity as $row)
-		{
-			switch($row->type_id)
+			$activities[] = $activity;
+
+			switch($activity->type_id)
 			{
 				case 2:
-								
-					$return[] = \View::make('activity/' . $activity_type[$row->type_id]->activity->activity, array(
-						'issue' => $issues[$row->item_id],
-						'project' => $this,
-						'user' => $users[$row->user_id],
-						'comment' => $comments[$row->action_id],
-						'activity' => $row
-					));
+
+					if(!isset($users[$activity->user_id]))
+					{
+						$users[$activity->user_id] = \User::find($activity->user_id);
+					}
+
+					if(!isset($comments[$activity->action_id]))
+					{
+						$comments[$activity->action_id] = \Project\Issue\Comment::find($activity->action_id);
+					}
 
 					break;
 
 				case 5:
-					
-					$return[] = \View::make('activity/' . $activity_type[$row->type_id]->activity->activity, array(
-						'issue' => $issues[$row->item_id],
-						'project' => $this,
-						'user' => $users[$row->user_id],
-						'assigned' => $users[$row->action_id],
-						'activity' => $row
-					));
+
+					if(!isset($users[$activity->user_id]))
+					{
+						$users[$activity->user_id] = \User::find($activity->user_id);
+					}
+
+					if(!isset($users[$activity->action_id]))
+					{
+						$users[$activity->action_id] = \User::find($activity->action_id);
+					}
 
 					break;
 
 				default:
 
-					$return[] = \View::make('activity/' . $activity_type[$row->type_id]->activity->activity, array(
-						'issue' => $issues[$row->item_id],
-						'project' => $this,
+					if(!isset($users[$activity->user_id]))
+					{
+						$users[$activity->user_id] = \User::find($activity->user_id);
+					}
+
+					break;
+			}
+		}
+
+
+
+
+		/* Loop through the projects and activity again, building the views for each activity */
+		$return = array();
+
+
+		foreach($activities as $row)
+		{
+			switch($row->type_id)
+			{
+				case 2:
+
+					$return[] = \View::make('activity/' . $activity_type[$row->type_id]->activity, array(
+						'issue' => $issue,
+						'project' => $project,
 						'user' => $users[$row->user_id],
+						'comment' => $comments[$row->action_id],
 						'activity' => $row
 					));
 
 				break;
+
+			case 5:
+
+				$return[] = \View::make('activity/' . $activity_type[$row->type_id]->activity, array(
+					'issue' => $issue,
+					'project' => $project,
+					'user' => $users[$row->user_id],
+					'assigned' => $users[$row->action_id],
+					'activity' => $row
+				));
+
+				break;
+
+			default:
+
+				$return[] = \View::make('activity/' . $activity_type[$row->type_id]->activity, array(
+					'issue' => $issue,
+					'project' => $project,
+					'user' => $users[$row->user_id],
+					'activity' => $row
+				));
+
+				break;
 			}
 		}
-		
+
 		return $return;
 		
 	}
