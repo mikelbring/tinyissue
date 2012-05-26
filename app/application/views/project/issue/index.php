@@ -108,6 +108,8 @@
 
 	</div>
 
+	<?php else: ?>
+	<?php echo HTML::link(Project\Issue::current()->to('status?status=1'), __('tinyissue.reopen_issue')); ?>
 	<?php endif; ?>
 
 </div>
