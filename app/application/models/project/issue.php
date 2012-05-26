@@ -364,9 +364,8 @@ class Issue extends \Eloquent {
 
 	public static function count_issues()
 	{
-		/* Count Open Issues */
-		$sql = '
-		SELECT COUNT(i.id) AS total
+		/* Count Open Issues - Project must be open */
+		$sql = 'SELECT COUNT(i.id) AS `total`
 		FROM projects_issues i
 		JOIN projects p ON p.id = i.project_id
 		WHERE p.status = 1 AND i.status = 1
@@ -376,27 +375,26 @@ class Issue extends \Eloquent {
 		$count = \DB::first($sql);
 		$open_issues = !$count ? 0 : $count->total;
 
-		/* Count Closed Issues - If the project is closed, so is the issue */
-		$sql = '
-		SELECT COUNT(i.id) AS total
+		/* Count Closed Issues - Open Projects */
+		$sql = 'SELECT COUNT(i.id) AS `total`
 		FROM projects_issues i
 		JOIN projects p ON p.id = i.project_id
 		WHERE p.status = 1 AND i.status = 0
 		GROUP BY i.id
 		';
 
-		$count = (int) \DB::first($sql);
+		$count = \DB::first($sql);
 		$closed_issues_open_project = !$count ? 0 : $count->total;
 
-		$sql = '
-		SELECT COUNT(i.id) AS total
+		/* Count Issues - Closed Projects */
+		$sql = 'SELECT COUNT(i.id) AS `total`
 		FROM projects_issues i
 		JOIN projects p ON p.id = i.project_id
 		WHERE p.status = 0
 		GROUP BY i.id
 		';
 
-		$count = (int) \DB::first($sql);
+		$count = \DB::first($sql);
 		$issues_closed_project = !$count ? 0 : $count->total;
 
 		$closed_issues = ($closed_issues_open_project + $issues_closed_project);
