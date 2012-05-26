@@ -5,7 +5,26 @@ class Activity extends \Eloquent {
 	public static $table = 'users_activity';
 
 	public static $timestamps = true;
-
+	
+	
+	public function user()
+	{
+		return $this->belongs_to('\User');
+	}
+	
+	
+	public function other_user()
+	{
+		return $this->belongs_to('\User');
+	}
+	
+	public function activity()
+	{
+		return $this->belongs_to('Activity', 'type_id');
+	}
+	
+	
+		
 	/**
 	* Add an activity action
 	*
@@ -38,7 +57,7 @@ class Activity extends \Eloquent {
 		{
 			$insert['data'] = $data;
 		}
-
+		
 		$activity = new static;
 
 		return $activity->fill($insert)->save();
