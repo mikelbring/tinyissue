@@ -3,7 +3,12 @@
 ## Tiny Issue v1.2.2
 
 - Added activity log to issue page
-- Minor bug fixes
+- Bug Fix: Assigning users to a project with no users, after creating the project
+- Bug Fix: Admin stats and version
+
+### Upgrading from v1.2.1
+
+- Replace the `app` folder
 
 ## Tiny Issue v1.2.1
 
