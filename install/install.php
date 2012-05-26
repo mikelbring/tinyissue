@@ -13,7 +13,7 @@ class install
 
 	public function check_connect()
 	{
-		@$connect = mysql_connect($this->config['mysql']['host'],$this->config['mysql']['username'],$this->config['mysql']['password']);
+		@$connect = mysql_connect($this->config['database']['host'],$this->config['database']['username'],$this->config['database']['password']);
 
 		if(!$connect)
 		{
@@ -115,7 +115,7 @@ class install
 
 	private function check_db($connect)
 	{
-		@$database_connect = mysql_select_db($this->config['mysql']['database'], $connect);
+		@$database_connect = mysql_select_db($this->config['database']['database'], $connect);
 
 		if($database_connect)
 		{

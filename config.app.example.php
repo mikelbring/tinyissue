@@ -14,7 +14,7 @@ return array(
 	 * 'pgsql' for PostgreSQL, or 'sqlite' for SQLite
 	 */
 	'database' => array(
-	  'driver' => 'mysql'
+		'driver' => 'mysql',
 		'host'  => 'localhost',
 		'database' => 'database_name',
 		'username' => 'database_user',

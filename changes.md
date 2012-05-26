@@ -1,5 +1,10 @@
 # Tiny Issue Change Log
 
+## Tiny Issue v1.2.2
+
+- Added activity log to issue page
+- Minor bug fixes
+
 ## Tiny Issue v1.2.1
 
 - Minor bug fixes
