@@ -21,7 +21,7 @@ class User_Controller extends Base_Controller {
 
 		if(!$settings['success'])
 		{
-			return Redirect::to('settings')
+			return Redirect::to('user/settings')
 				->with_input()
 				->with_errors($settings['errors'])
 				->with('notice-error', __('tinyissue.we_have_some_errors'));
