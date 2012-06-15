@@ -237,11 +237,11 @@ class User extends Eloquent {
 
 		$validator = Validator::make($info, $rules);
 
-		if(!$validator->valid())
+		if($validator->fails())
 		{
 			return array(
 				'success' => false,
-				'errors' => $validator
+				'errors' => $validator->errors
 			);
 		}
 
@@ -281,11 +281,11 @@ class User extends Eloquent {
 
 		$validator = Validator::make($info, $rules);
 
-		if($validator->invalid())
+		if($validator->fails())
 		{
 			return array(
 				'success' => false,
-				'errors' => $validator
+				'errors' => $validator->errors
 			);
 		}
 
@@ -301,7 +301,7 @@ class User extends Eloquent {
 		$user->fill($insert)->save();
 
 		/* Send Activation email */
-		$view = View::make('email.new_user',array(
+		$view = View::make('email.new_user', array(
 			'email' => $info['email'],
 			'password' => $password
 		));
