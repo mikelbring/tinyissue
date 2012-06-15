@@ -237,11 +237,11 @@ class Project extends Eloquent {
 
 		$validator = \Validator::make($input, $rules);
 
-		if(!$validator->valid())
+		if($validator->fails())
 		{
 			return array(
 				'success' => false,
-				'errors' => $validator
+				'errors' => $validator->errors
 			);
 		}
 
@@ -249,7 +249,7 @@ class Project extends Eloquent {
 			'name' => $input['name'],
 		);
 
-		$project = new project;
+		$project = new Project;
 		$project->fill($fill);
 		$project->save();
 
@@ -283,7 +283,7 @@ class Project extends Eloquent {
 
 		$validator = \Validator::make($input, $rules);
 
-		if(!$validator->valid())
+		if($validator->fails())
 		{
 			return array(
 				'success' => false,
