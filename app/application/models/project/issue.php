@@ -247,11 +247,11 @@ class Issue extends \Eloquent {
 
 		$validator = \Validator::make($input, $rules);
 
-		if($validator->invalid())
+		if($validator->fails())
 		{
 			return array(
 				'success' => false,
-				'errors' => $validator
+				'errors' => $validator->errors
 			);
 		}
 
@@ -325,11 +325,11 @@ class Issue extends \Eloquent {
 
 		$validator = \Validator::make($input, $rules);
 
-		if($validator->invalid())
+		if($validator->fails())
 		{
 			return array(
 				'success' => false,
-				'errors' => $validator
+				'errors' => $validator->errors
 			);
 		}
 

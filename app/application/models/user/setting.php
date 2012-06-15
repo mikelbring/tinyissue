@@ -27,11 +27,11 @@ class Setting extends \Eloquent {
 
 		$validator = \Validator::make($info, $rules);
 
-		if(!$validator->valid())
+		if($validator->fails())
 		{
 			return array(
 				'success' => false,
-				'errors' => $validator
+				'errors' => $validator->errors
 			);
 		}
 
