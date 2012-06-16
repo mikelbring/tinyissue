@@ -3,7 +3,6 @@
 class Permission extends \Eloquent {
 
 	public static $table = 'roles_permissions';
-
 	private static $permission = array();
 
 	/**
