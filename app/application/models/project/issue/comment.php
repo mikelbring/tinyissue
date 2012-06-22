@@ -96,19 +96,6 @@ class Comment extends  \Eloquent {
 	*/
 	public static function format($body)
 	{
-		/*$pattern  = '#\b(([\w-]+://?|www[.])[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|/)))#';
-		$callback = create_function('$matches', '
-			$url       = array_shift($matches);
-			$url_parts = parse_url($url);
-			
-			$text = parse_url($url, PHP_URL_HOST) . parse_url($url, PHP_URL_PATH);
-			$text = preg_replace("/^www./", "", $text);
-			
-			return sprintf(\'<a href="%s">%s</a>\', $url, $text);
-	  ');
-
-	  return nl2br(preg_replace_callback($pattern, $callback, $body));*/
-	  \Bundle::start('sparkdown');
-	  return \Sparkdown\Markdown($body);   
+		return \Sparkdown\Markdown($body);   
 	}
 }
