@@ -33,4 +33,5 @@
 |
 */
 
-return array();
+return array(
+  'sparkdown' => array('auto' => 'true'));
