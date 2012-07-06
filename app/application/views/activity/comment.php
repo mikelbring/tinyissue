@@ -6,7 +6,7 @@
 
 	<div class="data">
 		<span class="comment">
-			"<?php echo Str::limit($comment->comment, 60); ?>"
+			<?php echo str_replace(array("<p>","</p>"), "", \Sparkdown\Markdown('"' . Str::limit($comment->comment, 60) . '"')); ?>
 		</span>
 		by
 		<strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong> on issue <a href="<?php echo $issue->to(); ?>"><?php echo $issue->title; ?></a>
