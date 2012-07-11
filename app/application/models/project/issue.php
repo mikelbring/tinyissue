@@ -175,6 +175,11 @@ class Issue extends \Eloquent {
 		return $this->has_many('Project\Issue\Comment', 'issue_id')
 			->order_by('created_at', 'ASC');
 	}
+	
+	public function comment_count()
+	{
+		return $this->has_many('Project\Issue\Comment', 'issue_id')->count();
+	}
 
 	public function attachments()
 	{
@@ -365,37 +370,27 @@ class Issue extends \Eloquent {
 	public static function count_issues()
 	{
 		/* Count Open Issues - Project must be open */
-		$sql = 'SELECT COUNT(i.id) AS `total`
-		FROM projects_issues i
-		JOIN projects p ON p.id = i.project_id
-		WHERE p.status = 1 AND i.status = 1
-		GROUP BY i.id
-		';
-
-		$count = \DB::first($sql);
-		$open_issues = !$count ? 0 : $count->total;
+		$count = \DB::table('projects_issues')
+									->join('projects', 'projects.id', '=', 'projects_issues.project_id')
+									->where('projects.status', '=', 1)
+									->where('projects_issues.status', '=', 1)
+									->count();
+		$open_issues = !$count ? 0 : $count;
 
 		/* Count Closed Issues - Open Projects */
-		$sql = 'SELECT COUNT(i.id) AS `total`
-		FROM projects_issues i
-		JOIN projects p ON p.id = i.project_id
-		WHERE p.status = 1 AND i.status = 0
-		GROUP BY i.id
-		';
-
-		$count = \DB::first($sql);
-		$closed_issues_open_project = !$count ? 0 : $count->total;
+		$count = \DB::table('projects_issues')
+								->join('projects', 'projects.id', '=', 'projects_issues.project_id')
+								->where('projects.status', '=', 1)
+								->where('projects_issues.status', '=', 0)
+								->count();
+		$closed_issues_open_project = !$count ? 0 : $count;
 
 		/* Count Issues - Closed Projects */
-		$sql = 'SELECT COUNT(i.id) AS `total`
-		FROM projects_issues i
-		JOIN projects p ON p.id = i.project_id
-		WHERE p.status = 0
-		GROUP BY i.id
-		';
-
-		$count = \DB::first($sql);
-		$issues_closed_project = !$count ? 0 : $count->total;
+		$count = \DB::table('projects_issues')
+								->join('projects', 'projects.id', '=', 'projects_issues.project_id')
+								->where('projects.status', '=', 0)
+								->count();
+		$issues_closed_project = !$count ? 0 : $count;
 
 		$closed_issues = ($closed_issues_open_project + $issues_closed_project);
 
