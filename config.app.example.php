@@ -61,7 +61,7 @@ return array(
 			* Encryption support, SSL/TLS, used with gmail servers
 			* Default: blank
 			*/
-			'encryption' => ''
+			'encryption' => '',
 			'username' => '',
 			'password' => '',
 		),
