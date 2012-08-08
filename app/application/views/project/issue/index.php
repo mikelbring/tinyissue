@@ -89,6 +89,7 @@
 
 			<p>
 				<textarea name="comment" style="width: 98%; height: 90px;"></textarea>
+				<a href="http://daringfireball.net/projects/markdown/basics/" target="_blank" style="margin-left: 90%;">Format with Markdown</a>
 			</p>
 			<p>
 				<input id="upload" type="file" name="file_upload" />
@@ -107,9 +108,10 @@
 		</form>
 
 	</div>
+		
+	</div>
 
 	<?php else: ?>
 	<?php echo HTML::link(Project\Issue::current()->to('status?status=1'), __('tinyissue.reopen_issue')); ?>
 	<?php endif; ?>
-
 </div>

@@ -3,7 +3,6 @@
 class Activity extends \Eloquent {
 
 	public static $table = 'users_activity';
-
 	public static $timestamps = true;
 	
 	
@@ -22,8 +21,6 @@ class Activity extends \Eloquent {
 	{
 		return $this->belongs_to('Activity', 'type_id');
 	}
-	
-	
 		
 	/**
 	* Add an activity action
@@ -40,7 +37,7 @@ class Activity extends \Eloquent {
 		$insert = array(
 			'type_id' => $type_id,
 			'parent_id' => $parent_id,
-			'user_id' => \Auth::user()->id,
+			'user_id' => \Auth::user()->id
 		);
 
 		if(!is_null($item_id))

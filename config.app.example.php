@@ -56,6 +56,12 @@ return array(
 		'smtp' => array(
 			'server' => '',
 			'port' => 25,
+			
+			/* 
+			* Encryption support, SSL/TLS, used with gmail servers
+			* Default: blank
+			*/
+			'encryption' => '',
 			'username' => '',
 			'password' => '',
 		),

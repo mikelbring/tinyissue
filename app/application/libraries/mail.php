@@ -25,7 +25,7 @@ class Mail {
 
 				break;
 			case 'smtp':
-				$transport = Swift_SmtpTransport::newInstance($options['smtp']['server'], $options['smtp']['port'])
+				$transport = Swift_SmtpTransport::newInstance($options['smtp']['server'], $options['smtp']['port'], $options['smtp']['encryption'])
 					->setUsername($options['smtp']['username'])
 					->setPassword($options['smtp']['password']);
 

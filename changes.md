@@ -1,5 +1,15 @@
 # Tiny Issue Change Log
 
+## Tiny Issue v1.2.3
+
+- Added support for SMTP encryption protocol
+- Added Markdown support
+- General bug fixes
+
+### Upgrading from v1.2.2
+
+- Replace the `app` folder
+
 ## Tiny Issue v1.2.2
 
 - Added activity log to issue page
