@@ -7,33 +7,27 @@ class install
 	function __construct()
 	{
 		$this->config = require '../config.app.php';
-		$this->mssql_structure = require './mssql-structure.php';
+		$this->mysql_structure = require './mysql-structure.php';
 
 	}
 
 	public function check_connect()
 	{
-		$conn_info = array(
-						"Database" => $this->config['sqlsrv']['database'],
-						"UID" => $this->config['sqlsrv']['username'],
-						"PWD" => $this->config['sqlsrv']['password'] );
-		$connect = sqlsrv_connect($this->config['sqlsrv']['host'], $conn_info);
-		
+		@$connect = mysql_connect($this->config['database']['host'],$this->config['database']['username'],$this->config['database']['password']);
+
 		if(!$connect)
 		{
-			die( print_r( sqlsrv_errors(), true));
 			return array('error' => '<strong>Database Connect Error.</strong>!');
 		}
 
-		/*$check_db = $this->check_db($connect);
-		
+		$check_db = $this->check_db($connect);
+
 		if(!$check_db)
 		{
 			 return array('error' => '<strong>Database Error.</strong>');
-		}*/
+		}
 
-		//return $check_db;
-		return;
+		return $check_db;
 	}
 
 	public function check_requirements()
@@ -45,9 +39,9 @@ class install
 			$errors[] = 'pdo extension not found.';
 		}
 
-		if(!extension_loaded('pdo_sqlsrv'))
+		if(!extension_loaded('pdo_mysql'))
 		{
-			$errors[] = 'MSSQL driver for pdo not found .';
+			$errors[] = 'mysql driver for pdo not found .';
 		}
 
 		if(!extension_loaded('mcrypt'))
@@ -65,35 +59,26 @@ class install
 
 	public function create_tables()
 	{
-		$conn_info = array(
-						"Database" => $this->config['sqlsrv']['database'],
-						"UID" => $this->config['sqlsrv']['username'],
-						"PWD" => $this->config['sqlsrv']['password'] );
-		$connect = sqlsrv_connect($this->config['sqlsrv']['host'], $conn_info);
-		
-		foreach($this->mssql_structure as $query)
+		foreach($this->mysql_structure as $query)
 		{
-			sqlsrv_query($connect, $query);
+			mysql_query($query);
 		}
 
 		/* Create Administrator Account */
 		$role = 4;
-		/*$email = mysql_real_escape_string($_POST['email']);
+		$email = mysql_real_escape_string($_POST['email']);
 		$first_name = mysql_real_escape_string($_POST['first_name']);
-		$last_name = mysql_real_escape_string($_POST['last_name']);*/
-		$email = $_POST['email'];
-		$first_name = $_POST['first_name'];
-		$last_name = $_POST['last_name'];
+		$last_name = mysql_real_escape_string($_POST['last_name']);
 		$password = Laravel\Hash::make($_POST['password']);
 
 		/* Check if email exists if so change the password on it */
 		$test_query = "select * from users where email = '$email' and deleted = 0 LIMIT 1";
-		$test_result = sqlsrv_query($connect, $test_query);
+		$test_result = mysql_query($test_query);
 
-		if($test_result)
+		if(mysql_num_rows($test_result) >= 1)
 		{
 			$query = "
-			UPDATE users
+			UPDATE `users`
 			SET
 				password = '{$password}',
 				firstname = '{$first_name}',
@@ -105,32 +90,32 @@ class install
 		else
 		{
 			$query = "
-			INSERT INTO users (
+			INSERT INTO users(
 				role_id,
 				email,
 				password,
 				firstname,
 				lastname,
 				created_at
-			) VALUES (
+			)VALUES(
 				'$role',
 				'$email',
 				'$password',
 				'$first_name',
 				'$last_name',
-				CURRENT_TIMESTAMP
+			now()
 			)";
 
 		}
-		
-		sqlsrv_query($connect, $query) or die(print_r(sqlsrv_errors()));
+
+		mysql_query($query);
 
 		return true;
 	}
 
 	private function check_db($connect)
 	{
-		$database_connect = sqlsrv_select_db($this->config['sqlsrv']['database'], $connect);
+		@$database_connect = mysql_select_db($this->config['database']['database'], $connect);
 
 		if($database_connect)
 		{

@@ -155,6 +155,7 @@ textarea, input[type=text], input[type=password]{
  	color: #424242;
 	box-shadow: 0 -1px 1px #b6b6b6;
 }
+.action,
 input[type=submit]{
 	font: bold 13px Helvetica, "Lucida Grande", Arial, sans-serif;
 	color: #fff;
@@ -163,10 +164,14 @@ input[type=submit]{
 	border-radius: 6px;
 	background: #138dc1;
 }
-input[type=submit]:hover{
+.action:hover,
+.action:focus,
+input[type=submit]:hover,
+input[type=submit]:focus{
 	cursor: pointer;
 	background: #424242;
 	border: 1px solid #262626;
+	color: white;
 }
 
 p{
@@ -414,6 +419,7 @@ p{
 	text-decoration: none;
 	padding-top: 5px;
 	font-size: 13px;
+	padding-right: 10px;
 }
 #add-user-project{
 	margin: 0 auto;
@@ -581,6 +587,10 @@ p{
 .issue-discussion li .comment-edit{
 	display: none;
 	padding: 12px 10px;
+}
+.issue-discussion li .comment-edit .right{
+	padding: 15px 0px 5px 0px;
+	text-align: right;
 }
 .issue-actions{
 	float: right;

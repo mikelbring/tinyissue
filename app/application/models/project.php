@@ -56,9 +56,14 @@ class Project extends Eloquent {
 			$users[] = $user->id;
 		}
 
-		return User::where_not_in('id', $users)
-			->where('deleted', '=', 0)
-			->get();
+		$results = User::where('deleted', '=', 0);
+
+		if(count($users) > 0)
+		{
+			$results->where_not_in('id', $users);
+		}
+
+		return $results->get();
 	}
 
 	/**
@@ -101,7 +106,7 @@ class Project extends Eloquent {
 			->order_by('created_at', 'DESC')
 			->take($activity_limit)
 			->get();
-
+			
 		if(!$project_activity)
 		{
 			return null;

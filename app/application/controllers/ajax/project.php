@@ -8,7 +8,7 @@ class Ajax_Project_Controller extends Base_Controller {
 	{
 		parent::__construct();
 
-		$this->filter('before', 'ajax')->except('issue_upload_attachment');
+		//$this->filter('before', 'ajax')->except('issue_upload_attachment');
 		$this->filter('before', 'permission:project-modify')->only(array(
 			'inactive_users',
 			'add_user',

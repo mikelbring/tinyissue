@@ -40,6 +40,135 @@ class Issue extends \Eloquent {
 	{
 		return $this->belongs_to('\User', 'closed_by');
 	}
+	
+	public function activity($activity_limit = 5)
+	{
+	
+		$users = $comments = $activity_type = array();	
+
+		$issue = $this;
+		$project_id = $this->project_id;
+		$project = \Project::find($project_id);
+		
+		foreach(\Activity::all() as $row)
+		{
+			$activity_type[$row->id] = $row;
+		}
+
+
+		$activities = array();
+
+
+		foreach(\User\Activity::where('item_id', '=', $issue->id)->order_by('created_at', 'ASC')->get() as $activity)
+		{
+			$activities[] = $activity;
+
+			switch($activity->type_id)
+			{
+				case 2:
+
+					if(!isset($users[$activity->user_id]))
+					{
+						$users[$activity->user_id] = \User::find($activity->user_id);
+					}
+
+					if(!isset($comments[$activity->action_id]))
+					{
+						$comments[$activity->action_id] = \Project\Issue\Comment::find($activity->action_id);
+					}
+
+					break;
+
+				case 5:
+
+					if(!isset($users[$activity->user_id]))
+					{
+						$users[$activity->user_id] = \User::find($activity->user_id);
+					}
+
+					if(!isset($users[$activity->action_id]))
+					{
+						$users[$activity->action_id] = \User::find($activity->action_id);
+					}
+
+					break;
+
+				default:
+
+					if(!isset($users[$activity->user_id]))
+					{
+						$users[$activity->user_id] = \User::find($activity->user_id);
+					}
+
+					break;
+			}
+		}
+
+
+
+
+		/* Loop through the projects and activity again, building the views for each activity */
+		$return = array();
+
+
+		foreach($activities as $row)
+		{
+			switch($row->type_id)
+			{
+				case 2:
+
+					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
+						'issue' => $issue,
+						'project' => $project,
+						'user' => $users[$row->user_id],
+						'comment' => $comments[$row->action_id],
+						'activity' => $row
+					));
+
+				break;
+
+				case 3:
+
+				$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
+					'issue' => $issue,
+					'project' => $project,
+					'user' => $users[$row->user_id],
+					'activity' => $row
+				));
+				
+				break;
+
+
+				case 5:
+
+				$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
+					'issue' => $issue,
+					'project' => $project,
+					'user' => $users[$row->user_id],
+					'assigned' => $users[$row->action_id],
+					'activity' => $row
+				));
+
+				break;
+
+				default:
+
+				$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
+					'issue' => $issue,
+					'project' => $project,
+					'user' => $users[$row->user_id],
+					'activity' => $row
+				));
+
+				break;
+			}
+		}
+
+		return $return;
+		
+	}
+	
+	
 
 	public function comments()
 	{
@@ -74,7 +203,7 @@ class Issue extends \Eloquent {
 		$this->assigned_to = $user_id;
 		$this->save();
 
-		\User\Activity::add(5, $this->project_id, $this->id, $user_id);
+		\User\Activity::add(5, $this->project_id, $this->id, $user_id, null, $user_id);
 	}
 
 	/**
@@ -88,7 +217,7 @@ class Issue extends \Eloquent {
 		if($status == 0)
 		{
 			$this->closed_by = \Auth::user()->id;
-			$this->closed_at = \DB::raw('CURRENT_TIMESTAMP');
+			$this->closed_at = date('Y-m-d H:i:s');
 
 			/* Add to activity log */
 			\User\Activity::add(3, $this->project_id, $this->id);
@@ -235,9 +364,8 @@ class Issue extends \Eloquent {
 
 	public static function count_issues()
 	{
-		/* Count Open Issues */
-		$sql = '
-		SELECT COUNT(i.id) AS total
+		/* Count Open Issues - Project must be open */
+		$sql = 'SELECT COUNT(i.id) AS `total`
 		FROM projects_issues i
 		JOIN projects p ON p.id = i.project_id
 		WHERE p.status = 1 AND i.status = 1
@@ -247,27 +375,26 @@ class Issue extends \Eloquent {
 		$count = \DB::first($sql);
 		$open_issues = !$count ? 0 : $count->total;
 
-		/* Count Closed Issues - If the project is closed, so is the issue */
-		$sql = '
-		SELECT COUNT(i.id) AS total
+		/* Count Closed Issues - Open Projects */
+		$sql = 'SELECT COUNT(i.id) AS `total`
 		FROM projects_issues i
 		JOIN projects p ON p.id = i.project_id
 		WHERE p.status = 1 AND i.status = 0
 		GROUP BY i.id
 		';
 
-		$count = (int) \DB::first($sql);
+		$count = \DB::first($sql);
 		$closed_issues_open_project = !$count ? 0 : $count->total;
 
-		$sql = '
-		SELECT COUNT(i.id) AS total
+		/* Count Issues - Closed Projects */
+		$sql = 'SELECT COUNT(i.id) AS `total`
 		FROM projects_issues i
 		JOIN projects p ON p.id = i.project_id
 		WHERE p.status = 0
 		GROUP BY i.id
 		';
 
-		$count = (int) \DB::first($sql);
+		$count = \DB::first($sql);
 		$issues_closed_project = !$count ? 0 : $count->total;
 
 		$closed_issues = ($closed_issues_open_project + $issues_closed_project);

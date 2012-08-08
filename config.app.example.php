@@ -10,11 +10,11 @@ return array(
 
 
 	/**
-	 * Fill out your MSSQL database settings
-	 * host should be in the form HOSTNAME\INSTANCE_NAME,PORT
+	 * Fill out your database settings. Make sure that the driver is correct: 'mysql' for MySQL, 'sqlsrv' for MSSQL,
+	 * 'pgsql' for PostgreSQL, or 'sqlite' for SQLite
 	 */
-	'sqlsrv' => array(
-	  'driver' => 'sqlsrv',
+	'database' => array(
+		'driver' => 'mysql',
 		'host'  => 'localhost',
 		'database' => 'database_name',
 		'username' => 'database_user',
