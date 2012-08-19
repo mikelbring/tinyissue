@@ -7,7 +7,7 @@
 		<ul class="issues">
 			<?php foreach($issues as $row):  ?>
 			<li>
-				<a href="" class="comments"><?php echo $row->comments()->count(); ?></a>
+				<a href="" class="comments"><?php echo $row->comment_count(); ?></a>
 				<a href="" class="id">#<?php echo $row->id; ?></a>
 				<div class="data">
 					<a href="<?php echo $row->to(); ?>"><?php echo $row->title; ?></a>
