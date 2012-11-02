@@ -12,7 +12,7 @@
 			</ul>
 			<?php endif; ?>
 			<strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong>
-			<?php echo __('tinyissue.commented'); ?> <?php echo date('F jS \a\t g:i A', strtotime($issue->created_at)); ?>
+			<?php echo __('tinyissue.commented'); ?> <?php echo date('F jS \a\t g:i A', strtotime($comment->updated_at)); ?>
 		</div>
 
 		<div class="issue">
