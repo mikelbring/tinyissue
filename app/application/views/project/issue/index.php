@@ -89,7 +89,7 @@
 
 			<p>
 				<textarea name="comment" style="width: 98%; height: 90px;"></textarea>
-				<a href="http://daringfireball.net/projects/markdown/basics/" target="_blank" style="margin-left: 90%;">Format with Markdown</a>
+				<a href="http://daringfireball.net/projects/markdown/basics/" target="_blank" style="margin-left: 86%;">Format with Markdown</a>
 			</p>
 			<p>
 				<input id="upload" type="file" name="file_upload" />
