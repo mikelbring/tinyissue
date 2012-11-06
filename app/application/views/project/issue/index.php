@@ -28,9 +28,9 @@
 					<?php foreach($issue->attachments()->get() as $attachment): ?>
 					<li>
 						<?php if(in_array($attachment->fileextension, Config::get('application.image_extensions'))): ?>
-							<a href="<?php echo URL::base() . Config::get('application.attachment_path') . $project->id . '/' . $attachment->upload_token . '/' . urlencode($attachment->filename); ?>" title="<?php echo $attachment->filename; ?>"><img src="<?php echo URL::base() . Config::get('application.attachment_path') . $project->id . '/' . $attachment->upload_token . '/' . $attachment->filename; ?>" style="max-width: 100px;"  alt="<?php echo $attachment->filename; ?>" /></a>
+							<a href="<?php echo URL::base() . Config::get('application.attachment_path') . $project->id . '/' . $attachment->upload_token . '/' . rawurlencode($attachment->filename); ?>" title="<?php echo $attachment->filename; ?>"><img src="<?php echo URL::base() . Config::get('application.attachment_path') . $project->id . '/' . $attachment->upload_token . '/' . $attachment->filename; ?>" style="max-width: 100px;"  alt="<?php echo $attachment->filename; ?>" /></a>
 						<?php else: ?>
-							<a href="<?php echo URL::base() . Config::get('application.attachment_path') . $project->id . '/' . $attachment->upload_token . '/' . urlencode($attachment->filename); ?>" title="<?php echo $attachment->filename; ?>"><?php echo $attachment->filename; ?></a>
+							<a href="<?php echo URL::base() . Config::get('application.attachment_path') . $project->id . '/' . $attachment->upload_token . '/' . rawurlencode($attachment->filename); ?>" title="<?php echo $attachment->filename; ?>"><?php echo $attachment->filename; ?></a>
 						<?php endif; ?>
 					</li>
 					<?php endforeach; ?>
@@ -89,7 +89,7 @@
 
 			<p>
 				<textarea name="comment" style="width: 98%; height: 90px;"></textarea>
-				<a href="http://daringfireball.net/projects/markdown/basics/" target="_blank" style="margin-left: 90%;">Format with Markdown</a>
+				<a href="http://daringfireball.net/projects/markdown/basics/" target="_blank" style="margin-left: 86%;">Format with Markdown</a>
 			</p>
 			<p>
 				<input id="upload" type="file" name="file_upload" />
