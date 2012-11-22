@@ -1,4 +1,4 @@
-<?php namespace Laravel; defined('DS') or die('No direct script access.');
+<?php namespace Laravel;
 
 class Asset {
 
@@ -107,7 +107,7 @@ class Asset_Container {
 	 * @param  string  $source
 	 * @param  array   $dependencies
 	 * @param  array   $attributes
-	 * @return void
+	 * @return Asset_Container
 	 */
 	public function add($name, $source, $dependencies = array(), $attributes = array())
 	{

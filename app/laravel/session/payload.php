@@ -1,6 +1,5 @@
 <?php namespace Laravel\Session;
 
-use Closure;
 use Laravel\Str;
 use Laravel\Config;
 use Laravel\Cookie;
@@ -72,7 +71,7 @@ class Payload {
 	}
 
 	/**
-	 * Deteremine if the session payload instance is valid.
+	 * Determine if the session payload instance is valid.
 	 *
 	 * The session is considered valid if it exists and has not expired.
 	 *
@@ -298,15 +297,30 @@ class Payload {
 		// session on the user's subsequent requests to the application.
 		$this->cookie($config);
 
-		// Some session drivers implement the Sweeper interface, meaning that
-		// they must clean up expired sessions manually. If the driver is a
-		// sweeper, we need to determine if garbage collection should be
-		// run for the request.
+		// Some session drivers implement the Sweeper interface meaning that
+		// they must clean up expired sessions manually. Here we'll calculate
+		// if we need to run garbage collection.
 		$sweepage = $config['sweepage'];
 
-		if ($this->driver instanceof Sweeper and (mt_rand(1, $sweepage[1]) <= $sweepage[0]))
+		if (mt_rand(1, $sweepage[1]) <= $sweepage[0])
 		{
-			$this->driver->sweep(time() - ($config['lifetime'] * 60));
+			$this->sweep();
+		}
+	}
+
+	/**
+	 * Clean up expired sessions.
+	 *
+	 * If the session driver is a sweeper, it must clean up expired sessions
+	 * from time to time. This method triggers garbage collection.
+	 * 
+	 * @return void
+	 */
+	public function sweep()
+	{
+		if ($this->driver instanceof Sweeper)
+		{
+			$this->driver->sweep(time() - (Config::get('session.lifetime') * 60));
 		}
 	}
 

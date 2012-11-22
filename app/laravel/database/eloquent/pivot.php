@@ -20,11 +20,13 @@ class Pivot extends Model {
 	 * Create a new pivot table instance.
 	 *
 	 * @param  string  $table
+	 * @param  string  $connection
 	 * @return void
 	 */
-	public function __construct($table)
+	public function __construct($table, $connection = null)
 	{
 		$this->pivot_table = $table;
+		static::$connection = $connection;
 
 		parent::__construct(array(), true);
 	}

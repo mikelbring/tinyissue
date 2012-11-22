@@ -10,7 +10,7 @@
  */
 function e($value)
 {
-	return Laravel\HTML::entities($value);
+	return HTML::entities($value);
 }
 
 /**
@@ -23,7 +23,21 @@ function e($value)
  */
 function __($key, $replacements = array(), $language = null)
 {
-	return Laravel\Lang::line($key, $replacements, $language);
+	return Lang::line($key, $replacements, $language);
+}
+
+/**
+ * Dump the given value and kill the script.
+ *
+ * @param  mixed  $value
+ * @return void
+ */
+function dd($value)
+{
+	echo "<pre>";
+	var_dump($value);
+	echo "</pre>";
+	die;
 }
 
 /**
@@ -219,6 +233,62 @@ function array_divide($array)
 }
 
 /**
+ * Pluck an array of values from an array.
+ *
+ * @param  array   $array
+ * @param  string  $key
+ * @return array
+ */
+function array_pluck($array, $key)
+{
+	return array_map(function($v) use ($key)
+	{
+		return is_object($v) ? $v->$key : $v[$key];
+
+	}, $array);
+}
+
+/**
+ * Get a subset of the items from the given array.
+ *
+ * @param  array  $array
+ * @param  array  $keys
+ * @return array
+ */
+function array_only($array, $keys)
+{
+	return array_intersect_key( $array, array_flip((array) $keys) );
+}
+
+/**
+ * Get all of the given array except for a specified array of items.
+ *
+ * @param  array  $array
+ * @param  array  $keys
+ * @return array
+ */
+function array_except($array, $keys)
+{
+	return array_diff_key( $array, array_flip((array) $keys) );
+}
+
+/**
+ * Transform Eloquent models to a JSON object.
+ *
+ * @param  Eloquent|array  $models
+ * @return object
+ */
+function eloquent_to_json($models)
+{
+	if ($models instanceof Laravel\Database\Eloquent\Model)
+	{
+		return json_encode($models->to_array());
+	}
+
+	return json_encode(array_map(function($m) { return $m->to_array(); }, $models));
+}
+
+/**
  * Determine if "Magic Quotes" are enabled on the server.
  *
  * @return bool
@@ -246,17 +316,17 @@ function head($array)
  *
  * <code>
  *		// Create a URL to a location within the application
- *		$url = path('user/profile');
+ *		$url = url('user/profile');
  *
  *		// Create a HTTPS URL to a location within the application
- *		$url = path('user/profile', true);
+ *		$url = url('user/profile', true);
  * </code>
  *
  * @param  string  $url
  * @param  bool    $https
  * @return string
  */
-function url($url = '', $https = false)
+function url($url = '', $https = null)
 {
 	return Laravel\URL::to($url, $https);
 }
@@ -268,7 +338,7 @@ function url($url = '', $https = false)
  * @param  bool    $https
  * @return string
  */
-function asset($url, $https = false)
+function asset($url, $https = null)
 {
 	return Laravel\URL::to_asset($url, $https);
 }
@@ -340,13 +410,18 @@ function ends_with($haystack, $needle)
 /**
  * Determine if a given string contains a given sub-string.
  *
- * @param  string  $haystack
- * @param  string  $needle
+ * @param  string        $haystack
+ * @param  string|array  $needle
  * @return bool
  */
 function str_contains($haystack, $needle)
 {
-	return strpos($haystack, $needle) !== false;
+	foreach ((array) $needle as $n)
+	{
+		if (strpos($haystack, $n) !== false) return true;
+	}
+
+	return false;
 }
 
 /**
@@ -359,6 +434,17 @@ function str_contains($haystack, $needle)
 function str_finish($value, $cap)
 {
 	return rtrim($value, $cap).$cap;
+}
+
+/**
+ * Determine if the given object has a toString method.
+ *
+ * @param  object  $value
+ * @return bool
+ */
+function str_object($value)
+{
+	return is_object($value) and method_exists($value, '__toString');
 }
 
 /**
@@ -379,7 +465,7 @@ function root_namespace($class, $separator = '\\')
 /**
  * Get the "class basename" of a class or object.
  *
- * The basename is considered the name of the class minus all namespaces.
+ * The basename is considered to be the name of the class minus all namespaces.
  *
  * @param  object|string  $class
  * @return string
@@ -401,7 +487,7 @@ function class_basename($class)
  */
 function value($value)
 {
-	return ($value instanceof Closure) ? call_user_func($value) : $value;
+	return (is_callable($value) and ! is_string($value)) ? call_user_func($value) : $value;
 }
 
 /**
@@ -457,7 +543,7 @@ function render($view, $data = array())
 /**
  * Get the rendered contents of a partial from a loop.
  *
- * @param  string  $view
+ * @param  string  $partial
  * @param  array   $data
  * @param  string  $iterator
  * @param  string  $empty
@@ -477,4 +563,36 @@ function render_each($partial, array $data, $iterator, $empty = 'raw|')
 function yield($section)
 {
 	return Laravel\Section::yield($section);
+}
+
+/**
+ * Get a CLI option from the argv $_SERVER variable.
+ *
+ * @param  string  $option
+ * @param  mixed   $default
+ * @return string
+ */
+function get_cli_option($option, $default = null)
+{
+	foreach (Laravel\Request::foundation()->server->get('argv') as $argument)
+	{
+		if (starts_with($argument, "--{$option}="))
+		{
+			return substr($argument, strlen($option) + 3);
+		}
+	}
+
+	return value($default);
+}
+	
+/**
+ * Calculate the human-readable file size (with proper units).
+ *
+ * @param  int     $size
+ * @return string
+ */
+function get_file_size($size)
+{
+	$units = array('Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB');
+	return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2).' '.$units[$i];
 }

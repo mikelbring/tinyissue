@@ -3,6 +3,18 @@
 class Postgres extends Connector {
 
 	/**
+	 * The PDO connection options.
+	 *
+	 * @var array
+	 */
+	protected $options = array(
+			PDO::ATTR_CASE => PDO::CASE_LOWER,
+			PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
+			PDO::ATTR_ORACLE_NULLS => PDO::NULL_NATURAL,
+			PDO::ATTR_STRINGIFY_FETCHES => false,
+	);
+
+	/**
 	 * Establish a PDO database connection.
 	 *
 	 * @param  array  $config
@@ -30,6 +42,13 @@ class Postgres extends Connector {
 		if (isset($config['charset']))
 		{
 			$connection->prepare("SET NAMES '{$config['charset']}'")->execute();
+		}
+
+		// If a schema has been specified, we'll execute a query against
+		// the database to set the search path.
+		if (isset($config['schema']))
+		{
+			$connection->prepare("SET search_path TO '{$config['schema']}'")->execute();
 		}
 
 		return $connection;

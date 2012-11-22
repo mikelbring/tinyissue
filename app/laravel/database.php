@@ -1,5 +1,6 @@
 <?php namespace Laravel;
 
+use Closure;
 use Laravel\Database\Expression;
 use Laravel\Database\Connection;
 
@@ -11,6 +12,13 @@ class Database {
 	 * @var array
 	 */
 	public static $connections = array();
+
+	/**
+	 * The third-party driver registrar.
+	 *
+	 * @var array
+	 */
+	public static $registrar = array();
 
 	/**
 	 * Get a database connection.
@@ -66,6 +74,13 @@ class Database {
 	 */
 	protected static function connector($driver)
 	{
+		if (isset(static::$registrar[$driver]))
+		{
+			$resolver = static::$registrar[$driver]['connector'];
+
+			return $resolver();
+		}
+
 		switch ($driver)
 		{
 			case 'sqlite':
@@ -118,6 +133,34 @@ class Database {
 	public static function profile()
 	{
 		return Database\Connection::$queries;
+	}
+	
+	/**
+	 * Get the last query that was executed.
+	 *
+	 * Returns false if no queries have been executed yet.
+	 *
+	 * @return string
+	 */
+	public static function last_query()
+	{
+		return end(Database\Connection::$queries);
+	}
+
+	/**
+	 * Register a database connector and grammars.
+	 *
+	 * @param  string   $name
+	 * @param  Closure  $connector
+	 * @param  Closure  $query
+	 * @param  Closure  $schema
+	 * @return void
+	 */
+	public static function extend($name, Closure $connector, $query = null, $schema = null)
+	{
+		if (is_null($query)) $query = '\Laravel\Database\Query\Grammars\Grammar';
+
+		static::$registrar[$name] = compact('connector', 'query', 'schema');
 	}
 
 	/**

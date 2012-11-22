@@ -2,6 +2,7 @@
 
 use Laravel\Bundle;
 use Laravel\Config;
+use Laravel\Request;
 
 /**
  * Fire up the default bundle. This will ensure any dependencies that
@@ -15,9 +16,10 @@ Bundle::start(DEFAULT_BUNDLE);
  * for the "database" CLI option. This allows migrations to be run
  * conveniently for a test or staging database.
  */
-if (isset($_SERVER['CLI']['DB']))
+
+if ( ! is_null($database = get_cli_option('db')))
 {
-	Config::set('database.default', $_SERVER['CLI']['DB']);
+	Config::set('database.default', $database);
 }
 
 /**
@@ -32,7 +34,7 @@ require path('sys').'cli/dependencies'.EXT;
  * We will wrap the command execution in a try / catch block and
  * simply write out any exception messages we receive to the CLI
  * for the developer. Note that this only writes out messages
- * for the CLI exceptions. All others will be not be caught
+ * for the CLI exceptions. All others will not be caught
  * and will be totally dumped out to the CLI.
  */
 try

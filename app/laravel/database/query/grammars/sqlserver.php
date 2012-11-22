@@ -12,6 +12,13 @@ class SQLServer extends Grammar {
 	protected $wrapper = '[%s]';
 
 	/**
+	 * The format for properly saving a DateTime.
+	 *
+	 * @var string
+	 */
+	public $datetime = 'Y-m-d H:i:s.000';
+
+	/**
 	 * Compile a SQL SELECT statement from a Query instance.
 	 *
 	 * @param  Query   $query
@@ -88,7 +95,7 @@ class SQLServer extends Grammar {
 
 		// Next we need to calculate the constraint that should be placed on
 		// the row number to get the correct offset and limit on the query.
-		// If there is not limit, we'll just handle the offset.
+		// If there is not a limit, we'll just handle the offset.
 		if ($query->limit > 0)
 		{
 			$finish = $query->offset + $query->limit;

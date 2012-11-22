@@ -9,17 +9,22 @@ class Str {
 	 */
 	public static $pluralizer;
 
-	/**
-	 * Get the default string encoding for the application.
-	 *
-	 * This method is simply a short-cut to Config::get('application.encoding').
-	 *
-	 * @return string
-	 */
-	public static function encoding()
-	{
-		return Config::get('application.encoding');
-	}
+    /**
+     * Cache application encoding locally to save expensive calls to Config::get().
+     *
+     * @var string
+     */
+    public static $encoding = null;
+
+    /**
+     * Get the appliction.encoding without needing to request it from Config::get() each time.
+     *
+     * @return string
+     */
+    protected static function encoding()
+    {
+        return static::$encoding ?: static::$encoding = Config::get('application.encoding');
+    }
 
 	/**
 	 * Get the length of a string.
@@ -131,6 +136,31 @@ class Str {
 	}
 
 	/**
+	 * Limit the number of chracters in a string including custom ending
+	 * 
+	 * <code>
+	 *		// Returns "Taylor..."
+	 *		echo Str::limit_exact('Taylor Otwell', 9);
+	 *
+	 *		// Limit the number of characters and append a custom ending
+	 *		echo Str::limit_exact('Taylor Otwell', 9, '---');
+	 * </code>
+	 * 
+	 * @param  string  $value
+	 * @param  int     $limit
+	 * @param  string  $end
+	 * @return string
+	 */
+	public static function limit_exact($value, $limit = 100, $end = '...')
+	{
+		if (static::length($value) <= $limit) return $value;
+
+		$limit -= static::length($end);
+
+		return static::limit($value, $limit, $end);
+	}
+
+	/**
 	 * Limit the number of words in a string.
 	 *
 	 * <code>
@@ -148,7 +178,9 @@ class Str {
 	 */
 	public static function words($value, $words = 100, $end = '...')
 	{
-		preg_match('/^\s*+(?:\S++\s*+){1,'.$words.'}/', $value, $matches);
+		if (trim($value) == '') return '';
+
+		preg_match('/^\s*+(?:\S++\s*+){1,'.$words.'}/u', $value, $matches);
 
 		if (static::length($value) == static::length($matches[0]))
 		{
@@ -298,6 +330,30 @@ class Str {
 	public static function random($length, $type = 'alnum')
 	{
 		return substr(str_shuffle(str_repeat(static::pool($type), 5)), 0, $length);
+	}
+
+	/**
+	 * Determine if a given string matches a given pattern.
+	 *
+	 * @param  string  $pattern
+	 * @param  string  $value
+	 * @return bool
+	 */
+	public static function is($pattern, $value)
+	{
+		// Asterisks are translated into zero-or-more regular expression wildcards
+		// to make it convenient to check if the URI starts with a given pattern
+		// such as "library/*". This is only done when not root.
+		if ($pattern !== '/')
+		{
+			$pattern = str_replace('*', '(.*)', $pattern).'\z';
+		}
+		else
+		{
+			$pattern = '^/$';
+		}
+
+		return preg_match('#'.$pattern.'#', $value);
 	}
 
 	/**
