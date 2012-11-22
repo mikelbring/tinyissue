@@ -26,7 +26,7 @@ class URL {
 	 */
 	public static function current()
 	{
-		return static::to(URI::current());
+		return static::to(URI::current(), null, false, false);
 	}
 
 	/**
@@ -35,7 +35,7 @@ class URL {
 	 * @param  bool    $https
 	 * @return string
 	 */
-	public static function home($https = false)
+	public static function home($https = null)
 	{
 		$route = Router::find('home');
 
@@ -89,9 +89,11 @@ class URL {
 	 *
 	 * @param  string  $url
 	 * @param  bool    $https
+	 * @param  bool    $asset
+	 * @param  bool    $locale
 	 * @return string
 	 */
-	public static function to($url = '', $https = false)
+	public static function to($url = '', $https = null, $asset = false, $locale = true)
 	{
 		// If the given URL is already valid or begins with a hash, we'll just return
 		// the URL unchanged since it is already well formed. Otherwise we will add
@@ -101,7 +103,26 @@ class URL {
 			return $url;
 		}
 
-		$root = static::base().'/'.Config::get('application.index');
+		// Unless $https is specified (true or false), we maintain the current request
+		// security for any new links generated.  So https for all secure links.
+		if (is_null($https)) $https = Request::secure();
+
+		$root = static::base();
+
+		if ( ! $asset)
+		{
+			$root .= '/'.Config::get('application.index');
+		}
+
+		$languages = Config::get('application.languages');
+
+		if ( ! $asset and $locale and count($languages) > 0)
+		{
+			if (in_array($default = Config::get('application.language'), $languages))
+			{
+				$root = rtrim($root, '/').'/'.$default;
+			}
+		}
 
 		// Since SSL is not often used while developing the application, we allow the
 		// developer to disable SSL on all framework generated links to make it more
@@ -165,7 +186,7 @@ class URL {
 	}
 
 	/**
-	 * Generate a action URL from a route definition
+	 * Generate an action URL from a route definition
 	 *
 	 * @param  array   $route
 	 * @param  string  $action
@@ -174,7 +195,7 @@ class URL {
 	 */
 	protected static function explicit($route, $action, $parameters)
 	{
-		$https = array_get(current($route), 'https', false);
+		$https = array_get(current($route), 'https', null);
 
 		return static::to(static::transpose(key($route), $parameters), $https);
 	}
@@ -192,12 +213,10 @@ class URL {
 
 		$bundle = Bundle::get($bundle);
 
-		// If a bundle exists for the action, we will attempt to use it's "handles"
+		// If a bundle exists for the action, we will attempt to use its "handles"
 		// clause as the root of the generated URL, as the bundle can only handle
 		// URIs that begin with that string and no others.
 		$root = $bundle['handles'] ?: '';
-
-		$https = false;
 
 		$parameters = implode('/', $parameters);
 
@@ -230,9 +249,7 @@ class URL {
 			return rtrim($root, '/').'/'.ltrim($url, '/');
 		}
 
-		if (is_null($https)) $https = Request::secure();
-
-		$url = static::to($url, $https);
+		$url = static::to($url, $https, true);
 
 		// Since assets are not served by Laravel, we do not need to come through
 		// the front controller. So, we'll remove the application index specified
@@ -258,7 +275,6 @@ class URL {
 	 *
 	 * @param  string  $name
 	 * @param  array   $parameters
-	 * @param  bool    $https
 	 * @return string
 	 */
 	public static function to_route($name, $parameters = array())
@@ -271,7 +287,7 @@ class URL {
 		// To determine whether the URL should be HTTPS or not, we look for the "https"
 		// value on the route action array. The route has control over whether the URL
 		// should be generated with an HTTPS protocol string or just HTTP.
-		$https = array_get(current($route), 'https', false);
+		$https = array_get(current($route), 'https', null);
 
 		$uri = trim(static::transpose(key($route), $parameters), '/');
 

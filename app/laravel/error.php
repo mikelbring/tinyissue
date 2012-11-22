@@ -13,25 +13,40 @@ class Error {
 	{
 		static::log($exception);
 
-		//ob_get_level() and ob_end_clean();
+		ob_get_level() and ob_end_clean();
+
+		$message = $exception->getMessage();
+
+		// For Laravel view errors we want to show a prettier error:
+		$file = $exception->getFile();
+
+		if (str_contains($exception->getFile(), 'eval()') and str_contains($exception->getFile(), 'laravel/view.php'))
+		{
+			$message = 'Error rendering view: ['.View::$last['name'].']'.PHP_EOL.PHP_EOL.$message;
+
+			$file = View::$last['path'];
+		}
 
 		// If detailed errors are enabled, we'll just format the exception into
 		// a simple error message and display it on the screen. We don't use a
 		// View in case the problem is in the View class.
+
 		if (Config::get('error.detail'))
 		{
-			echo "<html><h2>Unhandled Exception</h2>
-				  <h3>Message:</h3>
-				  <pre>".$exception->getMessage()."</pre>
-				  <h3>Location:</h3>
-				  <pre>".$exception->getFile()." on line ".$exception->getLine()."</pre>";
+			$response_body = "<html><h2>Unhandled Exception</h2>
+				<h3>Message:</h3>
+				<pre>".$message."</pre>
+				<h3>Location:</h3>
+				<pre>".$file." on line ".$exception->getLine()."</pre>";
 
 			if ($trace)
 			{
-				echo "
+				$response_body .= "
 				  <h3>Stack Trace:</h3>
 				  <pre>".$exception->getTraceAsString()."</pre></html>";
 			}
+
+			$response = Response::make($response_body, 500);
 		}
 
 		// If we're not using detailed error messages, we'll use the event
@@ -41,8 +56,12 @@ class Error {
 		{
 			$response = Event::first('500');
 
-			return Response::prepare($response)->send();
+			$response = Response::prepare($response);
 		}
+
+		$response->render();
+		$response->send();
+		$response->foundation->finish();
 
 		exit(1);
 	}
@@ -60,7 +79,7 @@ class Error {
 	{
 		if (error_reporting() === 0) return;
 
-		// For a PHP error, we'll create an ErrorExcepetion and then feed that
+		// For a PHP error, we'll create an ErrorException and then feed that
 		// exception to the exception method, which will create a simple view
 		// of the exception details for the developer.
 		$exception = new \ErrorException($error, $code, 0, $file, $line);
@@ -80,7 +99,7 @@ class Error {
 	 */
 	public static function shutdown()
 	{
-		// If a fatal error occured that we have not handled yet, we will
+		// If a fatal error occurred that we have not handled yet, we will
 		// create an ErrorException and feed it to the exception handler,
 		// as it will not yet have been handled.
 		$error = error_get_last();

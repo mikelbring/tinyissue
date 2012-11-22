@@ -1,5 +1,6 @@
 <?php namespace Laravel;
 
+use Closure;
 use Laravel\Database\Expression;
 use Laravel\Database\Connection;
 
@@ -132,6 +133,18 @@ class Database {
 	public static function profile()
 	{
 		return Database\Connection::$queries;
+	}
+	
+	/**
+	 * Get the last query that was executed.
+	 *
+	 * Returns false if no queries have been executed yet.
+	 *
+	 * @return string
+	 */
+	public static function last_query()
+	{
+		return end(Database\Connection::$queries);
 	}
 
 	/**

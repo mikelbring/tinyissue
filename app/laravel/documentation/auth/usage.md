@@ -50,9 +50,9 @@ To determine if the user of your application is logged in, call the **check** me
 	     return "You're logged in!";
 	}
 
-Use the **login** method to login a user without checking their credentials, such as after a user first registers to use your application. Just pass your user object or the user's ID:
+Use the **login** method to login a user without checking their credentials, such as after a user first registers to use your application. Just pass the user's ID:
 
-	Auth::login($user);
+	Auth::login($user->id);
 
 	Auth::login(15);
 
@@ -63,7 +63,7 @@ It is common to limit access to certain routes only to logged in users. In Larav
 
 To protect a route, simply attach the **auth** filter:
 
-	Route::get('admin', array('before' => 'auth', function() {});
+	Route::get('admin', array('before' => 'auth', function() {}));
 
 > **Note:** You are free to edit the **auth** filter however you like. A default implementation is located in **application/routes.php**.
 
