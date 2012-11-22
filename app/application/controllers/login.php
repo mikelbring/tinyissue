@@ -11,7 +11,7 @@ class Login_Controller extends Controller {
 
 	public function post_index()
 	{
-		if(Auth::attempt(Input::get('email'), Input::get('password'), (bool) Input::get('remember')))
+		if(Auth::attempt(array('username' => Input::get('email'), 'password' => Input::get('password'), 'remember' => (bool) Input::get('remember'))))
 		{
 			return Redirect::to(Input::get('return', '/'));
 		}
