@@ -53,7 +53,7 @@ class Blade {
 				return;
 			}
 
-			$compiled = path('storage').'views/'.md5($view->path);
+			$compiled = Blade::compiled($view->path);
 
 			// If the view doesn't exist or has been modified since the last time it
 			// was compiled, we will recompile the view into pure PHP from it's
@@ -68,7 +68,7 @@ class Blade {
 			// Once the view has been compiled, we can simply set the path to the
 			// compiled view on the view instance and call the typical "get"
 			// method on the view to evaluate the compiled PHP view.
-			return $view->get();
+			return ltrim($view->get());
 		});
 	}
 
@@ -95,7 +95,6 @@ class Blade {
 	 *
 	 * @param  string  $view
 	 * @param  string  $path
-	 * @param  string  $compiled
 	 * @return bool
 	 */
 	public static function expired($view, $path)
@@ -213,12 +212,12 @@ class Blade {
 
 		foreach ($matches[0] as $forelse)
 		{
-			preg_match('/\$[^\s]*/', $forelse, $variable);
+			preg_match('/\s*\(\s*(\S*)\s/', $forelse, $variable);
 
 			// Once we have extracted the variable being looped against, we can add
 			// an if statement to the start of the loop that checks if the count
 			// of the variable being looped against is greater than zero.
-			$if = "<?php if (count({$variable[0]}) > 0): ?>";
+			$if = "<?php if (count({$variable[1]}) > 0): ?>";
 
 			$search = '/(\s*)@forelse(\s*\(.*\))/';
 
@@ -304,7 +303,7 @@ class Blade {
 	{
 		$pattern = '/(\s*)@unless(\s*\(.*\))/';
 
-		return preg_replace($pattern, '$1<?php if( ! ($2)): ?>', $value);
+		return preg_replace($pattern, '$1<?php if ( ! ($2)): ?>', $value);
 	}
 
 	/**
