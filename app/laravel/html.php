@@ -9,13 +9,13 @@ class HTML {
 	 */
 	public static $macros = array();
 
-    /**
-     * Registers a custom macro.
-     *
-     * @param  string   $name
-     * @param  Closure  $input
-     * @return void
-     */
+	/**
+	 * Registers a custom macro.
+	 *
+	 * @param  string   $name
+	 * @param  Closure  $macro
+	 * @return void
+	 */
 	public static function macro($name, $macro)
 	{
 		static::$macros[$name] = $macro;
@@ -43,6 +43,19 @@ class HTML {
 	public static function decode($value)
 	{
 		return html_entity_decode($value, ENT_QUOTES, Config::get('application.encoding'));
+	}
+
+	/**
+	 * Convert HTML special characters.
+	 *
+	 * The encoding specified in the application configuration file will be used.
+	 *
+	 * @param  string  $value
+	 * @return string
+	 */
+	public static function specialchars($value)
+	{
+		return htmlspecialchars($value, ENT_QUOTES, Config::get('application.encoding'), false);
 	}
 
 	/**
@@ -124,9 +137,11 @@ class HTML {
 	 * @param  bool    $https
 	 * @return string
 	 */
-	public static function link($url, $title, $attributes = array(), $https = false)
+	public static function link($url, $title = null, $attributes = array(), $https = null)
 	{
 		$url = URL::to($url, $https);
+
+		if (is_null($title)) $title = $url;
 
 		return '<a href="'.$url.'"'.static::attributes($attributes).'>'.static::entities($title).'</a>';
 	}
@@ -139,7 +154,7 @@ class HTML {
 	 * @param  array   $attributes
 	 * @return string
 	 */
-	public static function link_to_secure($url, $title, $attributes = array())
+	public static function link_to_secure($url, $title = null, $attributes = array())
 	{
 		return static::link($url, $title, $attributes, true);
 	}
@@ -155,9 +170,11 @@ class HTML {
 	 * @param  bool    $https
 	 * @return string
 	 */
-	public static function link_to_asset($url, $title, $attributes = array(), $https = null)
+	public static function link_to_asset($url, $title = null, $attributes = array(), $https = null)
 	{
 		$url = URL::to_asset($url, $https);
+		
+		if (is_null($title)) $title = $url;
 
 		return '<a href="'.$url.'"'.static::attributes($attributes).'>'.static::entities($title).'</a>';
 	}
@@ -170,7 +187,7 @@ class HTML {
 	 * @param  array   $attributes
 	 * @return string
 	 */
-	public static function link_to_secure_asset($url, $title, $attributes = array())
+	public static function link_to_secure_asset($url, $title = null, $attributes = array())
 	{
 		return static::link_to_asset($url, $title, $attributes, true);
 	}
@@ -194,7 +211,7 @@ class HTML {
 	 * @param  array   $attributes
 	 * @return string
 	 */
-	public static function link_to_route($name, $title, $parameters = array(), $attributes = array())
+	public static function link_to_route($name, $title = null, $parameters = array(), $attributes = array())
 	{
 		return static::link(URL::to_route($name, $parameters), $title, $attributes);
 	}
@@ -218,7 +235,7 @@ class HTML {
 	 * @param  array   $attributes
 	 * @return string
 	 */
-	public static function link_to_action($action, $title, $parameters = array(), $attributes = array())
+	public static function link_to_action($action, $title = null, $parameters = array(), $attributes = array())
 	{
 		return static::link(URL::to_action($action, $parameters), $title, $attributes);
 	}
@@ -306,6 +323,8 @@ class HTML {
 	{
 		$html = '';
 
+		if (count($list) == 0) return $html;
+
 		foreach ($list as $key => $value)
 		{
 			// If the value is an array, we will recurse the function so that we can
@@ -313,7 +332,14 @@ class HTML {
 			// lists may exist within nested lists, etc.
 			if (is_array($value))
 			{
-				$html .= static::listing($type, $value);
+				if (is_int($key))
+				{
+					$html .= static::listing($type, $value);
+				}
+				else
+				{
+					$html .= '<li>'.$key.static::listing($type, $value).'</li>';
+				}
 			}
 			else
 			{
@@ -322,6 +348,28 @@ class HTML {
 		}
 
 		return '<'.$type.static::attributes($attributes).'>'.$html.'</'.$type.'>';
+	}
+	
+	/**
+	 * Generate a definition list.
+	 *
+	 * @param  array   $list
+	 * @param  array   $attributes
+	 * @return string
+	 */
+	public static function dl($list, $attributes = array())
+	{
+		$html = '';
+
+		if (count($list) == 0) return $html;
+		
+		foreach ($list as $term => $description)
+		{
+			$html .= '<dt>'.static::entities($term).'</dt>';
+			$html .= '<dd>'.static::entities($description).'</dd>';
+		}
+		
+		return '<dl'.static::attributes($attributes).'>'.$html.'</dl>';
 	}
 
 	/**
@@ -337,7 +385,7 @@ class HTML {
 		foreach ((array) $attributes as $key => $value)
 		{
 			// For numeric keys, we will assume that the key and the value are the
-			// same, as this will conver HTML attributes such as "required" that
+			// same, as this will convert HTML attributes such as "required" that
 			// may be specified as required="required", etc.
 			if (is_numeric($key)) $key = $value;
 
@@ -396,7 +444,7 @@ class HTML {
 	    {
 	        return call_user_func_array(static::$macros[$method], $parameters);
 	    }
-	    
+
 	    throw new \Exception("Method [$method] does not exist.");
 	}
 

@@ -3,6 +3,7 @@
 use Closure;
 use Laravel\Database;
 use Laravel\Paginator;
+use Laravel\Database\Query\Grammars\Postgres;
 use Laravel\Database\Query\Grammars\SQLServer;
 
 class Query {
@@ -69,6 +70,13 @@ class Query {
 	 * @var array
 	 */
 	public $groupings;
+
+	/**
+	 * The HAVING clauses.
+	 *
+	 * @var array
+	 */
+	public $havings;
 
 	/**
 	 * The ORDER BY clauses.
@@ -334,6 +342,67 @@ class Query {
 	{
 		return $this->where_not_in($column, $values, 'OR');
 	}
+	
+	/**
+	 * Add a BETWEEN condition to the query
+	 * 
+	 * @param  string  $column    
+	 * @param  mixed  $min       
+	 * @param  mixed  $max       
+	 * @param  string  $connector 
+	 * @param  boolean $not       
+	 * @return Query
+	 */
+	public function where_between($column, $min, $max, $connector = 'AND', $not = false)
+	{
+		$type = ($not) ? 'where_not_between' : 'where_between';
+
+		$this->wheres[] = compact('type', 'column', 'min', 'max', 'connector');
+
+		$this->bindings[] = $min;
+		$this->bindings[] = $max;
+
+		return $this;
+	}
+
+	/**
+	 * Add a OR BETWEEN condition to the query
+	 * 
+	 * @param  string  $column    
+	 * @param  mixed  $min       
+	 * @param  mixed  $max       
+	 * @return Query
+	 */
+	public function or_where_between($column, $min, $max)
+	{
+		return $this->where_between($column, $min, $max, 'OR');
+	}
+
+	/**
+	 * Add a NOT BETWEEN condition to the query
+	 * 
+	 * @param  string  $column    
+	 * @param  mixed  $min       
+	 * @param  mixed  $max       
+	 * @return Query
+	 */
+	public function where_not_between($column, $min, $max, $connector = 'AND')
+	{
+		return $this->where_between($column, $min, $max, $connector, true);
+	}
+
+	/**
+	 * Add a OR NOT BETWEEN condition to the query
+	 * 
+	 * @param  string  $column    
+	 * @param  mixed  $min       
+	 * @param  mixed  $max       
+	 * @return Query
+	 */
+	public function or_where_not_between($column, $min, $max)
+	{
+		return $this->where_not_between($column, $min, $max, 'OR');
+	}
 
 	/**
 	 * Add a where null condition to the query.
@@ -407,7 +476,10 @@ class Query {
 		// Once the callback has been run on the query, we will store the nested
 		// query instance on the where clause array so that it's passed to the
 		// query's query grammar instance when building.
-		$this->wheres[] = compact('type', 'query', 'connector');
+		if ($query->wheres !== null)
+		{
+			$this->wheres[] = compact('type', 'query', 'connector');
+		}
 
 		$this->bindings = array_merge($this->bindings, $query->bindings);
 
@@ -472,6 +544,22 @@ class Query {
 	public function group_by($column)
 	{
 		$this->groupings[] = $column;
+		return $this;
+	}
+
+	/**
+	 * Add a having to the query.
+	 *
+	 * @param  string  $column
+	 * @param  string  $operator
+	 * @param  mixed   $value
+	 */
+	public function having($column, $operator, $value)
+	{
+		$this->havings[] = compact('column', 'operator', 'value');
+
+		$this->bindings[] = $value;
+
 		return $this;
 	}
 
@@ -594,7 +682,7 @@ class Query {
 		// set the keys on the array of values using the array_combine
 		// function provided by PHP, which should give us the proper
 		// array form to return from the method.
-		if ( ! is_null($key))
+		if ( ! is_null($key) && count($results))
 		{
 			return array_combine(array_map(function($row) use ($key)
 			{
@@ -725,19 +813,23 @@ class Query {
 	 * Insert an array of values into the database table and return the ID.
 	 *
 	 * @param  array   $values
-	 * @param  string  $sequence
+	 * @param  string  $column
 	 * @return int
 	 */
-	public function insert_get_id($values, $sequence = null)
+	public function insert_get_id($values, $column = 'id')
 	{
-		$sql = $this->grammar->insert($this, $values);
+		$sql = $this->grammar->insert_get_id($this, $values, $column);
 
-		$this->connection->query($sql, array_values($values));
+		$result = $this->connection->query($sql, array_values($values));
 
-		// Some database systems (Postgres) require a sequence name to be
-		// given when retrieving the auto-incrementing ID, so we'll pass
-		// the given sequence into the method just in case.
-		return (int) $this->connection->pdo->lastInsertId($sequence);
+		if ($this->grammar instanceof Postgres)
+		{
+			return (int) $result[0]->$column;
+		}
+		else
+		{
+			return (int) $this->connection->pdo->lastInsertId();
+		}
 	}
 
 	/**

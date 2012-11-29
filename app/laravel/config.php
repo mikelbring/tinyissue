@@ -1,7 +1,5 @@
 <?php namespace Laravel; defined('DS') or die('No direct script access.');
 
-use Closure;
-
 class Config {
 
 	/**
@@ -75,7 +73,7 @@ class Config {
 		$items = static::$items[$bundle][$file];
 
 		// If a specific configuration item was not requested, the key will be null,
-		// meaning we'll to return the entire array of configuration item from the
+		// meaning we'll return the entire array of configuration items from the
 		// requested configuration file. Otherwise we can return the item.
 		if (is_null($item))
 		{
@@ -177,7 +175,7 @@ class Config {
 		// requested. This allows many types of config "drivers".
 		$config = Event::first(static::loader, func_get_args());
 
-		// If configuration items were actually found for the bundle and file we
+		// If configuration items were actually found for the bundle and file, we
 		// will add them to the configuration array and return true, otherwise
 		// we will return false indicating the file was not found.
 		if (count($config) > 0)
@@ -226,9 +224,9 @@ class Config {
 		// Configuration files can be made specific for a given environment. If an
 		// environment has been set, we will merge the environment configuration
 		// in last, so that it overrides all other options.
-		if (isset($_SERVER['LARAVEL_ENV']))
+		if ( ! is_null(Request::env()))
 		{
-			$paths[] = $paths[count($paths) - 1].$_SERVER['LARAVEL_ENV'].'/';
+			$paths[] = $paths[count($paths) - 1].Request::env().'/';
 		}
 
 		return $paths;

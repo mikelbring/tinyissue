@@ -1,4 +1,4 @@
-<?php namespace Laravel; defined('DS') or die('No direct script access.');
+<?php namespace Laravel;
 
 class Autoloader {
 
@@ -40,7 +40,7 @@ class Autoloader {
 	/**
 	 * Load the file corresponding to a given class.
 	 *
-	 * This method is registerd in the bootstrap file as an SPL auto-loader.
+	 * This method is registered in the bootstrap file as an SPL auto-loader.
 	 *
 	 * @param  string  $class
 	 * @return void
@@ -52,10 +52,10 @@ class Autoloader {
 		// called again for the "real" class name to load its file.
 		if (isset(static::$aliases[$class]))
 		{
-			class_alias(static::$aliases[$class], $class);
+			return class_alias(static::$aliases[$class], $class);
 		}
 
-		// All classes in Laravel are staticly mapped. There is no crazy search
+		// All classes in Laravel are statically mapped. There is no crazy search
 		// routine that digs through directories. It's just a simple array of
 		// class to file path maps for ultra-fast file loading.
 		elseif (isset(static::$mappings[$class]))
@@ -76,20 +76,6 @@ class Autoloader {
 			}
 		}
 
-		// If the class uses PEAR-ish style underscores for indicating its
-		// directory structure we'll load the class using PSR-0 standards
-		// standards from that directory, trimming the root.
-		foreach (static::$underscored as $prefix => $directory)
-		{
-			if (starts_with($class, $prefix))
-			{
-				return static::load_namespaced($class, $prefix, $directory);
-			}
-		}
-
-		// If all else fails we will just iterator through the mapped
-		// PSR-0 directories looking for the class. This is the last
-		// resort and slowest loading option for the class.
 		static::load_psr($class);
 	}
 
@@ -116,7 +102,7 @@ class Autoloader {
 	protected static function load_psr($class, $directory = null)
 	{
 		// The PSR-0 standard indicates that class namespaces and underscores
-		// shoould be used to indcate the directory tree in which the class
+		// should be used to indicate the directory tree in which the class
 		// resides, so we'll convert them to slashes.
 		$file = str_replace(array('\\', '_'), '/', $class);
 
@@ -177,6 +163,20 @@ class Autoloader {
 	}
 
 	/**
+	 * Map namespaces to directories.
+	 *
+	 * @param  array   $mappings
+	 * @param  string  $append
+	 * @return void
+	 */
+	public static function namespaces($mappings, $append = '\\')
+	{
+		$mappings = static::format_mappings($mappings, $append);
+
+		static::$namespaces = array_merge($mappings, static::$namespaces);
+	}
+
+	/**
 	 * Register underscored "namespaces" to directory mappings.
 	 *
 	 * @param  array  $mappings
@@ -184,22 +184,7 @@ class Autoloader {
 	 */
 	public static function underscored($mappings)
 	{
-		$mappings = static::format_mappings($mappings, '_');
-
-		static::$underscored = array_merge($mappings, static::$underscored);
-	}
-
-	/**
-	 * Map namespaces to directories.
-	 *
-	 * @param  array  $mappings
-	 * @return void
-	 */
-	public static function namespaces($mappings)
-	{
-		$mappings = static::format_mappings($mappings, '\\');
-
-		static::$namespaces = array_merge($mappings, static::$namespaces);
+		static::namespaces($mappings, '_');
 	}
 
 	/**

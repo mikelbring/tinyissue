@@ -35,16 +35,16 @@ class Memcached {
 	/**
 	 * Create a new Memcached connection instance.
 	 *
-	 * @param  array     $servers
+	 * @param  array      $servers
 	 * @return Memcached
 	 */
 	protected static function connect($servers)
 	{
-		$memcache = new \Memcache;
+		$memcache = new \Memcached;
 
 		foreach ($servers as $server)
 		{
-			$memcache->addServer($server['host'], $server['port'], true, $server['weight']);
+			$memcache->addServer($server['host'], $server['port'], $server['weight']);
 		}
 
 		if ($memcache->getVersion() === false)
@@ -68,7 +68,7 @@ class Memcached {
 	 */
 	public static function __callStatic($method, $parameters)
 	{
-		return call_user_func_array(array(static::instance(), $method), $parameters);
+		return call_user_func_array(array(static::connection(), $method), $parameters);
 	}
 
 }

@@ -38,9 +38,19 @@ class Has_One extends Has_One_Or_Many {
 	{
 		$foreign = $this->foreign_key();
 
-		foreach ($children as $key => $child)
+		$dictionary = array();
+
+		foreach ($children as $child)
 		{
-			$parents[$child->$foreign]->relationships[$relationship] = $child;
+			$dictionary[$child->$foreign] = $child;
+		}
+
+		foreach ($parents as $parent)
+		{
+			if (array_key_exists($key = $parent->get_key(), $dictionary))
+			{
+				$parent->relationships[$relationship] = $dictionary[$key];
+			}
 		}
 	}
 

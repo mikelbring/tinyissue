@@ -1,4 +1,4 @@
-<?php namespace Laravel; use Closure, FilesystemIterator as fIterator;
+<?php namespace Laravel; use FilesystemIterator as fIterator;
 
 class File {
 
@@ -61,11 +61,11 @@ class File {
 	 * Delete a file.
 	 *
 	 * @param  string  $path
-	 * @return void
+	 * @return bool
 	 */
 	public static function delete($path)
 	{
-		if (static::exists($path)) @unlink($path);
+		if (static::exists($path)) return @unlink($path);
 	}
 
 	/**
@@ -94,7 +94,7 @@ class File {
 
 	/**
 	 * Extract the file extension from a file path.
-	 * 
+	 *
 	 * @param  string  $path
 	 * @return string
 	 */
@@ -161,7 +161,7 @@ class File {
 	}
 
 	/**
-	 * Determine if a file is a given type.
+	 * Determine if a file is of a given type.
 	 *
 	 * The Fileinfo PHP extension is used to determine the file's MIME type.
 	 *
@@ -184,7 +184,7 @@ class File {
 		$mime = finfo_file(finfo_open(FILEINFO_MIME_TYPE), $path);
 
 		// The MIME configuration file contains an array of file extensions and
-		// their associated MIME types. We will spin through each extension the
+		// their associated MIME types. We will loop through each extension the
 		// developer wants to check and look for the MIME type.
 		foreach ((array) $extensions as $extension)
 		{
@@ -273,8 +273,9 @@ class File {
 			}
 		}
 
-		if ($delete) rmdir($source);
-		
+		unset($items);
+		if ($delete) @rmdir($source);
+
 		return true;
 	}
 
@@ -295,7 +296,7 @@ class File {
 		{
 			// If the item is a directory, we can just recurse into the
 			// function and delete that sub-directory, otherwise we'll
-			// just deleete the file and keep going!
+			// just delete the file and keep going!
 			if ($item->isDir())
 			{
 				static::rmdir($item->getRealPath());
@@ -306,6 +307,7 @@ class File {
 			}
 		}
 
+		unset($items);
 		if ( ! $preserve) @rmdir($directory);
 	}
 
@@ -329,16 +331,22 @@ class File {
 	 */
 	public static function latest($directory, $options = fIterator::SKIP_DOTS)
 	{
+		$latest = null;
+
 		$time = 0;
 
 		$items = new fIterator($directory, $options);
 
-		// To get the latest created file, we'll simply spin through the
+		// To get the latest created file, we'll simply loop through the
 		// directory, setting the latest file if we encounter a file
 		// with a UNIX timestamp greater than the latest one.
 		foreach ($items as $item)
 		{
-			if ($item->getMTime() > $time) $latest = $item;
+			if ($item->getMTime() > $time) 
+			{
+				$latest = $item;
+				$time = $item->getMTime();
+			}
 		}
 
 		return $latest;

@@ -1,5 +1,7 @@
 <?php namespace Laravel;
 
+use Router;
+
 /*
 |--------------------------------------------------------------------------
 | Bootstrap The Framework Core
@@ -27,18 +29,24 @@ require 'core.php';
 
 set_exception_handler(function($e)
 {
+	require_once path('sys').'error'.EXT;
+
 	Error::exception($e);
 });
 
 
 set_error_handler(function($code, $error, $file, $line)
 {
+	require_once path('sys').'error'.EXT;
+
 	Error::native($code, $error, $file, $line);
 });
 
 
 register_shutdown_function(function()
 {
+	require_once path('sys').'error'.EXT;
+
 	Error::shutdown();
 });
 
@@ -48,86 +56,12 @@ register_shutdown_function(function()
 |--------------------------------------------------------------------------
 |
 | By setting error reporting to -1, we essentially force PHP to report
-| every error, and this is guranteed to show every error on future
+| every error, and this is guaranteed to show every error on future
 | releases of PHP. This allows everything to be fixed early!
 |
 */
 
 error_reporting(-1);
-
-/*
-|--------------------------------------------------------------------------
-| Magic Quotes Strip Slashes
-|--------------------------------------------------------------------------
-|
-| Even though "Magic Quotes" are deprecated in PHP 5.3.x, they may still
-| be enabled on the server. To account for this, we will strip slashes
-| on all input arrays if magic quotes are enabled for the server.
-|
-*/
-
-if (magic_quotes())
-{
-	$magics = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
-
-	foreach ($magics as &$magic)
-	{
-		$magic = array_strip_slashes($magic);
-	}
-}
-
-/*
-|--------------------------------------------------------------------------
-| Sniff The Input For The Request
-|--------------------------------------------------------------------------
-|
-| Next we'll gather the input to the application based on the global input
-| variables for the current request. The input will be gathered based on
-| the current request method and will be set on the Input manager class
-| as a simple static $input property which can be easily accessed.
-|
-*/
-
-$input = array();
-
-switch (Request::method())
-{
-	case 'GET':
-		$input = $_GET;
-		break;
-
-	case 'POST':
-		$input = $_POST;
-		break;
-
-	default:
-		if (Request::spoofed())
-		{
-			$input = $_POST;
-		}
-		else
-		{
-			parse_str(file_get_contents('php://input'), $input);
-
-			if (magic_quotes()) $input = array_strip_slashes($input);
-		}
-}
-
-/*
-|--------------------------------------------------------------------------
-| Remove The Spoofer Input
-|--------------------------------------------------------------------------
-|
-| The spoofed request method is removed from the input so it is not in
-| the Input::all() or Input::get() results. Leaving it in the array
-| could cause unexpected results since the developer won't be
-| expecting it to be present.
-|
-*/
-
-unset($input[Request::spoofer]);
-
-Input::$input = $input;
 
 /*
 |--------------------------------------------------------------------------
@@ -170,10 +104,52 @@ foreach (Bundle::$bundles as $bundle => $config)
 |
 */
 
-Routing\Router::register('*', '(:all)', function()
+Router::register('*', '(:all)', function()
 {
 	return Event::first('404');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Gather The URI And Locales
+|--------------------------------------------------------------------------
+|
+| When routing, we'll need to grab the URI and the supported locales for
+| the route so we can properly set the language and route the request
+| to the proper end-point in the application.
+|
+*/
+
+$uri = URI::current();
+
+$languages = Config::get('application.languages', array());
+
+$languages[] = Config::get('application.language');
+
+/*
+|--------------------------------------------------------------------------
+| Set The Locale Based On The Route
+|--------------------------------------------------------------------------
+|
+| If the URI starts with one of the supported languages, we will set
+| the default lagnauge to match that URI segment and shorten the
+| URI we'll pass to the router to not include the lang segment.
+|
+*/
+
+foreach ($languages as $language)
+{
+	if (preg_match("#^{$language}(?:$|/)#i", $uri))
+	{
+		Config::set('application.language', $language);
+
+		$uri = trim(substr($uri, strlen($language)), '/'); break;
+	}
+}
+
+if ($uri == '') $uri = '/';
+
+URI::$uri = $uri;
 
 /*
 |--------------------------------------------------------------------------
@@ -186,11 +162,22 @@ Routing\Router::register('*', '(:all)', function()
 |
 */
 
-$uri = URI::current();
-
-Request::$route = Routing\Router::route(Request::method(), $uri);
+Request::$route = Router::route(Request::method(), $uri);
 
 $response = Request::$route->call();
+
+/*
+|--------------------------------------------------------------------------
+| "Render" The Response
+|--------------------------------------------------------------------------
+|
+| The render method evaluates the content of the response and converts it
+| to a string. This evaluates any views and sub-responses within the
+| content and sets the raw string result as the new response.
+|
+*/
+
+$response->render();
 
 /*
 |--------------------------------------------------------------------------
@@ -198,7 +185,7 @@ $response = Request::$route->call();
 |--------------------------------------------------------------------------
 |
 | If a session driver has been configured, we will save the session to
-| storage so it is avaiable for the next request. This will also set
+| storage so it is available for the next request. This will also set
 | the session cookie in the cookie jar to be sent to the user.
 |
 */
@@ -207,19 +194,6 @@ if (Config::get('session.driver') !== '')
 {
 	Session::save();
 }
-
-/*
-|--------------------------------------------------------------------------
-| Let's Eat Cookies
-|--------------------------------------------------------------------------
-|
-| All cookies set during the request are actually stored in a cookie jar
-| until the end of the request so they can be expected by unit tests or
-| the developer. Here, we'll push them out to the browser.
-|
-*/
-
-Cookie::send();	
 
 /*
 |--------------------------------------------------------------------------
@@ -240,10 +214,24 @@ $response->send();
 | And We're Done!
 |--------------------------------------------------------------------------
 |
-| Raise the "done" event so extra output can be attached to the response
+| Raise the "done" event so extra output can be attached to the response.
 | This allows the adding of debug toolbars, etc. to the view, or may be
 | used to do some kind of logging by the application.
 |
 */
 
 Event::fire('laravel.done', array($response));
+
+/*
+|--------------------------------------------------------------------------
+| Finish the request for PHP-FastCGI
+|--------------------------------------------------------------------------
+|
+| Stopping the PHP process for PHP-FastCGI users to speed up some
+| PHP queries. Acceleration is possible when there are actions in the
+| process of script execution that do not affect server response.
+| For example, saving the session in memcached can occur after the page
+| has been formed and passed to a web server.
+*/
+
+$response->foundation->finish();
