@@ -1,4 +1,6 @@
-<?php namespace Laravel\Database; use PDO, PDOStatement, Laravel\Config, Laravel\Event;
+<?php namespace Laravel\Database;
+
+use PDO, PDOStatement, Laravel\Config, Laravel\Event;
 
 class Connection {
 
@@ -71,13 +73,24 @@ class Connection {
 	{
 		if (isset($this->grammar)) return $this->grammar;
 
-		switch (isset($this->config['grammar']) ? $this->config['grammar'] : $this->driver())
+		if (isset(\Laravel\Database::$registrar[$this->driver()]))
+		{
+			\Laravel\Database::$registrar[$this->driver()]['query']();
+		}
+
+		switch ($this->driver())
 		{
 			case 'mysql':
 				return $this->grammar = new Query\Grammars\MySQL($this);
 
+			case 'sqlite':
+				return $this->grammar = new Query\Grammars\SQLite($this);
+
 			case 'sqlsrv':
 				return $this->grammar = new Query\Grammars\SQLServer($this);
+
+			case 'pgsql':
+				return $this->grammar = new Query\Grammars\Postgres($this);
 
 			default:
 				return $this->grammar = new Query\Grammars\Grammar($this);
@@ -87,14 +100,14 @@ class Connection {
 	/**
 	 * Execute a callback wrapped in a database transaction.
 	 *
-	 * @param  Closure  $callback
+	 * @param  callback  $callback
 	 * @return void
 	 */
 	public function transaction($callback)
 	{
 		$this->pdo->beginTransaction();
 
-		// After beginning the database transaction, we will call the Closure
+		// After beginning the database transaction, we will call the callback
 		// so that it can do its database work. If an exception occurs we'll
 		// rollback the transaction and re-throw back to the developer.
 		try
@@ -165,18 +178,27 @@ class Connection {
 	 */
 	public function query($sql, $bindings = array())
 	{
+		$sql = trim($sql);
+
 		list($statement, $result) = $this->execute($sql, $bindings);
 
 		// The result we return depends on the type of query executed against the
 		// database. On SELECT clauses, we will return the result set, for update
 		// and deletes we will return the affected row count.
-		if (stripos($sql, 'select') === 0)
+		if (stripos($sql, 'select') === 0 || stripos($sql, 'show') === 0)
 		{
 			return $this->fetch($statement, Config::get('database.fetch'));
 		}
 		elseif (stripos($sql, 'update') === 0 or stripos($sql, 'delete') === 0)
 		{
 			return $statement->rowCount();
+		}
+		// For insert statements that use the "returning" clause, which is allowed
+		// by database systems such as Postgres, we need to actually return the
+		// real query result so the consumer can get the ID.
+		elseif (stripos($sql, 'insert') === 0 and stripos($sql, 'returning') !== false)
+		{
+			return $this->fetch($statement, Config::get('database.fetch'));
 		}
 		else
 		{
@@ -187,7 +209,7 @@ class Connection {
 	/**
 	 * Execute a SQL query against the connection.
 	 *
-	 * The PDO statement and boolean result will be return in an array.
+	 * The PDO statement and boolean result will be returned in an array.
 	 *
 	 * @param  string  $sql
 	 * @param  array   $bindings
@@ -208,6 +230,19 @@ class Connection {
 		$bindings = array_values($bindings);
 
 		$sql = $this->grammar()->shortcut($sql, $bindings);
+
+		// Next we need to translate all DateTime bindings to their date-time
+		// strings that are compatible with the database. Each grammar may
+		// define it's own date-time format according to its needs.
+		$datetime = $this->grammar()->datetime;
+
+		for ($i = 0; $i < count($bindings); $i++)
+		{
+			if ($bindings[$i] instanceof \DateTime)
+			{
+				$bindings[$i] = $bindings[$i]->format($datetime);
+			}
+		}
 
 		// Each database operation is wrapped in a try / catch so we can wrap
 		// any database exceptions in our custom exception class, which will
@@ -230,7 +265,7 @@ class Connection {
 			throw $exception;
 		}
 
-		// Once we have execute the query, we log the SQL, bindings, and
+		// Once we have executed the query, we log the SQL, bindings, and
 		// execution time in a static array that is accessed by all of
 		// the connections actively being used by the application.
 		if (Config::get('database.profile'))
@@ -252,7 +287,7 @@ class Connection {
 	{
 		// If the fetch style is "class", we'll hydrate an array of PHP
 		// stdClass objects as generic containers for the query rows,
-		// otherwise we'll just use the fetch styel value.
+		// otherwise we'll just use the fetch style value.
 		if ($style === PDO::FETCH_CLASS)
 		{
 			return $statement->fetchAll(PDO::FETCH_CLASS, 'stdClass');
@@ -287,7 +322,7 @@ class Connection {
 	 */
 	public function driver()
 	{
-		return $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
+		return $this->config['driver'];
 	}
 
 	/**

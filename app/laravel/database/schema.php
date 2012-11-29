@@ -41,14 +41,36 @@ class Schema {
 	}
 
 	/**
+	 * Rename a database table in the schema.
+	 *
+	 * @param  string  $table
+	 * @param  string  $new_name
+	 * @return void
+	 */
+	public static function rename($table, $new_name)
+	{
+		$table = new Schema\Table($table);
+
+		// To indicate that the table needs to be renamed, we will run the
+		// "rename" command on the table instance and pass the instance to
+		// the execute method as calling a Closure isn't needed.
+		$table->rename($new_name);
+
+		return static::execute($table);
+	}
+
+	/**
 	 * Drop a database table from the schema.
 	 *
 	 * @param  string  $table
+	 * @param  string  $connection
 	 * @return void
 	 */
-	public static function drop($table)
+	public static function drop($table, $connection = null)
 	{
 		$table = new Schema\Table($table);
+
+		$table->on($connection);
 
 		// To indicate that the table needs to be dropped, we will run the
 		// "drop" command on the table instance and pass the instance to
@@ -68,7 +90,7 @@ class Schema {
 	{
 		// The implications method is responsible for finding any fluently
 		// defined indexes on the schema table and adding the explicit
-		// commands that are needed to tbe schema instance.
+		// commands that are needed for the schema instance.
 		static::implications($table);
 
 		foreach ($table->commands as $command)
@@ -144,6 +166,11 @@ class Schema {
 	public static function grammar(Connection $connection)
 	{
 		$driver = $connection->driver();
+
+		if (isset(\Laravel\Database::$registrar[$driver]))
+		{
+			return \Laravel\Database::$registrar[$driver]['schema']();
+		}
 
 		switch ($driver)
 		{

@@ -31,7 +31,7 @@ abstract class Driver {
 	abstract public function delete($id);
 
 	/**
-	 * Insert a fresh session and return the payload array.
+	 * Create a fresh session array with a unique ID.
 	 *
 	 * @return array
 	 */
@@ -63,7 +63,7 @@ abstract class Driver {
 			return Str::random(40);
 		}
 
-		// We'll containue generating random IDs until we find an ID that is
+		// We'll continue generating random IDs until we find an ID that is
 		// not currently assigned to a session. This is almost definitely
 		// going to happen on the first iteration.
 		do {
