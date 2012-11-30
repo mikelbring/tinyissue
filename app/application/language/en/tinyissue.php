@@ -107,5 +107,6 @@ return array(
 	'user_deleted' => 'User Deleted',
 	'user_updated' => 'User Updated',
 	'user_added' => 'User Added'
+	'language' => 'Language',
 
 );
