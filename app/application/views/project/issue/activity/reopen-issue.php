@@ -3,10 +3,10 @@
 		<div class="topbar">
 
 			<div class="data">
-				<label class="label important">Reopened</label> by <strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong> 
+				<label class="label important">Reopened</label> by <strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong>
 				<span class="time">
-					<?php echo date('F jS \a\t g:i A', strtotime($activity->created_at)); ?>
-				</span>		
+					<?php echo date(Config::get('application.time_format'), strtotime($activity->created_at)); ?>
+				</span>
 		</div>
 	</div>
 </li>

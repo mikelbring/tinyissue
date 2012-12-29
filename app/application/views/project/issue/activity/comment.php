@@ -12,13 +12,13 @@
 			</ul>
 			<?php endif; ?>
 			<strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong>
-			<?php echo __('tinyissue.commented'); ?> <?php echo date('F jS \a\t g:i A', strtotime($comment->updated_at)); ?>
+			<?php echo __('tinyissue.commented'); ?> <?php echo date(Config::get('application.time_format'), strtotime($comment->updated_at)); ?>
 		</div>
 
 		<div class="issue">
 			<?php echo Project\Issue\Comment::format($comment->comment); ?>
 		</div>
-		
+
 		<?php if(Auth::user()->permission('issue-modify')): ?>
 		<div class="comment-edit">
 			<textarea name="body" style="width: 98%; height: 90px;"><?php echo stripslashes($comment->comment); ?></textarea>
@@ -28,7 +28,7 @@
 			</div>
 		</div>
 		<?php endif; ?>
-		
+
 		<ul class="attachments">
 			<?php foreach($comment->attachments()->get() as $attachment): ?>
 			<li>

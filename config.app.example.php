@@ -56,8 +56,8 @@ return array(
 		'smtp' => array(
 			'server' => '',
 			'port' => 25,
-			
-			/* 
+
+			/*
 			* Encryption support, SSL/TLS, used with gmail servers
 			* Default: blank
 			*/
@@ -73,6 +73,12 @@ return array(
 	 * - http://php.net/manual/en/timezones.php
 	 */
 	'timezone' => 'America/Chicago',
+
+    /**
+     * Time format to use
+     * - http://php.net/manual/en/function.date.php
+     */
+    'time_format' => 'F jS \a\t g:i A',
 
 	/**
 	 * Put in a random key combination to use as your session keys

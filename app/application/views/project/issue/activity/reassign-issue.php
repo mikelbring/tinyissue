@@ -1,7 +1,7 @@
 <li id="comment<?php echo $activity->id; ?>" class="comment">
 
 	<div class="insides">
-		<div class="topbar">		
+		<div class="topbar">
 			<label class="label warning">Reassigned</label> to
 			<?php if($activity->action_id > 0): ?>
 			<strong><?php echo $assigned->firstname . ' ' . $assigned->lastname; ?></strong>
@@ -12,7 +12,7 @@
 			<strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong>
 
 			<span class="time">
-				<?php echo date('F jS \a\t g:i A', strtotime($activity->created_at)); ?>
+				<?php echo date(Config::get('application.time_format'), strtotime($activity->created_at)); ?>
 			</span>
 		</div>
 
