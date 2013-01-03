@@ -643,6 +643,40 @@ p{
 	color: #48a547;
 }
 
+/* style markdowned elements */
+.issue ul {
+    list-style-type: disc;
+    list-style-position: inside;
+}
+.issue ol {
+    list-style-type: decimal;
+    list-style-position: inside;
+}
+.issue code {
+    margin: 0 2px;
+    padding: 0px 5px;
+    border: 1px solid #EAEAEA;
+    background-color: #F8F8F8;
+    border-radius: 3px;
+    font-family: monospace;
+}
+.issue pre {
+    background-color: #F8F8F8;
+    border: 1px solid #EAEAEA;
+    overflow: auto;
+    padding: 6px 10px;
+    border-radius: 3px;
+    margin: 15px 0;
+    font-family: monospace;
+    white-space: pre;
+}
+.issue pre code {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background-color: transparent;
+}
+
 /* User list */
 #users-list > ul{
 	background: #dddddd;
