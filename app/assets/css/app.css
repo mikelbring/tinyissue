@@ -652,9 +652,6 @@ p{
     list-style-type: decimal;
     list-style-position: inside;
 }
-.issue blockquote {
-    display: block;
-}
 .issue code {
     font-family: monospace;
 }
