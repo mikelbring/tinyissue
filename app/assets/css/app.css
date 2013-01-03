@@ -676,6 +676,10 @@ p{
     border: none;
     background-color: transparent;
 }
+.blue-box .activity .data .comment li {
+    padding: 0;
+    border-bottom: 0;
+}
 
 /* User list */
 #users-list > ul{
