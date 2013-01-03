@@ -644,14 +644,18 @@ p{
 }
 
 /* style markdowned elements */
-.issue > ul {
+.issue ul {
     list-style-type: disc;
     list-style-position: inside;
 }
-.issue > blockquote {
+.issue ol {
+    list-style-type: decimal;
+    list-style-position: inside;
+}
+.issue blockquote {
     display: block;
 }
-.issue > code {
+.issue code {
     font-family: monospace;
 }
 
