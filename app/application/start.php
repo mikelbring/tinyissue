@@ -32,6 +32,7 @@ Laravel\Event::listen(Laravel\Config::loader, function($bundle, $file) use ($con
 			$config = array(
 				'url' => isset($config_app['url']) ? $config_app['url'] : '',
 				'timezone' => $config_app['timezone'],
+                'time_format' => $config_app['time_format'],
 				'key' => $config_app['key'],
 				'index' => !$config_app['mod_rewrite'] ? 'index.php' : '',
 				'mail' => $config_app['mail']
@@ -52,7 +53,7 @@ Laravel\Event::listen(Laravel\Config::loader, function($bundle, $file) use ($con
 				'prefix'   => '',
 				'driver' => $config_app['database']['driver']
 			);
-			
+
 			$config['default'] = $config_app['database']['driver'];
 
 			$load = $config + $load;

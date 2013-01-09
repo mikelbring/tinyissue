@@ -1,4 +1,4 @@
-<?php 
+<?php
 if(isset($_POST['create_config']) && isset($_POST['database_host']))
 {
 
@@ -19,8 +19,9 @@ if(isset($_POST['create_config']) && isset($_POST['database_host']))
 	$config_file = str_replace('Your E-Mail Name', $_POST['email_name'], $config_file);
 	$config_file = str_replace('name@domain.com', $_POST['email_address'], $config_file);
 
-	/* Timezone */
+	/* Time settings */
 	$config_file = str_replace('America/Chicago', $_POST['timezone'], $config_file);
+	$config_file = str_replace('F jS \a\t g:i A', $_POST['time_format'], $config_file);
 
 	/* Key */
 	$config_file = str_replace('yourrandomkey', md5(serialize($_POST) . time() . $_SERVER['HTTP_HOST']), $config_file);
@@ -81,7 +82,7 @@ if(isset($_POST['create_config']) && isset($_POST['database_host']))
 	</table>
 </div>
 
-<?php 
+<?php
 	}
 exit();
 }
@@ -142,7 +143,7 @@ if(!file_exists('../config.app.php')){ ?>
 					<th>Timezone</th>
 					<td>
 						<select name="timezone">
-<?php 
+<?php
 $timezones = timezone_identifiers_list();
 
 echo 'select name="timezone" size="10">' . "\n";
@@ -156,9 +157,16 @@ foreach($timezones as $timezone)
 
 echo '</select>' . "\n";
 ?>
-						</select>	
+						</select>
 					</td>
 				</tr>
+                <tr>
+                    <th>Time Format</th>
+                    <td>
+                        <input type="text" name="time_format" value="F jS \a\t g:i A" />
+                        <p>See the <a href="http://php.net/manual/en/function.date.php" target="_blank">PHP Manual</a> for valid parameters.</p>
+                    </td>
+                </tr>
 				<tr>
 					<th></th>
 					<td>
