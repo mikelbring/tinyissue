@@ -5,6 +5,31 @@ class Setting extends \Eloquent {
 	public static $table = 'user';
 
 	/**
+	* Get available languages from translations folder
+	*
+	* @return array
+	*/
+	public static function get_languages($user_id)
+	{
+		$languages = array() ;
+		
+		$cdir = scandir('application/language') ;
+		foreach ($cdir as $key => $value)
+		{
+			if (!in_array($value,array(".","..")))
+			{
+				$selected='' ;
+				if($value == $user_id)
+					$selected = "selected" ;
+					
+				array_push($languages, array('name' => $value, 'selected' => $selected)) ;
+			}
+		}
+		
+		return $languages ;
+	}
+
+	/**
 	* Updates the users settings, validates the fields
 	*
 	* @param  array  $info
@@ -16,6 +41,7 @@ class Setting extends \Eloquent {
 		$rules = array(
 			'firstname'  => array('required', 'max:50'),
 			'lastname'  => array('required', 'max:50'),
+			'language'  => array('required'),
 			'email' => array('required', 'email'),
 		);
 
@@ -39,7 +65,8 @@ class Setting extends \Eloquent {
 		$update = array(
 			'email' => $info['email'],
 			'firstname' => $info['firstname'],
-			'lastname' => $info['lastname']
+			'lastname' => $info['lastname'],
+			'language' => $info['language']
 		);
 
 		/* Update the password */
