@@ -33,6 +33,17 @@
 				</td>
 			</tr>
 			<tr>
+				<th><?php echo __('tinyissue.language') ; ?></th>
+				<td>
+					<select name="language">				
+						<?php $languages = User\Setting::get_languages($user->language) ; ?>
+						<?php foreach($languages as $language) :	 ?>
+							<option <?php echo $language['selected'] ; ?> value="<?php echo $language['name'] ; ?>"><?php echo $language['name'] ; ?></option>
+						<?php endforeach ; ?>
+					</select>
+				</td>
+			</tr>
+			<tr>
 				<th colspan="2">
 					<?php echo __('tinyissue.only_complete_if_changing_password'); ?>
 				</th>
