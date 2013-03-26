@@ -1,5 +1,16 @@
 # Tiny Issue Change Log
 
+## Tiny Issue v1.3
+
+- Added support for user language (issue#84)
+- Login will take you back to where you wanted to go (issue#68)
+- Minor CSS updates and bug fixes
+
+### Upgrading from v1.2.3
+
+- Run the `install/update_v1-1_3.sql` in your database
+- Replace the `app` folder
+
 ## Tiny Issue v1.2.3
 
 - Added support for SMTP encryption protocol
