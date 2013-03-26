@@ -107,7 +107,7 @@ return array(
 	'you_put_no_comment' =>'Vous ne pouvez pas commenter ce ticket !',
 	'user_deleted' => 'Utilisateur supprim&eacute;',
 	'user_updated' => 'Utilisateur mis &agrave; jour',
-	'user_added' => 'Utilisateur ajout&eacute;'
-	'language' => 'Langue',
+	'user_added' => 'Utilisateur ajout&eacute;',
+	'language' => 'Langue'
 
 );
