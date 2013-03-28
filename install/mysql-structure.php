@@ -124,6 +124,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(255) default NULL,
   `firstname` varchar(255) default NULL,
   `lastname` varchar(255) default NULL,
+  `language` varchar(5) default NULL,
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   `deleted` int(1) NOT NULL default '0',
@@ -139,7 +140,6 @@ CREATE TABLE IF NOT EXISTS `users_activity` (
   `action_id` bigint(20) default NULL,
   `type_id` int(11) default NULL,
   `data` text character set UTF8,
-  `language` varchar(5) default NULL,
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   PRIMARY KEY  (`id`)
