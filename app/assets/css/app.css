@@ -58,11 +58,12 @@ h3 .addnewuser{
 	background: url('../images/layout/addnewuser.png') no-repeat;
 	text-indent: -999999px;
 }
-h3 .edit-issue{
-	padding-right: 15px;
+h3 .edit-issue {
+    padding-right: 35px;
+    padding-top: 5px;
 }
-h3 .edit-issue:hover{
-	background: url('../images/icons/edit.png') no-repeat center right;
+h3 .edit-issue:hover {
+    background: url("../images/layout/icon-bigedit.png") no-repeat scroll right center transparent;
 }
 h4{
 	font-size: 18px;
