@@ -107,6 +107,19 @@ return array(
 	'you_put_no_comment' => '您沒有任何評論！',
 	'user_deleted' => '已刪除使用者',
 	'user_updated' => '更新使用者',
-	'user_added' => '已新增使用者'
-
+	'user_added' => '已新增使用者',
+//BELOW TRANSLATION IS NEEDED
+        'language' => 'Language',
+        'by' => 'by',
+        'on_issue' => 'on issue',
+        'label_closed' => 'Closed',
+        'label_comment' => 'Comment',
+        'label_reopened' => 'Reopened',
+        'label_created' => 'Created',
+        'label_reassigned' => 'Reassigned',
+        'was_closed_by' => 'was closed by',
+        'was_reopened_by' => 'was reopened by',
+        'was_created_by' => 'was created by',
+        'was_reassigned_to' => 'was reassigned to',
+        'dashboard_description' => 'An overview of all the activity involving your active projects.'
 );
