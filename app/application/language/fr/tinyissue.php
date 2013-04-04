@@ -107,7 +107,19 @@ return array(
 	'you_put_no_comment' =>'Vous ne pouvez pas commenter ce ticket !',
 	'user_deleted' => 'Utilisateur supprim&eacute;',
 	'user_updated' => 'Utilisateur mis &agrave; jour',
-	'user_added' => 'Utilisateur ajout&eacute;',
-	'language' => 'Langue'
-
+	'user_added' => 'Utilisateur ajout&eacute;'
+	'language' => 'Langue',
+//BELOW TRANSLATION IS NEEDED
+        'by' => 'by',
+        'on_issue' => 'on issue',
+        'label_closed' => 'Closed',
+        'label_comment' => 'Comment',
+        'label_reopened' => 'Reopened',
+        'label_created' => 'Created',
+        'label_reassigned' => 'Reassigned',
+        'was_closed_by' => 'was closed by',
+        'was_reopened_by' => 'was reopened by',
+        'was_created_by' => 'was created by',
+        'was_reassigned_to' => 'was reassigned to',
+        'dashboard_description' => 'An overview of all the activity involving your active projects.'
 );

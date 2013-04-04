@@ -1,7 +1,7 @@
 <h3>
-	Dashboard
+	<?php echo __('tinyissue.dashboard'); ?>
 	<span>
-		An overview of all the activity involving your active projects.
+		<?php echo __('tinyissue.dashboard_description'); ?>
 	</span>
 </h3>
 

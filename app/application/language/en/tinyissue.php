@@ -107,6 +107,17 @@ return array(
 	'user_deleted' => 'User Deleted',
 	'user_updated' => 'User Updated',
 	'user_added' => 'User Added',
-	'language' => 'Language'
-
+	'language' => 'Language',
+	'by' => 'by',
+	'on_issue' => 'on issue',
+	'label_closed' => 'Closed',
+	'label_comment' => 'Comment',
+	'label_reopened' => 'Reopened',
+	'label_created' => 'Created',
+	'label_reassigned' => 'Reassigned',
+	'was_closed_by' => 'was closed by',
+	'was_reopened_by' => 'was reopened by',
+	'was_created_by' => 'was created by',
+	'was_reassigned_to' => 'was reassigned to',
+	'dashboard_description' => 'An overview of all the activity involving your active projects.'
 );

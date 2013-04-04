@@ -108,6 +108,19 @@ return array(
 	'you_put_no_comment' =>'You did not put in a comment!',
 	'user_deleted' => 'Пользователь удален',
 	'user_updated' => 'Пользователь обновлен',
-	'user_added' => 'Пользователь добавлен'
-
+	'user_added' => 'Пользователь добавлен',
+//BELOW TRANSLATION IS NEEDED
+        'language' => 'Language',
+        'by' => 'by',
+        'on_issue' => 'on issue',
+        'label_closed' => 'Closed',
+        'label_comment' => 'Comment',
+        'label_reopened' => 'Reopened',
+        'label_created' => 'Created',
+        'label_reassigned' => 'Reassigned',
+        'was_closed_by' => 'was closed by',
+        'was_reopened_by' => 'was reopened by',
+        'was_created_by' => 'was created by',
+        'was_reassigned_to' => 'was reassigned to',
+        'dashboard_description' => 'An overview of all the activity involving your active projects.'
 );
