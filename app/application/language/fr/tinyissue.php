@@ -109,17 +109,16 @@ return array(
 	'user_updated' => 'Utilisateur mis &agrave; jour',
 	'user_added' => 'Utilisateur ajout&eacute;'
 	'language' => 'Langue',
-//BELOW TRANSLATION IS NEEDED
-        'by' => 'by',
-        'on_issue' => 'on issue',
-        'label_closed' => 'Closed',
-        'label_comment' => 'Comment',
-        'label_reopened' => 'Reopened',
-        'label_created' => 'Created',
-        'label_reassigned' => 'Reassigned',
-        'was_closed_by' => 'was closed by',
-        'was_reopened_by' => 'was reopened by',
-        'was_created_by' => 'was created by',
-        'was_reassigned_to' => 'was reassigned to',
-        'dashboard_description' => 'An overview of all the activity involving your active projects.'
+        'by' => 'par',
+        'on_issue' => 'sur le ticket',
+        'label_closed' => 'Ferm&eacute;',
+        'label_comment' => 'Commentaire',
+        'label_reopened' => 'R&eacute;ouvert',
+        'label_created' => 'Cr&eacute;&eacute;',
+        'label_reassigned' => 'R&eacute;assign&eacute;',
+        'was_closed_by' => 'a &eacute;t&eacute; ferm&eacute; par',
+        'was_reopened_by' => 'a &eacute;t&eacute; r&eacute;ouvert par',
+        'was_created_by' => 'a &eacute;t&eacute; cr&eacute;&eacute; par',
+        'was_reassigned_to' => 'a &eacute;t&eacute; r&eacute;assign&eacute; &agrave;',
+        'dashboard_description' => 'Un aper&ccedil;u de toutes les activit&eacute;s concernant vos projets actifs.'
 );
