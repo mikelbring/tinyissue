@@ -3,7 +3,7 @@
 		<div class="topbar">
 
 			<div class="data">
-				<label class="label important">Reopened</label> by <strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong> 
+				<label class="label important"><?php echo __('tinyissue.label_reopened'); ?></label> <?php echo __('tinyissue.to'); ?> <strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong> 
 				<span class="time">
 					<?php echo date('F jS \a\t g:i A', strtotime($activity->created_at)); ?>
 				</span>		
