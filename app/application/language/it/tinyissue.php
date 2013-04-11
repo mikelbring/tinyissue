@@ -109,6 +109,7 @@ return array(
 	'user_updated' => 'User Updated',
 	'user_added' => 'User Added',
 //BELOW TRANSLATION IS NEEDED
+        'to' => 'to',
         'language' => 'Language',
         'by' => 'by',
         'on_issue' => 'on issue',
