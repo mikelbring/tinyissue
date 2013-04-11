@@ -3,7 +3,7 @@
 		<div class="topbar">
 
 			<div class="data">
-				<label class="label success">Closed</label> by <strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong> 
+				<label class="label success"><?php echo __('tinyissue.label_closed'); ?></label> <?php echo __('tinyissue.by'); ?> <strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong> 
 				<span class="time">
 					<?php echo date('F jS \a\t g:i A', strtotime($activity->created_at)); ?>
 				</span>

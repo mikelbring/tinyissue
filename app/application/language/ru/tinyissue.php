@@ -110,6 +110,7 @@ return array(
 	'user_updated' => 'Пользователь обновлен',
 	'user_added' => 'Пользователь добавлен',
 //BELOW TRANSLATION IS NEEDED
+        'to' => 'to',
         'language' => 'Language',
         'by' => 'by',
         'on_issue' => 'on issue',

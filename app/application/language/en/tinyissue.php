@@ -109,6 +109,7 @@ return array(
 	'user_added' => 'User Added',
 	'language' => 'Language',
 	'by' => 'by',
+	'to' => 'to',
 	'on_issue' => 'on issue',
 	'label_closed' => 'Closed',
 	'label_comment' => 'Comment',
