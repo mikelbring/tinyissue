@@ -111,6 +111,7 @@ return array(
 //BELOW TRANSLATION IS NEEDED
         'language' => 'Language',
         'by' => 'by',
+        'to' => 'to',
         'on_issue' => 'on issue',
         'label_closed' => 'Closed',
         'label_comment' => 'Comment',

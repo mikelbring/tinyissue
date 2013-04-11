@@ -110,6 +110,7 @@ return array(
 	'user_added' => 'Benutzer hinzugefügt',
 	'language' => 'Sprache',
 	'by' => 'von',
+	'to' => 'zu',
 	'on_issue' => 'zu Ticket',
 	'label_closed' => 'Archiv',
 	'label_comment' => 'Kommentar',
