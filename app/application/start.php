@@ -142,7 +142,7 @@ Event::listen(View::loader, function($bundle, $view)
 Event::listen(Lang::loader, function($bundle, $language, $file)
 {
 	$user = Auth::user() ;
-	if($user->language != '')
+	if( ! is_null($user) && $user->language != '')
 		$language = $user->language ;
 	
 	return Lang::file($bundle, $language, $file);
