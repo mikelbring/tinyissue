@@ -43,6 +43,11 @@ $paths['sys'] = 'laravel';
 $paths['bundle'] = 'bundles';
 
 // --------------------------------------------------------------
+// The path to the vendor directory.
+// --------------------------------------------------------------
+$paths['vendor'] = 'vendor';
+
+// --------------------------------------------------------------
 // The path to the storage directory.
 // --------------------------------------------------------------
 $paths['storage'] = 'storage';
@@ -87,11 +92,11 @@ foreach ($paths as $name => $path)
 
 /**
  * A global path helper function.
- * 
+ *
  * <code>
  *     $storage = path('storage');
  * </code>
- * 
+ *
  * @param  string  $path
  * @return string
  */
@@ -102,7 +107,7 @@ function path($path)
 
 /**
  * A global path setter function.
- * 
+ *
  * @param  string  $path
  * @param  string  $value
  * @return void
