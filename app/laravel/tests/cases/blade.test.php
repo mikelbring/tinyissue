@@ -66,15 +66,15 @@ class BladeTest extends PHPUnit_Framework_TestCase {
 	}
 
 	/**
-	 * Test the compilation of yield statements.
+	 * Test the compilation of get_yield statements.
 	 *
 	 * @group laravel
 	 */
 	public function testYieldsAreCompiledCorrectly()
 	{
-		$blade = "@yield('something')";
+		$blade = "@get_yield('something')";
 
-		$this->assertEquals("<?php echo \\Laravel\\Section::yield('something'); ?>", Blade::compile_string($blade));
+		$this->assertEquals("<?php echo \\Laravel\\Section::get_yield('something'); ?>", Blade::compile_string($blade));
 	}
 
 	/**
