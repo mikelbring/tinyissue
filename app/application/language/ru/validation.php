@@ -20,7 +20,7 @@ return array(
 
 	"accepted"       => ":attribute должен быть принят.",
 	"active_url"     => ":attribute не валидный.",
-	"after"          => ":attribute должен быть датой после :date.",
+	"after"          => ":attribute должен содержать дату позже :date.",
 	"alpha"          => ":attribute может содержать только буквы.",
 	"alpha_dash"     => ":attribute может содержать только буквы, числа, и тире.",
 	"alpha_num"      => ":attribute может содержать только буквы и числа.",
@@ -28,14 +28,14 @@ return array(
 	"between"        => array(
 		"numeric" => ":attribute должен быть между :min - :max.",
 		"file"    => ":attribute должен быть между :min - :max Кб.",
-		"string"  => ":attribute должен быть между :min - :max символов.",
+		"string"  => ":attribute должен быть между :min - :max символами.",
 	),
-	"confirmed"      => "Подтверждение :attribute не совпадают.",
+	"confirmed"      => "Подтверждение :attribute не совпадает.",
 	"different"      => ":attribute и :other должны быть разными.",
-	"email"          => "Формат :attribute неверный.",
-	"exists"         => "Выбранный :attribute недействительный.",
+	"email"          => "Неверный формат :attribute .",
+	"exists"         => "Выбранный :attribute недействителен.",
 	"image"          => ":attribute должен быть изображением.",
-	"in"             => "Выбранный :attribute недействительный.",
+	"in"             => "Выбранный :attribute недействителен.",
 	"integer"        => ":attribute должен быть целым числом.",
 	"ip"             => ":attribute должен быть валидным IP-адресом.",
 	"match"          => "Формат :attribute неверный.",
@@ -50,7 +50,7 @@ return array(
 		"file"    => ":attribute должен быть не менее :min kilobytes.",
 		"string"  => ":attribute должен быть не менее :min characters.",
 	),
-	"not_in"         => "Выбранный :attribute неверный.",
+	"not_in"         => "Выбранный :attribute неверен.",
 	"numeric"        => ":attribute должен быть числом.",
 	"required"       => ":attribute обязателен.",
 	"same"           => ":attribute и :other должны быть равными.",
@@ -60,7 +60,7 @@ return array(
 		"string"  => ":attribute должен быть равен :size символов.",
 	),
 	"unique"         => ":attribute уже принят.",
-	"url"            => "Формат :attribute неверный.",
+	"url"            => "Формат :attribute неверен.",
 
 	/*
 	|--------------------------------------------------------------------------
