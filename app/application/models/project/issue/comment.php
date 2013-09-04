@@ -52,7 +52,8 @@ class Comment extends  \Eloquent {
 		$issue->save();
 
 		// Notify user assigned to issue if there is such
-		if($issue->assigned_to)
+		// Dont notify when user assigned to issue is commenting
+		if(($issue->assigned_to) && ($issue->assigned_to!=$comment->created_by))
 		{
 			$subject = 'Commented issue \''.$issue->title.'\' on '.\URL::base();
 			$text = \View::make('email.commented_issue', array(
