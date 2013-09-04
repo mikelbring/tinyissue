@@ -51,6 +51,18 @@ class Comment extends  \Eloquent {
 		$issue->updated_by = \Auth::user()->id;
 		$issue->save();
 
+		// Notify user assigned to issue if there is such
+		if($issue->assigned_to)
+		{
+			$subject = 'Commented issue \''.$issue->title.'\' on '.\URL::base();
+			$text = \View::make('email.commented_issue', array(
+				'firstname' => $issue->assigned->firstname,
+				'issue' => $issue,
+			));
+
+			\Mail::send_email($text, $issue->assigned->email, $subject);
+		}
+
 		return $comment;
 	}
 
@@ -96,6 +108,6 @@ class Comment extends  \Eloquent {
 	*/
 	public static function format($body)
 	{
-		return \Sparkdown\Markdown($body);   
+		return \Sparkdown\Markdown($body);
 	}
 }
