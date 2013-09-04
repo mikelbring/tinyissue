@@ -40,16 +40,16 @@ class Issue extends \Eloquent {
 	{
 		return $this->belongs_to('\User', 'closed_by');
 	}
-	
+
 	public function activity($activity_limit = 5)
 	{
-	
-		$users = $comments = $activity_type = array();	
+
+		$users = $comments = $activity_type = array();
 
 		$issue = $this;
 		$project_id = $this->project_id;
 		$project = \Project::find($project_id);
-		
+
 		foreach(\Activity::all() as $row)
 		{
 			$activity_type[$row->id] = $row;
@@ -135,7 +135,7 @@ class Issue extends \Eloquent {
 					'user' => $users[$row->user_id],
 					'activity' => $row
 				));
-				
+
 				break;
 
 
@@ -165,17 +165,17 @@ class Issue extends \Eloquent {
 		}
 
 		return $return;
-		
+
 	}
-	
-	
+
+
 
 	public function comments()
 	{
 		return $this->has_many('Project\Issue\Comment', 'issue_id')
 			->order_by('created_at', 'ASC');
 	}
-	
+
 	public function comment_count()
 	{
 		return $this->has_many('Project\Issue\Comment', 'issue_id')->count();
@@ -280,6 +280,7 @@ class Issue extends \Eloquent {
 		);
 	}
 
+
 	/******************************************************************
 	* Static methods for working with issues
 	******************************************************************/
@@ -359,6 +360,19 @@ class Issue extends \Eloquent {
 
 		/* Add attachments to issue */
 		\DB::table('projects_issues_attachments')->where('upload_token', '=', $input['token'])->where('uploaded_by', '=', \Auth::user()->id)->update(array('issue_id' => $issue->id));
+
+
+		// Notify assigned user if there is such
+		if($issue->assigned_to)
+		{
+			$subject = 'New issue \''.$issue->title.'\' on '.\URL::base();
+			$text = \View::make('email.new_issue', array(
+				'firstname' => $issue->assigned->firstname,
+				'issue' => $issue,
+			));
+
+			\Mail::send_email($text, $issue->assigned->email, $subject);
+		}
 
 		/* Return success and issue object */
 		return array(
