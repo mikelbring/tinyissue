@@ -275,11 +275,22 @@ class Issue extends \Eloquent {
 		$this->fill($fill);
 		$this->save();
 
+		// Notify assigned user if there is such
+		if($this->assigned_to)
+		{
+			$subject = 'Updated issue \''.$this->title.'\' on '.\URL::base();
+			$text = \View::make('email.update_issue', array(
+				'firstname' => $this->assigned->firstname,
+				'issue' => $this,
+			));
+
+			\Mail::send_email($text, $this->assigned->email, $subject);
+		}
+
 		return array(
 			'success' => true
 		);
 	}
-
 
 	/******************************************************************
 	* Static methods for working with issues
