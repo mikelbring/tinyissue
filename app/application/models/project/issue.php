@@ -208,6 +208,18 @@ class Issue extends \Eloquent {
 		$this->assigned_to = $user_id;
 		$this->save();
 
+		// Notify assigned user if there is such
+		if($this->assigned_to)
+		{
+			$subject = 'Reassigned issue \''.$this->title.'\' on '.\URL::base();
+			$text = \View::make('email.reassigned_issue', array(
+				'firstname' => $this->assigned->firstname,
+				'issue' => $this,
+			));
+
+			\Mail::send_email($text, $this->assigned->email, $subject);
+		}
+
 		\User\Activity::add(5, $this->project_id, $this->id, $user_id, null, $user_id);
 	}
 
