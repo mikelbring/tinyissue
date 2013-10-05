@@ -187,6 +187,18 @@ function issue_assign_change(user_id, issue_id){
 
 }
 
+function issue_project_change(project_id, issue_id) {
+   saving_toggle();
+
+   $.post(siteurl + 'ajax/project/issue_project', {
+      project_id : project_id,
+      issue_id : issue_id
+   },  function(){
+       saving_toggle();
+       window.location =  siteurl + 'project/' + project_id + '/issue/' + issue_id;
+   });
+}
+
 function assign_issue_to_user(user_id, issue_id, callback){
    $.post(siteurl + 'ajax/project/issue_assign', {
       user_id : user_id,

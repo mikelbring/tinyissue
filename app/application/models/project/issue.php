@@ -238,6 +238,26 @@ class Issue extends \Eloquent {
 	}
 
 	/**
+	* Move the issue to another project
+	*
+	* @param  int  $project_id
+	* @return void
+	*/
+	public function change_project($project_id)
+	{
+		$this->project_id = $project_id;
+		$this->save();
+
+		$comments = $this->comments()->get();
+		foreach ($comments as $comment) {
+			$comment->fill(array(
+				'project_id' => $this->project_id
+			));
+			$comment->save();
+		}
+	}
+
+	/**
 	* Update the given issue
 	*
 	* @param  array  $input

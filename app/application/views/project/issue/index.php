@@ -53,6 +53,26 @@
 
 			<ul class="issue-actions">
 				<li class="assigned-to">
+				<?php echo __('tinyissue.change_project'); ?>
+
+				<a href="javascript:void(0);" class="current_project">
+								<?php echo $project->name; ?>
+				</a>
+				<div class="dropdown">
+					<ul>
+					<?php foreach ($projects as $proj): ?>
+					<?php if ($proj->id !== $project->id): ?>
+					<li>
+						<a href="javascript:void(0);" onclick="issue_project_change(<?php echo $proj->id; ?>, <?php echo $issue->id; ?>);">
+							<?php echo $proj->name; ?>
+						</a>
+					</li>
+					<?php endif; ?>
+					<?php endforeach; ?>
+					</ul>
+					</div>
+				</li>
+				<li class="assigned-to">
 					<?php echo __('tinyissue.assigned_to'); ?>
 
 					<?php if(Project\Issue::current()->assigned): ?>
@@ -108,7 +128,7 @@
 		</form>
 
 	</div>
-		
+
 	</div>
 
 	<?php else: ?>

@@ -617,7 +617,7 @@ p{
 	position: relative;
 	overflow: visible;
 }
-.issue-actions .assigned-to .currently_assigned{
+.issue-actions .assigned-to .currently_assigned , .issue-actions .current_project {
 	display: inline-block;
 	background: url('../images/layout/dropdown-arrow.png') no-repeat right center;
 	min-height: 10px;

@@ -61,6 +61,11 @@ class Ajax_Project_Controller extends Base_Controller {
 		Project\Issue::find(Input::get('issue_id'))->reassign(Input::get('user_id'));
 	}
 
+	public function post_issue_project()
+	{
+		Project\Issue::find(Input::get('issue_id'))->change_project(Input::get('project_id'));
+	}
+
 	public function post_issue_upload_attachment()
 	{
 		$user_id = Crypter::decrypt(str_replace(' ', '+', Input::get('session')));

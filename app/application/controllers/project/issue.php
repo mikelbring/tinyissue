@@ -61,7 +61,8 @@ class Project_Issue_Controller extends Base_Controller {
 
 		return $this->layout->nest('content', 'project.issue.index', array(
 			'issue' => Project\Issue::current(),
-			'project' => Project::current()
+			'project' => Project::current(),
+			'projects' => Project\User::active_projects(true)
 		));
 	}
 
