@@ -19,6 +19,7 @@ class Login_Controller extends Controller {
 		
 		if(Auth::attempt($userdata))
 		{
+			Session::forget('return');
 			return Redirect::to(Input::get('return', '/'));
 		}
 
