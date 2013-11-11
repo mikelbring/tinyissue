@@ -7,7 +7,7 @@
 				<span class="time">
 					<?php echo date('F jS \a\t g:i A', strtotime($activity->created_at)); ?>
 				</span>
-				<?php if(Project\Issue::current()->status == 0): ?>
+				<?php if(Project\Issue::current()->status == 0 && Auth::user()->permission('issue-modify')): ?>
 				<a href="<?php echo Project\Issue::current()->to('status?status=1'); ?>" class="button success"><?php echo __('tinyissue.reopen'); ?></a>				
 				<?php endif;?>
 		</div>
