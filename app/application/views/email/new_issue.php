@@ -1,8 +1,4 @@
-<p>
-Hi, <?php echo $firstname ?><br />
-on <?php echo URL::base() ?> website has been created a new issue '<?php echo $issue->title ?>' which has been assigned to you.<br />
-<br />
-Hafe fun :-)
-</p>
-<br />
-<p>URL: <?php echo $issue->to() ?>
+<p>New issue "<?php echo $issue->title; ?>" was submitted to "<?php echo $project->name; ?>" project.</p>
+
+<p>Submitted by: <?php echo $issue->user->firstname . ' ' . $issue->user->lastname; ?><br />
+URL: <a href="<?php echo $issue->to(); ?>"><?php echo $issue->to(); ?></a></p>

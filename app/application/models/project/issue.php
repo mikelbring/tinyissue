@@ -205,15 +205,21 @@ class Issue extends \Eloquent {
 	*/
 	public function reassign($user_id)
 	{
+		$old_assignee = $this->assigned_to;
+		
 		$this->assigned_to = $user_id;
 		$this->save();
 
-		// Notify assigned user if there is such
-		if($this->assigned_to)
-		{
-			$subject = 'Reassigned issue \''.$this->title.'\' on '.\URL::base();
+		/* Notify the person being assigned to unless that person is doing the actual assignment */
+		if($this->assigned_to && $this->assigned_to != \Auth::user()->id)
+		{			
+			$project_id = $this->project_id;
+			$project = \Project::find($project_id);
+			
+			$subject = 'Issue "' . $this->title . '" in "' . $project->name . '" project was reassigned to you';
 			$text = \View::make('email.reassigned_issue', array(
-				'firstname' => $this->assigned->firstname,
+				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
+				'project' => $project,
 				'issue' => $this,
 			));
 
@@ -286,13 +292,16 @@ class Issue extends \Eloquent {
 
 		$this->fill($fill);
 		$this->save();
-
-		// Notify assigned user if there is such
-		if($this->assigned_to)
+		
+		/* Notify the person to whom the issue is currently assigned, unless that person is the one making the update */
+		if($this->assigned_to && $this->assigned_to != \Auth::user()->id)
 		{
-			$subject = 'Updated issue \''.$this->title.'\' on '.\URL::base();
+			$project = \Project::current();
+			
+			$subject = 'Issue "' . $this->title . '" in "' . $project->name . '" project was updated';
 			$text = \View::make('email.update_issue', array(
-				'firstname' => $this->assigned->firstname,
+				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
+				'project' => $project,
 				'issue' => $this,
 			));
 
@@ -384,17 +393,40 @@ class Issue extends \Eloquent {
 		/* Add attachments to issue */
 		\DB::table('projects_issues_attachments')->where('upload_token', '=', $input['token'])->where('uploaded_by', '=', \Auth::user()->id)->update(array('issue_id' => $issue->id));
 
-
-		// Notify assigned user if there is such
+		/* Notify the person being assigned to. */
+		/* If no one is assigned, notify all users who are assigned to this project and who have permission to modify the issue. */
+		/* Do not notify the person creating the issue. */
 		if($issue->assigned_to)
 		{
-			$subject = 'New issue \''.$issue->title.'\' on '.\URL::base();
-			$text = \View::make('email.new_issue', array(
-				'firstname' => $issue->assigned->firstname,
-				'issue' => $issue,
-			));
+			if($issue->assigned_to != \Auth::user()->id)
+			{
+				$project = \Project::current();
+				
+				$subject = 'New issue "' . $issue->title . '" was submitted to "' . $project->name . '" project and assigned to you';
+				$text = \View::make('email.new_assigned_issue', array(
+					'project' => $project,
+					'issue' => $issue,
+				));
 
-			\Mail::send_email($text, $issue->assigned->email, $subject);
+				\Mail::send_email($text, $issue->assigned->email, $subject);
+			}
+		}
+		else
+		{
+			$project = \Project::current();
+			foreach($project->users()->get() as $row)
+			{
+				if($row->id != \Auth::user()->id && $row->permission('project-modify'))
+				{
+					$subject = 'New issue "' . $issue->title . '" was submitted to "' . $project->name . '" project';
+					$text = \View::make('email.new_issue', array(
+						'project' => $project,
+						'issue' => $issue,
+					));
+
+					\Mail::send_email($text, $row->email, $subject);
+				}
+			}
 		}
 
 		/* Return success and issue object */

@@ -1,6 +1,4 @@
-<p>
-Hi, <?php echo $firstname ?><br />
-on <?php echo URL::base() ?> has been updated an issue '<?php echo $issue->title ?>' which is assigned to you.<br />
-</p>
-<br />
-<p>URL: <?php echo $issue->to() ?>
+<p>Issue "<?php echo $issue->title; ?>" in "<?php echo $project->name; ?>" project was updated.</p>
+
+<p>Updated by: <?php echo $actor; ?><br />
+URL: <a href="<?php echo $issue->to(); ?>"><?php echo $issue->to(); ?></a></p>

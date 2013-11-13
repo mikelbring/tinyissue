@@ -50,14 +50,16 @@ class Comment extends  \Eloquent {
 		$issue->updated_at = date('Y-m-d H:i:s');
 		$issue->updated_by = \Auth::user()->id;
 		$issue->save();
-
-		// Notify user assigned to issue if there is such
-		// Dont notify when user assigned to issue is commenting
-		if(($issue->assigned_to) && ($issue->assigned_to!=$comment->created_by))
+		
+		/* Notify the person to whom the issue is currently assigned, unless that person is the one making the comment */
+		if($issue->assigned_to && $issue->assigned_to != \Auth::user()->id)
 		{
-			$subject = 'Commented issue \''.$issue->title.'\' on '.\URL::base();
+			$project = \Project::current();
+			
+			$subject = 'Issue "' . $issue->title . '" in "' . $project->name . '" project has a new comment';
 			$text = \View::make('email.commented_issue', array(
-				'firstname' => $issue->assigned->firstname,
+				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
+				'project' => $project,
 				'issue' => $issue,
 			));
 
