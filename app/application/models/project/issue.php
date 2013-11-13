@@ -253,6 +253,23 @@ class Issue extends \Eloquent {
 
 		$this->status = $status;
 		$this->save();
+		
+		/* Notify the person to whom the issue is currently assigned, unless that person is the one changing the status */
+		if($this->assigned_to && $this->assigned_to != \Auth::user()->id)
+		{
+			$project = \Project::current();			
+			$verb = ($this->status == 0 ? 'closed' : 'reopened');
+			
+			$subject = 'Issue "' . $this->title . '" in "' . $project->name . '" project was ' . $verb;
+			$text = \View::make('email.change_status_issue', array(
+				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
+				'project' => $project,
+				'issue' => $this,
+				'verb' => $verb
+			));
+
+			\Mail::send_email($text, $this->assigned->email, $subject);
+		}
 	}
 
 	/**
