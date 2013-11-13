@@ -1,8 +1,4 @@
-<p>
-Hi, <?php echo $firstname ?><br />
-on <?php echo URL::base() ?> has been reassigned an issue '<?php echo $issue->title ?>' to you.<br />
-<br />
-I hope that you get lucky and solve it soon :-)
-</p>
-<br />
-<p>URL: <?php echo $issue->to() ?>
+<p>Issue "<?php echo $issue->title; ?>" in "<?php echo $project->name; ?>" project was reassigned to you.</p>
+
+<p>Reassigned by: <?php echo $actor; ?><br />
+URL: <a href="<?php echo $issue->to(); ?>"><?php echo $issue->to(); ?></a></p>
