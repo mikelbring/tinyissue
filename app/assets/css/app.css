@@ -416,6 +416,9 @@ p{
 	padding: 8px 18px;
 	border-bottom: 1px solid #eee;
 }
+#sidebar ul li ul li{
+	padding: 0px 18px;
+}
 #sidebar ul li .delete, .assign-users li .delete, #uploaded-attachments .delete{
 	background: url('../images/layout/icon-delete.png') no-repeat 0 1px;
 	width: 12px; height: 15px;
@@ -432,6 +435,23 @@ p{
 	padding-top: 5px;
 	font-size: 13px;
 	padding-right: 10px;
+}
+#sidebar ul li h3{
+	min-height: 17px;
+	display: block;
+	color: #535353;
+	text-decoration: none;
+	padding-top: 5px;
+	font-size: 15px;
+	font-weight: bold;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+#sidebar ul li h3 span{
+	font-size: 12px;
+	color: #989898;
+	font-weight: normal;
+	padding-top: 4px;
 }
 #add-user-project{
 	margin: 0 auto;

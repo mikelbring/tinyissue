@@ -1,6 +1,10 @@
 <h3>
 	<?php echo __('tinyissue.projects');?>
+	<?php if(! Auth::guest()): ?>
 	<span><?php echo __('tinyissue.projects_description');?></span>
+	<?php else: ?>
+	<span><?php echo __('tinyissue.projects_description_guest');?></span>
+	<?php endif; ?>
 </h3>
 
 <div class="pad">
