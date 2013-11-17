@@ -33,6 +33,12 @@
 				</td>
 			</tr>
 			<tr>
+				<th><?php echo __('tinyissue.private'); ?></th>
+				<td>
+					<input type="checkbox" name="private" value="1" <?php if ($user->private) echo 'checked'; ?> />
+				</td>
+			</tr>
+			<tr>
 				<th><?php echo __('tinyissue.role'); ?></th>
 				<td>
 					<?php echo Form::select('role_id',Role::dropdown(),$user->role_id); ?>

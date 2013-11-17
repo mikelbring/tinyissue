@@ -20,6 +20,12 @@ class Project_Controller extends Base_Controller {
 	 */
 	public function get_index()
 	{
+		$assigned_count = 0;
+		if (! Auth::guest())
+		{
+			$assigned_count = Project::current()->count_assigned_issues();
+		}
+
 		return $this->layout->nest('content', 'project.index', array(
 			'page' => View::make('project/index/activity', array(
 				'project' => Project::current(),
@@ -32,7 +38,7 @@ class Project_Controller extends Base_Controller {
 			'closed_count' => Project::current()->issues()
 				 ->where('status', '=', 0)
 				 ->count(),
-			'assigned_count' => Project::current()->count_assigned_issues()
+			'assigned_count' => $assigned_count
 		));
 	}
 

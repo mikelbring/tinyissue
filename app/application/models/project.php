@@ -245,8 +245,13 @@ class Project extends Eloquent {
 			);
 		}
 
+		$private = false;
+		if (isset($input['private']) && $input['private'])
+			$private = true;
+
 		$fill = array(
-			'name' => $input['name'],
+			'name' 	  => $input['name'],
+			'private' => $private,
 		);
 
 		$project = new Project;
@@ -291,9 +296,14 @@ class Project extends Eloquent {
 			);
 		}
 
+		$private = false;
+		if (isset($input['private']) && $input['private'])
+			$private = true;
+
 		$fill = array(
-			'name' => $input['name'],
-			'status' => $input['status']
+			'name' 	  => $input['name'],
+			'private' => $private,
+			'status'  => $input['status']
 		);
 
 		$project->fill($fill);
@@ -321,5 +331,16 @@ class Project extends Eloquent {
 		Project\User::where('project_id', '=', $id)->delete();
 		User\Activity::where('parent_id', '=', $id)->delete();
 	}
+
+        /**
+         * Returns  public projects
+         *
+         * @return array
+         */
+        public static function public_projects()
+        {
+        	return \Project::where('private', '=', false)
+                	->order_by('name', 'ASC')->get();
+        }
 
 }
