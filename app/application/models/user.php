@@ -247,7 +247,9 @@ class User extends Eloquent {
 
                 $private = false;
                 if (isset($info['private']) && $info['private'])
+		{
                         $private = true;
+		}
 
 		$update = array(
 			'email' => $info['email'],
@@ -296,7 +298,9 @@ class User extends Eloquent {
 
                 $private = false;
                 if (isset($info['private']) && $info['private'])
+		{
                         $private = true;
+		}
 
 		$insert = array(
 			'email' => $info['email'],

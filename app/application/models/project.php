@@ -247,7 +247,9 @@ class Project extends Eloquent {
 
 		$private = false;
 		if (isset($input['private']) && $input['private'])
+		{
 			$private = true;
+		}
 
 		$fill = array(
 			'name' 	  => $input['name'],
@@ -298,7 +300,9 @@ class Project extends Eloquent {
 
 		$private = false;
 		if (isset($input['private']) && $input['private'])
+		{
 			$private = true;
+		}
 
 		$fill = array(
 			'name' 	  => $input['name'],
