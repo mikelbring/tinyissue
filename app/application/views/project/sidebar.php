@@ -1,7 +1,9 @@
 
 <h2>
+	<?php if(! Auth::guest()): ?>
 	<?php if(Auth::user()->permission('project-modify')): ?>
 	<a href="<?php echo Project::current()->to('edit'); ?>" class="edit"><?php echo __('tinyissue.edit');?></a>
+	<?php endif; ?>
 	<?php endif; ?>
 
 	<?php echo HTML::link(Project::current()->to(), Project::current()->name); ?>
@@ -30,8 +32,10 @@
 <?php endforeach; ?>
 </ul>
 
+<?php if(! Auth::guest()): ?>
 <?php if(Auth::user()->permission('project-modify')): ?>
 
 	<input type="text" id="add-user-project" placeholder="<?php echo __('tinyissue.assign_a_user');?>" onmouseover="init_sidebar_autocomplete(<?php echo Project::current()->id; ?>);" />
 
+<?php endif; ?>
 <?php endif; ?>

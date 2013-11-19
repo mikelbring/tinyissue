@@ -15,6 +15,11 @@
 				<th style="width: 10%;"><?php echo __('tinyissue.name'); ?></th>
 				<td><input type="text" style="width: 98%;" name="name" value="<?php echo Input::old('name', Project::current()->name); ?>" /></td>
 			</tr>
+    			<tr>
+				<th style="width: 10%;"><?php echo __('tinyissue.private'); ?></th>
+				<td><input type="checkbox" name="private" value="1" <?php if (Project::current()->private) echo 'checked'; ?> /></td>
+			</tr>
+		
 			<tr>
 				<th><?php echo __('tinyissue.status') ?></th>
 				<td><?php echo Form::select('status', array(1 => 'Open', 0 => 'Archived'), Project::current()->status); ?></td>

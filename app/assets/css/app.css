@@ -166,7 +166,8 @@ textarea, input[type=text], input[type=password]{
 	box-shadow: 0 -1px 1px #b6b6b6;
 }
 .action,
-input[type=submit]{
+input[type=submit],
+input[type=button]{
 	font: bold 13px Helvetica, "Lucida Grande", Arial, sans-serif;
 	color: #fff;
 	padding: 10px 13px;
@@ -177,7 +178,9 @@ input[type=submit]{
 .action:hover,
 .action:focus,
 input[type=submit]:hover,
-input[type=submit]:focus{
+input[type=submit]:focus,
+input[type=button]:hover,
+input[type=button]:focus{
 	cursor: pointer;
 	background: #424242;
 	border: 1px solid #262626;
@@ -320,6 +323,13 @@ p{
 	background: url('../images/layout/icon-logout.png') no-repeat;
 	padding-left: 21px;
 }
+#header .nav-right .signin{
+        border: 0;
+}
+#header .nav-right .signin a{
+        background: url('../images/layout/icon-signin.png') no-repeat;
+        padding-left: 21px;
+}
 #header .nav{
 	position: absolute; left: 259px; top: 19px;
 }
@@ -416,6 +426,9 @@ p{
 	padding: 8px 18px;
 	border-bottom: 1px solid #eee;
 }
+#sidebar ul li ul li{
+	padding: 0px 18px;
+}
 #sidebar ul li .delete, .assign-users li .delete, #uploaded-attachments .delete{
 	background: url('../images/layout/icon-delete.png') no-repeat 0 1px;
 	width: 12px; height: 15px;
@@ -432,6 +445,23 @@ p{
 	padding-top: 5px;
 	font-size: 13px;
 	padding-right: 10px;
+}
+#sidebar ul li h3{
+	min-height: 17px;
+	display: block;
+	color: #535353;
+	text-decoration: none;
+	padding-top: 5px;
+	font-size: 15px;
+	font-weight: bold;
+	padding-right: 10px;
+	padding-left: 10px;
+}
+#sidebar ul li h3 span{
+	font-size: 12px;
+	color: #989898;
+	font-weight: normal;
+	padding-top: 4px;
 }
 #add-user-project{
 	margin: 0 auto;

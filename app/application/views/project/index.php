@@ -20,11 +20,13 @@
 			<?php echo $closed_count == 1 ? '1 '.__('tinyissue.closed_issue') : $closed_count . ' '.__('tinyissue.closed_issues'); ?>
 			</a>
 		</li>
+		<?php if (! Auth::guest()): ?>
 		<li <?php echo $active == 'assigned' ? 'class="active"' : ''; ?>>
 			<a href="<?php echo Project::current()->to('assigned'); ?>?status=1">
 			<?php echo $assigned_count == 1 ? '1 '.__('tinyissue.issue_assigned_to_you') : $assigned_count . ' '.__('tinyissue.issues_assigned_to_you'); ?>
 			</a>
 		</li>
+		<?php endif; ?>
 	</ul>
 
 	<div class="inside-tabs">

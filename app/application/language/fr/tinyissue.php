@@ -6,6 +6,8 @@ return array(
 	'users' => 'Utilisateurs',
 	'administration' => 'Administration',
 	'logout' => 'Déconnexion',
+	'signin' => 'Connexion',
+	'anonymous' => 'Anonyme',
 	'dashboard' => 'Tableau de bord',
 	'your_issues' => 'Vos Tickets',
 	'project' => 'Projet',
@@ -121,5 +123,6 @@ return array(
 	'was_reopened_by' => 'a été réouvert par',
 	'was_created_by' => 'a été créé par',
 	'was_reassigned_to' => 'a été réassigné à',
-	'dashboard_description' => 'Un aperçu de toutes les activités concernant vos projets actifs.'
+	'dashboard_description' => 'Un aperçu de toutes les activités concernant vos projets actifs.',
+	'private' => 'privé'
 );

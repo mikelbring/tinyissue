@@ -245,11 +245,18 @@ class User extends Eloquent {
 			);
 		}
 
+                $private = false;
+                if (isset($info['private']) && $info['private'])
+		{
+                        $private = true;
+		}
+
 		$update = array(
 			'email' => $info['email'],
 			'firstname' => $info['firstname'],
 			'lastname' => $info['lastname'],
-			'role_id' => $info['role_id']
+			'role_id' => $info['role_id'],
+			'private' => $private
 		);
 
 		/* Update the password */
@@ -289,12 +296,19 @@ class User extends Eloquent {
 			);
 		}
 
+                $private = false;
+                if (isset($info['private']) && $info['private'])
+		{
+                        $private = true;
+		}
+
 		$insert = array(
 			'email' => $info['email'],
 			'firstname' => $info['firstname'],
 			'lastname' => $info['lastname'],
 			'role_id' => $info['role_id'],
-			'password' => Hash::make($password = Str::random(6))
+			'password' => Hash::make($password = Str::random(6)),
+			'private' => $private
 		);
 
 		$user = new User;
@@ -332,5 +346,16 @@ class User extends Eloquent {
 
 		return true;
 	}
+
+        /**
+         * Returns  public users
+         *
+         * @return array
+         */
+        public static function public_users()
+        {
+                return \User::where('private', '=', false)
+                        ->order_by('firstname', 'ASC')->get();
+        }
 
 }

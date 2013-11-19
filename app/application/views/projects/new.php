@@ -11,6 +11,11 @@
 				<th style="width: 10%;"><?php echo __('tinyissue.name');?></th>
 				<td><input type="text" name="name" style="width: 90%;" /></td>
 			</tr>
+			<tr>
+				<th style="width: 10%;"><?php echo __('tinyissue.private');?></th>
+				<td><input type="checkbox" name="private" style="width: 90%;" checked/></td>
+			</tr>
+	
 		</table>
 
 		<ul class="assign-users" style="display: none">

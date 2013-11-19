@@ -5,6 +5,15 @@ class Projects_Controller extends Base_Controller {
 	public function get_index()
 	{
 		$status = Input::get('status', 1);
+		if (Auth::guest()) 
+		{
+			return $this->layout->with('active', 'projects')->nest('content', 'projects.index', array(
+				'projects' => Project::public_projects(),
+				'active' => $status == 1 ? 'active' : 'archived',
+				'active_count' => 0,
+				'archived_count' => 0
+			));
+		}
 		$projects_active = Project\User::active_projects(true);
 		$projects_inactive = Project\User::inactive_projects(true);
 

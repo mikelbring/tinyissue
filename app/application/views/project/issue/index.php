@@ -1,10 +1,12 @@
 <h3>
 	<a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue"><?php echo __('tinyissue.new_issue'); ?></a>
 
+	<?php if(! Auth::guest()): ?>
 	<?php if(Auth::user()->permission('issue-modify')): ?>
 	<a href="<?php echo $issue->to('edit'); ?>" class="edit-issue"><?php echo $issue->title; ?></a>
 	<?php else: ?>
 	<a href="<?php echo $issue->to(); ?>"><?php echo $issue->title; ?></a>
+	<?php endif; ?>
 	<?php endif; ?>
 
 	<span><?php echo __('tinyissue.on_project'); ?> <a href="<?php echo $project->to(); ?>"><?php echo $project->name; ?></a></span>
@@ -16,7 +18,11 @@
 		<li>
 			<div class="insides">
 				<div class="topbar">
+					<?php if($issue->user->private): ?>
+					<strong><?php echo __('tinyissue.anonymous'); ?></strong>
+					<?php else: ?>
 					<strong><?php echo $issue->user->firstname . ' ' . $issue->user->lastname; ?></strong>
+					<?php endif; ?>
 					<?php echo __('tinyissue.opened_this_issue'); ?>  <?php echo date('F jS \a\t g:i A', strtotime($issue->created_at)); ?>
 				</div>
 
@@ -49,6 +55,7 @@
 	<?php if(Project\Issue::current()->status == 1): ?>
 
 	<div class="new-comment" id="new-comment">
+		<?php if(! Auth::guest()): ?>
 		<?php if(Auth::user()->permission('issue-modify')): ?>
 
 			<ul class="issue-actions">
@@ -80,6 +87,7 @@
 				</li>
 			</ul>
 		<?php endif; ?>
+		<?php endif; ?>
 
 		<h4>
 			<?php echo __('tinyissue.comment_on_this_issue'); ?>
@@ -98,13 +106,19 @@
 			<ul id="uploaded-attachments"></ul>
 
 			<p style="margin-top: 10px;">
+				<?php if(! Auth::guest()): ?>
 				<input type="submit" class="button primary" value="<?php echo __('tinyissue.comment'); ?>" />
+				<?php else: ?>
+				<input type="button" class="button primary" value="<?php echo __('tinyissue.comment'); ?>" onclick="window.location='<?php echo URL::to('login'); ?>'"/>
+				<?php endif; ?>
 			</p>
 
+			<?php if(! Auth::guest()): ?>
 			<?php echo Form::hidden('session', Crypter::encrypt(Auth::user()->id)); ?>
 			<?php echo Form::hidden('project_id', $project->id); ?>
 			<?php echo Form::hidden('token', md5($project->id . time() . \Auth::user()->id . rand(1, 100))); ?>
 			<?php echo Form::token(); ?>
+			<?php endif; ?>
 		</form>
 
 	</div>

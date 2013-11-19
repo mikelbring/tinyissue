@@ -2,10 +2,14 @@
 
 return array(
 
-   'welcome' => 'Welcome',
+	'active_users' => 'Active Users',
+	'active_users_description' => 'Quick list of active users',
+	'welcome' => 'Welcome',
 	'users' => 'Users',
 	'administration' => 'Administration',
 	'logout' => 'Logout',
+	'signin' => 'Sign In',
+	'anonymous' => 'Anonymous',
 	'dashboard' => 'Dashboard',
 	'your_issues' => 'Your Issues',
 	'project' => 'Project',
@@ -15,6 +19,7 @@ return array(
 	'active_projects_description' => 'Quick list of your active projects',
 	'saving' => 'Saving',
 	'projects_description' => 'List of all your projects',
+	'projects_description_guest' => 'List of all projects',
 	'new' => 'New',
 	'active' => 'Active',
 	'archived' => 'Archived',
@@ -120,5 +125,6 @@ return array(
 	'was_reopened_by' => 'was reopened by',
 	'was_created_by' => 'was created by',
 	'was_reassigned_to' => 'was reassigned to',
-	'dashboard_description' => 'An overview of all the activity involving your active projects.'
+	'dashboard_description' => 'An overview of all the activity involving your active projects.',
+	'private' => 'private'
 );
