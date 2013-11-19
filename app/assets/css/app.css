@@ -166,7 +166,8 @@ textarea, input[type=text], input[type=password]{
 	box-shadow: 0 -1px 1px #b6b6b6;
 }
 .action,
-input[type=submit]{
+input[type=submit],
+input[type=button]{
 	font: bold 13px Helvetica, "Lucida Grande", Arial, sans-serif;
 	color: #fff;
 	padding: 10px 13px;
@@ -177,7 +178,9 @@ input[type=submit]{
 .action:hover,
 .action:focus,
 input[type=submit]:hover,
-input[type=submit]:focus{
+input[type=submit]:focus,
+input[type=button]:hover,
+input[type=button]:focus{
 	cursor: pointer;
 	background: #424242;
 	border: 1px solid #262626;
@@ -319,6 +322,13 @@ p{
 #header .nav-right .logout a{
 	background: url('../images/layout/icon-logout.png') no-repeat;
 	padding-left: 21px;
+}
+#header .nav-right .signin{
+        border: 0;
+}
+#header .nav-right .signin a{
+        background: url('../images/layout/icon-signin.png') no-repeat;
+        padding-left: 21px;
 }
 #header .nav{
 	position: absolute; left: 259px; top: 19px;

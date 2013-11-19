@@ -6,6 +6,8 @@ return array(
 	'users' => 'Utilisateurs',
 	'administration' => 'Administration',
 	'logout' => 'Déconnexion',
+	'signin' => 'Connexion',
+	'anonymous' => 'Anonyme',
 	'dashboard' => 'Tableau de bord',
 	'your_issues' => 'Vos Tickets',
 	'project' => 'Projet',

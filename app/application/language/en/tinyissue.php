@@ -8,6 +8,8 @@ return array(
 	'users' => 'Users',
 	'administration' => 'Administration',
 	'logout' => 'Logout',
+	'signin' => 'Sign In',
+	'anonymous' => 'Anonymous',
 	'dashboard' => 'Dashboard',
 	'your_issues' => 'Your Issues',
 	'project' => 'Project',

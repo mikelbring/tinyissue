@@ -302,8 +302,8 @@ class Project extends Eloquent {
 
 		$fill = array(
 			'name' 	  => $input['name'],
-			'private' => $private,
-			'status'  => $input['status']
+			'status'  => $input['status'],
+			'private' => $private
 		);
 
 		$project->fill($fill);

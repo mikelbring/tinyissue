@@ -17,12 +17,11 @@ class Base_Controller extends Controller {
 		parent::__construct();
 
                 $project = '/project\/[0-9]+$/';
-                $issues = '/project\/[0-9]+\/issues$/';
+                $issues = '/project\/[0-9]+\/issues?(\/[0-9]+)?$/';
                 if(Request::uri() !== 'ajax/project/issue_upload_attachment' &&
                    Request::uri() !== 'projects' &&
                    ! preg_match($project, Request::uri()) &&
                    ! preg_match($issues, Request::uri()))
-
 		{
 			$this->filter('before', 'auth');
 		}

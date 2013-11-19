@@ -5,7 +5,12 @@
 	</div>
 
 	<div class="data">
-		<a href="<?php echo $issue->to(); ?>"><?php echo $issue->title; ?></a> <?php echo __('tinyissue.was_closed_by'); ?> <strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong>
+		<a href="<?php echo $issue->to(); ?>"><?php echo $issue->title; ?></a> <?php echo __('tinyissue.was_closed_by'); ?> 
+                <?php if($user->private): ?>
+                <strong><?php echo __('tinyissue.anonymous'); ?></strong>
+                <?php else: ?>
+		<strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong>
+		<?php endif; ?>
 		<span class="time">
 			<?php echo date('F jS \a\t g:i A', strtotime($activity->created_at)); ?>
 		</span>

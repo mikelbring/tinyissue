@@ -21,14 +21,16 @@
 		<div id="header">
 
 			<ul class="nav-right">
-				<?php if(! Auth::guest()): ?>
-				<li><?php echo __('tinyissue.welcome');?>, <a href="<?php echo URL::to('user/settings'); ?>" class="user"><?php echo Auth::user()->firstname; ?></a></li>
-				<?php if(Auth::user()->permission('administration')): ?>
-				<li><a href="<?php echo URL::to('administration/users'); ?>"><?php echo __('tinyissue.users');?></a></li>
-				<li><a href="<?php echo URL::to('administration'); ?>"><?php echo __('tinyissue.administration');?></a></li>
-				<?php endif; ?>
-				<li class="logout"><a href="<?php echo URL::to('user/logout'); ?>"><?php echo __('tinyissue.logout');?></a></li>
-				<?php endif; ?>
+                                <?php if(! Auth::guest()): ?>
+                                <li><?php echo __('tinyissue.welcome');?>, <a href="<?php echo URL::to('user/settings'); ?>" class="user"><?php echo Auth::user()->firstname; ?></a></li>
+                                <?php if(Auth::user()->permission('administration')): ?>
+                                <li><a href="<?php echo URL::to('administration/users'); ?>"><?php echo __('tinyissue.users');?></a></li>
+                                <li><a href="<?php echo URL::to('administration'); ?>"><?php echo __('tinyissue.administration');?></a></li>
+                                <?php endif; ?>
+                                <li class="logout"><a href="<?php echo URL::to('user/logout'); ?>"><?php echo __('tinyissue.logout');?></a></li>
+                                <?php else: ?>
+                                <li class="signin"><a href="<?php echo URL::to('login'); ?>"><?php echo __('tinyissue.signin');?></a></li>
+                                <?php endif; ?>
 			</ul>
 
 			<a href="<?php echo URL::to(); ?>" class="logo">Tiny Issue</a>
