@@ -18,16 +18,17 @@
 							<?php echo Time::age(strtotime($row->created_at)); ?>
 						<?php endif; ?>
 
-						<?php if($row->assigned_to != 0): ?>
-							| <?php echo __('tinyissue.assigned_to'); ?>
-							<strong><?php echo $row->assigned->firstname . ' ' . $row->assigned->lastname; ?></strong>
-						<?php endif; ?>
-
 						<?php if(!is_null($row->updated_by)): ?>
-							| <?php echo __('tinyissue.updated_by'); ?>
+							- <?php echo __('tinyissue.updated_by'); ?>
 							<strong><?php echo $row->updated->firstname . ' ' . $row->updated->lastname; ?></strong>
 							<?php echo Time::age(strtotime($row->updated_at)); ?>
 						<?php endif; ?>
+
+						<?php if($row->assigned_to != 0): ?>
+							- <?php echo __('tinyissue.assigned_to'); ?>
+							<strong><?php echo $row->assigned->firstname . ' ' . $row->assigned->lastname; ?></strong>
+						<?php endif; ?>
+
 					</div>
 				</div>
 			</li>
