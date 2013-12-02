@@ -25,7 +25,7 @@
 			<div class="inside-pad">
 				<ul class="projects">
 					<?php foreach($projects as $row):
-						$issues = $row->issues()->where('status', '=', 1)->count();
+						$issues = $row->count_open_issues();
 					?>
 					<li>
 						<a href="<?php echo $row->to(); ?>"><?php echo $row->name; ?></a><br />

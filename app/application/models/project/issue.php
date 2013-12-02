@@ -40,7 +40,15 @@ class Issue extends \Eloquent {
 	{
 		return $this->belongs_to('\User', 'closed_by');
 	}
-
+	
+	/**
+	* @return Collection
+	*/
+	public function tags()
+	{
+		return $this->has_many_and_belongs_to('\Tag', 'projects_issues_tags', 'issue_id', 'tag_id');
+	}
+	
 	public function activity($activity_limit = 5)
 	{
 
@@ -150,6 +158,20 @@ class Issue extends \Eloquent {
 				));
 
 				break;
+				
+				case 6:
+
+				$tag_diff = json_decode($row->data, true);
+				$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
+					'issue' => $issue,
+					'project' => $project,
+					'user' => $users[$row->user_id],
+					'tag_diff' => $tag_diff,
+					'tag_counts' => array('added' => sizeof($tag_diff['added_tags']), 'removed' => sizeof($tag_diff['removed_tags'])),
+					'activity' => $row
+				));
+
+				break;
 
 				default:
 
@@ -237,20 +259,43 @@ class Issue extends \Eloquent {
 	*/
 	public function change_status($status)
 	{
+		/* Retrieve all tags */
+		$tags = $this->tags;
+		$tag_ids = array();
+		foreach($tags as $tag)
+		{		
+			$tag_ids[$tag->id] = $tag->id;
+		}
+	
 		if($status == 0)
 		{
 			$this->closed_by = \Auth::user()->id;
 			$this->closed_at = date('Y-m-d H:i:s');
-
+			
+			/* Update tags */
+			$tag_ids[2] = 2;
+			if(isset($tag_ids[1]))
+			{
+				unset($tag_ids[1]);
+			}
+			
 			/* Add to activity log */
 			\User\Activity::add(3, $this->project_id, $this->id);
 		}
 		else
 		{
+			/* Update tags */
+			$tag_ids[1] = 1;
+			if(isset($tag_ids[2]))
+			{
+				unset($tag_ids[2]);
+			}
+		
 			/* Add to activity Log */
 			\User\Activity::add(4, $this->project_id, $this->id);
 		}
-
+		
+		$this->tags()->sync($tag_ids);
 		$this->status = $status;
 		$this->save();
 		
@@ -310,6 +355,9 @@ class Issue extends \Eloquent {
 		$this->fill($fill);
 		$this->save();
 		
+		/* Update tags */
+		$this->set_tags('update');
+		
 		/* Notify the person to whom the issue is currently assigned, unless that person is the one making the update */
 		if($this->assigned_to && $this->assigned_to != \Auth::user()->id)
 		{
@@ -328,6 +376,106 @@ class Issue extends \Eloquent {
 		return array(
 			'success' => true
 		);
+	}
+	
+	/**
+	* Sets tags on an issue
+	*
+	* @param  string	Mode (create or update)
+	* @return void
+	*/
+	public function set_tags($mode)
+	{
+		if ($mode == 'create')
+		{
+			/* Set old tag ids to contain just the status:open tag */
+			$old_tag_ids = array(1);
+		}
+		else
+		{
+			/* Save old tags to determine if we need to record activity */
+			$old_tag_ids = array();
+			foreach($this->tags as $tag)
+			{
+				$old_tag_ids[] = $tag->id;
+			}
+		}
+		
+		/* Update tags */
+		$tags = \Input::get('tags', '');
+		$new_tag_ids = array();
+		
+		if(trim($tags) != '')
+		{
+			$tags = explode(',', $tags);
+			
+			/* Only users with administration permission should be able to add new tags */
+			if(\Auth::user()->permission('administration'))
+			{
+				foreach($tags as $tag)
+				{
+					if (!\Tag::where('tag', '=', $tag)->first())
+					{
+						$tag_object = new \Tag;
+						$tag_object->fill(array('tag' => $tag));
+						$tag_object->save();
+					}
+				}
+			}
+			
+			$tag_records = \Tag::where_in('tag', $tags)->get();
+			foreach($tag_records as $tag_record)
+			{
+				$new_tag_ids[] = $tag_record->id;
+			}
+		}
+		
+		if ($this->status == 1)
+		{
+			$force_tag = 1;
+			$exclude_tag = 2;
+		}
+		else
+		{
+			$force_tag = 2;
+			$exclude_tag = 1;
+		}
+		
+		$found_tag = false;
+		foreach($new_tag_ids as $key => $val)
+		{
+			if($val == $force_tag)
+			{
+				$found_tag = true;
+			}
+			else if($val == $exclude_tag)
+			{
+				unset($new_tag_ids[$key]);
+			}
+		}
+		
+		if (!$found_tag)
+		{
+			$new_tag_ids[] = $force_tag;
+		}
+		
+		$this->tags()->sync($new_tag_ids);
+		
+		/* Add to activity log for tags if changed */
+		$added_tags = array_diff($new_tag_ids, $old_tag_ids);
+		$removed_tags = array_diff($old_tag_ids, $new_tag_ids);
+		$has_tag_diff = (!empty($added_tags) || !empty($removed_tags));
+		if ($has_tag_diff)
+		{
+			$tag_data = array();
+			$tag_data_resource = \Tag::where_in('id', array_merge($added_tags, $removed_tags))->get();
+			foreach($tag_data_resource as $tag)
+			{
+				$tag_data[$tag->id] = $tag->to_array();
+			}
+			
+			\User\Activity::add(6, $this->project_id, $this->id, null, json_encode(array('added_tags' => $added_tags, 'removed_tags' => $removed_tags, 'tag_data' => $tag_data)));
+		}
 	}
 
 	/******************************************************************
@@ -392,7 +540,8 @@ class Issue extends \Eloquent {
 			'created_by' => \Auth::user()->id,
 			'project_id' => $project->id,
 			'title' => $input['title'],
-			'body' => $input['body']
+			'body' => $input['body'],
+			'status' => 1
 		);
 
 		if(\Auth::user()->permission('issue-modify'))
@@ -403,6 +552,9 @@ class Issue extends \Eloquent {
 		$issue = new static;
 		$issue->fill($fill);
 		$issue->save();
+		
+		/* Create tags */
+		$issue->set_tags('create');
 
 		/* Add to user's activity log */
 		\User\Activity::add(1, $project->id, $issue->id);

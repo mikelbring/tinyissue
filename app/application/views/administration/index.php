@@ -19,6 +19,10 @@
 			<td><?php echo $archived_projects; ?></td>
 		</tr>
 		<tr>
+			<th><a href="<?php echo URL::to('tags'); ?>"><?php echo __('tinyissue.tags'); ?></a></th>
+			<td><?php echo $tags; ?></td>
+		</tr>
+		<tr>
 			<th><?php echo __('tinyissue.open_issues'); ?></th>
 			<td><?php echo $issues['open']; ?></td>
 		</tr>

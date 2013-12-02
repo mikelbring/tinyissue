@@ -12,6 +12,14 @@
 
 <div class="pad">
 
+	<?php if(!empty($issue->tags)): ?>
+	<div id="issue-tags">
+		<?php foreach($issue->tags()->order_by('tag', 'ASC')->get() as $tag): ?>
+			<?php echo '<label class="label"' . ($tag->bgcolor ? ' style="background: ' . $tag->bgcolor . '"' : '') . '>' . $tag->tag . '</label>'; ?>
+		<?php endforeach; ?>
+	</div>
+	<?php endif; ?>
+
 	<ul class="issue-discussion">
 		<li>
 			<div class="insides">

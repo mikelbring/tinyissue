@@ -22,6 +22,22 @@
 					<?php echo $errors->first('body', '<span class="error">:message</span>'); ?>
 				</td>
 			</tr>
+			<tr>
+				<th><?php echo __('tinyissue.tags'); ?></th>
+				<td>
+					<?php echo Form::text('tags', Input::old('tags', $issue_tags), array('id' => 'tags')); ?>
+					<?php echo $errors->first('tags', '<span class="error">:message</span>'); ?>
+					<script type="text/javascript">
+					$(function(){
+						$('#tags').tagit({
+							autocomplete: {
+								source: '<?php echo URL::to('ajax/tags/suggestions/edit'); ?>'
+							}
+						});
+					});
+					</script>
+				</td>
+			</tr>
 			<?php if(Auth::user()->permission('issue-modify')): ?>
 			<tr>
 				<th><?php echo __('tinyissue.assigned_to'); ?></th>
