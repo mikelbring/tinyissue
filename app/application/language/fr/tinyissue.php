@@ -110,8 +110,7 @@ return array(
 	'user_added' => 'Utilisateur ajouté',
 	'language' => 'Langue',
 	'by' => 'par',
-	// TRANSLATION NEEDED FOR THE FOLLOWING LINE
-	'to' => 'to',
+	'to' => 'à',
 	'on_issue' => 'sur le Ticket',
 	'label_closed' => 'Fermé',
 	'label_comment' => 'Commentaire',
