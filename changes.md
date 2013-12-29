@@ -1,5 +1,9 @@
 # Tiny Issue Change Log
 
+## Tiny Issue v1.4.0
+
+- Use Laravel 4.1
+
 ## Tiny Issue v1.3.1
 
 - Bug fixes

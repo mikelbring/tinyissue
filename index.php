@@ -1,17 +1,12 @@
 <?php
 
 /* Redirect if we have not installed */
-if(!file_exists(__DIR__ . '/config.app.php'))
+if (!file_exists(__DIR__.'/config.app.php'))
 {
-	header('Location: ./install');
+    header('Location: ./install/index.php');
 }
 
-define('LARAVEL_START', microtime(true));
-$web = true;
-require 'app/paths.php';
-unset($web);
+require __DIR__.'/bootstrap/autoload.php';
 
-require path('sys').'laravel.php';
-
-?>
-
+$app = require_once __DIR__.'/bootstrap/start.php';
+$app->run();

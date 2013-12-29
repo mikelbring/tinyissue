@@ -1,4 +1,5 @@
-.idea*
-_IDE_HELPER.php
+/bootstrap/compiled.php
+/vendor
+composer.phar
+composer.lock
 config.app.php
-.DS_Store

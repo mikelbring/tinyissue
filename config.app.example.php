@@ -8,17 +8,19 @@ return array(
 	 */
 	'url' => '',
 
-
 	/**
 	 * Fill out your database settings. Make sure that the driver is correct: 'mysql' for MySQL, 'sqlsrv' for MSSQL,
 	 * 'pgsql' for PostgreSQL, or 'sqlite' for SQLite
 	 */
 	'database' => array(
-		'driver' => 'mysql',
-		'host'  => 'localhost',
-		'database' => 'database_name',
-		'username' => 'database_user',
-		'password' => 'database_password',
+        'driver'    => 'mysql',
+        'host'      => 'localhost',
+        'database'  => 'database_name',
+        'username'  => 'database_user',
+        'password'  => 'database_password',
+        'charset'   => 'utf8',
+        'collation' => 'utf8_unicode_ci',
+        'prefix'    => '',
 	),
 
 	/**
@@ -38,33 +40,19 @@ return array(
 
 		'from' => array(
 			'name' => 'Your E-Mail Name',
-			'email' => 'name@domain.com',
+			'address' => 'name@domain.com',
 		),
-
-		'transport' => 'mail',
 
 		/**
 		 * Transport Settings
 		 *
 		 * Transport settings if using sendmail or SMTP
 		 */
+		'sendmail' => '/usr/sbin/sendmail -bs',
 
-		'sendmail' => array(
-			'path' => ''
-		),
+        'host' => 'smtp.mailgun.org',
 
-		'smtp' => array(
-			'server' => '',
-			'port' => 25,
-			
-			/* 
-			* Encryption support, SSL/TLS, used with gmail servers
-			* Default: blank
-			*/
-			'encryption' => '',
-			'username' => '',
-			'password' => '',
-		),
+        'port' => 587,
 
 	),
 
@@ -79,11 +67,5 @@ return array(
 	 * Up to 32 characters
 	 */
 	'key' => 'yourrandomkey',
-
-	/**
-	 * True if you are using mod rewrite
-	 * False if you are not
-	 */
-	'mod_rewrite' => false,
 
 );
