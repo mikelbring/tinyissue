@@ -8,8 +8,8 @@ return array(
     |--------------------------------------------------------------------------
     */
 
-    'upload_path'     => public_path('assets/uploads'),
-    'attachment_path' => '/uploads',
+    'upload_path'     => public_path('uploads'),
+    'attachment_path' => '/assets/uploads',
 
     'image_extensions' => array(
         'jpg', 'jpeg', 'JPG', 'JPEG',
@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'debug' => true,
+	'debug' => false,
 
 	/*
 	|--------------------------------------------------------------------------

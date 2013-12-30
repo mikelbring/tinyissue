@@ -1,5 +1,7 @@
 <?php namespace Ajax;
 
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+
 use Project\Issue;
 use Project\Issue\Attachment;
 use Project\User as ProjectUser;
@@ -66,17 +68,16 @@ class ProjectController extends \BaseController {
     public function issueUploadAttachment()
     {
         $user_id = \Crypt::decrypt(str_replace(' ', '+', \Input::get('session')));
+        $user = \User::find($user_id);
 
-        \Auth::login($user_id);
-
-        if ( ! \Auth::user()->project_permission(\Input::get('project_id')))
+        if ( ! $user->projectPermission(\Input::get('project_id')))
         {
-            return \Response::error('404');
+            throw new AccessDeniedHttpException();
         }
 
-        Attachment::upload(\Input::all());
+        Attachment::upload($user, \Input::all());
 
-        return true;
+        return \Response::make();
     }
 
     public function issueRemoveAttachment()

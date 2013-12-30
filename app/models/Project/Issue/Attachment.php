@@ -17,14 +17,16 @@ class Attachment extends \Eloquent {
     /**
      * Upload the attachment
      *
-     * @param  array $input
+     * @param \User $user
+     * @param array $input
+     *
      * @return bool
      */
-    public static function upload(array $input)
+    public static function upload(\User $user, array $input)
     {
         $path = \Config::get('app.upload_path');
 
-        if ( ! \File::exists($path = $path . $input['project_id']))
+        if ( ! \File::exists($path = $path . '/' . $input['project_id']))
         {
             \File::makeDirectory($path);
         }
@@ -36,10 +38,12 @@ class Attachment extends \Eloquent {
 
         /** @var \Symfony\Component\HttpFoundation\File\UploadedFile $uploadedFile */
         $uploadedFile = \Request::file('Filedata');
-        $target = $uploadedFile->move($path);
+        $target = $uploadedFile->move($path, $uploadedFile->getClientOriginalName());
+
+        \Log::info(sprintf('Upload %s', $target));
 
         $fill = array(
-            'uploaded_by'   => \Auth::user()->id,
+            'uploaded_by'   => $user->id,
             'filename'      => $uploadedFile->getClientOriginalName(),
             'fileextension' => \File::extension($target),
             'filesize'      => $uploadedFile->getClientSize(),

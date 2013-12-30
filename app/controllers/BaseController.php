@@ -12,7 +12,7 @@ class BaseController extends Controller {
      */
     public function __construct()
     {
-        if (Request::url() !== 'ajax/project/issueUploadAttachment')
+        if (Request::path() !== 'ajax/project/issueUploadAttachment')
         {
             $this->beforeFilter('auth');
         }

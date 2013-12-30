@@ -82,7 +82,7 @@ class User extends Eloquent implements UserInterface, RemindableInterface {
      * @param  int  $project_id
      * @return bool
      */
-    public function project_permission($project_id = null)
+    public function projectPermission($project_id = null)
     {
         if (is_null($project_id)) {
             $project_id = Project::current()->id;

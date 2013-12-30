@@ -22,11 +22,11 @@
                     <?php foreach ($issue->attachments()->get() as $attachment): ?>
                     <li>
                         <?php if (in_array($attachment->fileextension, Config::get('app.image_extensions'))): ?>
-                            <a href="<?php echo URL::base() . Config::get('app.attachment_path') . '/' . $project->id . '/' . $attachment->upload_token . '/' . rawurlencode($attachment->filename); ?>" title="<?php echo $attachment->filename; ?>">
-                                <img src="<?php echo URL::base() . Config::get('app.attachment_path') . '/' . $project->id . '/' . $attachment->upload_token . '/' . $attachment->filename; ?>" style="max-width: 100px;"  alt="<?php echo $attachment->filename; ?>" />
+                            <a href="<?php echo URL::getRequest()->getBaseUrl() . Config::get('app.attachment_path') . '/' . $project->id . '/' . $attachment->upload_token . '/' . rawurlencode($attachment->filename); ?>" title="<?php echo $attachment->filename; ?>">
+                                <img src="<?php echo URL::getRequest()->getBaseUrl() . Config::get('app.attachment_path') . '/' . $project->id . '/' . $attachment->upload_token . '/' . $attachment->filename; ?>" style="max-width: 100px;"  alt="<?php echo $attachment->filename; ?>" />
                             </a>
                         <?php else: ?>
-                            <a href="<?php echo URL::base() . Config::get('app.attachment_path') . '/' . $project->id . '/' . $attachment->upload_token . '/' . rawurlencode($attachment->filename); ?>" title="<?php echo $attachment->filename; ?>"><?php echo $attachment->filename; ?></a>
+                            <a href="<?php echo URL::getRequest()->getBaseUrl() . Config::get('app.attachment_path') . '/' . $project->id . '/' . $attachment->upload_token . '/' . rawurlencode($attachment->filename); ?>" title="<?php echo $attachment->filename; ?>"><?php echo $attachment->filename; ?></a>
                         <?php endif; ?>
                     </li>
                     <?php endforeach; ?>

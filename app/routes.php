@@ -17,7 +17,7 @@ Route::any('project/{project_id}/assigned', array('uses' => 'ProjectController@a
 // Issue controller
 Route::any('project/{project_id}/issue/new', array('uses' => 'Project\\IssueController@create'))
     ->where('project_id', '[0-9]+');
-Route::get('project/{project_id}/issue/{issue_id}', array('uses' => 'Project\\IssueController@index'))
+Route::any('project/{project_id}/issue/{issue_id}', array('uses' => 'Project\\IssueController@index'))
     ->where('project_id', '[0-9]+')
     ->where('issue_id', '[0-9]+');
 Route::any('project/{project_id}/issue/{issue_id}/edit', array('uses' => 'Project\\IssueController@edit'))
