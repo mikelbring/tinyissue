@@ -1,7 +1,6 @@
 <h3>
 	<?php echo __('tinyissue.edit_issue'); ?>
 </h3>
-
 <div class="pad">
 
 	<form method="post" action="">
@@ -10,7 +9,7 @@
 			<tr>
 				<th style="width: 10%"><?php echo __('tinyissue.title'); ?></th>
 				<td>
-					<input type="text" name="title" style="width: 98%;" value="<?php echo Input::old('title', $issue->title); ?>" />
+					<input type="text" name="title" style="width: 98%;" value="<?php echo Input::old('title', htmlspecialchars($issue->title)); ?>" />
 
 					<?php echo $errors->first('title', '<span class="error">:message</span>'); ?>
 				</td>

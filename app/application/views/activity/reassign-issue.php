@@ -7,7 +7,10 @@
 	<div class="data">
 		<a href="<?php echo $issue->to(); ?>"><?php echo $issue->title; ?></a> <?php echo __('tinyissue.was_reassigned_to'); ?>
 		<?php if($activity->action_id > 0): ?>
-		<strong><?php echo $assigned->firstname . ' ' . $assigned->lastname; ?></strong>
+		<strong>
+			<?php echo $issue->assigned->firstname; ?>
+			<?php echo $issue->assigned->lastname; ?>
+		</strong>
 		<?php else: ?>
 		<strong><?php echo __('tinyissue.no_one'); ?></strong>
 		<?php endif; ?>

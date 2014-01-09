@@ -11,7 +11,7 @@
 			<tr>
 				<th><?php echo __('tinyissue.first_name'); ?></th>
 				<td>
-					<input type="text" name="firstname" value="<?php echo Input::old('firstname', $user->firstname); ?>" autocomplete="off" />
+					<input type="text" name="firstname" value="<?php echo Input::old('firstname', htmlspecialchars($user->firstname)); ?>" autocomplete="off" />
 
 					<?php echo $errors->first('firstname', '<span class="error">:message</span>'); ?>
 				</td>
@@ -19,7 +19,7 @@
 			<tr>
 				<th><?php echo __('tinyissue.last_name'); ?></th>
 				<td>
-					<input type="text" name="lastname" value="<?php echo Input::old('lastname',$user->lastname);?>" autocomplete="off" />
+					<input type="text" name="lastname" value="<?php echo Input::old('lastname', htmlspecialchars($user->lastname)); ?>" autocomplete="off" />
 
 					<?php echo $errors->first('lastname', '<span class="error">:message</span>'); ?>
 				</td>
@@ -27,7 +27,7 @@
 			<tr>
 				<th><?php echo __('tinyissue.email'); ?></th>
 				<td>
-					<input type="text" name="email" value="<?php echo Input::old('email',$user->email)?>"  autocomplete="off" />
+					<input type="text" name="email" value="<?php echo Input::old('email', $user->email)?>"  autocomplete="off" />
 
 					<?php echo $errors->first('email', '<span class="error">:message</span>'); ?>
 				</td>
