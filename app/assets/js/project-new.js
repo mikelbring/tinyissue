@@ -29,4 +29,33 @@ $(function(){
 		});
 	});
 
+    var selected,
+        isSameElement = function(el1, el2) {
+            return (el1 && el1.find('input').val() === el2.find('input').val());
+        };
+    users.on({
+        mouseenter: function() {
+            $(this).addClass('default-assignee');
+        },
+        mouseleave: function() {
+            var user = $(this);
+            if (isSameElement(selected, user)) {
+                return false;
+            }
+            user.removeClass('default-assignee');
+        },
+        click: function() {
+            var user = $(this);
+            if (selected) {
+                selected.removeClass('default-assignee');
+                if (isSameElement(selected, user)) {
+                    $('#default_assignee-id').val('');
+                    return false;
+                }
+            }
+            selected = $(this);
+            selected.addClass('default-assignee');
+            $('#default_assignee-id').val(selected.find('input').val());
+        }
+    }, 'li');
 });

@@ -772,6 +772,10 @@ p{
 .assign-users li{
 	padding: 8px 5px;
 	border-bottom: 1px solid #cecece;
+    cursor: pointer;
+}
+.default-assignee {
+    background: rgb(255, 247, 189);
 }
 
 /* Attachments */

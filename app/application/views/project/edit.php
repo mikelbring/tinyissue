@@ -20,6 +20,12 @@
 				<td><?php echo Form::select('status', array(1 => 'Open', 0 => 'Archived'), Project::current()->status); ?></td>
 			</tr>
 			<tr>
+				<th><?php echo __('tinyissue.default_assignee'); ?></th>
+				<td>
+					<?php echo Form::select('default_assignee', array(0 => '') + Project\User::dropdown(Project::current()->users()->get()), Project::current()->default_assignee); ?>
+				</td>
+			</tr>
+			<tr>
 				<th></th>
 				<td>
 					<input type="submit" value="<?php echo __('tinyissue.update'); ?>" />
