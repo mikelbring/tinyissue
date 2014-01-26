@@ -111,6 +111,9 @@ class Comment extends  \Eloquent {
 	*/
 	public static function format($body)
 	{
-		return \Sparkdown\Markdown($body);
+		$body = \Sparkdown\Markdown($body);
+
+		// convert issue numbers into issue url
+		return preg_replace('/((?:' . __('tinyissue.issue') . ')?)(\s*)#(\d+)/i', '<a href="' . \URL::to('/project/0/issue/$3') . '" title="$1 #$3" class="issue-link">$1 #$3</a>', $body);
 	}
 }

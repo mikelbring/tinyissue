@@ -110,6 +110,11 @@ Route::filter('ajax', function()
 
 Route::filter('project', function()
 {
+	// find project id from issue object
+	if (Request::route()->parameters[0] == 0) {
+		return;
+	}
+
 	Project::load_project(Request::route()->parameters[0]);
 
 	if(!Project::current())
@@ -125,6 +130,16 @@ Route::filter('issue', function()
 	if(!Project\Issue::current())
 	{
 		return Response::error('404');
+	}
+
+	// load project
+	if (Request::route()->parameters[0] == 0) {
+		Request::route()->parameters = array(
+			Project\Issue::current()->project_id,
+			Project\Issue::current()->id
+		);
+
+		Project::load_project(Request::route()->parameters[0]);
 	}
 });
 
