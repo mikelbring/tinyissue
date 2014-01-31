@@ -22,7 +22,7 @@ Route::controller(array(
 	'administration',
 	'ajax.project',
 	'ajax.todo',
-  'test'
+	'todo'
 ));
 
 
@@ -64,9 +64,14 @@ View::composer('layouts.project', function($view)
 	$view->active = 'projects';
 });
 
+View::composer('todo.index', function($view)
+{
+	Asset::script('app', 'app/assets/js/todo.js', 'jquery');
+});
+
 View::composer('user.issues', function($view)
 {
-	Asset::script('app', 'app/assets/js/todo.js');
+	Asset::script('app', 'app/assets/js/todo-issues.js', 'jquery');
 });
 
 View::composer('layouts.login', function($view)

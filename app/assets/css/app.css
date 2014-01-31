@@ -817,7 +817,7 @@ p{
 	font-weight: bold;
 }
 
-/* Tasks */
+/* ToDo items */
 .todo-button {
   float: right; 
   width: 26px;
@@ -833,3 +833,5 @@ p{
 .todo-button.del {
   background: url("../images/layout/icon-delete.png") no-repeat scroll center center transparent;
 }
+
+
