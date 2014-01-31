@@ -816,3 +816,20 @@ p{
 .table th{
 	font-weight: bold;
 }
+
+/* Tasks */
+.todo-button {
+  float: right; 
+  width: 26px;
+  height: 26px;
+  display: block;
+  text-indent: -999999px;
+}
+
+.todo-button.add {
+  background: url("../images/layout/icon-bigadd.png") no-repeat scroll 0% 0% transparent;
+}
+
+.todo-button.del {
+  background: url("../images/layout/icon-delete.png") no-repeat scroll center center transparent;
+}
