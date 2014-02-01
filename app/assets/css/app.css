@@ -833,5 +833,37 @@ p{
 .todo-button.del {
   background: url("../images/layout/icon-delete.png") no-repeat scroll center center transparent;
 }
+.todo-lane {
+  float: left;
+  margin-right: 10px; 
+  border: 2px solid #D4EFFF;
+}
 
+#lane-status-0 {
+  float: right; 
+  margin-right: 0; 
+}
+
+.todo-list-item {
+  background-color: #fff;
+  width: 100%;
+  display: table;
+  margin-bottom: 15px;
+  border: 1px solid #CFE9F7;
+}
+
+.todo-list-item-inner {
+  height: 4em;
+  padding: 0 5px;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.todo-state-active {
+  border: 2px solid green;
+}
+
+.todo-state-hover {
+  border: 2px solid orange;
+}
 

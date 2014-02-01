@@ -12,16 +12,16 @@ class Todo_Controller extends Base_Controller {
 			3 => 'QA',
 		);
 		
-		// Load todos into lanes according to status.
+		// Ensure we have an entry for each lane. 
 		$lanes = array();
-		$todos = Todo::user_todos();
+		foreach ($status_codes as $index => $name) {
+			$lanes[$index] = array();
+		}
+    
+		// Load todos into lanes according to status.
+		$todos = Todo::load_user_todos();
 		foreach ($todos as $todo) {
 			$lanes[$todo['status']][] = $todo;
-		}
-
-		// Ensure we have an entry for each lane. 
-		foreach ($status_codes as $index => $name) {
-			if(!isset($lanes[$index])) $lanes[$index] = array();
 		}
 		
 		return $this->layout->with('active', 'todo')->nest('content', 'todo.index', array(

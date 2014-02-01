@@ -1,10 +1,34 @@
 $(function(){
+  // Set up buttons (do this by ajax to avoid hacking in to project/issues models etc.).
+  $.post(
+      siteurl + 'ajax/todo/get_user_todos', 
+      { }, 
+      function( returned ) {
+        // Generate list of current todo items.
+        var todo_issues = [];
+        for (todo in returned) {
+          todo_issues.push(returned[todo]["issue_id"]);
+        }
+        
+        // Apply button classes as needed.
+        $('a.todo-button').each(function() {
+          var issue_id = "" + $(this).data('issue-id');
+          if (todo_issues.indexOf(issue_id) >= 0) {
+            $(this).addClass('del');
+            $(this).prop('title', 'Remove from todo list');
+          }
+          else {
+            $(this).addClass('add');
+          }
+        })
+      }, "json" );
+
+  
   // AJAX interactions on issues.
   $('a.todo-button').click(function(event) {
     event.preventDefault();
     
     var issue_id = $(this).data('issue-id');
-    var ajax_result = false;
     
     // Adding items to todo list.
     if ($(this).hasClass('add')) 
