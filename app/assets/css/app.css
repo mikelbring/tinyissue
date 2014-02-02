@@ -345,6 +345,9 @@ p{
 #header .nav li.issues a{
 	background: url('../images/layout/icon-issues_inactive.png') no-repeat 0 0;
 }
+#header .nav li.todo a{
+	background: url('../images/layout/icon-todo_inactive.png') no-repeat 0 0;
+}
 #header .nav li.settings a{
 	background: url('../images/layout/icon-settings_inactive.png') no-repeat 0 0;
 }
@@ -353,6 +356,9 @@ p{
 }
 #header .nav li.issues.active a{
 	background: url('../images/layout/icon-issues.png') no-repeat 0 0;
+}
+#header .nav li.todo.active a{
+	background: url('../images/layout/icon-todo.png') no-repeat 0 0;
 }
 #header .nav li.projects.active a{
 	background: url('../images/layout/icon-projects.png') no-repeat 0 0;
