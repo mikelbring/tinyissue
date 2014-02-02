@@ -11,7 +11,7 @@
       <?php foreach($items as $todo):  ?>
       <div class="todo-list-item <?php if ($index > 0) { echo ' draggable'; } ?>" id="todo-id-<?php echo $todo['issue_id']; ?>" data-issue-id="<?php echo $todo['issue_id']; ?>">
         <div class="todo-list-item-inner">
-          #<?php echo $todo['issue_id']; ?>
+          <span>#<?php echo $todo['issue_id']; ?></span>
           <a href="<?php echo $todo['issue_link']; ?>"><?php echo $todo['issue_name']; ?></a>
           <a class="todo-button del" title="<?php echo __('tinyissue.todos_remove'); ?>" data-issue-id="<?php echo $todo['issue_id']; ?>" href="#">[X]</a>
           <div><?php echo $todo['project_name']; ?></div>

@@ -855,8 +855,13 @@ p{
   width: 100%;
   display: table;
   margin-bottom: 15px;
-  border: 1px solid #ACACAC;
+  border: 1px solid #DBD9D9;
   border-radius: 5px;
+}
+
+.todo-list-item span {
+  color: #ACACAC;
+  font-weight: bold;
 }
 
 .todo-list-item-inner {
