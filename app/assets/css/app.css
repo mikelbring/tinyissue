@@ -855,7 +855,8 @@ p{
   width: 100%;
   display: table;
   margin-bottom: 15px;
-  border: 1px solid #CFE9F7;
+  border: 1px solid #ACACAC;
+  border-radius: 5px;
 }
 
 .todo-list-item-inner {
