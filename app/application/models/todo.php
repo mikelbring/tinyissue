@@ -11,10 +11,12 @@ class Todo extends Eloquent {
 		if (!$user_id) $user_id = Auth::user()->id;
     
     $todo = Todo::where('issue_id', '=', $issue_id)->where('user_id', '=', $user_id)->first();
-    if(empty($todo)) {
+    if(empty($todo)) 
+    {
       return FALSE;
     }
-    else {
+    else 
+    {
       return $todo;
     }
   }
@@ -72,7 +74,7 @@ class Todo extends Eloquent {
     {
       return array(
         'success' => FALSE,
-        'errors' => 'You cannot add this issue to your todo list.',
+        'errors' => __('tinyissue.todos_err_add'),
       );
     }
 		
@@ -81,8 +83,8 @@ class Todo extends Eloquent {
 		if ($count > 0)
     {
       return array(
-        'success' => false,
-        'errors' => 'This issue is already in your todo list.',
+        'success' => FALSE,
+        'errors' => __('tinyissue.todos_err_already'),
       );
     }
 		
@@ -113,7 +115,7 @@ class Todo extends Eloquent {
 		{
 			return array(
 				'success' => FALSE,
-				'errors' => 'This task is not on your todo list.',
+				'errors' => __('tinyissue.todos_err_loadfailed'),
 			);
 		}
 
@@ -140,11 +142,12 @@ class Todo extends Eloquent {
 		{
 			return array(
 				'success' => FALSE,
-				'errors' => 'This task is not on your todo list.',
+				'errors' => __('tinyissue.todos_err_loadfailed'),
 			);
 		}
 
     // Sanity check on status value.
+    // @TODO Handle N configurable status codes
     $new_status = (int)$new_status;
     if ($new_status >= 0 && $new_status <= 3) 
     {
@@ -165,7 +168,7 @@ class Todo extends Eloquent {
     {
 			return array(
 				'success' => FALSE,
-				'errors' => 'There was a problem saving that update. Please reload the page and try again.',
+				'errors' => __('tinyissue.todos_err_update'),
 			);
     }
 	}

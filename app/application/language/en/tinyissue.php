@@ -125,4 +125,8 @@ return array(
 	'dashboard_description' => 'An overview of all the activity involving your active projects.',
   'todos_remove' => 'Remove from your todos.',
   'todos_add' => 'Add to your todos.'
+  'todos_err_add' => 'You cannot add this issue to your todo list.',
+  'todos_err_already' => 'This issue is already on your todo list.',
+  'todos_err_loadfailed' => 'This task is not on your todo list.',
+  'todos_err_update' => 'There was a problem saving that update. Please reload the page and try again.',
 );
