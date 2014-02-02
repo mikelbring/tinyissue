@@ -4,7 +4,7 @@ class Todo_Controller extends Base_Controller {
 	
 	public function get_index()
 	{
-		// @TODO make configurable.
+		// @TODO Make configurable. Global or per-user?
 		$status_codes = array(
 			0 => 'Closed',
 			1 => 'Open',

@@ -1,5 +1,5 @@
 $(function(){ 
-  // Set widths of lanes.
+  // Set widths of lanes (dynamically to allow configurable N lanes).
   var laneSpacing = 10;
   var borderWidth = 4;
   var totalWidth  = parseInt($('#todo-lanes').width());
@@ -48,7 +48,7 @@ $(function(){
     }
   });
   
-  // Delete closed todo.
+  // Remove a todo.
   $('a.todo-button.del').click(function(event) {
     event.preventDefault();
     

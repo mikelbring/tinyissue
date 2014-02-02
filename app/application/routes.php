@@ -20,7 +20,7 @@ Route::controller(array(
 	'user',
 	'administration.users',
 	'administration',
-	'ajax.project',
+  'ajax.project',
 	'ajax.todo',
 	'todo'
 ));
