@@ -15,7 +15,6 @@ Route::controller(array(
 	'home',
 	'project',
 	'projects',
-	'tasks',
 	'login',
 	'user',
 	'administration.users',
