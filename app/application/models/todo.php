@@ -65,16 +65,26 @@ class Todo extends Eloquent {
 	{
 		// We need the issue and project names for display, status and 
     // assigned_to for validity.
-		$issue = Project\Issue::load_issue($todo->issue_id);
-    $todo->assigned_to  = $issue->attributes['assigned_to'];
-		$todo->issue_name   = $issue->attributes['title'];
-		$todo->issue_status = $issue->attributes['status'];
-		$todo->issue_link   = $issue->to();
+		$issue = Project\Issue::find($todo->issue_id);
+    if (!empty($issue)) 
+    {    
+      $todo->assigned_to  = $issue->attributes['assigned_to'];
+      $todo->issue_name   = $issue->attributes['title'];
+      $todo->issue_status = $issue->attributes['status'];
+      $todo->issue_link   = $issue->to();
+      
+      $project = Project::find($issue->attributes['project_id']);
+      $todo->project_name = $project->attributes['name'];
+      $todo->project_link = $project->to();
+    }
     
-		$project = Project::find($issue->attributes['project_id']);
-		$todo->project_name = $project->attributes['name'];
-		$todo->project_link = $project->to();
-	}
+    // If issue has been deleted, force deletion of todo.
+    else 
+    {
+      $todo->assigned_to  = 0;
+      $todo->issue_status = 0;
+    }
+  }
   
 	/**
 	* Add a new todo
@@ -175,8 +185,11 @@ class Todo extends Eloquent {
       
       // Close issue if todo is moved to closed lane. 
       if ($new_status == 0) {
-        $issue = Project\Issue::load_issue($issue_id);
-        $issue->change_status(0);
+        $issue = Project\Issue::find($issue_id);
+        if (!empty($issue)) 
+        {
+          $issue->change_status(0);
+        }
       }
       
       return array(

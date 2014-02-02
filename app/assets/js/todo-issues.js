@@ -10,15 +10,15 @@ $(function(){
           todo_issues.push(returned[todo]["issue_id"]);
         }
         
+        console.log(returned);
+        
         // Apply button classes as needed.
         $('a.todo-button').each(function() {
           var issue_id = "" + $(this).data('issue-id');
           if (todo_issues.indexOf(issue_id) >= 0) {
+            $(this).removeClass('add');
             $(this).addClass('del');
             $(this).prop('title', 'Remove from your todos.');
-          }
-          else {
-            $(this).addClass('add');
           }
         })
       }, "json" );
