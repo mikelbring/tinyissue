@@ -6,10 +6,10 @@ class Todo_Controller extends Base_Controller {
 	{
 		// @TODO Make configurable. Global or per-user?
 		$status_codes = array(
-			0 => 'Closed',
-			1 => 'Open',
-			2 => 'In Progress',
-			3 => 'QA',
+			0 => __('tinyissue.todo_status_0'),
+			1 => __('tinyissue.todo_status_1'),
+			2 => __('tinyissue.todo_status_2'),
+			3 => __('tinyissue.todo_status_3'),
 		);
 		
 		// Ensure we have an entry for each lane. 

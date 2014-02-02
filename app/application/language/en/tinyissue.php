@@ -129,4 +129,8 @@ return array(
   'todos_err_already' => 'This issue is already on your todo list.',
   'todos_err_loadfailed' => 'This task is not on your todo list.',
   'todos_err_update' => 'There was a problem saving that update. Please reload the page and try again.',
+  'todo_status_0' => 'Closed',
+  'todo_status_1' => 'Open',
+  'todo_status_2' => 'In Progress',
+  'todo_status_3' => 'QA',
 );
