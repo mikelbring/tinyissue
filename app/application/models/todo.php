@@ -22,7 +22,8 @@ class Todo extends Eloquent {
   }
   
 	/**
-	 * Load all a user's todos
+	 * Load all a user's todos, deleting any for issues that have been
+   * closed or reassigned.
 	 */
 	public static function load_user_todos($user_id = 0)
 	{
@@ -33,7 +34,14 @@ class Todo extends Eloquent {
 		foreach ($todos as $todo)
 		{
 			Todo::load_todo_extras($todo);
-			$return[$todo->attributes['id']] = $todo->attributes;
+      if ($todo->attributes['assigned_to'] == $user_id && $todo->attributes['issue_status'] == 1) 
+      {
+        $return[$todo->attributes['id']] = $todo->attributes;
+      }
+      else 
+      {
+        Todo::remove_todo($todo->issue_id);
+      }
 		}
 		
 		return $return;
@@ -47,10 +55,13 @@ class Todo extends Eloquent {
 	*/
 	public static function load_todo_extras(&$todo)
 	{
-		// We need the issue and project names for display.
+		// We need the issue and project names for display, status and 
+    // assigned_to for validity.
 		$issue = Project\Issue::load_issue($todo->issue_id);
-		$todo->issue_name = $issue->attributes['title'];
-		$todo->issue_link = $issue->to();
+    $todo->assigned_to  = $issue->attributes['assigned_to'];
+		$todo->issue_status = $issue->attributes['status'];
+		$todo->issue_name   = $issue->attributes['title'];
+		$todo->issue_link   = $issue->to();
 		
 		$project = Project::find($issue->attributes['project_id']);
 		$todo->project_name = $project->attributes['name'];
