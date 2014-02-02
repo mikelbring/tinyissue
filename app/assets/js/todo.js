@@ -31,9 +31,8 @@ $(function(){
       $(ui.draggable).css('left', 0);
       $(ui.draggable).css('top', 0);
       
-      // Handle closed items.
+      // Prevent closed items from being moved again.
       if (new_status == 0) {
-        $('#todo-id-' + issue_id + ' .todo-list-item-inner').append('<a class="todo-button del" title="Remove from your todos." data-issue-id="' + issue_id + '" href="#">[X]</a>');
         $(ui.draggable).draggable( "option", "disabled", true );
       }
       
