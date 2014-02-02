@@ -13,7 +13,7 @@
         <div class="todo-list-item-inner">
           #<?php echo $todo['issue_id']; ?>
           <a href="<?php echo $todo['issue_link']; ?>"><?php echo $todo['issue_name']; ?></a>
-          <a class="todo-button del" title="Remove from your todos." data-issue-id="<?php echo $todo['issue_id']; ?>" href="#">[X]</a>
+          <a class="todo-button del" title="<?php echo __('tinyissue.todos_remove'); ?>" data-issue-id="<?php echo $todo['issue_id']; ?>" href="#">[X]</a>
         </div>
       </div>
       <?php endforeach; ?>

@@ -15,7 +15,7 @@
 			<ul class="issues">
 				<?php foreach($project['issues'] as $row):  ?>
 				<li>
-					<a href="#" class="todo-button" id="issue-id-<?php echo $row->id; ?>" data-issue-id="<?php echo $row->id; ?>" title="Add to todo list">[+]</a>
+					<a href="#" class="todo-button" id="issue-id-<?php echo $row->id; ?>" data-issue-id="<?php echo $row->id; ?>" title="<?php echo __('tinyissue.todos_add'); ?>">[+]</a>
 					<a href="<?php echo $row->to(); ?>" class="comments"><?php echo $row->comment_count(); ?></a>
 					<a href="<?php echo $row->to(); ?>" class="id">#<?php echo $row->id; ?></a>
 					<div class="data">

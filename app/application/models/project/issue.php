@@ -360,7 +360,7 @@ class Issue extends \Eloquent {
 	public static function load_issue($id)
 	{
 		static::$current = static::find($id);
-    
+
 		return static::$current;
 	}
 
