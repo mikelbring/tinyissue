@@ -15,7 +15,7 @@ $(function(){
           var issue_id = "" + $(this).data('issue-id');
           if (todo_issues.indexOf(issue_id) >= 0) {
             $(this).addClass('del');
-            $(this).prop('title', 'Remove from todo list');
+            $(this).prop('title', 'Remove from your todos.');
           }
           else {
             $(this).addClass('add');
@@ -40,7 +40,7 @@ $(function(){
           if (data.success) {
             $('#issue-id-' + issue_id).removeClass('add');
             $('#issue-id-' + issue_id).addClass('del');
-            $('#issue-id-' + issue_id).prop('title', 'Remove from todo list');
+            $('#issue-id-' + issue_id).prop('title', 'Remove from your todos.');
           }
           else {
             alert(data.errors);
@@ -58,7 +58,7 @@ $(function(){
           if (data.success) {
             $('#issue-id-' + issue_id).removeClass('del');
             $('#issue-id-' + issue_id).addClass('add');
-            $('#issue-id-' + issue_id).prop('title', 'Add to todo list');
+            $('#issue-id-' + issue_id).prop('title', 'Add to your todos.');
           }
           else {
             alert(data.errors);
