@@ -99,7 +99,7 @@ class Todo extends Eloquent {
 		
 		// Ensure user is assigned to issue.
     $issue = Project\Issue::load_issue($issue_id);
-    if($issue->assigned_to !== $user_id)
+    if(empty($issue) || $issue->assigned_to !== $user_id)
     {
       return array(
         'success' => FALSE,
