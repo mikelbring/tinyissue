@@ -170,5 +170,10 @@ class Project_Issue_Controller extends Base_Controller {
 		return Redirect::to(Project\Issue::current()->to())
 			->with('notice', $message);
 	}
+  
+  public function assign_weights($project_id = 0, $issues = array())
+  {
+    Project\Issue::
+  }
 
 }
