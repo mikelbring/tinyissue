@@ -36,9 +36,8 @@
 		</ul>
 		<?php endif; ?>
 
-		<div id="sortable-msg">Drag and drop issues to re-order them.</div>
-		<div id="sortable-save"><input id="sortable-save-button" class="button primary" type="submit" value="SAVE" /></div>
+		<div id="sortable-msg"><?php echo __('tinyissue.sortable_issue_howto'); ?></div>
+		<div id="sortable-save"><input id="sortable-save-button" class="button primary" type="submit" value="<?php echo __('tinyissue.save'); ?>" /></div>
     
 	</div>
 </div>
-

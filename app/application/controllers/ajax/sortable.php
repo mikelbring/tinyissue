@@ -7,6 +7,10 @@ class Ajax_Sortable_Controller extends Base_Controller {
 	public function __construct()
 	{
 		parent::__construct();
+    
+		$this->filter('before', 'permission:issue-modify')->only(array(
+			'issue_assign'
+		));
 	}
 
 	public function post_project_issue()
