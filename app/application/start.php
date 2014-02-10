@@ -42,16 +42,11 @@ Laravel\Event::listen(Laravel\Config::loader, function($bundle, $file) use ($con
 			break;
 
 		case 'database':
-
-			$config['connections'][$config_app['database']['driver']] = array(
-				'host' => $config_app['database']['host'],
-				'database' => $config_app['database']['database'],
-				'username' => $config_app['database']['username'],
-				'password' => $config_app['database']['password'],
-				'charset'  => 'utf8',
-				'prefix'   => '',
-				'driver' => $config_app['database']['driver']
-			);
+			
+			$config['connections'][$config_app['database']['driver']] = array_merge(array(
+				'charset' => 'utf8',
+				'prefix' => ''
+			), $config_app['database']);
 			
 			$config['default'] = $config_app['database']['driver'];
 
@@ -142,7 +137,7 @@ Event::listen(View::loader, function($bundle, $view)
 Event::listen(Lang::loader, function($bundle, $language, $file)
 {
 	$user = Auth::user() ;
-	if($user->language != '')
+	if( ! is_null($user) && $user->language != '')
 		$language = $user->language ;
 	
 	return Lang::file($bundle, $language, $file);

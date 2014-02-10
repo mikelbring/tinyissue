@@ -72,10 +72,19 @@ h4{
 	margin-bottom: 10px;
 }
 h4 span{
-	marign-left: 10px;
+	margin-left: 10px;
 	font-size: 15px;
 	color: #999;
 }
+
+code{
+	border: 1px solid rgb(204, 204, 204);
+	padding: 3px;
+	background-color: rgb(248, 248, 248);
+	font-family: Courier,monospace;
+}
+
+
 /* Labels */
 .label {
   padding: 4px 4px 4px;
@@ -281,8 +290,10 @@ p{
 #header .logo{
 	width: 87px; height: 23px;
 	background: url('../images/layout/tinyissue.png') no-repeat;
-	text-indent: -99999999px !important;
+	text-indent: 100%;
 	position: absolute; top: 15px; left: 15px;
+	white-space: nowrap;
+	overflow: hidden;
 }
 #header .nav-right{
 	float: right;

@@ -106,7 +106,19 @@ return array(
 	'you_put_no_comment' =>'You did not put in a comment!',
 	'user_deleted' => 'User Deleted',
 	'user_updated' => 'User Updated',
-	'user_added' => 'User Added'
+	'user_added' => 'User Added',
 	'language' => 'Language',
-
+	'by' => 'by',
+	'to' => 'to',
+	'on_issue' => 'on issue',
+	'label_closed' => 'Closed',
+	'label_comment' => 'Comment',
+	'label_reopened' => 'Reopened',
+	'label_created' => 'Created',
+	'label_reassigned' => 'Reassigned',
+	'was_closed_by' => 'was closed by',
+	'was_reopened_by' => 'was reopened by',
+	'was_created_by' => 'was created by',
+	'was_reassigned_to' => 'was reassigned to',
+	'dashboard_description' => 'An overview of all the activity involving your active projects.'
 );

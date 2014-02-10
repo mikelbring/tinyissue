@@ -124,6 +124,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(255) default NULL,
   `firstname` varchar(255) default NULL,
   `lastname` varchar(255) default NULL,
+  `language` varchar(5) default NULL,
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   `deleted` int(1) NOT NULL default '0',

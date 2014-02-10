@@ -50,6 +50,21 @@ class Comment extends  \Eloquent {
 		$issue->updated_at = date('Y-m-d H:i:s');
 		$issue->updated_by = \Auth::user()->id;
 		$issue->save();
+		
+		/* Notify the person to whom the issue is currently assigned, unless that person is the one making the comment */
+		if($issue->assigned_to && $issue->assigned_to != \Auth::user()->id)
+		{
+			$project = \Project::current();
+			
+			$subject = 'Issue "' . $issue->title . '" in "' . $project->name . '" project has a new comment';
+			$text = \View::make('email.commented_issue', array(
+				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
+				'project' => $project,
+				'issue' => $issue,
+			));
+
+			\Mail::send_email($text, $issue->assigned->email, $subject);
+		}
 
 		return $comment;
 	}
@@ -96,6 +111,6 @@ class Comment extends  \Eloquent {
 	*/
 	public static function format($body)
 	{
-		return \Sparkdown\Markdown($body);   
+		return \Sparkdown\Markdown($body);
 	}
 }
