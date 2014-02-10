@@ -121,5 +121,7 @@ return array(
     'was_reopened_by' => '重新开启：',
     'was_created_by' => '创建者：',
     'was_reassigned_to' => '重新分配给：',
-    'dashboard_description' => '您所参与项目的活动情况'
+    'dashboard_description' => '您所参与项目的活动情况',
+	/********** TRANSLATION NEEDED *****************/
+	'fileupoload_button' => 'Attach Files'
 );

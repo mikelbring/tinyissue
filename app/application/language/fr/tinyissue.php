@@ -121,5 +121,7 @@ return array(
 	'was_reopened_by' => 'a été réouvert par',
 	'was_created_by' => 'a été créé par',
 	'was_reassigned_to' => 'a été réassigné à',
-	'dashboard_description' => 'Un aperçu de toutes les activités concernant vos projets actifs.'
+	'dashboard_description' => 'Un aperçu de toutes les activités concernant vos projets actifs.',
+	/********** TRANSLATION NEEDED *****************/
+	'fileupoload_button' => 'Attach Files'
 );

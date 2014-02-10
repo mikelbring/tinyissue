@@ -14,6 +14,8 @@ $(function() {
 			project_id : project,
 			upload_token : upload_token
 		},
+		'buttonText' : $('#uploadbuttontext').val(),
+		'width' : 150,
 		'cancelImg' : baseurl + '/app/assets/images/layout/icon-delete.png',
 		'auto' : true,
 		'multi' : true,

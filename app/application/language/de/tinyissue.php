@@ -121,4 +121,5 @@ return array(
 	'was_reopened_by' => 'wurde wiedergeöffnet von',
 	'was_created_by' => 'wurde erstellt von',
 	'was_reassigned_to' => 'wurde zugeordnet zu',
+	'fileupoload_button' => 'Datei anhaengen',
 );

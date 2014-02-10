@@ -35,7 +35,7 @@
 				<th><?php echo __('tinyissue.attachments'); ?></th>
 				<td>
 					<input id="upload" type="file" name="file_upload" />
-
+					<input type="hidden" id="uploadbuttontext" name="uploadbuttontext" value="<?php echo __('tinyissue.fileupoload_button'); ?>"/>
 					<ul id="uploaded-attachments"></ul>
 				</td>
 			</tr>
