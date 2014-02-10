@@ -216,11 +216,11 @@ class Issue extends \Eloquent {
 			$project_id = $this->project_id;
 			$project = \Project::find($project_id);
 			
-			$subject = 'Issue "' . $this->title . '" in "' . $project->name . '" project was reassigned to you';
+			$subject = sprintf(__('email.reassignment'),$this->title,$project->name);
 			$text = \View::make('email.reassigned_issue', array(
 				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
 				'project' => $project,
-				'issue' => $this,
+				'issue' => $this
 			));
 
 			\Mail::send_email($text, $this->assigned->email, $subject);
@@ -258,9 +258,9 @@ class Issue extends \Eloquent {
 		if($this->assigned_to && $this->assigned_to != \Auth::user()->id)
 		{
 			$project = \Project::current();			
-			$verb = ($this->status == 0 ? 'closed' : 'reopened');
+			$verb = ($this->status == 0 ? __('email.closed') : __('email.reopened'));
 			
-			$subject = 'Issue "' . $this->title . '" in "' . $project->name . '" project was ' . $verb;
+			$subject = sprintf(__('email.issue_changed'),$this->title,$project->name,$verb);
 			$text = \View::make('email.change_status_issue', array(
 				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
 				'project' => $project,
@@ -315,7 +315,7 @@ class Issue extends \Eloquent {
 		{
 			$project = \Project::current();
 			
-			$subject = 'Issue "' . $this->title . '" in "' . $project->name . '" project was updated';
+			$subject = sprintf(__('email.update'),$this->title,$project->name);
 			$text = \View::make('email.update_issue', array(
 				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
 				'project' => $project,
@@ -419,7 +419,7 @@ class Issue extends \Eloquent {
 			{
 				$project = \Project::current();
 				
-				$subject = 'New issue "' . $issue->title . '" was submitted to "' . $project->name . '" project and assigned to you';
+				$subject = sprintf(__('email.assignment'),$issue->title,$project->name);
 				$text = \View::make('email.new_assigned_issue', array(
 					'project' => $project,
 					'issue' => $issue,
@@ -435,7 +435,7 @@ class Issue extends \Eloquent {
 			{
 				if($row->id != \Auth::user()->id && $row->permission('project-modify'))
 				{
-					$subject = 'New issue "' . $issue->title . '" was submitted to "' . $project->name . '" project';
+					$subject = sprintf(__('email.new_issue'),$issue->title,$project->name);
 					$text = \View::make('email.new_issue', array(
 						'project' => $project,
 						'issue' => $issue,

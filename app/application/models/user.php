@@ -306,7 +306,7 @@ class User extends Eloquent {
 			'password' => $password
 		));
 
-		Mail::send_email($view, $info['email'], 'Your Tiny Issue Account');
+		Mail::send_email($view, $info['email'], __('email.subject_newuser'));
 
 		return array(
 			'success' => true,
