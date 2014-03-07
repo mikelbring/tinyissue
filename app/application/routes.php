@@ -53,7 +53,12 @@ View::composer('layouts.project', function($view)
 	Asset::script('swf', '/app/assets/js/uploadify/swfobject.js', 'app');
 	Asset::script('uploadify', '/app/assets/js/uploadify/jquery.uploadify.v2.1.4.min.js', 'app');
 	Asset::script('project', '/app/assets/js/project.js', 'uploadify');
-
+    
+    Asset::script('markitup', '/app/assets/js/markitup/jquery.markitup.js', 'app');
+    Asset::script('markitup-markdown', '/app/assets/js/markitup/sets/markdown/set.js', 'markitup');
+    Asset::style('markitup', 'app/assets/js/markitup/skins/markitup/style.css');
+    Asset::style('markitup-markdown', 'app/assets/js/markitup/sets/markdown/style.css');
+    
 	if(!isset($view->sidebar))
 	{
 		$view->with('sidebar', View::make('project.sidebar'));

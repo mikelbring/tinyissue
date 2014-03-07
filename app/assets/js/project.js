@@ -1,3 +1,14 @@
+$(document).ready(function()	{
+    $('#markdown').markItUp(myMarkdownSettings);
+    // The width of the markItUp div should be changed to match
+    // the original textarea width. This also overrides the width
+    // setting in the MarkItUp css files.
+    $('.markItUp').width('99%'); 
+    // Since the container div has change width the Editor div
+    // should also change to reflect it.
+    $('.markItUpEditor').width(($('.markItUp').width()-56)+ "px");
+});
+
 $(function() {
 
 	/* Uploadify */
@@ -49,6 +60,7 @@ $(function() {
 		var id = $(this).closest('.comment').attr('id');
 		$('#' + id + ' .issue').hide();
 		$('#' + id + ' .comment-edit').show();
+        $('.markItUpEditor').width(($('.markItUp').width()-56)+ "px");  // set the Editor div so it matches the container
 		return false;
 	});
 

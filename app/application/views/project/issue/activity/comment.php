@@ -21,7 +21,7 @@
 		
 		<?php if(Auth::user()->permission('issue-modify')): ?>
 		<div class="comment-edit">
-			<textarea name="body" style="width: 98%; height: 90px;"><?php echo stripslashes($comment->comment); ?></textarea>
+			<textarea id="markdown" name="body" style="width: 98%; height: 90px;"><?php echo stripslashes($comment->comment); ?></textarea>
 			<div class="right">
 				<a href="javascript:void(0);" class="action save"><?php echo __('tinyissue.save'); ?></a>
 				<a href="javascript:void(0);" class="action cancel"><?php echo __('tinyissue.cancel'); ?></a>
