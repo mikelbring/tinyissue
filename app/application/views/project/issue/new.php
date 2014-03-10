@@ -19,7 +19,7 @@
 			<tr>
 				<th><?php echo __('tinyissue.issue'); ?></th>
 				<td>
-					<textarea id="markdown" name="body" style="width: 98%; height: 150px;"><?php echo Input::old('body'); ?></textarea>
+					<textarea id="markdownIssue" name="body" style="width: 98%; height: 150px;"><?php echo Input::old('body'); ?></textarea>
 					<?php echo $errors->first('body', '<span class="error">:message</span>'); ?>
 				</td>
 			</tr>
