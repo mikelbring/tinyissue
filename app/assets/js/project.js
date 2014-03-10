@@ -1,12 +1,10 @@
 $(document).ready(function()	{
-    //$('#markdown').markItUp(myMarkdownSettings);
     // The width of the markItUp div should be changed to match
     // the original textarea width. This also overrides the width
     // setting in the MarkItUp css files.
-    //$('.markItUp').width('99%'); 
+
     // Since the container div has change width the Editor div
     // should also change to reflect it.
-    //$('.markItUpEditor').width(($('.markItUp').width()-56)+ "px");
     
     $( "li.comment" ).each(function( index ) {
 	   // get the id name, remember only the numbers
@@ -24,12 +22,6 @@ $(document).ready(function()	{
     $('#markdownIssue').markItUp(myMarkdownSettings);
     $('#markItUpMarkdownIssue').width('99%');
     $('#markItUpMarkdownIssue').find('.markItUpEditor').width(($('#markItUpMarkdownIssue').width()-56)+ "px");
-    
-    
-    //markdownEditIssue
-    //markdownNewIssue
-    
-
 });
 
 $(function() {
