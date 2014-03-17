@@ -44,19 +44,19 @@ h3 span a{
 	font-weight: normal;
 	color: #43a2d9;
 }
-h3 .newissue{
-	width: 99px; height: 26px;
+h3  input[type=submit],
+h3  input[type=submit]:hover,
+h3  input[type=submit]:visited,
+h3  input[type=submit]:focus {
+	font: bold 12px Helvetica, "Lucida Grande", Arial, sans-serif;
+	color: #fff;
 	display: block;
 	float: right;
-	background: url('../images/layout/newissue.png') no-repeat;
-	text-indent: -999999px;
-}
-h3 .addnewuser{
-	width: 121px; height: 26px;
-	display: block;
-	float: right;
-	background: url('../images/layout/addnewuser.png') no-repeat;
-	text-indent: -999999px;
+    padding: 4px 5px 4px 28px;
+	border: 1px solid #348F34;
+	border-radius: 4px;
+	background: #47A547 url('../images/layout/plus.png') no-repeat;
+	background-position: 7px;
 }
 h3 .edit-issue {
     padding-right: 35px;
