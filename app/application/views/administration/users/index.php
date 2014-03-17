@@ -1,5 +1,5 @@
 <h3>
-	<a href="<?php echo URL::to('administration/users/add');?>" class="addnewuser"><?php echo __('tinyissue.add_new_user'); ?></a>
+	<a href="users/add"><input type="submit" class="addnewuser" value="<?php echo __('tinyissue.add_new_user'); ?>" /></a>
 	<?php echo __('tinyissue.users'); ?>
 	<span><?php echo __('tinyissue.users_description'); ?></span>
 </h3>
