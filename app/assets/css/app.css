@@ -52,7 +52,7 @@ h3  input[type=submit]:focus {
 	color: #fff;
 	display: block;
 	float: right;
-    padding: 4px 5px 4px 28px;
+        padding: 4px 5px 4px 28px;
 	border: 1px solid #348F34;
 	border-radius: 4px;
 	background: #47A547 url('../images/layout/plus.png') no-repeat;
