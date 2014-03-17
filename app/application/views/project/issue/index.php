@@ -1,5 +1,5 @@
 <h3>
-	<a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue"><?php echo __('tinyissue.new_issue'); ?></a>
+	<a href="<?php echo Project::current()->to('issue/new');?>"><input type="submit" class="newissue" value="<?php echo __('tinyissue.new_issue'); ?>" /></a>
 
 	<?php if(Auth::user()->permission('issue-modify')): ?>
 	<a href="<?php echo $issue->to('edit'); ?>" class="edit-issue"><?php echo $issue->title; ?></a>
