@@ -55,7 +55,7 @@ h3  input[type=submit]:focus {
         padding: 4px 5px 4px 28px;
 	border: 1px solid #348F34;
 	border-radius: 4px;
-	background: #47A547 url('../images/layout/plus.png') no-repeat;
+	background: #47A547 url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAIAAADZrBkAAAAABnRSTlMAvgC+AL4iSPx1AAAACXBIWXMAAAsTAAALEwEAmpwYAAAAO0lEQVR42mN0X+rOQDpgwSq6I2oHnO2xzANTARMDWWA4a2NwX+r+n0TgvtR9SPiNEWviGk0l1ApJggAAE7A78VyUjsMAAAAASUVORK5CYII=') no-repeat;
 	background-position: 7px;
 }
 h3 .edit-issue {
