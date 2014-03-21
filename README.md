@@ -1,9 +1,9 @@
 ![](http://tinyissue.com/assets/images/giant-preview.png)
 
-# Installing Tiny Issue v1.3.1
+# Installing Tiny Issue v1.4
 
 - Create a MySQL Database
-- Make /uploads/ write-able (CHMOD 777)
+- Make /assets/uploads/ write-able (CHMOD 777)
 - Open /install/ in your browser
 - Delete or rename /install/
 

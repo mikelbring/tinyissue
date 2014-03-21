@@ -1,31 +1,27 @@
 <?php
 
-require './config-setup.php';
-require '../app/laravel/hash.php';
-require '../app/laravel/str.php';
-
-
+require __DIR__ . '/../bootstrap/autoload.php';
+require __DIR__ . '/config-setup.php';
+require __DIR__ . '/install.php';
 
 $first_name_error = '';
 $last_name_error = '';
 $email_error = '';
 $pass_error = '';
 
-require './install.php';
-
 $install = new install();
 $database_check = $install->check_connect();
 $requirement_check = $install->check_requirements();
 
-if(!$database_check['error'])
+if (!$database_check['error'])
 {
-	if(isset($_POST['email']))
+	if (isset($_POST['email']))
 	{
-		if($_POST['email'] != ''&& $_POST['first_name'] != '' && $_POST['last_name'] != '' && $_POST['password'] != '')
+		if (!empty($_POST['email']) && !empty($_POST['first_name']) && !empty($_POST['last_name']) && !empty($_POST['password']))
 		{
 			$finish = $install->create_tables($_POST);
 
-			if($finish)
+			if ($finish)
 			{
 				header('location: complete.php');
 				die();
@@ -33,22 +29,22 @@ if(!$database_check['error'])
 		}
 		else
 		{
-			if($_POST['email'] == '')
+			if ($_POST['email'] == '')
 			{
 				$email_error = 'Valid Email Required';
 			}
 
-			if($_POST['first_name'] == '')
+			if ($_POST['first_name'] == '')
 			{
 				$first_name_error = 'First Name Required';
 			}
 
-			if($_POST['last_name'] == '')
+			if ($_POST['last_name'] == '')
 			{
 				$last_name_error = 'Last Name Required';
 			}
 
-			if($_POST['password'] == '')
+			if ($_POST['password'] == '')
 			{
 				$pass_error = 'Password Required';
 			}
@@ -66,11 +62,9 @@ if(!$database_check['error'])
 <!DOCTYPE html>
 <html>
 <head>
-	<link href="../app/assets/css/install.css" media="all" type="text/css" rel="stylesheet">
-
+	<link href="../assets/css/install.css" media="all" type="text/css" rel="stylesheet">
 </head>
 <body>
-
 <div id="container">
 	<form method="post" action="">
 		<table class="form">
@@ -78,7 +72,7 @@ if(!$database_check['error'])
 				<td colspan="2">
 					<h2>Installation</h2>
 
-				<?php	if(count($requirement_check) > 0): ?>
+				    <?php if(count($requirement_check) > 0): ?>
 
 					<strong>Please install all required extensions</strong><br />
 
@@ -131,6 +125,5 @@ if(!$database_check['error'])
 		</table>
 	</form>
 </div>
-
 </body>
 </html>
