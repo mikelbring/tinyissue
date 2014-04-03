@@ -1,8 +1,8 @@
-<?php 
-if(isset($_POST['create_config']) && isset($_POST['database_host']))
-{
+<?php
 
-	if(!file_exists('../config.app.example.php'))
+if (isset($_POST['create_config']) && isset($_POST['database_host']))
+{
+	if ( ! file_exists('../config.app.example.php'))
 	{
 		die('Sorry, we need a config.app.example.php file to work with. Please re-upload this from your Tiny Issue package.');
 	}
@@ -25,15 +25,15 @@ if(isset($_POST['create_config']) && isset($_POST['database_host']))
 	/* Key */
 	$config_file = str_replace('yourrandomkey', md5(serialize($_POST) . time() . $_SERVER['HTTP_HOST']), $config_file);
 
-	if(!is_writable(realpath('../'))){ ?>
+	if ( ! is_writable(realpath('../')))
+    {
+?>
 <!DOCTYPE html>
 <html>
 <head>
-	<link href="../app/assets/css/install.css" media="all" type="text/css" rel="stylesheet">
-
+	<link href="../assets/css/install.css" media="all" type="text/css" rel="stylesheet">
 </head>
 <body>
-
 <div id="container">
 	<table class="form">
 	<tr>
@@ -64,7 +64,7 @@ if(isset($_POST['create_config']) && isset($_POST['database_host']))
 <!DOCTYPE html>
 <html>
 <head>
-	<link href="../app/assets/css/install.css" media="all" type="text/css" rel="stylesheet">
+	<link href="../assets/css/install.css" media="all" type="text/css" rel="stylesheet">
 
 </head>
 <body>
@@ -86,11 +86,13 @@ if(isset($_POST['create_config']) && isset($_POST['database_host']))
 exit();
 }
 
-if(!file_exists('../config.app.php')){ ?>
+if ( ! file_exists('../config.app.php'))
+{
+?>
 <!DOCTYPE html>
 <html>
 <head>
-	<link href="../app/assets/css/install.css" media="all" type="text/css" rel="stylesheet">
+	<link href="../assets/css/install.css" media="all" type="text/css" rel="stylesheet">
 
 </head>
 <body>

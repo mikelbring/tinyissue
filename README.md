@@ -1,9 +1,9 @@
 ![](http://tinyissue.com/assets/images/giant-preview.png)
 
-# Installing Tiny Issue v1.3
+# Installing Tiny Issue v1.4
 
 - Create a MySQL Database
-- Make /uploads/ write-able (CHMOD 777)
+- Make /assets/uploads/ write-able (CHMOD 777)
 - Open /install/ in your browser
 - Delete or rename /install/
 
@@ -27,5 +27,5 @@ The `master` branch is tagged releases only.
 
 - [Michael Hasselbring](http://michaelhasselbring.com)
 - [Zachary Hoover](http://zachoover.com)
-- Suthan Sangaralingham (Designer)
+- [Suthan Sangaralingham](http://suthanwebs.com/)
 

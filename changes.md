@@ -1,5 +1,19 @@
 # Tiny Issue Change Log
 
+## Tiny Issue v1.4.0
+
+- Use Laravel 4.1
+
+## Tiny Issue v1.3.1
+
+- Bug fixes
+- Small UI Changes
+- Language fixes
+
+### Upgrading from v1.3
+
+- Replace the `app` folder
+
 ## Tiny Issue v1.3
 
 - Added support for user language (issue#84)

@@ -1,0 +1,38 @@
+{
+    "name": "mikelbring/tinyissue",
+    "description": "Simple Issue Tracking for Teams.",
+    "keywords": ["Issue", "Tracking"],
+    "license": "MIT",
+    "require": {
+        "laravel/framework": "4.1.*",
+        "dflydev/markdown": "1.0.*"
+    },
+    "autoload": {
+        "classmap": [
+            "app/commands",
+            "app/controllers",
+            "app/models",
+            "app/database/migrations",
+            "app/database/seeds"
+        ],
+        "psr-0": {
+            "Tinyissue": "app/src"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "php bin/artisan optimize"
+        ],
+        "post-update-cmd": [
+            "php bin/artisan clear-compiled",
+            "php bin/artisan optimize"
+        ],
+        "post-create-project-cmd": [
+            "php bin/artisan key:generate"
+        ]
+    },
+    "config": {
+        "preferred-install": "dist"
+    },
+    "minimum-stability": "stable"
+}
