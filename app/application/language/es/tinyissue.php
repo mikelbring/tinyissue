@@ -67,6 +67,7 @@ return array(
 	'close_issue_confirm' => '¿Está seguro que desea cerrar esta incidencia?',
 	'closed_by' => 'Cerrado Por',
 	'on' => 'en',
+	'in' => 'en',
 	'reopen' => 'Reabrir',
 	'reopen_issue' => 'Reabrir Incidencia',
 	'comment' => 'Comentar',
