@@ -89,9 +89,10 @@ class Project extends Eloquent {
 	* Select activity for a project
 	*
 	* @param  int    $activity_limit
+	* @param  string $rss_path (default: empty -> Non-RSS form)
 	* @return array
 	*/
-	public function activity($activity_limit)
+	public function activity($activity_limit, $rss_path='')
 	{
 		$users = $issues = $comments = $activity_type = array();
 
@@ -153,7 +154,7 @@ class Project extends Eloquent {
 			switch($row->type_id)
 			{
 				case 2:
-					$return[] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
+					$return[] = View::make('activity' . $rss_path . '/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issues[$row->item_id],
 						'project' => $this,
 						'user' => $users[$row->user_id],
@@ -165,7 +166,7 @@ class Project extends Eloquent {
 
 				case 5:
 
-					$return[] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
+					$return[] = View::make('activity' . $rss_path . '/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issues[$row->item_id],
 						'project' => $this,
 						'user' => $users[$row->user_id],
@@ -177,7 +178,7 @@ class Project extends Eloquent {
 
 				default:
 
-					$return[] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
+					$return[] = View::make('activity' . $rss_path . '/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issues[$row->item_id],
 						'project' => $this,
 						'user' => $users[$row->user_id],

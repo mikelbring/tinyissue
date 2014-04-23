@@ -36,6 +36,13 @@ class Project_Controller extends Base_Controller {
 		));
 	}
 
+	public function get_rss()
+	{
+		return Response::make(View::make('project/rss', 
+			array('project' => Project::current(),
+				'activities' => Project::current()->activity(10, '_rss')
+				)), 200, array('Content-Type' => 'text/xml'));
+	}
 	/**
 	 * Display issues for a project
 	 * /project/(:num)

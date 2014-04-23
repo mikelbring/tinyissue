@@ -6,6 +6,7 @@
 |--------------------------------------------------------------------------
 */
 Route::any('project/(:num)', 'project@index');
+Route::any('project/(:num)/rss', 'project@rss');
 Route::any('project/(:num)/(:any)', 'project@(:2)');
 Route::any('project/(:num)/issue/new', 'project.issue@new');
 Route::any('project/(:num)/issue/(:num)', 'project.issue@index');
