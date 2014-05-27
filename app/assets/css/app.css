@@ -656,6 +656,11 @@ p{
 }
 
 /* style markdowned elements */
+.issue p,
+.issue ul,
+.issue ol {
+	margin-bottom: 10px;
+}
 .issue ul {
     list-style-type: disc;
     list-style-position: inside;
@@ -663,6 +668,15 @@ p{
 .issue ol {
     list-style-type: decimal;
     list-style-position: inside;
+}
+.issue ul ul,
+.issue ul ol,
+.issue ol ol,
+.issue ol ul {
+	margin: 0 0 0 12px;
+}
+.issue ul li {
+	margin-top: 2px;
 }
 .issue code {
     margin: 0 2px;
@@ -688,6 +702,15 @@ p{
     border: none;
     background-color: transparent;
 }
+.issue blockquote {
+	border-left: 2px solid #729fcf;
+	padding-left: 5px;
+}
+.issue blockquote blockquote { border-color: #ad7fa8; }
+.issue blockquote blockquote blockquote { border-color: #8ae234; }
+.issue blockquote blockquote blockquote blockquote { border-color: #fcaf3e; }
+.issue blockquote blockquote blockquote blockquote blockquote { border-color: #e9b96e; }
+
 .blue-box .activity .data .comment li {
     padding: 0;
     border-bottom: 0;
