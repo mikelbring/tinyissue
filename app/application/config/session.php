@@ -79,7 +79,7 @@ return array(
 	|
 	*/
 
-	'cookie' => 'laravel_session',
+	'cookie' => 'tinyissue_session',
 
 	/*
 	|--------------------------------------------------------------------------
