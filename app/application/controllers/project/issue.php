@@ -22,6 +22,10 @@ class Project_Issue_Controller extends Base_Controller {
 	 */
 	public function get_new()
 	{
+		Asset::add('tag-it-js', '/app/assets/js/tag-it.min.js', array('jquery', 'jquery-ui'));
+		Asset::add('tag-it-css-base', '/app/assets/css/jquery.tagit.css');
+		Asset::add('tag-it-css-zendesk', '/app/assets/css/tagit.ui-zendesk.css');
+		
 		return $this->layout->nest('content', 'project.issue.new', array(
 			'project' => Project::current()
 		));
@@ -91,8 +95,20 @@ class Project_Issue_Controller extends Base_Controller {
 	 */
 	public function get_edit()
 	{
+		Asset::add('tag-it-js', '/app/assets/js/tag-it.min.js', array('jquery', 'jquery-ui'));
+		Asset::add('tag-it-css-base', '/app/assets/css/jquery.tagit.css');
+		Asset::add('tag-it-css-zendesk', '/app/assets/css/tagit.ui-zendesk.css');
+		
+		/* Get tags as string */
+		$issue_tags = '';
+		foreach(Project\Issue::current()->tags as $tag)
+		{
+			$issue_tags .= (!empty($issue_tags) ? ',' : '') . $tag->tag;
+		}
+		
 		return $this->layout->nest('content', 'project.issue.edit', array(
 			'issue' => Project\Issue::current(),
+			'issue_tags' => $issue_tags,
 			'project' => Project::current()
 		));
 	}

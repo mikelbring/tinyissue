@@ -79,12 +79,25 @@ class Project extends Eloquent {
 			$user_id = \Auth::user()->id;
 		}
 
-		return \Project\Issue::where('project_id', '=', $this->id)
-			->where('assigned_to', '=', $user_id)
-			->where('status', '=', 1)
-			->count();
+		return \Tag::find(1)->issues()
+				->where('project_id', '=', $this->id)
+				->where('assigned_to', '=', $user_id)
+				->count();
 	}
-
+	
+	public function count_open_issues()
+	{
+		return \Tag::find(1)->issues()
+				->where('project_id', '=', $this->id)
+				->count();
+	}
+	
+	public function count_closed_issues()
+	{
+		return \Tag::find(2)->issues()
+				->where('project_id', '=', $this->id)
+				->count();	
+ 	}
 	/**
 	* Select activity for a project
 	*
@@ -170,6 +183,20 @@ class Project extends Eloquent {
 						'project' => $this,
 						'user' => $users[$row->user_id],
 						'assigned' => $users[$row->action_id],
+						'activity' => $row
+					));
+
+					break;
+					
+				case 6:
+
+					$tag_diff = json_decode($row->data, true);
+					$return[] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
+						'issue' => $issues[$row->item_id],
+						'project' => $this,
+						'user' => $users[$row->user_id],
+						'tag_diff' => $tag_diff,
+						'tag_counts' => array('added' => sizeof($tag_diff['added_tags']), 'removed' => sizeof($tag_diff['removed_tags'])),
 						'activity' => $row
 					));
 

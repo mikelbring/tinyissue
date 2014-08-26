@@ -110,6 +110,9 @@ code{
 .label.notice {
   background-color: #62cffc;
 }
+.label.info {
+  background-color: #5f6074;
+}
 /* Notices */
 .global-notice{
 	width: 100%;
@@ -480,6 +483,15 @@ p{
 .blue-box .inside-pad{
 	padding: 5px;
 }
+
+.blue-box .filter-and-sorting{
+	background-color: white;
+	padding: 8px 17px;
+}
+.blue-box .filter-and-sorting #tags{
+	margin-left: 10px;
+}
+
 .blue-box h4{
 	font-size: 16px;
 	color: #426e86;
@@ -502,6 +514,22 @@ p{
 	width: 68px;
 	text-align: center;
 }
+.blue-box .activity li .tag-activity
+{
+	margin: 3px 0 6px 0;
+}
+.blue-box .activity li .tag-activity-spacer
+{
+	margin-bottom: 6px;
+}
+.comment .tag-activity-spacer
+{
+	margin-bottom: 12px;
+}
+.blue-box .activity li .tag-activity .label{
+	float: none;
+}
+
 .blue-box .activity li .data{
 	margin-left: 87px;
 	line-height: 18px;
@@ -552,7 +580,10 @@ p{
 .blue-box .issues li .data{
 	margin-left: 72px;
 }
-
+.blue-box .issues li .tags{
+	float: right;
+	padding: 8px 20px 0 0;
+}
 .blue-box .projects{
 	background: #ffffff;
 	border-top: 1px solid #dddddd;
@@ -823,4 +854,11 @@ p{
 }
 .table th{
 	font-weight: bold;
+}
+#issue-tags{
+	margin-bottom: 20px;
+}
+
+#admin-tag-list{
+	margin-top: 20px;
 }
