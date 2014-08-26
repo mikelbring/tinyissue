@@ -2,6 +2,8 @@
 
 [Visit the project](http://pixeline.github.io/Little-BIT-Bugs-Issues-Tracker/)
 
+![Printscreen](http://pixeline.github.io/Little-BIT-Bugs-Issues-Tracker/images/bugs.printscreen.png "Main screen")
+
 # Installing BIT v1.1
 
 - Create a MySQL Database
