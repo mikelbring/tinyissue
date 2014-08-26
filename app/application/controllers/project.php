@@ -77,8 +77,8 @@ class Project_Controller extends Base_Controller {
 		if ($tags || $sort_by != 'updated')
 		{
 			$issues = $issues
-				->left_join('projects_issues_tags', 'projects_issues_tags.issue_id', '=', 'projects_issues.id')
-				->left_join('tags', 'tags.id', '=', 'projects_issues_tags.tag_id');
+				->join('projects_issues_tags', 'projects_issues_tags.issue_id', '=', 'projects_issues.id')
+				->join('tags', 'tags.id', '=', 'projects_issues_tags.tag_id');
 		}
 
 		$issues = $issues->where('project_id', '=', Project::current()->id);
@@ -90,23 +90,36 @@ class Project_Controller extends Base_Controller {
 		
 		if ($tags)
 		{
+			$tags_collection = explode(',', $tags);
+			$tags_amount = count($tags_collection);
+/*
 			foreach (explode(',', $tags) as $tag)
 			{
 				if (substr($tag, -2) == ':*')
 				{
-					$tag = substr($tag, 0, strlen($tag) - 2) . ':%';
-					$issues = $issues->where('tags.tag', 'LIKE', $tag);
+					$tags_collection[] = substr($tag, 0, strlen($tag) - 2) . ':%';
+					//$issues = $issues->where('tags.tag', 'LIKE', $tag);
 				}
 				else
 				{
-					$issues = $issues->where('tags.tag', '=', $tag);
+					$tags_collection[] =$tag;
+					//$issues = $issues->where('tags.tag', '=', $tag);
 				}
 			}
+*/
+
+			$issues = $issues->where_in('tags.tag', $tags_collection);//->get();
 		}
 		
 		$issues = $issues
 			->group_by('projects_issues.id')
 			->order_by($sort_by_clause, $sort_order);
+
+		if($tags && $tags_amount>1){
+			// L3
+			$issues = $issues->having(DB::raw('COUNT(DISTINCT `tags`.`tag`)'),'=',$tags_amount);
+			// L4 $issues = $issues->havingRaw("COUNT(DISTINCT `tags`.`tag`) = ".$tags_amount);
+		}
 			
 		$issues = $issues->get(array('projects_issues.*'));
 
