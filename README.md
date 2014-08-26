@@ -1,6 +1,8 @@
-![](http://tinyissue.com/assets/images/giant-preview.png)
+# Little BIT (Bugs Issue Tracker)
 
-# Installing BIT v1.3
+[Visit the project](http://pixeline.github.io/Little-BIT-Bugs-Issues-Tracker/)
+
+# Installing BIT v1.0
 
 - Create a MySQL Database
 - Make /uploads/ write-able (CHMOD 777)
