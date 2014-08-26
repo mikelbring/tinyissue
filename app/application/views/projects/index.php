@@ -35,7 +35,7 @@
 
 					<?php if(count($projects) == 0): ?>
 					<li>
-						<?php echo __('tinyissue.you_do_not_have_any_projects'); ?> <a href="<?php echo URL::to('projects/new'); ?>"><?php echo __('tinyissue.create_project'); ?></a>
+						<?php echo __('tinyissue.you_do_not_have_any_projects'); ?> <a href="<?php echo URL::to('projects/new'); ?>"><?php if(Auth::user()->permission('project-create')): echo __('tinyissue.create_project'); endif; ?></a>
 					</li>
 					<?php endif; ?>
 				</ul>

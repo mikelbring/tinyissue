@@ -1,6 +1,6 @@
 ![](http://tinyissue.com/assets/images/giant-preview.png)
 
-# Installing Tiny Issue v1.3.1
+# Installing BIT v1.3
 
 - Create a MySQL Database
 - Make /uploads/ write-able (CHMOD 777)
@@ -16,16 +16,17 @@ Enjoy!
 - MySQL 5+
 - PDO Extension for PHP (MySQL)
 - MCrypt Extension for PHP
-- Javascript Enabled - Tiny Issue also uses heavy Javascript to make it easier to use
+- Javascript Enabled - Bugs also uses heavy Javascript to make it easier to use
 
 ### How to contribute
 
 We welcome and appreciate all contributions. The `develop` branch is the branch you should base all pull requests and development off of.
 The `master` branch is tagged releases only.
 
-### Main Developers:
+# History
 
-- [Michael Hasselbring](http://michaelhasselbring.com)
-- [Zachary Hoover](http://zachoover.com)
-- [Suthan Sangaralingham](http://suthanwebs.com/)
+September 2014: project forked from Tiny Issue 1.3, by [Michael Hasselbring](http://michaelhasselbring.com), [Zachary Hoover](http://zachoover.com) and [Suthan Sangaralingham](http://suthanwebs.com/)
 
+# Main Developers
+
+- [Alexandre Plennevaux](https://pixeline.be)

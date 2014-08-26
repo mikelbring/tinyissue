@@ -290,8 +290,15 @@ p{
 #header .logo{
 	width: 87px; height: 23px;
 	background: url('../images/layout/tinyissue.png') no-repeat;
-	text-indent: -99999999px !important;
+	text-indent: 100%;
 	position: absolute; top: 15px; left: 15px;
+	white-space: nowrap;
+	overflow: hidden;
+	
+	width:166px;
+	height:50px;
+	background: url('../images/layout/tinyissue.svg') no-repeat;
+	top:0;
 }
 #header .nav-right{
 	float: right;
@@ -770,8 +777,11 @@ p{
 .assign-users li{
 	padding: 8px 5px;
 	border-bottom: 1px solid #cecece;
+	cursor: pointer;
 }
-
+.default-assignee {
+    background: rgb(255, 247, 189);
+}
 /* Attachments */
 #uploaded-attachments{
 	width: 450px;

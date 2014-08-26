@@ -20,6 +20,7 @@
 				<input type="hidden" name="user[]" value="<?php echo Auth::user()->id; ?>" />
 			</li>
 		</ul>
+		<input type="hidden" name="default_assignee" value="" id="default_assignee-id" />
 	</form>
 
 	<table class="form" style="width: 80%;">

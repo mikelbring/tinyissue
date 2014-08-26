@@ -21,7 +21,7 @@
 					<tr><th colspan="2">Login to your account</th></tr>
 					<tr>
 						<th>Email</th>
-						<td><input type="text" name="email" /></td>
+						<td><input type="text" name="email" autofocus /></td>
 					</tr>
 					<tr>
 						<th>Password</th>

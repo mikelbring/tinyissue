@@ -247,6 +247,7 @@ class Project extends Eloquent {
 
 		$fill = array(
 			'name' => $input['name'],
+			'default_assignee' => $input['default_assignee'],
 		);
 
 		$project = new Project;
@@ -293,7 +294,8 @@ class Project extends Eloquent {
 
 		$fill = array(
 			'name' => $input['name'],
-			'status' => $input['status']
+			'status' => $input['status'],
+			'default_assignee' => $input['default_assignee'],
 		);
 
 		$project->fill($fill);

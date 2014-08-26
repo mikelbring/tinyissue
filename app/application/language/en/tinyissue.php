@@ -54,6 +54,7 @@ return array(
 	'title' => 'Title',
 	'issue' => 'Issue',
 	'assigned_to' => 'Assigned To',
+	'default_assignee' => 'Default Assignee',
 	'attachments' => 'Attachments',
 	'create_issue' => 'Create Issue',
 	'on_project' => 'On Project',

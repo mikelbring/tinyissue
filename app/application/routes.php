@@ -100,7 +100,11 @@ Route::filter('csrf', function()
 
 Route::filter('auth', function()
 {
-	if (Auth::guest()) return Redirect::to('login');
+	if (Auth::guest()) 
+	{
+		Session::put('return', Request::getRequestUri());
+		return Redirect::to('login');
+	}
 });
 
 Route::filter('ajax', function()
