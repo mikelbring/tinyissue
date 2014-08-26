@@ -23,6 +23,7 @@ class Administration_Controller extends Base_Controller {
 			'active_projects' => Project::where('status', '=', 1)->count(),
 			'archived_projects' => Project::where('status', '=', 0)->count(),
 			'issues' => $issues,
+			'tags' => Tag::count(),
 		));
 	}
 }

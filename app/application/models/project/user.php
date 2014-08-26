@@ -117,9 +117,9 @@ class User extends \Eloquent {
 		{
 			$project = array(
 				'detail' => $project,
-				'issues' => $project->issues()
+				'issues' => \Tag::find(1)->issues()
+					->where('project_id', '=', $project->id)
 					->where('assigned_to', '=', $user->id)
-					->where('status', '=', 1)
 					->get()
 			);
 

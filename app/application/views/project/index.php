@@ -11,17 +11,17 @@
 			<a href="<?php echo Project::current()->to(); ?>"><?php echo __('tinyissue.activity');?></a>
 		</li>
 		<li <?php echo $active == 'open' ? 'class="active"' : ''; ?>>
-			<a href="<?php echo Project::current()->to('issues'); ?>">
+			<a href="<?php echo Project::current()->to('issues'); ?>?tags=status:open">
 			<?php echo $open_count == 1 ? '1 '.__('tinyissue.open_issue') : $open_count . ' '.__('tinyissue.open_issues'); ?>
 			</a>
 		</li>
 		<li <?php echo $active == 'closed' ? 'class="active"' : ''; ?>>
-			<a href="<?php echo Project::current()->to('issues'); ?>?status=0">
+			<a href="<?php echo Project::current()->to('issues'); ?>?tags=status:closed">
 			<?php echo $closed_count == 1 ? '1 '.__('tinyissue.closed_issue') : $closed_count . ' '.__('tinyissue.closed_issues'); ?>
 			</a>
 		</li>
 		<li <?php echo $active == 'assigned' ? 'class="active"' : ''; ?>>
-			<a href="<?php echo Project::current()->to('assigned'); ?>?status=1">
+			<a href="<?php echo Project::current()->to('issues'); ?>?tags=status:open&amp;assigned_to=<?php echo Auth::user()->id; ?>">
 			<?php echo $assigned_count == 1 ? '1 '.__('tinyissue.issue_assigned_to_you') : $assigned_count . ' '.__('tinyissue.issues_assigned_to_you'); ?>
 			</a>
 		</li>

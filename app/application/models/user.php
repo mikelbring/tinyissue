@@ -63,12 +63,14 @@ class User extends Eloquent {
 	* @param int $status
 	* @return mixed
 	*/
+/*
 	public function issues($status = 1)
 	{
 		return $this->has_many('Project\Issue', 'created_by')
 			->where('status', '=', 1)
 			->where('assigned_to', '=', $this->id);
 	}
+*/
 
 	/**
 	* Build the user's dashboard
@@ -188,6 +190,20 @@ class User extends Eloquent {
 						'project' => $projects[$project_id],
 						'user' => $users[$row->user_id],
 						'assigned' => $users[$row->action_id],
+						'activity' => $row
+					));
+
+					break;
+					
+				case 6:
+
+					$tag_diff = json_decode($row->data, true);
+					$return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
+						'issue' => $issues[$row->item_id],
+						'project' => $projects[$project_id],
+						'user' => $users[$row->user_id],
+						'tag_diff' => $tag_diff,
+						'tag_counts' => array('added' => sizeof($tag_diff['added_tags']), 'removed' => sizeof($tag_diff['removed_tags'])),
 						'activity' => $row
 					));
 
