@@ -1,10 +1,10 @@
 # Little BIT (Bugs Issue Tracker)
 
-[Visit the project](http://pixeline.github.io/Little-BIT-Bugs-Issues-Tracker/)
+[Visit the project](http://pixeline.github.io/bugs/)
 
-![Printscreen](http://pixeline.github.io/Little-BIT-Bugs-Issues-Tracker/images/bugs.printscreen.png "Main screen")
+![Printscreen](http://pixeline.github.io/bugs/images/bugs.printscreen.png "Main screen")
 
-# Installing BIT v1.1
+# Installing Bugs
 
 - Create a MySQL Database
 - Make /uploads/ write-able (CHMOD 777)
