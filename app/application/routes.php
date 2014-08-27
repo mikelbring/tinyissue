@@ -23,6 +23,7 @@ Route::controller(array(
 	'administration',
 	'ajax.project',
 	'ajax.tags',
+	'ajax.sortable',
 	'tags'
 ));
 
@@ -52,6 +53,7 @@ View::composer('layouts.project', function($view)
 	Asset::script('jquery', 'app/assets/js/jquery.js');
 	Asset::script('jquery-ui', 'app/assets/js/jquery-ui.js');
 	Asset::script('app', 'app/assets/js/app.js', 'jquery');
+	Asset::script('app2', 'app/assets/js/sortable-issues.js', 'jquery');
 
 	Asset::script('swf', '/app/assets/js/uploadify/swfobject.js', 'app');
 	Asset::script('uploadify', '/app/assets/js/uploadify/jquery.uploadify.v2.1.4.min.js', 'app');

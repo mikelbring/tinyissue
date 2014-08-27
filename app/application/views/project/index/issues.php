@@ -46,9 +46,9 @@
 		<?php if(!$issues): ?>
 		<p><?php echo __('tinyissue.no_issues'); ?></p>
 		<?php else: ?>
-		<ul class="issues">
+		<ul class="issues" id="sortable">
 			<?php foreach($issues as $row):  ?>
-			<li>
+			<li class="sortable-li" data-issue-id="<?php echo $row->id; ?>">
 				<a href="" class="comments"><?php echo $row->comment_count(); ?></a>
 				
 				<?php if(!empty($row->tags)): ?>
@@ -86,6 +86,7 @@
 			<?php endforeach; ?>
 		</ul>
 		<?php endif; ?>
-
+		<div id="sortable-msg"><?php echo __('tinyissue.sortable_issue_howto'); ?></div>
+		<div id="sortable-save"><input id="sortable-save-button" class="button primary" type="submit" value="<?php echo __('tinyissue.save'); ?>" /></div>
 	</div>
 </div>

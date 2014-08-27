@@ -123,6 +123,7 @@ return array(
 	'was_created_by' => 'was created by',
 	'was_reassigned_to' => 'was reassigned to',
 	'dashboard_description' => 'An overview of all the activity involving your active projects.',
+	'sortable_issue_howto' => 'Drag and drop issues to re-order them.',
 	'sort_by' => 'Sort By',
 	'sort_asc' => 'asc',
 	'sort_desc' => 'desc',
