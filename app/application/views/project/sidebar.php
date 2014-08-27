@@ -9,7 +9,7 @@
 </h2>
 
 <ul>
-	<li><a href="<?php echo Project::current()->to('issues'); ?>"><?php echo Project::current()->count_open_issues(); ?> <?php echo __('tinyissue.open_issues');?></a></li>
+	<li><a href="<?php echo Project::current()->to('issues'); ?>?tags=status:open"><?php echo Project::current()->count_open_issues(); ?> <?php echo __('tinyissue.open_issues');?></a></li>
 	<li><a href="<?php echo Project::current()->to('issues'); ?>?tags=status:closed"><?php echo Project::current()->count_closed_issues(); ?> <?php echo __('tinyissue.closed_issues');?></a></li>
 </ul>
 
