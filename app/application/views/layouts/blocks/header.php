@@ -29,7 +29,7 @@
 				<li class="logout"><a href="<?php echo URL::to('user/logout'); ?>"><?php echo __('tinyissue.logout');?></a></li>
 			</ul>
 
-			<a href="<?php echo URL::to(); ?>" class="logo" title="Pixeline Bug Squashing Platform">Pixeline Bug Squashing Platform</a>
+			<a href="<?php echo URL::to(); ?>" class="logo" title="<?=  Config::get('application.my_bugs_app.name') ?>"><?=  Config::get('application.my_bugs_app.name') ?></a>
 
 			<ul class="nav">
 				<li class="dashboard <?php echo $active == 'dashboard' ? 'active' : ''; ?>"><a href="<?php echo URL::to(); ?>"><?php echo __('tinyissue.dashboard');?></a></li>

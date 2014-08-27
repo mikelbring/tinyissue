@@ -3,7 +3,8 @@
 body {
     font: normal 80% "Lucida Grande", Helvetica, Arial, sans-serif;
     color:#545454;
-    background:#ccc;
+    background:#3a3f4f;
+/* 	background: -webkit-linear-gradient(#3a3f4f 50%, #DDD 90%) fixed; */
 }
 input[type=text],input[type=password],select{
     padding:3px;
@@ -22,14 +23,7 @@ select:hover,
 textarea:hover{
     background:#ffffd6;
 }
-textarea{
-    width:400px;
-    padding:3px;
-    color:#000;
-    border:1px solid #999;
-    font: normal 130% "Lucida Grande", Helvetica, Arial, sans-serif;
-    height:120px;
-}
+
 /* Form table */
 .form{
    width: 100%;
@@ -42,31 +36,28 @@ textarea{
    font-weight: bold;
    width: 15%;
 }
-.container{
-	margin: 0 auto;
-	width:90%;min-width:1000px;
-	position:relative;
-}
-#wrapper{
-    width:90%;min-width:1000px;
-    margin:25px auto;
-}
-
 
 #container{
 	margin-top:25px;
-	width:100%;
-
 }
+
+
+
+
 /**
 *Login
 */
+
+#login{
+	margin:auto;
+	width:400px;
+}
+h1{padding:1em 0 0; color:#F8E71C}
 #container table{
-	background:#f8f8f8;
-	width:200px;
+	background:#FFF;
+	
    border-radius: 8px;
-	margin-left:auto;
-	margin-right:auto;
+
 	padding:10px 20px;
 	box-shadow: 0px 1px 5px #999;
 }

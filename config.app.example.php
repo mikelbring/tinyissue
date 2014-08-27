@@ -20,7 +20,9 @@ return array(
 		'username' => 'database_user',
 		'password' => 'database_password',
 	),
-
+	'my_bugs_app'=>array(
+		'name'=> 'Bugs'
+	),
 	/**
 	 * Mail Settings
 	 * - Put in the name and email you would like email from Tiny Issue to come from

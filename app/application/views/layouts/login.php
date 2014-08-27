@@ -1,16 +1,17 @@
+<?php $application_name = Config::get('application.my_bugs_app.name'); ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Tiny Issue</title>
+<title><?= $application_name ?></title>
 
 <?php echo Asset::styles(); ?>
 </head>
 	<body>
 	<div id="container">
 		<div id="login">
-
-
+			
+			<h1>Welcome to<br><img src="/app/assets/images/layout/tinyissue.svg" alt="<?= $application_name ?>" style="width:350px;;"></h1>
 			<form method="post" action="">
 
 
@@ -20,12 +21,12 @@
 					</tr>
 					<tr><th colspan="2">Login to your account</th></tr>
 					<tr>
-						<th>Email</th>
-						<td><input type="text" name="email" autofocus /></td>
+						<th><label for="email">Email</label></th>
+						<td><input type="text" name="email" id="email" autofocus /></td>
 					</tr>
 					<tr>
-						<th>Password</th>
-						<td><input type="password" name="password" /></td>
+						<th><label for="password">Password</label></th>
+						<td><input type="password" id="password" name="password" /></td>
 					</tr>
 					<tr>
 						<th></th>

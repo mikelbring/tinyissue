@@ -34,7 +34,8 @@ Laravel\Event::listen(Laravel\Config::loader, function($bundle, $file) use ($con
 				'timezone' => $config_app['timezone'],
 				'key' => $config_app['key'],
 				'index' => !$config_app['mod_rewrite'] ? 'index.php' : '',
-				'mail' => $config_app['mail']
+				'mail' => $config_app['mail'],
+				'my_bugs_app'=>$config_app['my_bugs_app']
 			);
 
 			$load =  $config + $load;
