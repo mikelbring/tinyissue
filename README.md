@@ -1,8 +1,8 @@
-# Little BIT (Bugs Issue Tracker)
+# Bugs
 
 [Visit the project](http://pixeline.github.io/bugs/)
 
-![Printscreen](http://pixeline.github.io/bugs/images/bugs.printscreen.png "Main screen")
+![Printscreen](http://pixeline.github.io/bugs/images/bugs-index.png "Main screen")
 
 # Installing Bugs
 
