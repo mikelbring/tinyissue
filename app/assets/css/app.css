@@ -869,3 +869,21 @@ p{
 #admin-tag-list{
 	margin-top: 20px;
 }
+
+/* Sortable */
+.sortable-li,
+ul.isssues li {
+	line-height: 1.2em;
+	height: 25px;
+}
+#sortable-save {
+	margin-top: 10px;
+}
+#sortable-msg {
+	color: #107AA7;
+	font-weight: bold;
+  margin-top: 10px;
+}
+#sortable-msg.error {
+	color: #F21D20;
+}

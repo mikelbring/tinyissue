@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `projects_issues` (
   `assigned_to` bigint(20) default NULL,
   `project_id` bigint(20) default NULL,
   `status` tinyint(2) default '1',
+  `weight` bigint(20) default '1',
   `title` varchar(255) character set UTF8 default NULL,
   `body` text character set UTF8,
   `created_at` datetime default NULL,
