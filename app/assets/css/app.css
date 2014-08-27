@@ -20,6 +20,7 @@ a{
 }
 a:hover{
 	color: #424242;
+
 }
 .clr{clear:both;}
 strong{font-weight: bold;}
@@ -319,7 +320,7 @@ p{
 	min-height: 16px;
 }
 #header .nav-right li .user{
-	color: #ffce49;
+	color: #F8E71C;
 }
 #header .nav-right .logout{
 	border: 0;
@@ -343,7 +344,9 @@ p{
 	min-height: 17px;
 	padding-top: 1px;
 }
-
+#header .nav li a:hover{
+	color: #F8E71C;
+}
 #header .nav li.dashboard a{
 	background: url('../images/layout/icon-dashboard_inactive.png') no-repeat 0 1px;
 }
@@ -356,16 +359,20 @@ p{
 #header .nav li.settings a{
 	background: url('../images/layout/icon-settings_inactive.png') no-repeat 0 0;
 }
-#header .nav li.dashboard.active a{
+#header .nav li.dashboard.active a,
+#header .nav li.dashboard a:hover{
 	background: url('../images/layout/icon-dashboard.png') no-repeat 0 1px;
 }
-#header .nav li.issues.active a{
+#header .nav li.issues.active a,
+#header .nav li.issues a:hover{
 	background: url('../images/layout/icon-issues.png') no-repeat 0 0;
 }
+#header .nav li.projects a:hover,
 #header .nav li.projects.active a{
 	background: url('../images/layout/icon-projects.png') no-repeat 0 0;
 }
-#header .nav li.settings.active a{
+#header .nav li.settings.active a,
+#header .nav li.settings a:hover{
 	background: url('../images/layout/icon-settings.png') no-repeat 0 0;
 }
 #header .nav li.settings{
