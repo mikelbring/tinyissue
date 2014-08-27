@@ -1,5 +1,12 @@
 $(function() {
 
+	/* Make external links target to _blank */
+
+	var links = document.links;
+	$(document.links).filter(function() {
+    	return this.hostname != window.location.hostname;
+	}).attr('target', '_blank');
+
 	/* Uploadify */
 	var uploaded_attachments = $('#uploaded-attachments');
 	var upload_token = $('input[name=token]').val();
