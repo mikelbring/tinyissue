@@ -56,11 +56,13 @@ class Comment extends  \Eloquent {
 		{
 			$project = \Project::current();
 			
-			$subject = 'Issue "' . $issue->title . '" in "' . $project->name . '" project has a new comment';
+			//$subject = 'Issue "' . $issue->title . '" in "' . $project->name . '" project has a new comment';
+			$subject = sprintf(__('email.new_comment'),$issue->title,$project->name);
 			$text = \View::make('email.commented_issue', array(
 				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
 				'project' => $project,
 				'issue' => $issue,
+				'comment' => $comment->comment
 			));
 
 			\Mail::send_email($text, $issue->assigned->email, $subject);

@@ -45,6 +45,7 @@ h3 span a{
 	font-weight: normal;
 	color: #43a2d9;
 }
+h3 .addnewuser,
 h3 .newissue{
 	padding:3px 14px;
 	display: block;
@@ -58,23 +59,19 @@ h3 .newissue{
 	border-radius: 6px;
 	border:1px solid #52a84b;
 }
+h3 .addnewuser:before,
 h3 .newissue:before{
 	content:"+ ";
 	font-size:200%;
 	font-weight:bold;
 	vertical-align: sub;
 }
+h3 .addnewuser:hover,
 h3 .newissue:hover{
 	background:white;
 	color: #52a84b;
 }
-h3 .addnewuser{
-	width: 121px; height: 26px;
-	display: block;
-	float: right;
-	background: url('../images/layout/addnewuser.png') no-repeat;
-	text-indent: -999999px;
-}
+
 h3 .edit-issue {
     padding-right: 35px;
     padding-top: 5px;

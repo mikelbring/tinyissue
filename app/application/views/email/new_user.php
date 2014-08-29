@@ -1,4 +1,4 @@
-<p>You have been set up with Tiny Issue at <?php echo URL::to(); ?></p>
+<p><?php echo __('email.new_user'); ?> <a href="<?php echo URL::to(); ?>"><?php echo URL::to(); ?></a></p>
 <p>
-You may log in with email <?php echo $email; ?> and password <?php echo $password; ?>
+<?php echo sprintf(__('email.creds'),'<strong>'.$email.'</strong>','<strong>'.$password.'</strong>'); ?>
 </p>
