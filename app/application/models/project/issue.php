@@ -249,8 +249,9 @@ class Issue extends \Eloquent {
 
 			\Mail::send_email($text, $this->assigned->email, $subject);
 		}
-
-		\User\Activity::add(5, $this->project_id, $this->id, $user_id, null, $user_id);
+					 // add($type_id, $parent_id, $item_id = null, $action_id = null, $data = null)
+		//\User\Activity::add(5, $this->project_id, $this->id, $user_id, null, $user_id);
+		\User\Activity::add(5, $this->project_id, $this->id, $user_id, null);
 	}
 
 	/**
