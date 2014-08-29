@@ -1,5 +1,5 @@
 <h3>
-	Tags
+	<?= __('tinyissue.tags') ?>
 </h3>
 
 <div class="pad">
