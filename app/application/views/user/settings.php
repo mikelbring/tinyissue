@@ -5,7 +5,7 @@
 
 <div class="pad">
 
-	<form method="post" action="">
+	<form method="post" action="" autocomplete="off" >
 
 		<table class="form">
 			<tr>
@@ -51,6 +51,9 @@
 			<tr>
 				<th><?php echo __('tinyissue.new_password'); ?></th>
 				<td>
+					<!-- fake fields are a workaround for chrome autofill getting the wrong fields -->
+					<input style="display:none" type="text" name="fakeusernameremembered"/>
+					<input style="display:none" type="password" name="fakepasswordremembered"/>
 					<input type="password" name="password" value="" autocomplete="off" style="width: 300px;" />
 
 					<?php echo $errors->first('password', '<span class="error">:message</span>'); ?>

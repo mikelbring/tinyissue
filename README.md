@@ -29,8 +29,16 @@ The `master` branch is tagged releases only.
 
 # Changelog
 
-- v1.1 : 26 August 2014: Tags (code by [Anton Kanevsky](http://about.me/akanevsky) - [source](https://github.com/mikelbring/tinyissue/pull/180) )
-- v1.0 : 25 August 2014: project forked from Tiny Issue 1.3, by [Michael Hasselbring](http://michaelhasselbring.com), [Zachary Hoover](http://zachoover.com) and [Suthan Sangaralingham](http://suthanwebs.com/)
+- v1.2 : 28 August 2014: 
+	- French translation updates
+	- Various fixes
+	- Multilingual email (code by [Wolfgang Gassler](http://wolfgang.gassler.org/) - [source](https://github.com/mikelbring/tinyissue/pull/197))
+	- Kanban-style planning board (code by [Steve McCullough](http://irrational.ca/) - [source](https://github.com/mikelbring/tinyissue/pull/194))
+- v1.1 : 26 August 2014: 
+	- Tags (code by [Anton Kanevsky](http://about.me/akanevsky) - [source](https://github.com/mikelbring/tinyissue/pull/180) )
+	- Visual identity. Project rebaptized Bugs. As in "Hugs", with a B.
+- v1.0 : 25 August 2014:
+	- project forked from Tiny Issue 1.3, by [Michael Hasselbring](http://michaelhasselbring.com), [Zachary Hoover](http://zachoover.com) and [Suthan Sangaralingham](http://suthanwebs.com/)
 
 # Main Developers
 
