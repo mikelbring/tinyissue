@@ -66,11 +66,13 @@ h3 .newissue:before{
 	font-weight:bold;
 	vertical-align: sub;
 }
+.green-button:hover,
 h3 .addnewuser:hover,
 h3 .newissue:hover{
 	background:white;
 	color: #52a84b;
 }
+
 
 h3 .edit-issue {
     padding-right: 35px;
@@ -964,4 +966,51 @@ ul.isssues li {
 
 .todo-state-hover {
   border: 2px solid orange;
+}
+/* UPLOADIFY CUSTOM BUTTON */
+.upload-wrap{
+	position: relative;
+	background:#666666;
+	border:1px solid #666666;
+background-image: -webkit-gradient(
+	linear,
+	left bottom,
+	left top,
+	color-stop(0.06, #292929),
+	color-stop(1, #737273)
+);
+background-image: -o-linear-gradient(top, #292929 6%, #737273 100%);
+background-image: -moz-linear-gradient(top, #292929 6%, #737273 100%);
+background-image: -webkit-linear-gradient(top, #292929 6%, #737273 100%);
+background-image: -ms-linear-gradient(top, #292929 6%, #737273 100%);
+background-image: linear-gradient(to top, #292929 6%, #737273 100%);
+	color:white;
+	
+	line-height: 25px;
+	font-size:14px;
+	border-radius: 7px;
+	text-align: center;
+	width:200px;
+}
+.upload-wrap:hover{
+	background-image: -webkit-gradient(linear, left top,	left bottom,	color-stop(0.06, #292929),	color-stop(1, #737273));
+background-image: -o-linear-gradient(bottom, #292929 6%, #737273 100%);
+background-image: -moz-linear-gradient(bottom, #292929 6%, #737273 100%);
+background-image: -webkit-linear-gradient(bottom, #292929 6%, #737273 100%);
+background-image: -ms-linear-gradient(bottom, #292929 6%, #737273 100%);
+background-image: linear-gradient(to bottom, #292929 6%, #737273 100%);
+	color:white;
+}
+.upload-wrap input{
+	width:auto;
+	color:white ;
+	text-transform: none;
+	font-size:12px;
+}
+.upload-wrap object { 
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
 }

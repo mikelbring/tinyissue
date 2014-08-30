@@ -153,4 +153,5 @@ return array(
 	'tags_added' => 'tags added',
 	'tag_removed' => 'tag removed',
 	'tags_removed' => 'tags removed',
+	'fileupload_button' => 'Attach Files'
 );

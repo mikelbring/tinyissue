@@ -154,5 +154,6 @@ return array(
 	'tags_added' => 'tags ajoutés',
 	'tag_removed' => 'tag retiré',
 	'tags_removed' => 'tags retirés',
+	'fileupload_button' => 'Choisissez un fichier'
 
 );

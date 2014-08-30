@@ -53,8 +53,12 @@
 			<tr>
 				<th><?php echo __('tinyissue.attachments'); ?></th>
 				<td>
-					<input id="upload" type="file" name="file_upload" />
-
+					<div class="upload-wrap green-button">
+						<?php echo __('tinyissue.fileupload_button'); ?>
+						<input id="upload" type="file" name="file_upload" class="green-button" />
+						<input type="hidden" id="uploadbuttontext" name="uploadbuttontext" value="<?php echo __('tinyissue.fileupload_button'); ?>"/>
+					</div>
+					
 					<ul id="uploaded-attachments"></ul>
 				</td>
 			</tr>
