@@ -257,6 +257,5 @@ INSERT INTO projects_issues_tags (issue_id, tag_id, created_at, updated_at)
 
 -- create activity type for tag update
 INSERT INTO `activity` (`id`, `description`, `activity`)
-VALUES ('6', 'Updated issue tags', 'update-issue-tags');",
-""
+VALUES ('6', 'Updated issue tags', 'update-issue-tags');"
 );

@@ -88,6 +88,6 @@ return array(
 	 * True if you are using mod rewrite
 	 * False if you are not
 	 */
-	'mod_rewrite' => false,
+	'mod_rewrite' => true,
 
 );
