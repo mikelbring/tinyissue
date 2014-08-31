@@ -51,7 +51,7 @@ class install
 
 		if(version_compare(PHP_VERSION, '5.3.0', '<'))
 		{
-			$errors[] = 'PHP too old for Tiny Issue. PHP 5.3.0 or above is needed.';
+			$errors[] = 'PHP too old for Bugs. PHP 5.3.0 or above is needed.';
 		}
 
 		return $errors;	
@@ -96,6 +96,7 @@ class install
 				password,
 				firstname,
 				lastname,
+				language,
 				created_at
 			)VALUES(
 				'$role',
@@ -103,7 +104,8 @@ class install
 				'$password',
 				'$first_name',
 				'$last_name',
-			now()
+				'en',
+				now()
 			)";
 
 		}

@@ -9,7 +9,7 @@ class Setting extends \Eloquent {
 	*
 	* @return array
 	*/
-	public static function get_languages($user_id)
+	public static function get_languages($user_language)
 	{
 		$languages = array() ;
 		
@@ -19,7 +19,7 @@ class Setting extends \Eloquent {
 			if (!in_array($value,array(".","..")))
 			{
 				$selected='' ;
-				if($value == $user_id)
+				if($value == $user_language)
 					$selected = "selected" ;
 					
 				array_push($languages, array('name' => $value, 'selected' => $selected)) ;

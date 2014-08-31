@@ -16,14 +16,15 @@ return array(
 	'database' => array(
 		'driver' => 'mysql',
 		'host'  => 'localhost',
-		'database' => 'database_name',
-		'username' => 'database_user',
-		'password' => 'database_password',
+		'database' => 'bugs',
+		'username' => 'aplennevaux',
+		'password' => '5270L',
 	),
 
 	'my_bugs_app'=>array(
 		'name'=> 'Bugs'
 	),
+
 	/**
 	 * Mail Settings
 	 * - Put in the name and email you would like email from Tiny Issue to come from
@@ -40,8 +41,8 @@ return array(
 	'mail' => array(
 
 		'from' => array(
-			'name' => 'Your E-Mail Name',
-			'email' => 'name@domain.com',
+			'name' => 'pixeline Bugs',
+			'email' => 'aplennevaux@gmail.com',
 		),
 
 		'transport' => 'mail',
@@ -75,19 +76,18 @@ return array(
 	 * Specify your timezone
 	 * - http://php.net/manual/en/timezones.php
 	 */
-	'timezone' => 'Europe/Brussels',
+	'timezone' => 'Europe/Amsterdam',
 
 	/**
 	 * Put in a random key combination to use as your session keys
 	 * Up to 32 characters
-	 * You can use this online generator: http://online-code-generator.com/generate-salt-random-string.php
 	 */
-	'key' => 'yourrandomkey',
+	'key' => 'a0ec1be2f569999bf70528e8e67f3f5e',
 
 	/**
 	 * True if you are using mod rewrite
 	 * False if you are not
 	 */
-	'mod_rewrite' => true,
+	'mod_rewrite' => false,
 
 );
