@@ -3,7 +3,8 @@
 /* Redirect if we have not installed */
 if(!file_exists(__DIR__ . '/config.app.php'))
 {
-	header('Location: ./install');
+	header("Location: ./install");
+	exit;
 }
 
 define('LARAVEL_START', microtime(true));

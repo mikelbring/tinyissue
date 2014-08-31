@@ -4,7 +4,7 @@ if(isset($_POST['create_config']) && isset($_POST['database_host']))
 
 	if(!file_exists('../config.app.example.php'))
 	{
-		die('Sorry, we need a config.app.example.php file to work with. Please re-upload this from your Tiny Issue package.');
+		die('Sorry, we need a config.app.example.php file to work with. Please re-upload this from your Bugs package.');
 	}
 
 	$config_file = file_get_contents('../config.app.example.php');
@@ -20,7 +20,7 @@ if(isset($_POST['create_config']) && isset($_POST['database_host']))
 	$config_file = str_replace('name@domain.com', $_POST['email_address'], $config_file);
 
 	/* Timezone */
-	$config_file = str_replace('America/Chicago', $_POST['timezone'], $config_file);
+	$config_file = str_replace('Europe/Brussels', $_POST['timezone'], $config_file);
 
 	/* Key */
 	$config_file = str_replace('yourrandomkey', md5(serialize($_POST) . time() . $_SERVER['HTTP_HOST']), $config_file);
@@ -96,11 +96,11 @@ if(!file_exists('../config.app.php')){ ?>
 <body>
 
 <div id="container">
-	<form method="post" action="">
+	<form method="post" action="" autocomplete="off">
 		<table class="form">
 			<tr>
 				<td colspan="2">
-				<h2>Setup Config FIle</h2>
+				<h2>Setup Config File</h2>
 
 				<p>
 					Looks like you do not have a <code>config.app.php</code> file setup. We need to create one before we can
@@ -115,7 +115,7 @@ if(!file_exists('../config.app.php')){ ?>
 				</tr>
 				<tr>
 					<th>MySQL Database</th>
-					<td><input type="text" name="database_name" value="tinyissue" /></td>
+					<td><input type="text" name="database_name" value="bugs" /></td>
 				</tr>
 				<tr>
 					<th>MySQL Username</th>
@@ -123,13 +123,14 @@ if(!file_exists('../config.app.php')){ ?>
 				</tr>
 				<tr>
 					<th>MySQL Password</th>
+					<input type="password" name="autocompletion_off" value="" style="display:none;">
 					<td><input type="password" name="database_password" value="" /></td>
 				</tr>
 				<tr>
 					<th>E-Mail From Name</th>
 					<td>
-						<input type="text" name="email_name" value="Tiny Issue" />
-						<p>Sometimes Tiny Issue needs to send e-mail, what do you want the name to be from?</p>
+						<input type="text" name="email_name" value="Bugs" />
+						<p>Sometimes Bugs needs to send e-mail, what do you want the name to be from?</p>
 					</td>
 				</tr>
 				<tr>
@@ -150,7 +151,7 @@ echo 'select name="timezone" size="10">' . "\n";
 foreach($timezones as $timezone)
 {
   echo '<option';
-  echo $timezone == 'America/Chicago' ? ' selected' : '';
+  echo $timezone == 'Europe/Brussels' ? ' selected' : '';
   echo '>' . $timezone . '</option>' . "\n";
 }
 

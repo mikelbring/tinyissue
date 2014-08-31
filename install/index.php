@@ -72,7 +72,7 @@ if(!$database_check['error'])
 <body>
 
 <div id="container">
-	<form method="post" action="">
+	<form method="post" action="" autocomplete="off">
 		<table class="form">
 			<tr>
 				<td colspan="2">
@@ -92,7 +92,7 @@ if(!$database_check['error'])
 					Please fix your config.app.php - <?php echo $database_check['error']; ?>
 				<?php die(); endif;?>
 
-				Thank you for using Tiny Issue.  Your config file looks good.  Please fill out the form below to set up your administrator account and we will finish up the install.
+				Thank you for using Bugs.  Your config file looks good.  Please fill out the form below to set up your administrator account and we will finish up the install.
 				</td>
 			</tr>
 
@@ -120,6 +120,7 @@ if(!$database_check['error'])
 			<tr>
 				<th><label for="password">Password</label></th>
 				<td>
+					<input type="password" name="autocompletion_off" value="" style="display:none;">
 					<input autocomplete="off" type="password" name="password" id="password" />
 					<span class="error"><?php echo $pass_error ?></span>
 				</td>
