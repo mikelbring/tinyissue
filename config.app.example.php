@@ -20,6 +20,7 @@ return array(
 		'username' => 'database_user',
 		'password' => 'database_password',
 	),
+
 	'my_bugs_app'=>array(
 		'name'=> 'Bugs'
 	),
@@ -74,11 +75,12 @@ return array(
 	 * Specify your timezone
 	 * - http://php.net/manual/en/timezones.php
 	 */
-	'timezone' => 'America/Chicago',
+	'timezone' => 'Europe/Brussels',
 
 	/**
 	 * Put in a random key combination to use as your session keys
 	 * Up to 32 characters
+	 * You can use this online generator: http://online-code-generator.com/generate-salt-random-string.php
 	 */
 	'key' => 'yourrandomkey',
 
