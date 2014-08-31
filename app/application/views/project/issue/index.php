@@ -100,8 +100,11 @@
 				<a href="http://daringfireball.net/projects/markdown/basics/" target="_blank" style="margin-left: 86%;">Format with Markdown</a>
 			</p>
 			<p>
-				<input id="upload" type="file" name="file_upload" />
-			</p>
+				<div class="upload-wrap green-button">
+						<?php echo __('tinyissue.fileupload_button'); ?>
+						<input id="upload" type="file" name="file_upload" class="green-button" />
+						<input type="hidden" id="uploadbuttontext" name="uploadbuttontext" value="<?php echo __('tinyissue.fileupload_button'); ?>"/>
+					</div>			</p>
 
 			<ul id="uploaded-attachments"></ul>
 

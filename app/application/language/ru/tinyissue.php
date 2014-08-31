@@ -123,5 +123,6 @@ return array(
         'was_reopened_by' => 'was reopened by',
         'was_created_by' => 'was created by',
         'was_reassigned_to' => 'was reassigned to',
-        'dashboard_description' => 'An overview of all the activity involving your active projects.'
+        'dashboard_description' => 'An overview of all the activity involving your active projects.',
+		'fileupload_button' => 'Attach Files'
 );

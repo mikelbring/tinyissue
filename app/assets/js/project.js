@@ -13,7 +13,7 @@ $(function() {
 	var session = $('input[name=session]').val();
 	var project = $('input[name=project_id]').val();
 
-	$('#upload').uploadify({
+	$("#upload").uploadify({
 		'uploader' : baseurl + '/app/assets/js/uploadify/uploadify.swf',
 		'script' : siteurl + 'ajax/project/issue_upload_attachment',
 		'scriptData' : {
@@ -21,6 +21,11 @@ $(function() {
 			project_id : project,
 			upload_token : upload_token
 		},
+		'hideButton': true,
+		'wmode'      : 'transparent',
+		'buttonText' : $('#uploadbuttontext').val(),
+		'width' : 200,
+		'height':30,
 		'cancelImg' : baseurl + '/app/assets/images/layout/icon-delete.png',
 		'auto' : true,
 		'multi' : true,
