@@ -8,8 +8,9 @@
 
 <ul>
 	<?php foreach(Project\User::active_projects() as $row): ?>
+
 	<li>
-		<a href="<?php echo $row->to(); ?>"><?php echo $row->name; ?></a>
+		<a href="<?php echo $row->to(); ?>"><?php echo $row->name; ?> <span class="info-open-issues" title="Number of Open Tickets">(<?php echo $row->count_open_issues() ?>)</span></a>
 	</li>
 	<?php endforeach ?>
 </ul>

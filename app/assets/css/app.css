@@ -442,6 +442,11 @@ p{
 	float: right;
 	text-indent: -999999px;
 }
+.info-open-issues{
+	color: #989898;
+	font-size: 12px;	
+	margin-top: 3px;
+}
 #sidebar h2 span{
 	color: #989898;
 	font-size: 12px;
