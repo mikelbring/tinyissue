@@ -1,3 +1,24 @@
+<?php
+$active_projects =Project\User::active_projects();
+if(count($active_projects)>1){
+?>
+<form class="projects_selector">
+<fieldset><label for="projects_select">Projects</label>
+<select name="projects_select" id="projects_select"  onchange="if (this.value) window.location.href=this.value">
+<?php 
+	foreach($active_projects as $p){
+		$selected = ($p->id == Project::current()->id) ? 'selected':'';
+		echo '<option value="'. $p->to().'" '.$selected.'>'.$p->name .'</option>';
+	}
+	if(Auth::user()->permission('project-create')){?>
+		<option value="<?php echo URL::to('projects/new'); ?>"><?php echo __('tinyissue.create_a_new_project'); ?></option>
+	<?php } ?>
+</select>
+</fieldset>
+</form>
+<?
+}
+?>
 
 <h2>
 	<?php if(Auth::user()->permission('project-modify')): ?>

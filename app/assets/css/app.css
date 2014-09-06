@@ -477,6 +477,18 @@ p{
 	font-size: 13px;
 	padding-right: 10px;
 }
+
+.projects_selector{
+	margin:20px;
+	font-size: 14px;
+}
+.projects_selector fieldset{
+
+}
+.projects_selector label{
+	color: #535353;
+}
+
 #add-user-project{
 	margin: 0 auto;
 	display: block;
