@@ -3,8 +3,8 @@
 return array(
 
 	/** new user **/
-    'subject_newuser' => 'Your Tiny Issue Account',
-	'new_user' => 'You have been set up with Tiny Issue at',
+    'subject_newuser' => 'Your '.Config::get('application.my_bugs_app.name').' account',
+	'new_user' => 'You have been set up with '.Config::get('application.my_bugs_app.name').' at',
     'creds' => 'You may log in with email %s and password %s.',
 	
 	/** issue updates **/
