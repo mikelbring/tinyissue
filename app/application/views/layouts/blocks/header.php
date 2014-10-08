@@ -20,7 +20,7 @@
 <meta name="application-name" content="Bugs">
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<title><?php echo Config::get('config.mail_from_name') ?></title>
+	<title><?php echo Config::get('application.mail.from.name') ?></title>
 	<script>
 	   var siteurl = '<?php echo URL::to(); ?>';
 		var current_url = '<?php echo URL::to(Request::uri()); ?>';
