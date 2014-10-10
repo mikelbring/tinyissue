@@ -1,10 +1,6 @@
 <?php
 
 return array(
-	
-	/*******************************
-	 * TRANSLATION NEEDED
-	 *******************************/
 
 	/** new user **/
     'subject_newuser' => 'Votre compte sur '.Config::get('application.my_bugs_app.name'),

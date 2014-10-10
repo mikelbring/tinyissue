@@ -4,3 +4,14 @@
 
 <p><?php echo sprintf(__('email.reassigned_by'),$actor); ?><br />
 <?php echo __('email.more_url'); ?><a href="<?php echo $issue->to(); ?>"><?php echo $issue->to(); ?></a></p>
+
+<!--
+
+<pre>
+	<h2>Issue</h2>
+	<? // print_r($issue);?>
+	
+		<h2>Project</h2>
+	<? // print_r($project);?>
+</pre>
+-->
