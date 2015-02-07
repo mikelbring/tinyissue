@@ -28,7 +28,7 @@
 	<div id="container">
 		<div id="login">
 			
-			<h1>Welcome to<br><img src="/app/assets/images/layout/tinyissue.svg" alt="<?= $application_name ?>" style="width:350px;;"></h1>
+			<h1>Welcome to<br><img src="app/assets/images/layout/tinyissue.svg" alt="<?php echo $application_name ?>" style="width:350px;;"></h1>
 			<form method="post" action="">
 
 

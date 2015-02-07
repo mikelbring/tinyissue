@@ -16,7 +16,7 @@ if(count($active_projects)>1){
 </select>
 </fieldset>
 </form>
-<?
+<?php
 }
 ?>
 
