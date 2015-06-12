@@ -84,7 +84,14 @@ class Error {
 		// of the exception details for the developer.
 		$exception = new \ErrorException($error, $code, 0, $file, $line);
 
-		if (in_array($code, Config::get('error.ignore')))
+		if( is_null( Config::get('error.ignore') ) )
+		{
+			$error_config = array();
+		}else{
+			$error_config = Config::get('error.ignore');
+		}
+
+		if (in_array($code, error_config))
 		{
 			return static::log($exception);
 		}
