@@ -29,6 +29,13 @@ The `master` branch is tagged releases only.
 
 # Changelog
 
+- v1.5 : 12 July 2015:
+	- fix: Time Display format now configurable, see config.example.php
+	- fix: SQL « tags » table not included during installation
+	- fix: Bugs assets now load correctly if inside a subfolder
+
+various layout tweaks.
+
 - v1.2 : 28 August 2014: 
 	- French translation updates
 	- Various fixes
