@@ -22,7 +22,8 @@ return array(
 	),
 
 	'my_bugs_app'=>array(
-		'name'=> 'Bugs'
+		'name'=> 'Bugs',
+		'date_format'=>'F jS \a\t g:i A',
 	),
 	/**
 	 * Mail Settings
