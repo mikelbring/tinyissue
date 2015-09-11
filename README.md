@@ -18,7 +18,7 @@ Enjoy!
 - backup config.app.php and your uploads folder.
 - simply replace the codebase with the new version (via an ftp client such as Filezilla).
 - make sure your uploads folder and config.app.php are still there
-- Add this line to your config.app.php
+- If necessary, add this line to your config.app.php
 ```php
 'my_bugs_app'=>array(
 'name'=> 'Bugs',
