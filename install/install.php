@@ -13,7 +13,7 @@ class install
 
 	public function check_connect()
 	{
-		@$connect = mysql_connect($this->config['database']['host'],$this->config['database']['username'],$this->config['database']['password']);
+		@$connect = ($GLOBALS["___mysqli_ston"] = mysqli_connect($this->config['database']['host'], $this->config['database']['username'], $this->config['database']['password']));
 
 		if(!$connect)
 		{
@@ -61,21 +61,21 @@ class install
 	{
 		foreach($this->mysql_structure as $query)
 		{
-			mysql_query($query);
+			mysqli_query($GLOBALS["___mysqli_ston"], $query);
 		}
 
 		/* Create Administrator Account */
 		$role = 4;
-		$email = mysql_real_escape_string($_POST['email']);
-		$first_name = mysql_real_escape_string($_POST['first_name']);
-		$last_name = mysql_real_escape_string($_POST['last_name']);
+		$email = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST['email']) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+		$first_name = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST['first_name']) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+		$last_name = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST['last_name']) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
 		$password = Laravel\Hash::make($_POST['password']);
 
 		/* Check if email exists if so change the password on it */
 		$test_query = "select * from users where email = '$email' and deleted = 0 LIMIT 1";
-		$test_result = mysql_query($test_query);
+		$test_result = mysqli_query($GLOBALS["___mysqli_ston"], $test_query);
 
-		if(mysql_num_rows($test_result) >= 1)
+		if(mysqli_num_rows($test_result) >= 1)
 		{
 			$query = "
 			UPDATE `users`
@@ -110,14 +110,14 @@ class install
 
 		}
 
-		mysql_query($query);
+		mysqli_query($GLOBALS["___mysqli_ston"], $query);
 
 		return true;
 	}
 
 	private function check_db($connect)
 	{
-		@$database_connect = mysql_select_db($this->config['database']['database'], $connect);
+		@$database_connect = ((bool)mysqli_query( $connect, "USE " . $this->config['database']['database']));
 
 		if($database_connect)
 		{
