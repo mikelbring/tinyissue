@@ -6,7 +6,7 @@
 		<title>Error 500 - Internal Server Error</title>
 
 		<style>
-			@import url(http://fonts.googleapis.com/css?family=Ubuntu);
+			@import url(//fonts.googleapis.com/css?family=Ubuntu);
 
 			body {
 				background: #eee;

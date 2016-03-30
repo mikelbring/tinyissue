@@ -6,7 +6,7 @@
 		<title>Error 404 - Not Found</title>
 
 		<style>
-			@import url(http://fonts.googleapis.com/css?family=Ubuntu);
+			@import url(//fonts.googleapis.com/css?family=Ubuntu);
 
 			body {
 				background: #eee;
