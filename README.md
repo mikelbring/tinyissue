@@ -29,3 +29,5 @@ The `master` branch is tagged releases only.
 - [Zachary Hoover](http://zachoover.com)
 - [Suthan Sangaralingham](http://suthanwebs.com/)
 
+### Moral License
+If you are interested in some help, consider a [Moral License](https://www.morallicense.com/michaelhasselbring/tiny-issue)
