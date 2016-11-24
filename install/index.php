@@ -14,10 +14,9 @@ $pass_error = '';
 require './install.php';
 
 $install = new install();
-$database_check = $install->check_connect();
 $requirement_check = $install->check_requirements();
 
-if(!$database_check['error'])
+if(!isset($install->error))
 {
 	if(isset($_POST['email']))
 	{
@@ -88,8 +87,8 @@ if(!$database_check['error'])
 
 				<?php die(); endif; ?>
 
-				<?php	if(count($database_check['error']) > 0): ?>
-					Please fix your config.app.php - <?php echo $database_check['error']; ?>
+				<?php	if(isset($install->error) > 0): ?>
+					Please fix your config.app.php - <?php echo $install->error; ?>
 				<?php die(); endif;?>
 
 				Thank you for using Tiny Issue.  Your config file looks good.  Please fill out the form below to set up your administrator account and we will finish up the install.
