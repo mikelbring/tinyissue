@@ -290,8 +290,10 @@ p{
 #header .logo{
 	width: 87px; height: 23px;
 	background: url('../images/layout/tinyissue.png') no-repeat;
-	text-indent: -99999999px !important;
+	text-indent: 100%;
 	position: absolute; top: 15px; left: 15px;
+	white-space: nowrap;
+	overflow: hidden;
 }
 #header .nav-right{
 	float: right;
