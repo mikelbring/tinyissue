@@ -13,6 +13,19 @@
 
 Enjoy!
 
+# Upgrading from a previous installation
+
+- backup config.app.php and your uploads folder.
+- simply replace the codebase with the new version (via an ftp client such as Filezilla).
+- make sure your uploads folder and config.app.php are still there
+- If necessary, add this line to your config.app.php
+```php
+'my_bugs_app'=>array(
+'name'=> 'Bugs',
+'date_format'=>'F jS \a\t g:i A',
+),
+```
+
 ## Requirements:
 
 - Tested on: Apache, IIS
@@ -28,6 +41,13 @@ We welcome and appreciate all contributions. The `develop` branch is the branch 
 The `master` branch is tagged releases only.
 
 # Changelog
+
+- v1.5 : 12 July 2015:
+	- fix: Time Display format now configurable, see config.example.php
+	- fix: SQL « tags » table not included during installation
+	- fix: Bugs assets now load correctly if inside a subfolder
+
+various layout tweaks.
 
 - v1.2 : 28 August 2014: 
 	- French translation updates

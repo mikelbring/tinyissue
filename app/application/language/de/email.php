@@ -3,14 +3,14 @@
 return array(
 
 	/** new user **/
-    'subject_newuser' => 'Dein neues Tiny Issue Konto',
-	'new_user' => 'Ein neues Konto wurde für dich unter eingerichtet: ',
-    'creds' => 'Du kannst dich mit der Email-Adresse %s und dem Passwort %s bei Tiny Issue anmelden.',
+    'subject_newuser' => 'Dein neues '.Config::get('application.my_bugs_app.name').' Konto',
+	'new_user' => 'Ein neues '.Config::get('application.my_bugs_app.name').' Konto wurde für dich eingerichtet unter: ',
+    'creds' => 'Du kannst dich mit der E-Mail-Adresse %s und dem Passwort %s anmelden.',
 	
 	/** issue updates **/
-	'new_issue' => 'Neues Ticket "%s" wurde im Projekt "%s" erstellt',
-	'new_comment' => 'Neues Kommentar in Ticket "%s" in Projekt "%s"',
-	'assignment' => 'Ticket "%s" in Projekt "%s" wurde dir zuzgeordnet',
+	'new_issue' => 'Ein neues Ticket "%s" wurde im Projekt "%s" erstellt',
+	'new_comment' => 'Neuer Kommentar zu Ticket "%s" in Projekt "%s"',
+	'assignment' => 'Ticket "%s" in Projekt "%s" wurde dir zugeordnet',
 	'reassignment' => 'Ticket "%s" in Projekt "%s" wurde an dich übergeben',
 	'update' => 'Ticket "%s" in Projekt "%s" wurde aktualisiert',
 	

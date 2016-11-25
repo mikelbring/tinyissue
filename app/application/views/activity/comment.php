@@ -11,7 +11,7 @@
 		<?php echo __('tinyissue.by'); ?>
 		<strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong> <?php echo __('tinyissue.on_issue'); ?> <a href="<?php echo $issue->to(); ?>"><?php echo $issue->title; ?></a>
 		<span class="time">
-			<?php echo date('F jS \a\t g:i A', strtotime($activity->created_at)); ?>
+			<?php echo date(Config::get('application.my_bugs_app.date_format'), strtotime($activity->created_at)); ?>
 		</span>
 	</div>
 

@@ -25,7 +25,7 @@
 			<div class="insides">
 				<div class="topbar">
 					<strong><?php echo $issue->user->firstname . ' ' . $issue->user->lastname; ?></strong>
-					<?php echo __('tinyissue.opened_this_issue'); ?>  <?php echo date('F jS \a\t g:i A', strtotime($issue->created_at)); ?>
+					<?php echo __('tinyissue.opened_this_issue'); ?>  <?php echo date(Config::get('application.my_bugs_app.date_format'), strtotime($issue->created_at)); ?>
 				</div>
 
 				<div class="issue">

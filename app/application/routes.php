@@ -118,7 +118,7 @@ Route::filter('auth', function()
 {
 	if (Auth::guest()) 
 	{
-		Session::put('return', Request::getRequestUri());
+		Session::put('return', URI::current());
 		return Redirect::to('login');
 	}
 });
