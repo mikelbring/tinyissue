@@ -69,12 +69,14 @@ class Project_Controller extends Base_Controller {
 		$assigned_to = Input::get('assigned_to', '');
 		
 		/* Get which tags to show */
+		/* by tag_id : added by Patrick Allaire */
 		$tags = Input::get('tags', '');
-				
+		$tag = Input::get('tag_id', '');
+
 		/* Build query for issues */
 		$issues = \Project\Issue::with('tags');
 		
-		if ($tags || $sort_by != 'updated')
+		if ($tags || $tag || $sort_by != 'updated')
 		{
 			$issues = $issues
 				->join('projects_issues_tags', 'projects_issues_tags.issue_id', '=', 'projects_issues.id')
@@ -88,26 +90,15 @@ class Project_Controller extends Base_Controller {
 			$issues = $issues->where('assigned_to', '=', $assigned_to);
 		}
 		
+		if ($tag) {
+			$tag_collection = explode(",", $tag);
+			$tag_amount = count($tag_collection);
+			$issues = $issues->where_in('tags.id', $tag_collection);//->get();
+		}
 		if ($tags)
 		{
 			$tags_collection = explode(',', $tags);
 			$tags_amount = count($tags_collection);
-/*
-			foreach (explode(',', $tags) as $tag)
-			{
-				if (substr($tag, -2) == ':*')
-				{
-					$tags_collection[] = substr($tag, 0, strlen($tag) - 2) . ':%';
-					//$issues = $issues->where('tags.tag', 'LIKE', $tag);
-				}
-				else
-				{
-					$tags_collection[] =$tag;
-					//$issues = $issues->where('tags.tag', '=', $tag);
-				}
-			}
-*/
-
 			$issues = $issues->where_in('tags.tag', $tags_collection);//->get();
 		}
 		
@@ -127,14 +118,10 @@ class Project_Controller extends Base_Controller {
 		if ($assigned_to == Auth::user()->id)
 		{
 			$active = 'assigned';
-		}
-		else if (Input::get('tags', '') == 'status:closed')
-		{
-			$active = 'closed';
-		}
-		else
-		{
-			$active = 'open';
+		} else if (Input::get('tags', '') == 'status:closed') { $active = 'closed';
+		} else if (Input::get('tag_id', '') == '1') { $active = 'open';
+		} else if (Input::get('tag_id', '') == '2') { $active = 'closed';
+		} else { $active = 'open';
 		}
 		
 		/* Get sort options */

@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `password` varchar(255) default NULL,
   `firstname` varchar(255) default NULL,
   `lastname` varchar(255) default NULL,
-  `language` varchar(5) default NULL,
+  `language` varchar(5) default 'en',
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
   `deleted` int(1) NOT NULL default '0',
@@ -225,6 +225,7 @@ CREATE TABLE `tags` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE 'utf8_general_ci';
 
 -- create default tags
+-- line 9 added by Patrick Allaire
 TRUNCATE `tags`;
 INSERT INTO `tags` (`id`, `tag`, `bgcolor`, `created_at`, `updated_at`) VALUES
 (1,	'status:open',	'#c43c35',	'2013-11-30 11:23:01',	'2013-11-30 11:23:01'),
@@ -234,6 +235,7 @@ INSERT INTO `tags` (`id`, `tag`, `bgcolor`, `created_at`, `updated_at`) VALUES
 (6,	'resolution:won''t fix',	'#812323',	'2013-11-30 11:23:01',	'2013-11-30 11:23:01'),
 (7,	'resolution:fixed',	'#048383',	'2013-11-30 11:23:01',	'2013-11-30 11:23:01'),
 (8,	'status:testing',	'#6c8307',	'2013-11-30 11:23:01',	'2013-11-30 11:23:01');
+(9,	'status:Inprogress',	'#FE6500',	'2016-11-10 23:23:01',	'2016-11-10 23:23:01');
 
 -- create issue-tag relationship table
 CREATE TABLE `projects_issues_tags` (
