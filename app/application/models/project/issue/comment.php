@@ -27,9 +27,13 @@ class Comment extends  \Eloquent {
 	 * @param  \Project        $project
 	 * @param  \Project\Issue  $issue
 	 * @return Comment
+	 * Modified by Patrick Allaire
 	 */
 	public static function create_comment($input, $project, $issue)
 	{
+		$config_app = require path('public') . 'config.app.php';
+		if (!isset($config_app['Percent'])) { $config_app['Percent'] = array (100,0,10,80,100); }
+		require "tag.php"; 
 		$fill = array(
 			'created_by' => \Auth::user()->id,
 			'project_id' => $project->id,
@@ -43,15 +47,47 @@ class Comment extends  \Eloquent {
 
 		/* Add to user's activity log */
 		\User\Activity::add(2, $project->id, $issue->id, $comment->id);
-
+		$vide = true;
+		$Val = ($input['Pourcentage'] > $config_app['Percent'][3]) ? 8: (($input['Pourcentage'] == 100 ) ? 2: 9);
+		if(!empty($issue->tags)):
+			foreach($issue->tags()->order_by('tag', 'ASC')->get() as $tag):
+				if ($Val == $tag->id) { $vide = false; }
+			endforeach;
+		endif;
+		if ($vide) { Tag::addNew_tags($issue->id, $Val); }
 
 		/* Add attachments to issue */
 		\DB::table('projects_issues_attachments')->where('upload_token', '=', $input['token'])->where('uploaded_by', '=', \Auth::user()->id)->update(array('issue_id' => $issue->id, 'comment_id' => $comment->id));
 
+		/* Update the Todo state for this issue by Patrick Allaire */
+		\DB::table('users_todos')->where('issue_id', '=', $issue->id)->update(array('user_id' => \Auth::user()->id, 'status' => (($input['Pourcentage'] > $config_app['Percent'][3]) ? 3: 2), 'weight' => $input['Pourcentage'], 'updated_at'=>date("Y-m-d H:m:s")));
+
+		/* Update the status of this issue according to its percentage done; by Patrick Allaire */
+		\DB::table('projects_issues')->where('id', '=', $issue->id)->update(array('closed_by' => (($input['Pourcentage'] == 100 ) ? \Auth::user()->id : NULL), 'status' => (($input['Pourcentage'] == 100 )? 0 : 1),'status' => (($input['Pourcentage'] == 100 )? 0 : 1)));
+		
 		/* Update the project */
 		$issue->updated_at = date('Y-m-d H:i:s');
 		$issue->updated_by = \Auth::user()->id;
 		$issue->save();
+		if ($input['Pourcentage'] == 100 ) { 
+			$tags = $issue->tags;
+			$tag_ids = array();
+			foreach($tags as $tag) { $tag_ids[$tag->id] = $tag->id; }
+			$issue->closed_by = \Auth::user()->id;
+			$issue->closed_at = date('Y-m-d H:i:s');
+
+			/* Update tags */
+			$tag_ids[2] = 2;
+			if(isset($tag_ids[1])) { unset($tag_ids[1]); }
+			if(isset($tag_ids[8])) { unset($tag_ids[8]); }
+			if(isset($tag_ids[9])) { unset($tag_ids[9]); }
+
+			/* Add to activity log */
+			\User\Activity::add(3, $issue->project_id, $issue->id);
+			$issue->tags()->sync($tag_ids);
+			$issue->status = 0;
+			$issue->save();
+		} 
 
 
 		$project = \Project::current();
@@ -62,12 +98,13 @@ class Comment extends  \Eloquent {
 				'issue' => $issue,
 				'comment' => $comment->comment
 			));
+			
 		/* Notify the person to whom the issue is currently assigned, unless that person is the one making the comment */
-
 		if($issue->assigned_to && $issue->assigned_to != \Auth::user()->id && (!empty($issue->assigned->email)))
 		{
 			\Mail::send_email($text, $issue->assigned->email, $subject);
 		}
+
 		/* Notify the person who created the issue, unless that person is the one making the comment */
 		if($issue->created_by && $issue->created_by != \Auth::user()->id  && (!empty($issue->user->email)))
 		{

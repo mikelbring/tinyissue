@@ -1,8 +1,17 @@
 <?php
-
+//Modified by Patrick Allaire  (modif:  most about « percentage of work done » )
 return array(
-
-   'welcome' => 'Welcome',
+	'since' => '',
+	'ago' => 'ago',
+	'second' =>  'second', 
+	'minute' =>  'minute', 
+	'hour' =>  'hour', 
+	'day' =>  'day', 
+	'week' =>  'week', 
+	'month' =>  'month', 
+	'year' =>  'year', 
+	'decade' =>  'decade', 
+	'welcome' => 'Welcome',
 	'users' => 'Users',
 	'administration' => 'Administration',
 	'logout' => 'Logout',
@@ -64,6 +73,8 @@ return array(
 	'save' => 'Save',
 	'cancel' => 'Cancel',
 	'comment_on_this_issue' => 'Comment on this issue:',
+	'percentage_of_work_done' => 'Percentage of work done',
+	'format_with_markdown' => 'Format with Markdown',
 	'no_one' => 'No one',
 	'close_issue' => 'Close Issue',
 	'close_issue_confirm' => 'Are you sure you want to close this issue?',
@@ -134,6 +145,7 @@ return array(
 	'todo_status_1' => 'Open',
 	'todo_status_2' => 'In Progress',
 	'todo_status_3' => 'QA',
+	'issue_percent' => 'Percentage done',
 	'dashboard_description' => 'An overview of all the activity involving your active projects.',
 	'sortable_issue_howto' => 'Drag and drop issues to re-order them.',
 	'sort_by' => 'Sort By',

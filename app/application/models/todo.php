@@ -92,36 +92,39 @@ class Todo extends Eloquent {
 	* @param int       $user_id
 	* @param int       $issue_id
 	* @return array
+	* Modified by Patrick Allaire
 	*/
-	public static function add_todo($issue_id = 0)
+	public static function add_todo($issue_id = 0, $status = 1, $weight = 0)
 	{
 		$user_id = Auth::user()->id;
 		
 		// Ensure user is assigned to issue.
-    $issue = Project\Issue::load_issue($issue_id);
-    if(empty($issue) || $issue->assigned_to !== $user_id)
-    {
-      return array(
-        'success' => FALSE,
-        'errors' => __('tinyissue.todos_err_add'),
-      );
-    }
+	    	$issue = Project\Issue::load_issue($issue_id);
+	    	if(empty($issue) || $issue->assigned_to !== $user_id)
+	    	{
+		     return array(
+		     'success' => FALSE,
+		     'errors' => __('tinyissue.todos_err_add'),
+		     );
+		}
 		
 		// Ensure issue is not already a task.
 		$count = Todo::where('issue_id', '=', $issue_id)->where('user_id', '=', $user_id)->count();
 		if ($count > 0)
-    {
-      return array(
-        'success' => FALSE,
-        'errors' => __('tinyissue.todos_err_already'),
-      );
-    }
-		
+	    	{
+			return array(
+			'success' => FALSE,
+			'errors' => __('tinyissue.todos_err_already'),
+			);
+	    }
+		//More default values passed since Patrick (below)
 		$todo = new Todo;
 		$todo->user_id  = $user_id;
 		$todo->issue_id = $issue_id;
 		$todo->status   = 1;
-    $todo->save();
+		$todo->weight   = $weight;
+		$todo->created_at = date("Y-m-d H:m:s");
+    		$todo->save();
 
     return array(
       'success' => TRUE,

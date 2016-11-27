@@ -9,22 +9,37 @@
 
 	<span><?php echo __('tinyissue.on_project'); ?> <a href="<?php echo $project->to(); ?>"><?php echo $project->name; ?></a></span>
 </h3>
-
 <div class="pad">
 
-	<?php if(!empty($issue->tags)): ?>
 	<div id="issue-tags">
-		<?php foreach($issue->tags()->order_by('tag', 'ASC')->get() as $tag): ?>
-			<?php echo '<label class="label"' . ($tag->bgcolor ? ' style="background: ' . $tag->bgcolor . '"' : '') . '>' . $tag->tag . '</label>'; ?>
-		<?php endforeach; ?>
+	<?php echo __('tinyissue.issue_percent'); ?> : 
+	<?php 
+		//Percentage of work done
+		//Added by Patrick Allaire
+		$Etat = Todo::load_todo($issue->id);
+		if (is_object($Etat)) { 
+		echo '<div style="position: relative; top:-20px; left: 200px; background-color: green; color:white; width: '.($Etat->weight*5).'px; height: 20px; text-align: center; line-height:20px;" />'.$Etat->weight.'%</div>'; 
+		echo '<div style="position: relative; top:-40px; left: '.(200 + ($Etat->weight*5)).'px; background-color: gray; color:white; width: '.(500-($Etat->weight*5)).'px; height: 20px; text-align: center; line-height:20px;" /></div>';
+		} 
+	?>
+	&nbsp;&nbsp;&nbsp; 
+	<?php 
+		if(!empty($issue->tags)) {
+			$IssueTags = array();
+			foreach($issue->tags()->order_by('tag', 'ASC')->get() as $tag) {
+			echo '<label class="label"' . ($tag->bgcolor ? ' style="background: ' . $tag->bgcolor . '"' : '') . '>' . $tag->tag . '</label>&nbsp;';
+			$IssueTags[] = $tag->tag;
+			}  //endforeach
+		} //endif
+	?>
 	</div>
-	<?php endif; ?>
+	<?php Todo::add_todo($issue->id, 2, 0); ?>
 
 	<ul class="issue-discussion">
 		<li>
 			<div class="insides">
 				<div class="topbar">
-					<strong><?php echo $issue->user->firstname . ' ' . $issue->user->lastname; ?></strong>
+					<strong><?php echo $issue->user->firstname . ' ' . $issue->user->lastname; ?> </strong>
 					<?php echo __('tinyissue.opened_this_issue'); ?>  <?php echo date(Config::get('application.my_bugs_app.date_format'), strtotime($issue->created_at)); ?>
 				</div>
 
@@ -94,10 +109,33 @@
 		</h4>
 
 		<form method="post" action="">
-
+			<!-- New options in the form : percentage of work done after this ticket (added by Patrick Allaire) -->
 			<p>
 				<textarea name="comment" style="width: 98%; height: 90px;"></textarea>
-				<a href="http://daringfireball.net/projects/markdown/basics/" target="_blank" style="margin-left: 86%;">Format with Markdown</a>
+				<span style="text-align: left; width: 50%;">
+				<?php echo __('tinyissue.percentage_of_work_done'); ?> : <input type="number" name="Pourcentage" value="<?php echo ((is_object($Etat)) ? (($Etat->weight == 100) ? 91 : $Etat->weight+1) : 10 ); ?>" min="<?php echo ((is_object($Etat)) ? (($Etat->weight == 100) ? 91 : $Etat->weight) : 10); ?>" max="100" /> %
+				</span>
+				<div style="text-align: right; width: 98%; margin-top: -25px;">
+				<a href="http://daringfireball.net/projects/markdown/basics/" target="_blank" ><?php echo __('tinyissue.format_with_markdown'); ?></a>
+				</div>
+					<div style="width: 90%">
+					<!-- Tags modification -->
+					<!-- By Patrick Allaire -->
+					<?php echo __('tinyissue.tags'); 
+						$TAGS = new Project_Issue_Controller();
+//						$Tomates = $TAGS->get_edit($issue->id);
+//						var_dump($Tomates->tags);
+						echo Form::text('tags', Input::get('tags', implode(",", $IssueTags)), array('id' => 'tags')); ?>
+						<script type="text/javascript">
+						$(function(){
+							$('#tags').tagit({
+								autocomplete: {
+									source: '<?php echo URL::to('ajax/tags/suggestions/filter'); ?>'
+								}
+							});
+						});
+						</script>
+					</div>
 			</p>
 			<p>
 				<div class="upload-wrap green-button">

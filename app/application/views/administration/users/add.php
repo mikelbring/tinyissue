@@ -39,6 +39,21 @@
 			</tr>
 			<tr>
 				<th>
+					<?php echo __('tinyissue.language'); ?>
+				</th>
+				<td>	
+					<select name="language">
+					<?php
+						//Language has added by Patrick Allaire
+						$Lng = scandir("application/language/", SCANDIR_SORT_ASCENDING);
+						$Not = array(".", "..");
+						foreach ($Lng as $val) { if(!in_array($val, $Not)) { echo '<option value="'.$val.'" '; if ($val == Auth::user()->language) { echo ' selected="selected" '; } echo '>'.$val.'</option>'; } }
+					?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th>
 					<?php echo __('tinyissue.role'); ?>
 				</th>
 				<td>
