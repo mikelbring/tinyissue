@@ -20,5 +20,8 @@ CREATE TABLE IF NOT EXISTS `users_todos` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-INSERT INTO `tags` (`id`, `tag`, `bgcolor`, `created_at`, `updated_at`) VALUES 
-(9,	'status:inProgress','#FF6600',	'2016-11-10 23:12:01',	'2016-11-10 23:12:01');
+UPDATE tags SET id = id + 1001 WHERE id > 8;
+UPDATE projects_issues_tags SET tag_id = tag_id + 1 WHERE id > 8;
+INSERT INTO `tags` (`id`, `tag`, `bgcolor`, `created_at`, `updated_at`) VALUES (9,	'status:inProgress','#FF6600', NOW(), NOW() );
+UPDATE tags SET id = id - 1000 WHERE id > 9;
+
