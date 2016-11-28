@@ -65,6 +65,17 @@ class Comment extends  \Eloquent {
 		/* Update the status of this issue according to its percentage done; by Patrick Allaire */
 		\DB::table('projects_issues')->where('id', '=', $issue->id)->update(array('closed_by' => (($input['Pourcentage'] == 100 ) ? \Auth::user()->id : NULL), 'status' => (($input['Pourcentage'] == 100 )? 0 : 1),'status' => (($input['Pourcentage'] == 100 )? 0 : 1)));
 		
+		/*Update the tags attached to this issue */
+		$MesTags = explode(",", $input["MesTags"]);
+		$IDtags = array();
+		foreach($MesTags as $val) {
+			foreach(\Tag::where('tag', '=', $val)->get("id","tag") as $activity) {
+				$Idtags[] =  $activity->id;
+			}
+		}
+		$issue->tags()->sync($Idtags);
+		$issue->save();
+		
 		/* Update the project */
 		$issue->updated_at = date('Y-m-d H:i:s');
 		$issue->updated_by = \Auth::user()->id;
