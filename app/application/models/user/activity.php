@@ -31,8 +31,9 @@ class Activity extends \Eloquent {
 	* @param  int     $action_id
 	* @param  string  $data
 	* @return bool
+	* Default value for type_id defined by Patrick Allaire
 	*/
-	public static function add($type_id, $parent_id, $item_id = null, $action_id = null, $data = null)
+	public static function add($type_id = 18, $parent_id, $item_id = null, $action_id = null, $data = null)
 	{
 		$insert = array(
 			'type_id' => $type_id,

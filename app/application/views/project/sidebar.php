@@ -1,3 +1,4 @@
+<!-- Modified by Patrick Allaire to seek tickets by tag_id instead of by status:open and status:closed -->
 <?php
 $active_projects =Project\User::active_projects();
 if(count($active_projects)>1){
@@ -30,8 +31,8 @@ if(count($active_projects)>1){
 </h2>
 
 <ul>
-	<li><a href="<?php echo Project::current()->to('issues'); ?>?tags=status:open"><?php echo Project::current()->count_open_issues(); ?> <?php echo __('tinyissue.open_issues');?></a></li>
-	<li><a href="<?php echo Project::current()->to('issues'); ?>?tags=status:closed"><?php echo Project::current()->count_closed_issues(); ?> <?php echo __('tinyissue.closed_issues');?></a></li>
+	<li><a href="<?php echo Project::current()->to('issues'); ?>?tag_id=1"><?php echo Project::current()->count_open_issues(); ?> <?php echo __('tinyissue.open_issues');?></a></li>
+	<li><a href="<?php echo Project::current()->to('issues'); ?>?tag_id=2"><?php echo Project::current()->count_closed_issues(); ?> <?php echo __('tinyissue.closed_issues');?></a></li>
 </ul>
 
 <h2>

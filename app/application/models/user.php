@@ -260,11 +260,12 @@ class User extends Eloquent {
 				'errors' => $validator->errors
 			);
 		}
-
+			//Language (below) has added by Patrick Allaire
 		$update = array(
 			'email' => $info['email'],
 			'firstname' => $info['firstname'],
 			'lastname' => $info['lastname'],
+			'language' => $info['language'],
 			'role_id' => $info['role_id']
 		);
 
@@ -305,10 +306,12 @@ class User extends Eloquent {
 			);
 		}
 
+			//Language (below) has added by Patrick Allaire
 		$insert = array(
 			'email' => $info['email'],
 			'firstname' => $info['firstname'],
 			'lastname' => $info['lastname'],
+			'language' => $info['language'],
 			'role_id' => $info['role_id'],
 			'password' => Hash::make($password = Str::random(6))
 		);

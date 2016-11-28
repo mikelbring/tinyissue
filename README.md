@@ -1,3 +1,8 @@
+# This Repository is not being updated by me anymore. Yup, time to fork and roll, buddy!
+
+Why? It reached a point where it is good enough for my needs and Bugs' main objective was to be simple enough for non-web developers to report issues. And for that, it should never suffer from Featuritis. Laravel has become too bloated for me, and I don't have the time needed to maintain this properly. 
+I've started a port using the awesome [FatFreeFramework](https://fatfreeframework.com) but it's too early to make that repository open. Have fun! 
+
 # Bugs
 
 [Visit the project](http://pixeline.github.io/bugs/)
