@@ -1,12 +1,12 @@
 <?php
 
 return array(
-	'since' => 'Hace',
-	'ago' => '',
-	'second' =>  'secondo', 
+	'since' => 'desde',
+	'ago' => 'hace',
+	'second' =>  'segundo', 
 	'minute' =>  'minuto', 
 	'hour' =>  'hora', 
-	'day' =>  'dia', 
+	'day' =>  'día', 
 	'week' =>  'semana', 
 	'month' =>  'mes', 
 	'year' =>  'año', 
@@ -163,4 +163,6 @@ return array(
 	'tag_removed' => 'Etiqueta eliminada',
 	'tags_removed' => 'Etiquetas eliminadas',
 	'fileupload_button' => 'Adjuntar ficheros'
+	'countdown' => 'Tiempo trabajado',
+	'duration' => 'Dias planificados'
 );
