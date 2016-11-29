@@ -249,7 +249,7 @@ class Issue extends \Eloquent {
 
 			\Mail::send_email($text, $this->assigned->email, $subject);
 		}
-					 // add($type_id, $parent_id, $item_id = null, $action_id = null, $data = null)
+		// add($type_id, $parent_id, $item_id = null, $action_id = null, $data = null)
 		//\User\Activity::add(5, $this->project_id, $this->id, $user_id, null, $user_id);
 		\User\Activity::add(5, $this->project_id, $this->id, $user_id, null);
 	}
@@ -549,11 +549,13 @@ class Issue extends \Eloquent {
 			);
 		}
 
+		//Modificated by Patrick Allaire to include the feather « duration »
 		$fill = array(
 			'created_by' => \Auth::user()->id,
 			'project_id' => $project->id,
 			'title' => $input['title'],
 			'body' => $input['body'],
+			'duration' => $input['duration'],
 			'status' => 1
 		);
 
