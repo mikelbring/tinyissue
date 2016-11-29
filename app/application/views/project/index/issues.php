@@ -82,17 +82,19 @@
 
 					</div>
 					<?php
-					echo '<br /><br />'; 
+					if ($_GET["tag_id"] == 1) {
+						$config_app = require path('public') . 'config.app.php';
+						echo '<br /><br />'; 
 						//Percentage of work done
 						//Added by Patrick Allaire
 						$SizeXtot = 500;
 						$SizeX = $SizeXtot / 100;
 						$Etat = Todo::load_todo($row->id);
 						if (is_object($Etat)) { 
-						echo '<div style="position: relative; top: -11px; left: 0; background-color: green; color:white; width: '.($Etat->weight*$SizeX).'px; height: 4px; line-height:4px;" /></div>'; 
-						echo '<div style="position: relative; top: -15px; left: '.(0 + ($Etat->weight*$SizeX)).'px; margin-bottom: -4px; background-color: gray; color:white; width: '.($SizeXtot-($Etat->weight*$SizeX)).'px; height: 4px; text-align: center; line-height:4px;" /></div>';
-						}
-						
+							$Percent = $Etat->weight;
+							echo '<div style="position: relative; top: -11px; left: 0; background-color: green; color:white; width: '.($Percent*$SizeX).'px; height: 4px; line-height:4px;" /></div>'; 
+							echo '<div style="position: relative; top: -15px; left: '.(0 + ($Percent*$SizeX)).'px; margin-bottom: -4px; background-color: gray; color:white; width: '.($SizeXtot-($Percent*$SizeX)).'px; height: 4px; text-align: center; line-height:4px;" /></div>';
+						} else { $Percent = 10; }
 						//Time's going fast!
 						//Timing bar, according to the time planified (field projects_issues - duration) for this issue
 						//Added by Patrick Allaire
@@ -102,11 +104,12 @@
 						$DurRelat = round(($Dur / $row->duration) * 100);
 						$Dur = round($Dur);
 						$DurColor = ($DurRelat < 65) ? 'green' : (( $DurRelat > $config_app['Percent'][3]) ? 'red' : 'yellow') ;
-						if ($DurRelat >= 50 && $Etat->weight <= 50 ) { $DurColor = 'yellow'; } 
-						if ($DurRelat >= 75 && $Etat->weight <= 50 ) { $DurColor = 'red'; } 
+						if ($DurRelat >= 50 && $Percent <= 50 ) { $DurColor = 'yellow'; } 
+						if ($DurRelat >= 75 && $Percent <= 50 ) { $DurColor = 'red'; } 
 						echo '<div style="position: relative; top: -10px; left: 0; background-color: '.$DurColor.'; color:white; width: '.($DurRelat*$SizeX).'px; height: 4px; text-align: left; line-height:4px;" /></div>'; 
 						echo '<div style="position: relative; top: -14px; left: '.(0 + ($DurRelat*$SizeX)).'px; margin-bottom: -24px; background-color: gray; color:white; width: '.($SizeXtot-($DurRelat*$SizeX)).'px; height: 4px; text-align: right; line-height:4px;" /></div>';
 						echo '<br clear="all" />';
+					}
 						
 					?>
 				</div>
