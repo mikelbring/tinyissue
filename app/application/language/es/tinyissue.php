@@ -141,7 +141,7 @@ return array(
 	'todos_err_update' => 'Hubo un problema actualizando. Por favor recargue página y pruebe de nuevo.',
 	'todo_status_0' => 'Cerrada',
 	'todo_status_1' => 'Abierta',
-	'todo_status_2' => 'En progreso',ls -l
+	'todo_status_2' => 'En progreso',
 	'todo_status_3' => 'En testeo',
 	'dashboard_description' => 'Un resumen de toda la actividad en proyectos activos.',
 	'sortable_issue_howto' => 'Arrastre y suelte incidencias para reordenarlas.',
@@ -162,7 +162,7 @@ return array(
 	'tags_added' => 'Etiquetas añadidas',
 	'tag_removed' => 'Etiqueta eliminada',
 	'tags_removed' => 'Etiquetas eliminadas',
-	'fileupload_button' => 'Adjuntar ficheros'
+	'fileupload_button' => 'Adjuntar ficheros',
 	'countdown' => 'Tiempo trabajado',
 	'duration' => 'Dias planificados'
 );
