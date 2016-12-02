@@ -27,6 +27,7 @@
 		//Time's going fast!
 		//Timing bar, according to the time planified (field projects_issues - duration) for this issue
 		//Added by Patrick Allaire
+		$config_app = require path('public') . 'config.app.php';
 		$Deb = strtotime($issue->created_at);
 		$Dur = (time() - $Deb) / 86400;
 		if (!isset($issue->duration)) { $issue->duration = 30; }
