@@ -36,8 +36,9 @@
 		$DurColor = ($DurRelat < 65) ? 'green' : (( $DurRelat > $config_app['Percent'][3]) ? 'red' : 'yellow') ;
 		if ($DurRelat >= 50 && @$Etat->weight <= 50 ) { $DurColor = 'yellow'; } 
 		if ($DurRelat >= 75 && @$Etat->weight <= 50 ) { $DurColor = 'red'; } 
+		$TxtColor = ($DurColor == 'green') ? 'white' : 'black' ;
 		echo __('tinyissue.countdown').' ('.__('tinyissue.day').'s) : ';
-		echo '<div style="position: relative; top:-20px; left: 200px; background-color: '.$DurColor.'; color:white; width: '.($DurRelat*$SizeX).'px; height: 20px; text-align: left; line-height:20px;" />'.$Dur.'</div>'; 
+		echo '<div style="position: relative; top:-20px; left: 200px; background-color: '.$DurColor.'; color:'.$TxtColor.'; width: '.($DurRelat*$SizeX).'px; height: 20px; text-align: left; line-height:20px;" />'.$Dur.'</div>'; 
 		echo '<div style="position: relative; top:-40px; left: '.(200 + ($DurRelat*$SizeX)).'px; margin-bottom: -30px; background-color: gray; color:white; width: '.($SizeXtot-($DurRelat*$SizeX)).'px; height: 20px; text-align: right; line-height:20px;" />'.$issue->duration.'</div>';
 		echo '<br clear="all" />';
 		
