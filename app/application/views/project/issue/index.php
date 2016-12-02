@@ -12,15 +12,34 @@
 <div class="pad">
 
 	<div id="issue-tags">
-	<?php echo __('tinyissue.issue_percent'); ?> : 
 	<?php 
 		//Percentage of work done
 		//Added by Patrick Allaire
+		$SizeXtot = 500;
+		$SizeX = $SizeXtot / 100;
+		echo __('tinyissue.issue_percent').' : ';
 		$Etat = Todo::load_todo($issue->id);
 		if (is_object($Etat)) { 
-		echo '<div style="position: relative; top:-20px; left: 200px; background-color: green; color:white; width: '.($Etat->weight*5).'px; height: 20px; text-align: center; line-height:20px;" />'.$Etat->weight.'%</div>'; 
-		echo '<div style="position: relative; top:-40px; left: '.(200 + ($Etat->weight*5)).'px; background-color: gray; color:white; width: '.(500-($Etat->weight*5)).'px; height: 20px; text-align: center; line-height:20px;" /></div>';
-		} 
+		echo '<div style="position: relative; top:-20px; left: 200px; background-color: green; color:white; width: '.($Etat->weight*$SizeX).'px; height: 20px; text-align: center; line-height:20px;" />'.$Etat->weight.'%</div>'; 
+		echo '<div style="position: relative; top:-40px; left: '.(200 + ($Etat->weight*$SizeX)).'px; margin-bottom: -30px; background-color: gray; color:white; width: '.($SizeXtot-($Etat->weight*$SizeX)).'px; height: 20px; text-align: center; line-height:20px;" /></div>';
+		}
+		
+		//Time's going fast!
+		//Timing bar, according to the time planified (field projects_issues - duration) for this issue
+		//Added by Patrick Allaire
+		$Deb = strtotime($issue->created_at);
+		$Dur = (time() - $Deb) / 86400;
+		if (!isset($issue->duration)) { $issue->duration = 30; }
+		$DurRelat = round(($Dur / $issue->duration) * 100);
+		$Dur = round($Dur);
+		$DurColor = ($DurRelat < 65) ? 'green' : (( $DurRelat > $config_app['Percent'][3]) ? 'red' : 'yellow') ;
+		if ($DurRelat >= 50 && @$Etat->weight <= 50 ) { $DurColor = 'yellow'; } 
+		if ($DurRelat >= 75 && @$Etat->weight <= 50 ) { $DurColor = 'red'; } 
+		echo __('tinyissue.countdown').' ('.__('tinyissue.day').'s) : ';
+		echo '<div style="position: relative; top:-20px; left: 200px; background-color: '.$DurColor.'; color:white; width: '.($DurRelat*$SizeX).'px; height: 20px; text-align: left; line-height:20px;" />'.$Dur.'</div>'; 
+		echo '<div style="position: relative; top:-40px; left: '.(200 + ($DurRelat*$SizeX)).'px; margin-bottom: -30px; background-color: gray; color:white; width: '.($SizeXtot-($DurRelat*$SizeX)).'px; height: 20px; text-align: right; line-height:20px;" />'.$issue->duration.'</div>';
+		echo '<br clear="all" />';
+		
 	?>
 	&nbsp;&nbsp;&nbsp; 
 	<?php 
@@ -119,19 +138,16 @@
 				<a href="http://daringfireball.net/projects/markdown/basics/" target="_blank" ><?php echo __('tinyissue.format_with_markdown'); ?></a>
 				</div>
 					<div style="width: 90%">
-					<!-- Tags modification -->
-					<!-- By Patrick Allaire -->
-					<?php echo __('tinyissue.tags'); 
+					<!-- Tags modification , by Patrick Allaire -->
+					<?php 
+						//echo __('tinyissue.tags'); 
 						$TAGS = new Project_Issue_Controller();
-//						$Tomates = $TAGS->get_edit($issue->id);
-//						var_dump($Tomates->tags);
-						echo Form::text('tags', Input::get('tags', implode(",", $IssueTags)), array('id' => 'tags')); ?>
+						$Tomates = $TAGS->get_edit($issue->id);
+						echo Form::text('tags', Input::get('tags', implode(",", $IssueTags)), array('id' => 'tags', 'name' =>'MesTags')); ?>
 						<script type="text/javascript">
 						$(function(){
 							$('#tags').tagit({
-								autocomplete: {
-									source: '<?php echo URL::to('ajax/tags/suggestions/filter'); ?>'
-								}
+								autocomplete: { source: '<?php echo URL::to('ajax/tags/suggestions/filter'); ?>' }
 							});
 						});
 						</script>

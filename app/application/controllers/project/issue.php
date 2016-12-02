@@ -44,15 +44,13 @@ class Project_Issue_Controller extends Base_Controller {
 		} 
 		/*this prepare the email ( along with new_ticket.php model)
 			Initiated by Patrick Allaire 	*/
-		 
-		$view = View::make('email.new_ticket', array(
-		            'contenu' => $issue['issue']->body,
-		            'titre'=> $issue['issue']->title,
-		            'auteur' => $issue['issue']->created_by,
-		            'projet' => $issue['issue']->project_id
-		        ));
-		//Ici nous devrons modifier ceci, Patrick
-		//Mail::send_email($view, $config_app['mail']['from']['email'],'New ticket');
+		$subject = sprintf(__('email.new_ticket'),$issue['issue']->title,Project::current()->name);
+		$text = \View::make('email.new_ticket', array(
+			'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
+			'project' => Project::current()->name,
+			'issue' => $this
+		));
+		\Mail::send_email($text, $issue['issue']->assigned->email, $subject);
 
 		return Redirect::to($issue['issue']->to())
 			->with('notice', __('tinyissue.issue_has_been_created'));
