@@ -104,6 +104,7 @@ return array(
 	'reopen_issue' => 'Reabrir incidencia',
 	'reopen' => 'Reabierta',
 	'role' => 'Rol',
+	'roles_modify' => 'Modificar',
 	'save' => 'Guardar',
 	'saving' => 'Guardando',
 	'second' =>  'segundo', 

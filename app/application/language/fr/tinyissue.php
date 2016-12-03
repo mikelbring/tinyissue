@@ -108,6 +108,7 @@ return array(
 	'reopen_issue' => 'Rouvrir le Ticket',
 	'reopen' => 'Réouvrir',
 	'role' => 'Rôle',
+	'roles_modify' => 'Appliquer les modifications',
 	'save' => 'Enregistrer',
 	'saving' => 'Sauvegarde',
 	'second' =>  'seconde', 

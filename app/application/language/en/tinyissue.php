@@ -107,6 +107,7 @@ return array(
 	'reopen_issue' => 'Reopen Issue',
 	'reopen' => 'Reopen',
 	'role' => 'Role',
+	'roles_modify' => 'Apply modifications',
 	'save' => 'Save',
 	'saving' => 'Saving',
 	'second' =>  'second', 

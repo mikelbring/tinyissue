@@ -22,7 +22,7 @@
 		<meta name="application-name" content="<?php Config::get('my_bugs_app.name'); ?>">	
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width,initial-scale=1">
-		<title><?= Config::get('application.my_bugs_app.name'); ?></title>
+		<title><?php echo Config::get('application.my_bugs_app.name'); ?></title>
 		<script>
 			var siteurl = '<?php echo URL::to(); ?>';
 			var current_url = '<?php echo URL::to(Request::uri()); ?>';
@@ -46,7 +46,7 @@
 				<li class="logout"><a href="<?php echo URL::to('user/logout'); ?>"><?php echo __('tinyissue.logout');?></a></li>
 			</ul>
 
-			<a href="<?php echo URL::to(); ?>" class="logo" title="<?=  Config::get('application.my_bugs_app.name') ?>"><?=  Config::get('application.my_bugs_app.name') ?></a>
+			<a href="<?php echo URL::to(); ?>" class="logo" title="<?php echo  Config::get('application.my_bugs_app.name') ?>"><?php echo Config::get('application.my_bugs_app.name') ?></a>
 
 			<ul class="nav">
 				<li class="dashboard <?php echo $active == 'dashboard' ? 'active' : ''; ?>"><a href="<?php echo URL::to(); ?>"><?php echo __('tinyissue.dashboard');?></a></li>
