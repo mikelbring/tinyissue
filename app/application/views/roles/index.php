@@ -10,7 +10,6 @@
 		echo $role->id.'.&nbsp;';
 		echo '<input name="RoleName['.$role->id.']" type="input" size="15" maxlenght="20" value="'.$role->name.'" />';
 		echo '<input name="RoleDesc['.$role->id.']" type="input" size="75" maxlenght="255" value="'.$role->description.'" />';
-		echo '<a href="' . URL::to('role/' . $role->id . '/edit') . '"><label id="role' . $role->id . '" class="label"' . ($role->bgcolor ? ' style="background: ' . $role->bgcolor . '"' : '') . '>Modifier</label></a>';
 		echo '<br /><br />';
 	} 
 	?>
