@@ -1,5 +1,5 @@
 <footer style="text-align: center;">
-	<small class="bugs-version-number">Bugs version: <?=  Config::get('tinyissue.version') ?></small>
+	<small class="bugs-version-number">Bugs version: <?php echo  Config::get('tinyissue.version') ?></small>
 </footer>
 			</div>
 

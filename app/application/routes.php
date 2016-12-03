@@ -26,6 +26,7 @@ Route::controller(array(
 	'todo',
 	'ajax.tags',
 	'ajax.sortable',
+	'roles',
 	'tags'
 ));
 

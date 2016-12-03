@@ -1,5 +1,5 @@
 <h3>
-	<?= __('tinyissue.tags') ?>
+	<?php echo __('tinyissue.tags') ?>
 </h3>
 
 <div class="pad">

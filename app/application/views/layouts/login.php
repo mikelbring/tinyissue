@@ -23,7 +23,7 @@
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 
-		<title><?= Config::get('application.my_bugs_app.name'); ?></title>
+		<title><?php echo Config::get('application.my_bugs_app.name'); ?></title>
 		<?php echo Asset::styles(); ?>
 	</head>
 <body>
