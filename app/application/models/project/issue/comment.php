@@ -60,10 +60,22 @@ class Comment extends  \Eloquent {
 		\DB::table('projects_issues_attachments')->where('upload_token', '=', $input['token'])->where('uploaded_by', '=', \Auth::user()->id)->update(array('issue_id' => $issue->id, 'comment_id' => $comment->id));
 
 		/* Update the Todo state for this issue by Patrick Allaire */
-		\DB::table('users_todos')->where('issue_id', '=', $issue->id)->update(array('user_id' => \Auth::user()->id, 'status' => (($input['Pourcentage'] > $config_app['Percent'][3]) ? 3: 2), 'weight' => $input['Pourcentage'], 'updated_at'=>date("Y-m-d H:m:s")));
+		//\DB::table('users_todos')->where('issue_id', '=', $issue->id)->update(array('user_id' => \Auth::user()->id, 'status' => (($input['Pourcentage'] > $config_app['Percent'][3]) ? 3: 2), 'weight' => $input['Pourcentage'], 'updated_at'=>date("Y-m-d H:m:s")));
+		\DB::table('users_todos')->where('issue_id', '=', $issue->id)->update(array('status' => (($input['Pourcentage'] > $config_app['Percent'][3]) ? 3: 2), 'weight' => $input['Pourcentage'], 'updated_at'=>date("Y-m-d H:m:s")));
 
 		/* Update the status of this issue according to its percentage done; by Patrick Allaire */
 		\DB::table('projects_issues')->where('id', '=', $issue->id)->update(array('closed_by' => (($input['Pourcentage'] == 100 ) ? \Auth::user()->id : NULL), 'status' => (($input['Pourcentage'] == 100 )? 0 : 1),'status' => (($input['Pourcentage'] == 100 )? 0 : 1)));
+		
+		/*Update the tags attached to this issue */
+		$MesTags = explode(",", $input["MesTags"]);
+		$IDtags = array();
+		foreach($MesTags as $val) {
+			foreach(\Tag::where('tag', '=', $val)->get("id","tag") as $activity) {
+				$Idtags[] =  $activity->id;
+			}
+		}
+		$issue->tags()->sync($Idtags);
+		$issue->save();
 		
 		/* Update the project */
 		$issue->updated_at = date('Y-m-d H:i:s');
@@ -89,7 +101,7 @@ class Comment extends  \Eloquent {
 			$issue->save();
 		} 
 
-
+		/*Notifications by email to those who concern */
 		$project = \Project::current();
 		$subject = sprintf(__('email.new_comment'), $issue->title, $project->name);
 		$text = \View::make('email.commented_issue', array(

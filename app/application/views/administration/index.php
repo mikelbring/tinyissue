@@ -7,16 +7,16 @@
 
 	<table class="table">
 		<tr>
-			<th><?php echo __('tinyissue.total_users'); ?></th>
+			<th><a href="administration/users"><?php echo __('tinyissue.total_users'); ?></a></th>
 			<td><?php echo $users; ?></td>
 		</tr>
 		<tr>
-			<th><?php echo __('tinyissue.active_projects'); ?></th>
-			<td><?php echo $active_projects; ?></td>
+			<th><a href="projects"><?php echo ($active_projects < 2) ? __('tinyissue.active_project') : __('tinyissue.active_projects'); ?></a></th>
+			<td><?php echo ($active_projects == 0) ? __('tinyissue.no_one') : $active_projects; ?></td>
 		</tr>
 		<tr>
-			<th><?php echo __('tinyissue.archived_projects'); ?></th>
-			<td><?php echo $archived_projects; ?></td>
+			<th><a href="projects?status=0"><?php echo ($archived_projects < 2) ? __('tinyissue.archived_project') : __('tinyissue.archived_projects'); ?></a></th>
+			<td><?php echo ($archived_projects == 0) ? __('tinyissue.no_one') : $archived_projects; ?></td>
 		</tr>
 		
 		<tr>

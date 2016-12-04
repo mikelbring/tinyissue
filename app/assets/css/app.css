@@ -920,7 +920,7 @@ p{
 .sortable-li,
 ul.isssues li {
 	line-height: 1.2em;
-	height: 25px;
+	min-height: 25px;
 }
 #sortable-save {
 	margin-top: 10px;

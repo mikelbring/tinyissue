@@ -8,12 +8,12 @@
 	<ul class="tabs">
 		<li <?php echo $active == 'active' ? 'class="active"' : ''; ?>>
 			<a href="<?php echo URL::to('projects'); ?>">
-				<?php echo $active_count == 1 ? '1 '.__('tinyissue.active').' '.__('tinyissue.project') : $active_count . ' '.__('tinyissue.active').' '.__('tinyissue.projects'); ?>
+				<?php echo $active_count < 2 ? (($active_count == 0) ? __('tinyissue.no_one') : '1') . ' '.__('tinyissue.active_project') : $active_count . ' '.__('tinyissue.active_projects'); ?>
 			</a>
 		</li>
 		<li <?php echo $active == 'archived' ? 'class="active"' : ''; ?>>
 			<a href="<?php echo URL::to('projects'); ?>?status=0">
-				<?php echo $archived_count == 1 ? '1 '.__('tinyissue.archived').' '.__('tinyissue.project') : $archived_count . ' '.__('tinyissue.archived').' '.__('tinyissue.projects'); ?>
+				<?php echo $archived_count < 2 ? (($archived_count == 0) ? __('tinyissue.no_one') : '1') . ' '.__('tinyissue.archived_project') : $archived_count . ' '.__('tinyissue.archived_projects'); ?>
 				</a>
 		</li>
 	</ul>

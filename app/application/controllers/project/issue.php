@@ -42,17 +42,6 @@ class Project_Issue_Controller extends Base_Controller {
 				->with_errors($issue['errors'])
 				->with('notice-error', __('tinyissue.we_have_some_errors'));
 		} 
-		/*this prepare the email ( along with new_ticket.php model)
-			Initiated by Patrick Allaire 	*/
-		 
-		$view = View::make('email.new_ticket', array(
-		            'contenu' => $issue['issue']->body,
-		            'titre'=> $issue['issue']->title,
-		            'auteur' => $issue['issue']->created_by,
-		            'projet' => $issue['issue']->project_id
-		        ));
-		//Ici nous devrons modifier ceci, Patrick
-		//Mail::send_email($view, $config_app['mail']['from']['email'],'New ticket');
 
 		return Redirect::to($issue['issue']->to())
 			->with('notice', __('tinyissue.issue_has_been_created'));
