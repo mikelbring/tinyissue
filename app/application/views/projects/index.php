@@ -37,7 +37,7 @@
 					<li>
 						<a href="<?php echo $row->to(); ?>"><?php echo $row->name; ?></a><br />
 						<?php echo $issues == 1 ? '1 '. __('tinyissue.open_issue') : $issues . ' '. __('tinyissue.open_issues'); ?><br/>
-						<strong><?php echo (__('tinyissue.velocity_velocity') == 'tinyissue.velocity_velocity') ? 'Velocity' :  __('tinyissue.velocity_velocity'); ?>:</strong>&nbsp;<?php echo $velocity.'&nbsp;'.((__('tinyissue.velocity_rate') == 'tinyissue.velocity_rate') ? 'issues/per day' :  __('tinyissue.velocity_rate')); ?>&nbsp;&nbsp;&nbsp;<strong><?php echo (__('tinyissue.velocity_etc') == 'tinyissue.velocity_etc') ? 'ETC' :  __('tinyissue.velocity_etc'); ?>:</strong>&nbsp;<?php echo $etc; ?>
+						<strong><?php echo __('tinyissue.velocity_velocity'); ?>:</strong>&nbsp;<?php echo $velocity.'&nbsp;'.__('tinyissue.velocity_rate'); ?>&nbsp;&nbsp;&nbsp;<strong><?php echo __('tinyissue.velocity_etc'); ?>:</strong>&nbsp;<?php echo $etc; ?>
 					</li>
 					<?php endforeach; ?>
 
