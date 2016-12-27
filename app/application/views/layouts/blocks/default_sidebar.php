@@ -7,10 +7,26 @@
 </h2>
 
 <ul>
-	<?php foreach(Project\User::active_projects() as $row): ?>
+	<?php 
+		$Proj = array();
+		$SansAccent = array();
+		foreach(Project\User::active_projects() as $row) {
+			$Proj[$row->to()] = $row->name.'&nbsp;<span class="info-open-issues" title="Number of Open Tickets">('.$row->count_open_issues().')</span>';
+		}
+		foreach ($Proj as $ind => $val ){
+			$SansAccent[$ind] = htmlentities($val, ENT_NOQUOTES, 'utf-8');
+			$SansAccent[$ind] = preg_replace('#&([A-za-z])(?:uml|circ|tilde|acute|grave|cedil|ring);#', '\1', $SansAccent[$ind]);
+			$SansAccent[$ind] = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $SansAccent[$ind]);
+			$SansAccent[$ind] = preg_replace('#&[^;]+;#', '', $SansAccent[$ind]);		
+		}
+		asort($SansAccent); 
+	?>
 
+
+	<?php foreach($SansAccent as $ind => $val): ?>
 	<li>
-		<a href="<?php echo $row->to(); ?>"><?php echo $row->name; ?> <span class="info-open-issues" title="Number of Open Tickets">(<?php echo $row->count_open_issues() ?>)</span></a>
+		<a href="<?php echo $ind; ?>"><?php echo $Proj[$ind]; ?> </a>
 	</li>
 	<?php endforeach ?>
+
 </ul>
