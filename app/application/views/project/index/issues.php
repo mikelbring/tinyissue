@@ -101,6 +101,7 @@
 						$Deb = strtotime($row->created_at);
 						$Dur = (time() - $Deb) / 86400;
 						if (@$issue->duration === 0) { $row->duration = 30; }
+						//$DurRelat = round(($Dur / $row->duration)*100);
 						$DurRelat = round(($Dur / $row->duration)*100);
 						$DurColor = ($DurRelat < 65) ? 'green' : (( $DurRelat > $config_app['Percent'][3]) ? 'red' : 'yellow') ;
 						if ($DurRelat >= 50 && $Percent <= 50 ) { $DurColor = 'yellow'; } 
