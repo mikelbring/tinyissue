@@ -30,7 +30,7 @@
 		$config_app = require path('public') . 'config.app.php';
 		$Deb = strtotime($issue->created_at);
 		$Dur = (time() - $Deb) / 86400;
-		if (!isset($issue->duration)) { $issue->duration = 30; }
+		if (@$issue->duration === 0) { $issue->duration = 30; }
 		$DurRelat = round(($Dur / $issue->duration) * 100);
 		$Dur = round($Dur);
 		$DurColor = ($DurRelat < 65) ? 'green' : (( $DurRelat > $config_app['Percent'][3]) ? 'red' : 'yellow') ;
@@ -38,8 +38,8 @@
 		if ($DurRelat >= 75 && @$Etat->weight <= 50 ) { $DurColor = 'red'; } 
 		$TxtColor = ($DurColor == 'green') ? 'white' : 'black' ;
 		echo __('tinyissue.countdown').' ('.__('tinyissue.day').'s) : ';
-		echo '<div style="position: relative; top:-20px; left: 200px; background-color: '.$DurColor.'; color:'.$TxtColor.'; width: '.($DurRelat*$SizeX).'px; height: 20px; text-align: left; line-height:20px;" />'.$Dur.'</div>'; 
-		echo '<div style="position: relative; top:-40px; left: '.(200 + ($DurRelat*$SizeX)).'px; margin-bottom: -30px; background-color: gray; color:white; width: '.($SizeXtot-($DurRelat*$SizeX)).'px; height: 20px; text-align: right; line-height:20px;" />'.$issue->duration.'</div>';
+		echo '<div style="position: relative; top:-20px; left: 200px; background-color: '.$DurColor.'; color:'.$TxtColor.'; width: '.(($DurRelat  >= 100) ? $SizeXtot : ($DurRelat*$SizeX)).'px; height: 20px; text-align: left; line-height:20px;" />'.((($DurRelat  >= 100)) ? $Dur.' / '.@$issue->duration : $Dur).'</div>'; 
+		if ($DurRelat < 100) { echo '<div style="position: relative; top:-40px; left: '.(200 + ($DurRelat*$SizeX)).'px; margin-bottom: -30px; background-color: gray; color:white; width: '.($SizeXtot-($DurRelat*$SizeX)).'px; height: 20px; text-align: right; line-height:20px;" />'.$issue->duration.'</div>'; }
 		echo '<br clear="all" />';
 		
 	?>
