@@ -76,7 +76,6 @@ class Lang {
 	public static function line($key, $replacements = array(), $language = null)
 	{
 		if (is_null($language)) $language = Config::get('application.language');
-
 		return new static($key, $replacements, $language);
 	}
 
@@ -112,10 +111,11 @@ class Lang {
 	 */
 	public function get($language = null, $default = null)
 	{
+		global $LangEN;
 		// If no default value is specified by the developer, we'll just return the
 		// key of the language line. This should indicate which language line we
 		// were attempting to render and is better than giving nothing back.
-		if (is_null($default)) $default = $this->key;
+		if (is_null($default)) $default = $LangEN["tinyissue"][substr($this->key, strrpos($this->key, ".")+1)] ?? $this->key;
 
 		if (is_null($language)) $language = $this->language;
 
@@ -132,6 +132,7 @@ class Lang {
 		$lines = static::$lines[$bundle][$language][$file];
 
 		$line = array_get($lines, $line, $default);
+		if ($line == $this->key) { echo 'Merdus crocus'; }
 
 		// If the line is not a string, it probably means the developer asked for
 		// the entire language file and the value of the requested value will be
