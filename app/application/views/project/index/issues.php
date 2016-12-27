@@ -100,14 +100,13 @@
 						//Added by Patrick Allaire
 						$Deb = strtotime($row->created_at);
 						$Dur = (time() - $Deb) / 86400;
-						if (!isset($issue->duration)) { $row->duration = 30; }
-						$DurRelat = round(($Dur / $row->duration) * 100);
-						$Dur = round($Dur);
+						if (@$issue->duration === 0) { $row->duration = 30; }
+						$DurRelat = round(($Dur / $row->duration)*100);
 						$DurColor = ($DurRelat < 65) ? 'green' : (( $DurRelat > $config_app['Percent'][3]) ? 'red' : 'yellow') ;
 						if ($DurRelat >= 50 && $Percent <= 50 ) { $DurColor = 'yellow'; } 
 						if ($DurRelat >= 75 && $Percent <= 50 ) { $DurColor = 'red'; } 
-						echo '<div style="position: relative; top: -10px; left: 0; background-color: '.$DurColor.'; color:white; width: '.($DurRelat*$SizeX).'px; height: 4px; text-align: left; line-height:4px;" /></div>'; 
-						echo '<div style="position: relative; top: -14px; left: '.(0 + ($DurRelat*$SizeX)).'px; margin-bottom: -24px; background-color: gray; color:white; width: '.($SizeXtot-($DurRelat*$SizeX)).'px; height: 4px; text-align: right; line-height:4px;" /></div>';
+						echo '<div style="position: relative; top: -10px; left: 0; background-color: '.$DurColor.'; color:white; width: '.(($DurRelat >= 100) ? $SizeXtot : ($DurRelat*$SizeX)).'px; height: 4px; text-align: left; line-height:4px;" /></div>'; 
+						if ($DurRelat < 100) { echo '<div style="position: relative; top: -14px; left: '.(0 + ($DurRelat*$SizeX)).'px; margin-bottom: -24px; background-color: gray; color:white; width: '.($SizeXtot-($DurRelat*$SizeX)).'px; height: 4px; text-align: right; line-height:4px;" /></div>'; }
 						echo '<br clear="all" />';
 					}
 						
