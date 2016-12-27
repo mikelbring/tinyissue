@@ -24,7 +24,8 @@
 
 			<div class="inside-pad">
 				<ul class="projects">
-					<?php foreach($projects as $row):
+					<?php
+					foreach($projects as $row):
 						$issues = $row->count_open_issues();
 						$closedissues = $row->issues()->where('status', '=', 0)->count();
 						$dayspassed = (date("U") - date("U",strtotime($row->created_at)))/86400;
@@ -36,7 +37,7 @@
 					<li>
 						<a href="<?php echo $row->to(); ?>"><?php echo $row->name; ?></a><br />
 						<?php echo $issues == 1 ? '1 '. __('tinyissue.open_issue') : $issues . ' '. __('tinyissue.open_issues'); ?><br/>
-						<strong>Velocity:</strong>&nbsp;<?php echo $velocity; ?> issues/per day&nbsp;<strong>ETC:</strong>&nbsp;<?php echo $etc; ?>
+						<strong><?php echo (__('tinyissue.velocity_velocity') == 'tinyissue.velocity_velocity') ? 'Velocity' :  __('tinyissue.velocity_velocity'); ?>:</strong>&nbsp;<?php echo $velocity.'&nbsp;'.((__('tinyissue.velocity_rate') == 'tinyissue.velocity_rate') ? 'issues/per day' :  __('tinyissue.velocity_rate')); ?>&nbsp;&nbsp;&nbsp;<strong><?php echo (__('tinyissue.velocity_etc') == 'tinyissue.velocity_etc') ? 'ETC' :  __('tinyissue.velocity_etc'); ?>:</strong>&nbsp;<?php echo $etc; ?>
 					</li>
 					<?php endforeach; ?>
 
