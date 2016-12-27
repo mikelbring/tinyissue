@@ -132,7 +132,6 @@ class Lang {
 		$lines = static::$lines[$bundle][$language][$file];
 
 		$line = array_get($lines, $line, $default);
-		if ($line == $this->key) { echo 'Merdus crocus'; }
 
 		// If the line is not a string, it probably means the developer asked for
 		// the entire language file and the value of the requested value will be
