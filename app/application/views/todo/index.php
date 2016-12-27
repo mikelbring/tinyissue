@@ -3,7 +3,6 @@
 	<span><?php echo __('tinyissue.your_todos_description'); ?></span>
 </h3>
 <?php 
-	//Added traitment by Patrick Allaire
 	$config_app = require path('public') . 'config.app.php';
 	if (!isset($config_app['Percent'])) { $config_app['Percent'] = array (100,0,10,80,100); }
 ?>

@@ -1,6 +1,5 @@
-<!-- Modified by Patrick Allaire to seek tickets by tag_id instead of by status:open and status:closed -->
 <?php
-$active_projects =Project\User::active_projects();
+$active_projects = Project\User::active_projects();
 if(count($active_projects)>1){
 ?>
 <form class="projects_selector">

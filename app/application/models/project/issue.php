@@ -549,7 +549,7 @@ class Issue extends \Eloquent {
 			);
 		}
 
-		//Modificated by Patrick Allaire to include the feather « duration »
+		//Modificated to include the feather « duration »
 		$fill = array(
 			'created_by' => \Auth::user()->id,
 			'project_id' => $project->id,
