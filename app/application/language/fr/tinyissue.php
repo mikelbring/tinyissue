@@ -1,5 +1,4 @@
 <?php
-//Modifié par Patrick Allaire
 return array(
 	'active_project' => 'Projet actif',
 	'active_projects_description' => 'Liste de vos projets actifs',

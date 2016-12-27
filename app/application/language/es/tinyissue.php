@@ -1,5 +1,4 @@
 <?php
-
 return array(
 	'active_project' => 'Proyecto activo',
 	'active_projects_description' => 'Acceso rápido a proyectos activos',

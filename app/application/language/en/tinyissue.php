@@ -1,5 +1,4 @@
 <?php
-//Modified by Patrick Allaire  (modif:  most about « percentage of work done » )
 return array(
 	'active_project' => 'Active Project',
 	'active_projects_description' => 'Quick list of your active projects',
