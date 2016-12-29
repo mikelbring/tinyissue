@@ -1,5 +1,4 @@
 <?php
-
 return array(
 	'active_project' => 'Proyecto activo',
 	'active_projects_description' => 'Acceso rápido a proyectos activos',
@@ -116,6 +115,7 @@ return array(
 	'save' => 'Guardar',
 	'saving' => 'Guardando',
 	'second' =>  'segundo', 
+	'select_a_project' => 'Proyectos',
 	'settings_updated' => 'Ajustes actualizados',
 	'settings' => 'Ajustes',
 	'show_results' => 'Mostrar resultados',
