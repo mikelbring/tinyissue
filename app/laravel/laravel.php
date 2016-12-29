@@ -87,7 +87,6 @@ Bundle::start(DEFAULT_BUNDLE);
 | to explicitly start them within the application.
 |
 */
-
 foreach (Bundle::$bundles as $bundle => $config)
 {
 	if ($config['auto']) Bundle::start($bundle);
@@ -136,7 +135,6 @@ $languages[] = Config::get('application.language');
 | URI we'll pass to the router to not include the lang segment.
 |
 */
-
 foreach ($languages as $language)
 {
 	if (preg_match("#^{$language}(?:$|/)#i", $uri))
@@ -161,7 +159,6 @@ URI::$uri = $uri;
 | of the Response object that we can send back to the browser
 |
 */
-
 Request::$route = Router::route(Request::method(), $uri);
 
 $response = Request::$route->call();

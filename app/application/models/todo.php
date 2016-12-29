@@ -92,7 +92,6 @@ class Todo extends Eloquent {
 	* @param int       $user_id
 	* @param int       $issue_id
 	* @return array
-	* Modified by Patrick Allaire
 	*/
 	public static function add_todo($issue_id = 0, $status = 1, $weight = 0)
 	{
@@ -117,7 +116,7 @@ class Todo extends Eloquent {
 			'errors' => __('tinyissue.todos_err_already'),
 			);
 	    }
-		//More default values passed since Patrick (below)
+		//More default values passed since nov 2016
 		$todo = new Todo;
 		$todo->user_id  = $user_id;
 		$todo->issue_id = $issue_id;

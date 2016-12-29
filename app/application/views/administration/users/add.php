@@ -44,7 +44,7 @@
 				<td>	
 					<select name="language">
 					<?php
-						//Language has added by Patrick Allaire
+						//Language has added in nov 2016
 						$Lng = scandir("application/language/", SCANDIR_SORT_ASCENDING);
 						$Not = array(".", "..");
 						foreach ($Lng as $val) { if(!in_array($val, $Not)) { echo '<option value="'.$val.'" '; if ($val == Auth::user()->language) { echo ' selected="selected" '; } echo '>'.$val.'</option>'; } }

@@ -14,7 +14,6 @@
 	<div id="issue-tags">
 	<?php 
 		//Percentage of work done
-		//Added by Patrick Allaire
 		$SizeXtot = 500;
 		$SizeX = $SizeXtot / 100;
 		echo __('tinyissue.issue_percent').' : ';
@@ -26,7 +25,6 @@
 		
 		//Time's going fast!
 		//Timing bar, according to the time planified (field projects_issues - duration) for this issue
-		//Added by Patrick Allaire
 		$config_app = require path('public') . 'config.app.php';
 		$Deb = strtotime($issue->created_at);
 		$Dur = (time() - $Deb) / 86400;
@@ -130,7 +128,7 @@
 		</h4>
 
 		<form method="post" action="">
-			<!-- New options in the form : percentage of work done after this ticket (added by Patrick Allaire) -->
+			<!-- New options in the form : percentage of work done after this ticket  -->
 			<p>
 				<textarea name="comment" style="width: 98%; height: 90px;"></textarea>
 				<span style="text-align: left; width: 50%;">
@@ -140,7 +138,7 @@
 				<a href="http://daringfireball.net/projects/markdown/basics/" target="_blank" ><?php echo __('tinyissue.format_with_markdown'); ?></a>
 				</div>
 					<div style="width: 90%">
-					<!-- Tags modification , by Patrick Allaire -->
+					<!-- Tags modification  -->
 					<?php 
 						//echo __('tinyissue.tags'); 
 						$TAGS = new Project_Issue_Controller();

@@ -225,7 +225,6 @@ CREATE TABLE `tags` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE 'utf8_general_ci';
 
 -- create default tags
--- line 9 added by Patrick Allaire
 TRUNCATE `tags`;
 INSERT INTO `tags` (`id`, `tag`, `bgcolor`, `created_at`, `updated_at`) VALUES
 (1,	'status:open',	'#c43c35',	'2013-11-30 11:23:01',	'2013-11-30 11:23:01'),
