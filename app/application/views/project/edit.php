@@ -17,7 +17,7 @@
 			</tr>
 			<tr>
 				<th><?php echo __('tinyissue.status') ?></th>
-				<td><?php echo Form::select('status', array(1 => 'Open', 0 => 'Archived'), Project::current()->status); ?></td>
+				<td><?php echo Form::select('status', array(1 => __('tinyissue.active'), 0 => __('tinyissue.archived')), Project::current()->status); ?></td>
 			</tr>
 			<tr>
 			<th><?php echo __('tinyissue.default_assignee'); ?></th>

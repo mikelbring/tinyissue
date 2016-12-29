@@ -118,6 +118,7 @@ return array(
 	'save' => 'Save',
 	'saving' => 'Saving',
 	'second' =>  'second', 
+	'select_a_project' =>  'Projects',
 	'settings_updated' => 'Settings Updated',
 	'settings' => 'Settings',
 	'show_results' => 'Show Results',

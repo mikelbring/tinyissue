@@ -119,6 +119,7 @@ return array(
 	'save' => 'Enregistrer',
 	'saving' => 'Sauvegarde',
 	'second' =>  'seconde', 
+	'select_a_project' =>  'Vos projets',
 	'settings_updated' => 'Paramètres mis à jour',
 	'settings' => 'Paramètres',
 	'show_results' => 'Voir les Résultats',

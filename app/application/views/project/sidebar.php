@@ -3,7 +3,7 @@ $active_projects = Project\User::active_projects();
 if(count($active_projects)>1){
 ?>
 <form class="projects_selector">
-<fieldset><label for="projects_select">Projects</label>
+<fieldset><label for="projects_select"><?php echo __('tinyissue.select_a_project');?></label>
 <select name="projects_select" id="projects_select"  onchange="if (this.value) window.location.href=this.value">
 <?php 
 	foreach($active_projects as $p){
