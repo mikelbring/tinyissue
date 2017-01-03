@@ -98,7 +98,6 @@
 						//Timing bar, according to the time planified (field projects_issues - duration) for this issue
 						$Deb = strtotime($row->created_at);
 						$Dur = (time() - $Deb) / 86400;
-						if (@$issue->duration === 0) { $row->duration = 30; }
 						if (@$row->duration === 0) { $row->duration = 30; }
 						$DurRelat = round(($Dur / $row->duration)*100);
 						$DurColor = ($DurRelat < 65) ? 'green' : (( $DurRelat > $config_app['Percent'][3]) ? 'red' : 'yellow') ;
