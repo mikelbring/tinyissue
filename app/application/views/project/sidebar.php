@@ -1,5 +1,6 @@
+<!-- Modified by Patrick Allaire to seek tickets by tag_id instead of by status:open and status:closed -->
 <?php
-$active_projects = Project\User::active_projects();
+$active_projects =Project\User::active_projects();
 if(count($active_projects)>1){
 ?>
 <form class="projects_selector">
@@ -57,14 +58,23 @@ if(count($active_projects)>1){
 
 <?php endif; ?>
 
+<?php
+	$project_WebLnks = \DB::table('projects_links')->where('id_project', '=', Project::current()->id)->order_by('category','ASC')->get();
+	$WebLnk = array();
+	foreach($project_WebLnks as $WebLnks) { 
+		if (trim($WebLnks->desactivated) == '') { $WebLnk[$WebLnks->category] = $WebLnks->link; } 
+	}
+if (count($WebLnk) > 0 ) {
+?>
 <h2>
 	<?php echo __('tinyissue.website_title');?>
 	<span><?php echo __('tinyissue.website_description');?></span>
 </h2>
 <?php
-	$project_WebLnks = \DB::table('projects_links')->where('id_project', '=', Project::current()->id)->order_by('category','ASC')->get();
-	$WebLnk = array();
-	foreach($project_WebLnks as $WebLnks) { 
-		if (trim($WebLnks->desactivated) == '') { $WebLnk[$WebLnks->category] = $WebLnks->link; echo '<a href="'.$WebLnks->link.'" target="_blank">'.__('tinyissue.website_'.$WebLnks->category).'</a><br />'; } 
+	echo '<ul>';
+	foreach($WebLnk as $categ => $link) { 
+		echo '<li><a href="'.$link.'" target="_blank">'.__('tinyissue.website_'.$categ).'</a></li>'; 
 	}
+	echo '</ul>';
+}
 ?>
