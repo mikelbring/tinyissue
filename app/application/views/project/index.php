@@ -1,4 +1,3 @@
-<!-- Modified by Patrick Allaire to seek tickets by tag_id instead of by status:open and status:closed -->
 <h3>
    <a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue"><?php echo __('tinyissue.new_issue');?></a>
    <a href="<?php echo Project::current()->to(); ?>"><?php echo Project::current()->name; ?></a>

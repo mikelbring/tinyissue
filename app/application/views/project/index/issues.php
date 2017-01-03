@@ -86,7 +86,6 @@
 						$config_app = require path('public') . 'config.app.php';
 						echo '<br /><br />'; 
 						//Percentage of work done
-						//Added by Patrick Allaire
 						$SizeXtot = 500;
 						$SizeX = $SizeXtot / 100;
 						$Etat = Todo::load_todo($row->id);
@@ -97,7 +96,6 @@
 						} else { $Percent = 10; }
 						//Time's going fast!
 						//Timing bar, according to the time planified (field projects_issues - duration) for this issue
-						//Added by Patrick Allaire
 						$Deb = strtotime($row->created_at);
 						$Dur = (time() - $Deb) / 86400;
 						if (@$issue->duration === 0) { $row->duration = 30; }

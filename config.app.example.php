@@ -88,7 +88,6 @@ return array(
 	 *Percentage of issue done
 	 *Make sure your array count 5 items, the fifth must be 100
 	 *In order:  (done, open, inProgress, Testing, SysNeed)
-	 *Default added by Patrick Allaire
 	 *Default: (100,0,10,80,100)
 	*/
 	'Percent' => array (100,0,10,80,100),

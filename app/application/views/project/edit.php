@@ -39,7 +39,7 @@
 				</td>
 			</tr>
 			<tr>
-			<th><?php echo __('tinyissue.website_development'); ?></th>
+			<th><?php echo __('tinyissue.website_dev'); ?></th>
 				<td>
 					<input size="50" name="Dev" value="<?php echo @$WebLnk['dev']; ?>" placeholder="http://127.0.0.1/<?php echo Project::current()->name; ?>" />
 				</td>
@@ -51,7 +51,7 @@
 				</td>
 			</tr>
 			<tr>
-			<th><?php echo __('tinyissue.website_production'); ?></th>
+			<th><?php echo __('tinyissue.website_prod'); ?></th>
 				<td>
 					<input size="50" name="Prod" value="<?php echo @$WebLnk['prod']; ?>" placeholder="http://www.<?php echo Project::current()->name; ?>" />
 				</td>

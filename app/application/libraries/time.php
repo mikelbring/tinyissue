@@ -7,7 +7,7 @@ class Time {
 	 *
 	 * @param  int $timestamp
 	 * @return string
-	 * Modified by Patrick Allaire to include all languages
+	 * Modified in nov 2016 to include all languages
 	 */
 	public static function age($timestamp)
 	{

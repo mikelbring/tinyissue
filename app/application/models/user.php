@@ -260,7 +260,7 @@ class User extends Eloquent {
 				'errors' => $validator->errors
 			);
 		}
-			//Language (below) has added by Patrick Allaire
+			//Language (below) added
 		$update = array(
 			'email' => $info['email'],
 			'firstname' => $info['firstname'],
@@ -306,7 +306,7 @@ class User extends Eloquent {
 			);
 		}
 
-			//Language (below) has added by Patrick Allaire
+			//Language (below) added
 		$insert = array(
 			'email' => $info['email'],
 			'firstname' => $info['firstname'],

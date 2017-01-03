@@ -236,7 +236,7 @@ CREATE TABLE `tags` (
   UNIQUE KEY `tag` (`tag`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE 'utf8_general_ci';",
 "
--- create default tags : id 9 added by Patrick Allaire
+-- create default tags : id 9 
 TRUNCATE `tags`;
 ",
 "
