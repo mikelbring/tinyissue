@@ -184,5 +184,10 @@ return array(
 	'your_issues' => 'Vos Tickets',
 	'your_issues' => 'Vos Tickets',
 	'your_todos_description' => 'Tickets mis dans votre <strong>Kanban</strong> (= organisateur de tâches personnel).',
-	'your_todos' => 'Tâches'
+	'your_todos' => 'Tâches',
+	'website_title' => 'Votre projet en ligne',
+	'website_description' => 'Liens directs vers vos pages',
+	'website_dev' => 'Développement',
+	'website_git' => 'Dépôt git',
+	'website_prod' => 'Production'
 );

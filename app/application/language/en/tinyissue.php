@@ -181,5 +181,10 @@ return array(
 	'your_issues_description' => 'Issues that are assigned to you',
 	'your_issues' => 'Your Issues',
 	'your_todos_description' => 'Issues you have placed on your TODO list.',
-	'your_todos' => 'Your TODOs'
+	'your_todos' => 'Your TODOs',
+	'website_title' => 'Associated sites',
+	'website_description' => 'Direct links to this project',
+	'website_development' => 'Developpement',
+	'website_git' => 'Git repository',
+	'website_production' => 'Production'
 );
