@@ -333,6 +333,15 @@ class Project extends Eloquent {
 			'success' => true
 		);
 	}
+	public static function update_weblnks($input, $project) {
+		/* Update all the links attached to the project, setting the « desactivated » date as NOW */
+		\DB::table('projects_links')->where('id_project', '=', $project->id)->update(array('desactivated' => date("Y-m-d")));
+		
+		/* Insert new values, setting the passed due date as NOW */
+		if (trim($input['Dev']) != '' ) { \DB::table('projects_links')->insert(array('id_project' => $project->id, 'category' => 'dev', 'link' => $input['Dev'], 'created' => date("Y-m-d"))); }
+		if (trim($input['Git']) != '' ) { \DB::table('projects_links')->insert(array('id_project' => $project->id, 'category' => 'git', 'link' => $input['Git'], 'created' => date("Y-m-d"))); }
+		if (trim($input['Prod']) != '' ) { \DB::table('projects_links')->insert(array('id_project' => $project->id, 'category' => 'prod', 'link' => $input['Prod'], 'created' => date("Y-m-d"))); }
+	}
 
 	/**
 	* Delete a project and it's children

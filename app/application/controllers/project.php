@@ -189,6 +189,7 @@ class Project_Controller extends Base_Controller {
 
 		/* Update the project */
 		$update = Project::update_project(Input::all(), Project::current());
+		$weblnk = Project::update_weblnks(Input::all(), Project::current());
 
 		if($update['success'])
 		{

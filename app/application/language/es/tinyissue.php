@@ -179,4 +179,9 @@ return array(
 	'your_issues' => 'Sus incidencias',
 	'your_todos_description' => 'Incidencias organizadas en listas de tareas pendientes',
 	'your_todos' => 'Tareas pendientes'
+	'website_title' => 'Su proyecto « in line »',
+	'website_description' => 'Enlace dircto a tus paginas',
+	'website_dev' => 'Desaroyo',
+	'website_git' => 'Deposito Git',
+	'website_prod' => 'Produccion'
 );
