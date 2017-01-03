@@ -473,9 +473,14 @@ p{
 	text-indent: -999999px;
 }
 #sidebar ul li a{
+	background: url('../images/layout/icon-li-arrow.png') right center no-repeat;
+}
+#sidebar ul li a.links{
+	background: url('../images/layout/icon-website.png') right center no-repeat;
+}
+#sidebar ul li a,#sidebar ul li a.links{
 	min-height: 17px;
 	display: block;
-	background: url('../images/layout/icon-li-arrow.png') right center no-repeat;
 	color: #535353;
 	text-decoration: none;
 	padding-top: 5px;

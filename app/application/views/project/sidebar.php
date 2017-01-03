@@ -73,7 +73,7 @@ if (count($WebLnk) > 0 ) {
 <?php
 	echo '<ul>';
 	foreach($WebLnk as $categ => $link) { 
-		echo '<li><a href="'.$link.'" target="_blank">'.__('tinyissue.website_'.$categ).'</a></li>'; 
+		echo '<li><a href="'.$link.'" class="links" target="_blank">'.__('tinyissue.website_'.$categ).'</a></li>'; 
 	}
 	echo '</ul>';
 }
