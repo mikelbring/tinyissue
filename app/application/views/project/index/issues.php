@@ -82,7 +82,7 @@
 
 					</div>
 					<?php
-					if ($_GET["tag_id"] == 1) {
+					if (@$_GET["tag_id"] == 1) {
 						$config_app = require path('public') . 'config.app.php';
 						echo '<br /><br />'; 
 						//Percentage of work done

@@ -71,6 +71,18 @@ CREATE TABLE IF NOT EXISTS `projects_issues_comments` (
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--  Create Projects Links Table
+CREATE TABLE `projects_links` (
+  `id_link` int(11) NOT NULL AUTO_INCREMENT,
+  `id_project` int(11) NOT NULL DEFAULT '1',
+  `category` enum('dev','git','prod') NOT NULL DEFAULT 'dev',
+  `link` varchar(100) NOT NULL,
+  `created` date NOT NULL,
+  `desactivated` date DEFAULT NULL,
+  PRIMARY KEY (`id_link`),
+  KEY `id_project_category_desactivated_created` (`id_project`,`category`,`desactivated`,`created`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 --  Create Projects Users Table
 CREATE TABLE IF NOT EXISTS `projects_users` (
   `id` bigint(20) NOT NULL auto_increment,
