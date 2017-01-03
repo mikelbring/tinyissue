@@ -115,7 +115,7 @@ class Lang {
 		// If no default value is specified by the developer, we'll just return the
 		// key of the language line. This should indicate which language line we
 		// were attempting to render and is better than giving nothing back.
-		if (is_null($default)) $default = $LangEN["tinyissue"][substr($this->key, strrpos($this->key, ".")+1)] ?? $this->key;
+		if (is_null($default)) $default =  isset($LangEN["tinyissue"][substr($this->key, strrpos($this->key, ".")+1)]) ? $LangEN["tinyissue"][substr($this->key, strrpos($this->key, ".")+1)] : $this->key;
 
 		if (is_null($language)) $language = $this->language;
 
