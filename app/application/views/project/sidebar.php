@@ -1,4 +1,3 @@
-<!-- Modified by Patrick Allaire to seek tickets by tag_id instead of by status:open and status:closed -->
 <?php
 $active_projects =Project\User::active_projects();
 if(count($active_projects)>1){
@@ -7,13 +6,24 @@ if(count($active_projects)>1){
 <fieldset><label for="projects_select"><?php echo __('tinyissue.select_a_project');?></label>
 <select name="projects_select" id="projects_select"  onchange="if (this.value) window.location.href=this.value">
 <?php 
-	foreach($active_projects as $p){
-		$selected = ($p->id == Project::current()->id) ? 'selected':'';
-		echo '<option value="'. $p->to().'" '.$selected.'>'.$p->name .'</option>';
+	$Proj = array();
+	$SansAccent = array();
+	foreach($active_projects as $row) {
+		$Proj[$row->to()] = $row->name.'&nbsp;<span class="info-open-issues" title="Open this project"></span>';
 	}
-	if(Auth::user()->permission('project-create')){?>
-		<option value="<?php echo URL::to('projects/new'); ?>"><?php echo __('tinyissue.create_a_new_project'); ?></option>
-	<?php } ?>
+	foreach ($Proj as $ind => $val ){
+		$SansAccent[$ind] = htmlentities($val, ENT_NOQUOTES, 'utf-8');
+		$SansAccent[$ind] = preg_replace('#&([A-za-z])(?:uml|circ|tilde|acute|grave|cedil|ring);#', '\1', $SansAccent[$ind]);
+		$SansAccent[$ind] = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $SansAccent[$ind]);
+		$SansAccent[$ind] = preg_replace('#&[^;]+;#', '', $SansAccent[$ind]);		
+	}
+	asort($SansAccent); 
+
+	foreach($SansAccent as $ind => $val) {
+		$selected = ($ind == Project::current()->id) ? 'selected':'';
+		echo '<option value="'.$ind.'">'.$Proj[$ind].'</option>';
+	 } 
+?>
 </select>
 </fieldset>
 </form>
@@ -73,7 +83,7 @@ if (count($WebLnk) > 0 ) {
 <?php
 	echo '<ul>';
 	foreach($WebLnk as $categ => $link) { 
-		echo '<li><a href="'.$link.'" target="_blank">'.__('tinyissue.website_'.$categ).'</a></li>'; 
+		echo '<li><a href="'.$link.'" class="links" target="_blank">'.__('tinyissue.website_'.$categ).'</a></li>'; 
 	}
 	echo '</ul>';
 }
