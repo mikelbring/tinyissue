@@ -26,7 +26,6 @@ class Roles_Controller extends Base_Controller {
 	 * Edit all roles
 	 *
 	 * @return View
-	 * Defined by Patrick Allaire
 	 */	
 	public function post_index()
 	{
