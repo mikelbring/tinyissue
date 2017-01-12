@@ -9,7 +9,7 @@ if(count($active_projects)>1){
 	$Proj = array();
 	$SansAccent = array();
 	foreach($active_projects as $row) {
-		$Proj[$row->to()] = $row->name.'&nbsp;<span class="info-open-issues" title="Open this project"></span>';
+		$Proj[$row->to()] = $row->name;
 	}
 	foreach ($Proj as $ind => $val ){
 		$SansAccent[$ind] = htmlentities($val, ENT_NOQUOTES, 'utf-8');
@@ -20,8 +20,8 @@ if(count($active_projects)>1){
 	asort($SansAccent); 
 
 	foreach($SansAccent as $ind => $val) {
-		$selected = ($ind == Project::current()->id) ? 'selected':'';
-		echo '<option value="'.$ind.'">'.$Proj[$ind].'</option>';
+		$selected = (substr($ind, strrpos($ind, "/")+1) == Project::current()->id) ? 'selected':'';
+		echo '<option value="'.$ind.'" '.$selected.'>'.$Proj[$ind].'</option>';
 	 } 
 ?>
 </select>
