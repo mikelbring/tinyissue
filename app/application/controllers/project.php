@@ -69,7 +69,7 @@ class Project_Controller extends Base_Controller {
 		$assigned_to = Input::get('assigned_to', '');
 		
 		/* Get which tags to show */
-		/* by tag_id : added by Patrick Allaire */
+		/* by tag_id  */
 		$tags = Input::get('tags', '');
 		$tag = Input::get('tag_id', '');
 

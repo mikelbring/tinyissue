@@ -27,7 +27,6 @@ class Comment extends  \Eloquent {
 	 * @param  \Project        $project
 	 * @param  \Project\Issue  $issue
 	 * @return Comment
-	 * Modified by Patrick Allaire
 	 */
 	public static function create_comment($input, $project, $issue)
 	{
@@ -59,11 +58,11 @@ class Comment extends  \Eloquent {
 		/* Add attachments to issue */
 		\DB::table('projects_issues_attachments')->where('upload_token', '=', $input['token'])->where('uploaded_by', '=', \Auth::user()->id)->update(array('issue_id' => $issue->id, 'comment_id' => $comment->id));
 
-		/* Update the Todo state for this issue by Patrick Allaire */
+		/* Update the Todo state for this issue  */
 		//\DB::table('users_todos')->where('issue_id', '=', $issue->id)->update(array('user_id' => \Auth::user()->id, 'status' => (($input['Pourcentage'] > $config_app['Percent'][3]) ? 3: 2), 'weight' => $input['Pourcentage'], 'updated_at'=>date("Y-m-d H:m:s")));
 		\DB::table('users_todos')->where('issue_id', '=', $issue->id)->update(array('status' => (($input['Pourcentage'] > $config_app['Percent'][3]) ? 3: 2), 'weight' => $input['Pourcentage'], 'updated_at'=>date("Y-m-d H:m:s")));
 
-		/* Update the status of this issue according to its percentage done; by Patrick Allaire */
+		/* Update the status of this issue according to its percentage done;  */
 		\DB::table('projects_issues')->where('id', '=', $issue->id)->update(array('closed_by' => (($input['Pourcentage'] == 100 ) ? \Auth::user()->id : NULL), 'status' => (($input['Pourcentage'] == 100 )? 0 : 1),'status' => (($input['Pourcentage'] == 100 )? 0 : 1)));
 		
 		/*Update the tags attached to this issue */

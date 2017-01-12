@@ -11,7 +11,6 @@ class Tag extends  \Eloquent {
 
 	/**
 	* @Insert new tag
-	* Ajouté par Patrick Allaire
 	*/
 	
 	public static function addNew_tags($issue_id, $tag_id = 9)
