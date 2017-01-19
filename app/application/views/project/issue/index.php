@@ -28,7 +28,7 @@
 		$config_app = require path('public') . 'config.app.php';
 		$Deb = strtotime($issue->created_at);
 		$Dur = (time() - $Deb) / 86400;
-		if (@$issue->duration === 0) { $issue->duration = 30; }
+		if (@$issue->duration === 0 || @is_null($issue->duration)) { $issue->duration = 30; }
 		$DurRelat = round(($Dur / $issue->duration) * 100);
 		$Dur = round($Dur);
 		$DurColor = ($DurRelat < 65) ? 'green' : (( $DurRelat > $config_app['Percent'][3]) ? 'red' : 'yellow') ;
