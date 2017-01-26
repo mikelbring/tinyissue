@@ -29,22 +29,24 @@ CREATE TABLE IF NOT EXISTS `projects` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 
 "# Create Projects Issues Table
-CREATE TABLE IF NOT EXISTS `projects_issues` (
-  `id` bigint(20) unsigned NOT NULL auto_increment,
-  `created_by` bigint(20) default NULL,
-  `closed_by` bigint(20) default NULL,
-  `updated_by` bigint(20) default NULL,
-  `assigned_to` bigint(20) default NULL,
-  `project_id` bigint(20) default NULL,
-  `status` tinyint(2) default '1',
-  `weight` bigint(20) default '1',
-  `title` varchar(255) character set UTF8 default NULL,
-  `body` text character set UTF8,
-  `created_at` datetime default NULL,
-  `updated_at` datetime default NULL,
-  `closed_at` datetime default NULL,
-  PRIMARY KEY  (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
+CREATE TABLE `projects_issues` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `created_by` bigint(20) NOT NULL DEFAULT '1',
+  `closed_by` bigint(20) DEFAULT NULL,
+  `updated_by` bigint(20) DEFAULT NULL,
+  `assigned_to` bigint(20) DEFAULT NULL,
+  `project_id` bigint(20) DEFAULT NULL,
+  `status` tinyint(2) DEFAULT '1',
+  `weight` bigint(20) NOT NULL DEFAULT '1',
+  `title` varchar(255) DEFAULT NULL,
+  `body` text,
+  `created_at` datetime DEFAULT NULL,
+  `duration` smallint(3) NOT NULL DEFAULT '30',
+  `updated_at` datetime DEFAULT NULL,
+  `closed_at` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 "# Create Projects Issues Attachments Table
 CREATE TABLE IF NOT EXISTS `projects_issues_attachments` (
