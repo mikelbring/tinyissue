@@ -18,7 +18,7 @@ return array(
 		'username' => 'database_user',
 		'password' => 'database_password',
 	),
-	
+
 	/**  Date format */
 	'my_bugs_app'=>array(
 		'name'=> 'Bugs',
@@ -51,9 +51,9 @@ return array(
 		'transport' => 'smtp',
 		'sendmail' => array('path' => ''),
 		'smtp' => array(
-			'server' => 'smtp.gmail.com',                       
+			'server' => 'smtp.gmail.com',
 			'port' => 587,
-			/* 
+			/*
 			* Encryption support, SSL/TLS, used with gmail servers
 			* Default: blank
 			* 'ssl' or 'tls' must be lower case
@@ -91,5 +91,12 @@ return array(
 	 *Default: (100,0,10,80,100)
 	*/
 	'Percent' => array (100,0,10,80,100),
+
+	/**  duration
+	 *How long is supposed to be given to fix an issue
+	 *Duration in days
+	 *Default: 30
+	*/
+	'duration' => 30,
 
 );
