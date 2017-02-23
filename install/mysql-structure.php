@@ -45,11 +45,10 @@ CREATE TABLE `projects_issues` (
   `updated_at` datetime DEFAULT NULL,
   `closed_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 
 "# Create Projects Issues Attachments Table
-CREATE TABLE IF NOT EXISTS `projects_issues_attachments` (
+CREATE TABLE `projects_issues_attachments` (
   `id` bigint(20) unsigned NOT NULL auto_increment,
   `issue_id` bigint(20) default NULL,
   `comment_id` bigint(20) default '0',
@@ -238,7 +237,7 @@ CREATE TABLE `tags` (
   UNIQUE KEY `tag` (`tag`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE 'utf8_general_ci';",
 "
--- create default tags : id 9 
+-- create default tags : id 9
 TRUNCATE `tags`;
 ",
 "
