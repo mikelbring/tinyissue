@@ -6,7 +6,8 @@
 </h3>
 
 <div class="pad">
-<?php 
+<?php
+	$SansAccent = array();
 	foreach(Auth::user()->dashboard() as $project):
 		if(!$project['activity']) continue;
 
@@ -15,7 +16,7 @@
 		$SansAccent[$id] = htmlentities($NomProjet[$id], ENT_NOQUOTES, 'utf-8');
 		$SansAccent[$id] = preg_replace('#&([A-za-z])(?:uml|circ|tilde|acute|grave|cedil|ring);#', '\1', $SansAccent[$id]);
 		$SansAccent[$id] = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $SansAccent[$id]);
-		$SansAccent[$id] = preg_replace('#&[^;]+;#', '', $SansAccent[$id]);		
+		$SansAccent[$id] = preg_replace('#&[^;]+;#', '', $SansAccent[$id]);
 
 		foreach($project['activity'] as $activity) {
 			$actiProj[$id][] =  $activity;
@@ -23,7 +24,7 @@
 		asort($SansAccent);
 	endforeach;
 
-	foreach ($SansAccent as $id => $name): 
+	foreach ($SansAccent as $id => $name):
 ?>
 
 	<div class="blue-box">
