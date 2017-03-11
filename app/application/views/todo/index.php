@@ -6,12 +6,12 @@
 	$config_app = require path('public') . 'config.app.php';
 	if (!isset($config_app['Percent'])) { $config_app['Percent'] = array (100,0,10,80,100); }
 	$Etat = array(array(),array(),array(),array());
-	$Etat[0] = $lanes[0];
+	$Etat[0] = array_slice($lanes[0],0, 10);
 	$Autre = array_merge($lanes[1],$lanes[2],$lanes[3]);
 	foreach ($Autre as $A) {
 		if ($A["weight"] >= $config_app['Percent'][1] && $A["weight"] < $config_app['Percent'][2] ) { $Etat[1][] = $A; }
 		if ($A["weight"] >= $config_app['Percent'][2] && $A["weight"] < $config_app['Percent'][3] ) { $Etat[2][] = $A; }
-		if ($A["weight"] >= $config_app['Percent'][3] && $A["weight"] <= $config_app['Percent'][4]) { $Etat[3][] = $A; }
+		if ($A["weight"] >= $config_app['Percent'][3] && $A["weight"] < $config_app['Percent'][4] ) { $Etat[3][] = $A; }
 	}
 ?>
 <div class="pad" id="todo-lanes">
