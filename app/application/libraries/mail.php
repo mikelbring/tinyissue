@@ -23,7 +23,7 @@ class Mail {
 		case 'sendmail':
 			$transport = Swift_SendmailTransport::newInstance($options['sendmail']['path'].' -bs');
 			break;
-			
+
 		case 'smtp':
 			$transport = Swift_SmtpTransport::newInstance($options['smtp']['server'], $options['smtp']['port'], $options['smtp']['encryption'])
 			->setUsername($options['smtp']['username'])
@@ -34,7 +34,7 @@ class Mail {
 		case 'mail':
 			$transport = Swift_MailTransport::newInstance();
 			break;
-			
+
 		default:
 			$transport = Swift_NullTransport::newInstance();
 
@@ -65,8 +65,10 @@ class Mail {
 		->setTo(array($to))
 		->setBody($message,'text/html');
 
-		$result = $mailer->send($message);
+//		$result = $mailer->send($message);
 
-		return $result;
+//		return $result;
+		//Patrick force un envoi de true
+		return true;
 	}
 }
