@@ -1,21 +1,36 @@
 <!DOCTYPE html>
 <html>
+<title>Installation bugs complete</title>
 <head>
 	<link href="../app/assets/css/install.css" media="all" type="text/css" rel="stylesheet">
 
 </head>
 <body>
+<?php
+$EnLng = require_once("../app/application/language/en/install.php");
+if (!isset($_GET["Lng"]) || !file_exists("../app/application/language/".@$_GET["Lng"]."/install.php")) { $_GET["Lng"] = 'en'; }
+if (@$_GET["Lng"] != 'en' ) { $MyLng = require_once("../app/application/language/".$_GET["Lng"]."/install.php"); $MyLng = array_merge($EnLng, $MyLng); } else {$MyLng = $EnLng; }
+?>
 <div id="container">
 		<table class="form">
 			<tr>
 				<td>
-					<h2>Awesome!</h2>
-					<p>Installation is finished.  Please <strong>delete</strong> this install or rename this folder to prevent anyone from creating an account! In the future you can use the installer to recover an account.</p>
-
-					<p><a href="../" class="button primary">Proceed to Login</a></p>
+					<?php
+						echo '<h2>'.$MyLng['Complete_awesome'].'</h2>';
+						echo '<p>'.$MyLng['Complete_presentation'].'</p>';
+					?>
+					<p><a href="../" class="button primary"><?php echo $MyLng['Complete_login'] ?></a></p>
+					<div id="CountDown" style="width: 100%; text-align: center; padding-top:10px;">25</div>
 				</td>
 			</tr>
 		</table>
 </div>
+<script type="text/javascript">
+var CountDown = 25;
+setInterval(function () {
+	document.getElementById('CountDown').innerHTML = CountDown;
+	if (--CountDown <= 0) { document.location.href = "../";}
+}, 1000);
+</script>
 </body>
 </html>
