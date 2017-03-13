@@ -17,6 +17,13 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 	/* Edit E-mail Information */
 	$config_file = str_replace('Your E-Mail Name', $_POST['email_name'], $config_file);
 	$config_file = str_replace('name@domain.com', $_POST['email_address'], $config_file);
+	$config_file = str_replace("'transport' => 'smtp'", "'transport' => '".$_POST['email_transport']."'", $config_file);
+	$config_file = str_replace("'username' => 'xyzxyz'", "'username' =>  '".$_POST['email_username']."'", $config_file);
+	$config_file = str_replace("'server' => 'smtp.gmail.com'", "'server' => '".$_POST['email_server']."'", $config_file);
+	$config_file = str_replace("'port' => 587", "'port' => ".$_POST['email_port'], $config_file);
+	$config_file = str_replace("'encryption' => 'tls'", "'encryption' =>  '".$_POST['email_encryption']."'", $config_file);
+	$config_file = str_replace("'username' => 'xyzxyz'", "'username' =>  '".$_POST['email_username']."'", $config_file);
+	$config_file = str_replace("'password' => '******'", "'password' =>  '".$_POST['email_password']."'", $config_file);
 
 	/* Timezone */
 	$config_file = str_replace('Europe/Brussels', $_POST['timezone'], $config_file);
@@ -41,7 +48,7 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 
 			<textarea cols="98" rows="15" class="code"><?php echo htmlentities($config_file, ENT_COMPAT, 'UTF-8'); ?></textarea>
 
-			<p><?php echo $MyLng['$NoAPPfile_2']; ?></p>
+			<p><?php echo $MyLng['NoAPPfile_2']; ?></p>
 			<p><a href="index.php?Lng=<?php echo $_GET["Lng"]; ?>" class="button primary"><?php echo $MyLng['RunInstall']; ?></a></p>
 		</td>
 	</tr>
@@ -148,20 +155,63 @@ if(!file_exists('../config.app.php')){ ?>
 			</tr>
 			<tr>
 				<td colspan="2">
-				<h3 style="font-weight: bold; font-size: 150%; ">Email from</h3>
+				<h3 style="font-weight: bold; font-size: 150%; "><?php echo $MyLng['Email']; ?></h3>
 				<p><?php echo $MyLng['Email_Desc']; ?></p>
 				</td>
 			</tr>
 			<tr>
 				<th><?php echo $MyLng['Email_Name']; ?></th>
 				<td>
-					<input type="text" name="email_name" value="Bugs" />
+					<input type="text" name="email_name" value="" placeholder="My dear Bugs prog" />
 				</td>
 			</tr>
 			<tr>
 				<th><?php echo $MyLng['Email_Address']; ?></th>
 				<td>
-					<input type="text" name="email_address" value="you@domain.com" />
+					<input type="text" name="email_address" value="" placeholder="you@domain.com" />
+				</td>
+			</tr>
+			<tr>
+				<th><?php echo $MyLng['Email_transport']; ?></th>
+				<td>
+					<select name="email_transport">
+					<option value="smtp">smtp</option>
+					<option value="mail">mail</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th><?php echo $MyLng['Email_server']; ?></th>
+				<td>
+					<input type="text" name="email_server" value="" placeholder="smtp.gmail.com" />
+				</td>
+			</tr>
+			<tr>
+				<th><?php echo $MyLng['Email_port']; ?></th>
+				<td>
+					<input type="text" name="email_port" value="" placeholder="default: 25; gmail: 587" />
+				</td>
+			</tr>
+			<tr>
+				<th><?php echo $MyLng['Email_encryption']; ?></th>
+				<td>
+					<select name="email_encryption">
+					<option value="">(none)</option>
+					<option value="tsl">TSL</option>
+					<option value="ssl">SSL</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<th><?php echo $MyLng['Email_username']; ?></th>
+				<td>
+					<input type="text" name="email_username" value="" placeholder="username@gmail.com" />
+				</td>
+			</tr>
+			<tr>
+				<th><?php echo $MyLng['Email_password']; ?></th>
+				<td>
+					<input type="text" name="email_password" value="" placeholder="email password" />
 				</td>
 			</tr>
 			<tr>
