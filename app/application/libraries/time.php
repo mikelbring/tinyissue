@@ -28,6 +28,6 @@ class Time {
 			$periods[$j] .= 's';
 		}
 
-		return __('tinyissue.since') .  ' '. $difference . ' ' . $periods[$j] .  __('tinyissue.ago');
+		return __('tinyissue.since') .  ' '. $difference . ' ' . $periods[$j] . ' ' .  __('tinyissue.ago') . ' ';
 	}
 }

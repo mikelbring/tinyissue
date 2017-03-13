@@ -9,7 +9,7 @@ return array(
 	'add_user' => 'Add User',
 	'administration_description' => 'Global application statistics',
 	'administration' => 'Administration',
-	'ago' => ' ago ',
+	'ago' => 'ago',
 	'archived_project' => 'Archived Project',
 	'archived_projects' => 'Archived Projects',
 	'archived' => 'Archived',
