@@ -24,7 +24,7 @@ CREATE TABLE IF NOT EXISTS `projects` (
   `status` tinyint(2) default '1',
   `created_at` datetime default NULL,
   `updated_at` datetime default NULL,
-  `default_assignee` bigint(20) unsigned NULL,
+  `default_assignee` bigint(20)  default '1',
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;",
 
@@ -34,7 +34,7 @@ CREATE TABLE `projects_issues` (
   `created_by` bigint(20) NOT NULL DEFAULT '1',
   `closed_by` bigint(20) DEFAULT NULL,
   `updated_by` bigint(20) DEFAULT NULL,
-  `assigned_to` bigint(20) DEFAULT NULL,
+  `assigned_to` bigint(20)  default '1',
   `project_id` bigint(20) DEFAULT NULL,
   `status` tinyint(2) DEFAULT '1',
   `weight` bigint(20) NOT NULL DEFAULT '1',
