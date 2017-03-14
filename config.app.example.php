@@ -61,8 +61,9 @@ return array(
 			*/
 			'encryption' => 'tls',
 			'username' => 'xyzxyz',
-			'password' => '******',
+			'password' => '******'
 		),
+		'encoding' => 'UTF-8'
 	),
 
 	/**  Timezone

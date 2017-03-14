@@ -247,9 +247,7 @@ class Issue extends \Eloquent {
 				'issue' => $this
 			));
 
-			/*
 			\Mail::send_email($text, $this->assigned->email, $subject);
-			*/
 		}
 		add($type_id, $parent_id, $item_id = null, $action_id = null, $data = null);
 		//\User\Activity::add(5, $this->project_id, $this->id, $user_id, null, $user_id);

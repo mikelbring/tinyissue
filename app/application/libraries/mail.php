@@ -1,49 +1,5 @@
 <?php
 class Mail {
-
-	/**
-	 * Define mail transport
-	 *
-	 * @param  string               $default
-	 * @return Swift_MailTransport|Swift_SendmailTransport
-	 */
-	private static function transport($default = null)
-	{
-		require path('vendor') . 'Swift/lib/swift_required.php';
-
-		$options = Config::get('application.mail');
-
-		if(is_null($default))
-		{
-			$default = $options['transport'];
-		}
-
-		switch($default)
-		{
-		case 'sendmail':
-			$transport = Swift_SendmailTransport::newInstance($options['sendmail']['path'].' -bs');
-			break;
-
-		case 'smtp':
-			$transport = Swift_SmtpTransport::newInstance($options['smtp']['server'], $options['smtp']['port'], $options['smtp']['encryption'])
-			->setUsername($options['smtp']['username'])
-			->setPassword($options['smtp']['password']);
-
-			break;
-
-		case 'mail':
-			$transport = Swift_MailTransport::newInstance();
-			break;
-
-		default:
-			$transport = Swift_NullTransport::newInstance();
-
-			break;
-		}
-
-		return $transport;
-	}
-
 	/**
 	 * Send the requested message
 	 *
@@ -52,23 +8,59 @@ class Mail {
 	 * @param   string  $subject
 	 * @return  int
 	 */
-	public static function send_email($message, $to, $subject)
-	{
+	public static function send_email($message, $to, $subject) {
+		require  path('app') .  'libraries/PHPmailer/class.phpmailer.php';
 		$options = Config::get('application.mail');
 
-		$transport = static::transport();
+		$mail = new PHPMailer();
+		$mail->Mailer = $options['transport'];
+		switch ($options['transport']) {
+			case 'smtp':											//If you correct the smtp part, please correct ALSO the default part
+				require  path('app') .  'libraries/PHPmailer/class.smtp.php';
+				$mail->SMTPDebug = 0;								// 0 = no output, 1 = errors and messages, 2 = messages only.
+				if ($options['smtp']['encryption'] == '') {
+				} else {
+					$mail->SMTPAuth = true;							// enable SMTP authentication
+					$mail->SMTPSecure = $options['smtp']['encryption'];	// sets the prefix to the server
+					$mail->Host = $options['smtp']['server'];
+					$mail->Port = $options['smtp']['port'];
+					$mail->Username = $options['smtp']['username'];
+					$mail->Password = $options['smtp']['password'];
+				}
+				break;
+			case 'mail':
+				//Please submit your code
+				//On March 14th, 2017 I had no time to go further on this
+				break;
+			case 'sendmail':
+				//Please submit your code
+				//On March 14th, 2017 I had no time to go further on this
+				break;
+			default:												//If you correct the default part, please correct ALSO the smtp part
+				require  path('app') .  'libraries/PHPmailer/class.smtp.php';
+				$mail->SMTPDebug = 1;								// 0 = no output, 1 = errors and messages, 2 = messages only.
+				if ($options['smtp']['encryption'] == '') {
+				} else {
+					$mail->SMTPAuth = true;							// enable SMTP authentication
+					$mail->SMTPSecure = $options['smtp']['encryption'];	// sets the prefix to the server
+					$mail->Host = $options['smtp']['server'];
+					$mail->Port = $options['smtp']['port'];
+					$mail->Username = $options['smtp']['username'];
+					$mail->Password = $options['smtp']['password'];
+				}
+				break;
+		}
 
-		$mailer = Swift_Mailer::newInstance($transport);
+		$mail->CharSet = (isset($options['encoding'])) ? $options['encoding'] : 'windows-1250';
+		$mail->SetFrom ($options['from']['email'], $options['from']['name']);
+		$mail->Subject = $subject;
+		$mail->ContentType = 'text/plain';
+		$mail->IsHTML(false);
 
-		$message = Swift_Message::newInstance($subject)
-		->setFrom(array($options['from']['email'] => $options['from']['name']))
-		->setTo(array($to))
-		->setBody($message,'text/html');
+		$mail->Body = $message;
+		$mail->AddAddress ($to);
 
-//		$result = $mailer->send($message);
-
-//		return $result;
-		//Patrick force un envoi de true
-		return true;
+		$result = $mail->Send() ? "Successfully sent!" : "Mailer Error: " . $mail->ErrorInfo;
+		return $result;
 	}
 }
