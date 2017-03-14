@@ -177,6 +177,7 @@ if(!file_exists('../config.app.php')){ ?>
 					<select name="email_transport">
 					<option value="smtp">smtp</option>
 					<option value="mail">mail</option>
+					<option value="sendmail">sendmail</option>
 					</select>
 				</td>
 			</tr>
