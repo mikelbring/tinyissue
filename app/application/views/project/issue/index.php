@@ -12,17 +12,17 @@
 <div class="pad">
 
 	<div id="issue-tags">
-	<?php 
+	<?php
 		//Percentage of work done
 		$SizeXtot = 500;
 		$SizeX = $SizeXtot / 100;
 		echo __('tinyissue.issue_percent').' : ';
 		$Etat = Todo::load_todo($issue->id);
-		if (is_object($Etat)) { 
-		echo '<div style="position: relative; top:-20px; left: 200px; background-color: green; color:white; width: '.($Etat->weight*$SizeX).'px; height: 20px; text-align: center; line-height:20px;" />'.$Etat->weight.'%</div>'; 
+		if (is_object($Etat)) {
+		echo '<div style="position: relative; top:-20px; left: 200px; background-color: green; color:white; width: '.($Etat->weight*$SizeX).'px; height: 20px; text-align: center; line-height:20px;" />'.$Etat->weight.'%</div>';
 		echo '<div style="position: relative; top:-40px; left: '.(200 + ($Etat->weight*$SizeX)).'px; margin-bottom: -30px; background-color: gray; color:white; width: '.($SizeXtot-($Etat->weight*$SizeX)).'px; height: 20px; text-align: center; line-height:20px;" /></div>';
 		}
-		
+
 		//Time's going fast!
 		//Timing bar, according to the time planified (field projects_issues - duration) for this issue
 		$config_app = require path('public') . 'config.app.php';
@@ -32,17 +32,17 @@
 		$DurRelat = round(($Dur / $issue->duration) * 100);
 		$Dur = round($Dur);
 		$DurColor = ($DurRelat < 65) ? 'green' : (( $DurRelat > $config_app['Percent'][3]) ? 'red' : 'yellow') ;
-		if ($DurRelat >= 50 && @$Etat->weight <= 50 ) { $DurColor = 'yellow'; } 
-		if ($DurRelat >= 75 && @$Etat->weight <= 50 ) { $DurColor = 'red'; } 
+		if ($DurRelat >= 50 && @$Etat->weight <= 50 ) { $DurColor = 'yellow'; }
+		if ($DurRelat >= 75 && @$Etat->weight <= 50 ) { $DurColor = 'red'; }
 		$TxtColor = ($DurColor == 'green') ? 'white' : 'black' ;
 		echo __('tinyissue.countdown').' ('.__('tinyissue.day').'s) : ';
-		echo '<div style="position: relative; top:-20px; left: 200px; background-color: '.$DurColor.'; color:'.$TxtColor.'; width: '.(($DurRelat  >= 100) ? $SizeXtot : ($DurRelat*$SizeX)).'px; height: 20px; text-align: left; line-height:20px;" />'.((($DurRelat  >= 100)) ? $Dur.' / '.@$issue->duration : $Dur).'</div>'; 
+		echo '<div style="position: relative; top:-20px; left: 200px; background-color: '.$DurColor.'; color:'.$TxtColor.'; width: '.(($DurRelat  >= 100) ? $SizeXtot : ($DurRelat*$SizeX)).'px; height: 20px; text-align: left; line-height:20px;" />'.((($DurRelat  >= 100)) ? $Dur.' / '.@$issue->duration : $Dur).'</div>';
 		if ($DurRelat < 100) { echo '<div style="position: relative; top:-40px; left: '.(200 + ($DurRelat*$SizeX)).'px; margin-bottom: -30px; background-color: gray; color:white; width: '.($SizeXtot-($DurRelat*$SizeX)).'px; height: 20px; text-align: right; line-height:20px;" />'.$issue->duration.'</div>'; }
 		echo '<br clear="all" />';
-		
+
 	?>
-	&nbsp;&nbsp;&nbsp; 
-	<?php 
+	&nbsp;&nbsp;&nbsp;
+	<?php
 		if(!empty($issue->tags)) {
 			$IssueTags = array();
 			foreach($issue->tags()->order_by('tag', 'ASC')->get() as $tag) {
@@ -87,6 +87,7 @@
 		<?php endforeach; ?>
 
 	</ul>
+	<div id="div_currentlyAssigned_name" class="topbar"></div>
 
 	<?php if(Project\Issue::current()->status == 1): ?>
 
@@ -99,20 +100,24 @@
 
 					<?php if(Project\Issue::current()->assigned): ?>
 						<a href="javascript:void(0);" class="currently_assigned">
+						<span id="span_currentlyAssigned_name">
 						<?php echo Project\Issue::current()->assigned->firstname; ?>
 						<?php echo Project\Issue::current()->assigned->lastname; ?>
+						</span>
 						</a>
 					<?php else: ?>
 						<a href="javascript:void(0);" class="currently_assigned">
+							<span id="span_currentlyAssigned_name">
 							<?php echo __('tinyissue.no_one'); ?>
+							</span>
 						</a>
 					<?php endif; ?>
 
 					<div class="dropdown">
 						<ul>
-							<li class="unassigned"><a href="javascript:void(0);" onclick="issue_assign_change(0, <?php echo Project\Issue::current()->id; ?>);" class="user0<?php echo !Project\Issue::current()->assigned ? ' assigned' : ''; ?>"><?php echo __('tinyissue.no_one'); ?></a></li>
+							<li class="unassigned"><a href="<?php echo $issue->to('reassign'); ?>?Prev=<?php echo Project\Issue::current()->assigned->id.'&Next=0&Issue='.Project\Issue::current()->id; ?>" class="user0<?php echo !Project\Issue::current()->assigned ? ' assigned' : ''; ?>" target="ContenuVariable"><?php echo __('tinyissue.no_one'); ?></a></li>
 							<?php foreach(Project::current()->users()->get() as $row): ?>
-							<li><a href="javascript:void(0);" onclick="issue_assign_change(<?php echo $row->id; ?>, <?php echo Project\Issue::current()->id; ?>);" class="user<?php echo $row->id; ?><?php echo Project\Issue::current()->assigned && $row->id == Project\Issue::current()->assigned->id ? ' assigned' : ''; ?>"><?php echo $row->firstname . ' ' . $row->lastname; ?></a></li>
+							<li><a href="<?php echo $issue->to('reassign'); ?>?Prev=<?php echo Project\Issue::current()->assigned->id.'&Next='.$row->id.'&Issue='.Project\Issue::current()->id; ?>" class="user0<?php echo !Project\Issue::current()->assigned ? ' assigned' : ''; ?>" target="ContenuVariable"><?php echo $row->firstname . ' ' . $row->lastname; ?></a></li>
 							<?php endforeach; ?>
 						</ul>
 					</div>
@@ -135,12 +140,12 @@
 				<?php echo __('tinyissue.percentage_of_work_done'); ?> : <input type="number" name="Pourcentage" value="<?php echo ((is_object($Etat)) ? (($Etat->weight == 100) ? 91 : $Etat->weight+1) : 10 ); ?>" min="<?php echo ((is_object($Etat)) ? (($Etat->weight == 100) ? 91 : $Etat->weight) : 10); ?>" max="100" /> %
 				</span>
 				<div style="text-align: right; width: 98%; margin-top: -25px;">
-				<a href="http://daringfireball.net/projects/markdown/basics/" target="_blank" ><?php echo __('tinyissue.format_with_markdown'); ?></a>
+				<a href="http://daringfireball.net/projects/markdown/basics/" ><?php echo __('tinyissue.format_with_markdown'); ?></a>
 				</div>
 					<div style="width: 90%">
 					<!-- Tags modification  -->
-					<?php 
-						//echo __('tinyissue.tags'); 
+					<?php
+						//echo __('tinyissue.tags');
 						$TAGS = new Project_Issue_Controller();
 						$Tomates = $TAGS->get_edit($issue->id);
 						echo Form::text('tags', Input::get('tags', implode(",", $IssueTags)), array('id' => 'tags', 'name' =>'MesTags')); ?>
@@ -173,7 +178,7 @@
 		</form>
 
 	</div>
-		
+
 	</div>
 
 	<?php else: ?>

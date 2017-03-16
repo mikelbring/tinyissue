@@ -1,5 +1,6 @@
 <?php namespace Project;
 
+
 class Issue extends \Eloquent {
 
 	public static $table = 'projects_issues';
@@ -239,7 +240,6 @@ class Issue extends \Eloquent {
 			$project_id = $this->project_id;
 			$project = \Project::find($project_id);
 
-			//$subject = 'Issue "' . $this->title . '" in "' . $project->name . '" project was reassigned to you';
 			$subject = sprintf(__('email.reassignment'),$this->title,$project->name);
 			$text = \View::make('email.reassigned_issue', array(
 				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
@@ -250,7 +250,6 @@ class Issue extends \Eloquent {
 			\Mail::send_email($text, $this->assigned->email, $subject);
 		}
 		add($type_id, $parent_id, $item_id = null, $action_id = null, $data = null);
-		//\User\Activity::add(5, $this->project_id, $this->id, $user_id, null, $user_id);
 		\User\Activity::add(5, $this->project_id, $this->id, $user_id, null);
 	}
 

@@ -19,7 +19,7 @@
 		<link rel="icon" type="image/png" href="<?php echo URL::to_asset('/favicon-32x32.png');?>" sizes="32x32">
 		<meta name="msapplication-TileColor" content="#39404f">
 		<meta name="msapplication-TileImage" content="<?php echo URL::to_asset('/mstile-144x144.png');?>">
-		<meta name="application-name" content="<?php Config::get('my_bugs_app.name'); ?>">	
+		<meta name="application-name" content="<?php Config::get('my_bugs_app.name'); ?>">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<title><?php echo Config::get('application.my_bugs_app.name'); ?></title>
@@ -33,6 +33,7 @@
 	</head>
 <body>
 
+	<iframe name="ContenuVariable" id="ContenuVariable" style="display:none; height:250px; width: 80%; left: 200px; position:absolute; background-color: #FFF; z-index:100;"></iframe>
 	<div id="container">
 
 		<div id="header">
