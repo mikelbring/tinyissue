@@ -3,33 +3,33 @@
 return array(
 	
 	/*******************************
-	 * TRANSLATION NEEDED
+	 * TRANSLATION FINISHED
 	 *******************************/
 
 	/** new user **/
-    'subject_newuser' => 'Your Tiny Issue Account',
-	'new_user' => 'You have been set up with Tiny Issue at',
-    'creds' => 'You may log in with email %s and password %s.',
+    'subject_newuser' => 'Il tuo account Tiny Issue',
+	'new_user' => 'Sei stato impostato con Tiny Issue a',
+    'creds' => 'Puoi accedere con l\'email %s e la password %s.',
 	
 	/** issue updates **/
-	'new_issue' => 'New issue "%s" was submitted to "%s" project',
-	'new_comment' => 'Issue "%s" in "%s" project has a new comment',
-	'assignment' => 'New issue "%s" was submitted to "%s" project and assigned to you',
-	'reassignment' => 'Issue "%s" in "%s" project was reassigned to you',
-	'update' => 'Issue "%s" in "%s" project was updated',
+	'new_issue' => 'Il nuovo argomento "%s" è stato inviato al progetto "%s"',
+	'new_comment' => 'L\' argomento "%s" nel progetto "%s" ha un nuovo commento',
+	'assignment' => 'Il nuovo argomento "%s" è stato inviato al progetto "%s" ed è stato assegnato a te',
+	'reassignment' => 'L\' argomento "%s" nel progetto "%s" è stato riassegnato a te',
+	'update' => 'L\' argomento "%s" nel progetto "%s" è stato aggiornato',
 	
-	'submitted_by' => 'Submitted by: %s',
-	'created_by' => 'Created by: %s',
-	'reassigned_by' => 'Reassigned by: %s',
-	'updated_by' => 'Updated by: %s',
+	'submitted_by' => 'Inviato da: %s',
+	'created_by' => 'Creato da: %s',
+	'reassigned_by' => 'Riassegnato da: %s',
+	'updated_by' => 'Aggiornato da: %s',
 
-	'issue_changed' => 'Issue "%s" in "%s" project was %s',
-	'closed' => 'closed',
-	'reopened' => 'reopened',
+	'issue_changed' => 'L\'argomento "%s" nel progetto "%s" era %s',
+	'closed' => 'chiuso',
+	'reopened' => 'riaperto',
 	//changed, reopened, etc. by
-	'by' => 'by',	
+	'by' => 'da',	
 	
 	/** general **/
-	'more_url' => 'Find more information at: ',
+	'more_url' => 'Trovi più informazioni a: ',
 	
 );
