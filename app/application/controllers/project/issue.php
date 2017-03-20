@@ -168,16 +168,12 @@ class Project_Issue_Controller extends Base_Controller {
 	 *
 	 * @return Redirect
 	 */
-	public function get_status()
-	{
+	public function get_status() {
 		$status = Input::get('status', 0);
 
-		if($status == 0)
-		{
+		if($status == 0) {
 			$message = __('tinyissue.issue_has_been_closed');
-		}
-		else
-		{
+		} else {
 			$message = __('tinyissue.issue_has_been_reopened');
 		}
 
@@ -219,7 +215,7 @@ class Project_Issue_Controller extends Base_Controller {
 				$subject  = sprintf(__('email.reassignment'),$Issue_title,$project_nm);
 				$text  = sprintf(__('email.reassignment'),$Issue_title,$project_nm);
 				$text .= "\n\n";
-				$text .= sprintf(__('email.reassigned_by'),\Auth::user()->fistname." ".\Auth::user()->lastname);
+				$text .= sprintf(__('email.reassigned_by'),\Auth::user()->firstname." ".\Auth::user()->lastname);
 				$text .= "\n\n";
 				$text .= __('email.more_url')." http://". $_SERVER['SERVER_ADDR'] ."/project/".$project_id."/issue/".Input::get('Issue')."";
 				\Mail::send_email($text, $WhoAddr, $subject);
