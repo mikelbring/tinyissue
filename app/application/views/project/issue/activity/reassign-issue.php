@@ -15,6 +15,7 @@
 				<?php echo date(Config::get('application.my_bugs_app.date_format'), strtotime($activity->created_at)); ?>
 			</span>
 		</div>
+	</div>
 
 	<div class="clr"></div>
 </li>

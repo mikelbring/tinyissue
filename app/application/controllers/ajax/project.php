@@ -60,6 +60,11 @@ class Ajax_Project_Controller extends Base_Controller {
 	{
 		Project\Issue::find(Input::get('issue_id'))->reassign(Input::get('user_id'));
 	}
+//Patrick 25 mars 2017
+	public function post_issue_retag()
+	{
+		Project\Issue::find(Input::get('issue_id'))->retag(Input::get('tag_id'));
+	}
 
 	public function post_issue_upload_attachment()
 	{

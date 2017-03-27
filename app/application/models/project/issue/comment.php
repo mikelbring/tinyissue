@@ -32,7 +32,7 @@ class Comment extends  \Eloquent {
 	{
 		$config_app = require path('public') . 'config.app.php';
 		if (!isset($config_app['Percent'])) { $config_app['Percent'] = array (100,0,10,80,100); }
-		require "tag.php"; 
+		require "tag.php";
 		$fill = array(
 			'created_by' => \Auth::user()->id,
 			'project_id' => $project->id,
@@ -64,8 +64,8 @@ class Comment extends  \Eloquent {
 
 		/* Update the status of this issue according to its percentage done;  */
 		\DB::table('projects_issues')->where('id', '=', $issue->id)->update(array('closed_by' => (($input['Pourcentage'] == 100 ) ? \Auth::user()->id : NULL), 'status' => (($input['Pourcentage'] == 100 )? 0 : 1),'status' => (($input['Pourcentage'] == 100 )? 0 : 1)));
-		
-		/*Update the tags attached to this issue */
+
+		/*Update tags attached to this issue */
 		$MesTags = explode(",", $input["MesTags"]);
 		$IDtags = array();
 		foreach($MesTags as $val) {
@@ -75,12 +75,12 @@ class Comment extends  \Eloquent {
 		}
 		$issue->tags()->sync($Idtags);
 		$issue->save();
-		
+
 		/* Update the project */
 		$issue->updated_at = date('Y-m-d H:i:s');
 		$issue->updated_by = \Auth::user()->id;
 		$issue->save();
-		if ($input['Pourcentage'] == 100 ) { 
+		if ($input['Pourcentage'] == 100 ) {
 			$tags = $issue->tags;
 			$tag_ids = array();
 			foreach($tags as $tag) { $tag_ids[$tag->id] = $tag->id; }
@@ -98,7 +98,7 @@ class Comment extends  \Eloquent {
 			$issue->tags()->sync($tag_ids);
 			$issue->status = 0;
 			$issue->save();
-		} 
+		}
 
 		/*Notifications by email to those who concern */
 		$project = \Project::current();
@@ -109,7 +109,7 @@ class Comment extends  \Eloquent {
 				'issue' => $issue,
 				'comment' => $comment->comment
 			));
-			
+
 		/* Notify the person to whom the issue is currently assigned, unless that person is the one making the comment */
 		if($issue->assigned_to && $issue->assigned_to != \Auth::user()->id && (!empty($issue->assigned->email)))
 		{

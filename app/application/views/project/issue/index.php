@@ -54,7 +54,7 @@
 	</div>
 	<?php Todo::add_todo($issue->id, 2, 0); ?>
 
-	<ul class="issue-discussion">
+	<ul id="ul_IssueDiscussion" class="issue-discussion">
 		<li>
 			<div class="insides">
 				<div class="topbar">
@@ -148,7 +148,7 @@
 						//echo __('tinyissue.tags');
 						$TAGS = new Project_Issue_Controller();
 						$Tomates = $TAGS->get_edit($issue->id);
-						echo Form::text('tags', Input::get('tags', implode(",", $IssueTags)), array('id' => 'tags', 'name' =>'MesTags')); ?>
+						echo Form::text('tags', Input::get('tags', implode(",", $IssueTags)), array('id' => 'tags', 'name' =>'MesTags', 'onblur' =>'AdaptTags(this.value);')); ?>
 						<script type="text/javascript">
 						$(function(){
 							$('#tags').tagit({
@@ -180,8 +180,66 @@
 	</div>
 
 	</div>
-
 	<?php else: ?>
 	<?php echo HTML::link(Project\Issue::current()->to('status?status=1'), __('tinyissue.reopen_issue')); ?>
 	<?php endif; ?>
 </div>
+<script type="text/javascript">
+var d = new Date();
+var t = d.getTime();
+var AllTags = "";
+function OteTag() {
+	var avant = LitTags();
+	setTimeout(function() {
+		apres = LitTags();
+		document.getElementById('ContenuVariable').src = '<?php echo $_SERVER['REQUEST_URI']; ?>/retag?avant=' + avant + '&apres=' + apres +'';
+	} , 123);
+	AllTags = apres;
+}
+function AddTag (tags){
+	var n = new Date();
+	var now = n.getTime();
+	if (now - t > 1000 ) {
+		document.getElementById('ContenuVariable').src = '<?php echo $_SERVER['REQUEST_URI']; ?>/retag?avant=' + AllTags + '&apres=xxxxx' + tags +'';
+	}
+	AllTags = LitTags();
+}
+
+function LitTags () {
+	var NosTags = "";
+	var contenu = document.getElementById('TagItAll');
+	var Fils = contenu.children;
+	for (i = 0; i < Fils.length; i++) {
+		Tout = Fils[i].innerHTML;
+		etiq = Tout.substring(Tout.indexOf('>', 14)+1, Tout.indexOf('<', Tout.indexOf('>', 14)));
+		if (etiq != '<input aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" class="ui-widget-content ui-autocomplete-input" type="text">' && etiq != '<input class="ui-widget-content" type="text">' ) {
+			NosTags = NosTags + etiq + "|";
+		}
+	}
+	return NosTags;
+}
+
+<?php
+	$wysiwyg = Config::get('application.editor');
+	if (trim($wysiwyg['BasePage'	]) != '') {
+		if ($wysiwyg['BasePage'] == '/app/vendor/ckeditor/ckeditor.js') { ?>
+			function showckeditor (Quel) {
+				CKEDITOR.replace( Quel, {
+					language: '<?php echo \Auth::user()->language; ?>',
+					height: 175,
+					toolbar : [
+						{ name: 'Fichiers', items: ['Source']},
+						{ name: 'CopieColle', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','RemoveFormat']},
+						{ name: 'FaireDefaire', items: ['Undo','Redo','-','Find','Replace','-','SelectAll']},
+						{ name: 'Polices', items: ['Bold','Italic','Underline','TextColor']},
+						{ name: 'ListeDec', items: ['horizontalrule','table','JustifyLeft','JustifyCenter','JustifyRight','Outdent','Indent','Blockquote']},
+						{ name: 'Liens', items: ['NumberedList','BulletedList','-','Link','Unlink']}
+					]
+				} );
+			}
+			setTimeout(function() { showckeditor ('comment'); } , 567);
+
+		<?php } ?>
+	<?php } ?>
+	setTimeout(function() { var debut = LitTags (); } , 497);
+</script>

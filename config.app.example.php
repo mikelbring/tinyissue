@@ -25,6 +25,19 @@ return array(
 		'date_format'=>'F jS \a\t g:i A',
 	),
 
+	/**  wysiwyg editor
+	  *  Default : 'BasePage'=>'/app/vendor/ckeditor/ckeditor.js',
+	  *  No one  : 'BasePage'=>'',
+	  *  If you want to use no wysiwyg editor please set this to empty.
+	  *  Do not mark this as comment
+	  *  Fill out with the entire path, begining with app/
+	  *  Editor base page type permitted:  .js   .php
+	*/
+	'editor' => array(
+		'BasePage' => '/app/vendor/ckeditor/ckeditor.js',
+	),
+
+
 	/**  Mail
 	 * Mail Settings
 	 * - Put in the name and email you would like email from Tiny Issue to come from
