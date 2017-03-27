@@ -2,32 +2,19 @@
 	<div class="insides">
 		<div class="topbar">
 			<div class="data">
-				<?php if($tag_counts['added'] > 0): ?>
-				<?php foreach($tag_diff['added_tags'] as $tag): ?>
-					<?php echo '<label class="label"' . ($tag_diff['tag_data'][$tag]['bgcolor'] ? ' style="background: ' . $tag_diff['tag_data'][$tag]['bgcolor'] . '"' : '') . '>' . $tag_diff['tag_data'][$tag]['tag'] . '</label>'; ?>
-				<?php endforeach; ?>
-				<?php echo __($tag_counts['added'] > 1 ? 'tinyissue.tags_added' : 'tinyissue.tag_added'); ?>
-				<?php echo __('tinyissue.by'); ?>
-				<strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong>
-				<span class="time">
-					<?php echo date(Config::get('application.my_bugs_app.date_format'), strtotime($activity->created_at)); ?>
-				</span>
-				<?php endif; ?>
-				
-				<?php if($tag_counts['added'] > 0 && $tag_counts['removed'] > 0): ?><div class="tag-activity-spacer"></div><?php endif; ?>
-								
-				<?php if($tag_counts['removed'] > 0): ?>
-				<?php foreach($tag_diff['removed_tags'] as $tag): ?>
-					<?php echo '<label class="label"' . ($tag_diff['tag_data'][$tag]['bgcolor'] ? ' style="background: ' . $tag_diff['tag_data'][$tag]['bgcolor'] . '"' : '') . '>' . $tag_diff['tag_data'][$tag]['tag'] . '</label>'; ?>
-				<?php endforeach; ?>
-				<?php echo __($tag_counts['removed'] > 1 ? 'tinyissue.tags_removed' : 'tinyissue.tag_removed'); ?>
-				<?php echo __('tinyissue.by'); ?>
-				<strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong>
-				<span class="time">
-					<?php echo date(Config::get('application.my_bugs_app.date_format'), strtotime($activity->created_at)); ?>
-				</span>
-				<?php endif; ?>
-
+				<?php
+					$Msg = ($activity->attributes['parent_id'] == $activity->attributes['item_id'] ) ? __('tinyissue.tag_removed') : __('tinyissue.tag_added');
+					$Col = ($activity->attributes['parent_id'] == $activity->attributes['item_id'] ) ? "none" : "underline";
+					$TagNum = Tag::where('id', '=', $activity->attributes['action_id'] )->first(array('id','tag','bgcolor'));
+					$Who = \User::where('id', '=', $activity->attributes['user_id'] )->get(array('firstname','lastname','email'));
+					echo '<label style="background-color: '.$TagNum->attributes['bgcolor'].'; padding: 5px 10px; border-radius: 8px;">'.
+					$TagNum->attributes['tag'].'</label> : <span style="font-weight: bold; text-decoration: '.$Col.';">'.$Msg.
+					'</span> '.__('tinyissue.by') . ' <b>' .$Who[0]->attributes["firstname"].' '.$Who[0]->attributes["lastname"].'</b> '.
+					' '.$activity->attributes['updated_at'];
+				?>
 			</div>
+		</div>
 	</div>
+
+	<div class="clr"></div>
 </li>

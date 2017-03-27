@@ -30,6 +30,12 @@
 		</script>
 		<?php echo Asset::styles(); ?>
 		<?php echo Asset::scripts(); ?>
+		<?php $wysiwyg = Config::get('application.editor');
+			if (trim($wysiwyg['BasePage']) != '') {
+				if (substr($wysiwyg['BasePage'], -2) == 'js') { echo '<script src="'.URL::base().$wysiwyg['BasePage'].'"></script>'; }
+				if (substr($wysiwyg['BasePage'], -3) == 'php') { include $wysiwyg['BasePage']; }
+			}
+		?>
 	</head>
 <body>
 

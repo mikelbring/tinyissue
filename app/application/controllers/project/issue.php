@@ -11,7 +11,7 @@ class Project_Issue_Controller extends Base_Controller {
 		$this->filter('before', 'project');
 		$this->filter('before', 'issue')->except('new');
 		$this->filter('before', 'permission:issue-modify')
-				->only(array('edit_comment', 'delete_comment', 'reassign', 'status', 'edit'));
+				->only(array('edit_comment', 'delete_comment', 'reassign', 'retag', 'status', 'edit'));
 	}
 
 	/**
@@ -183,10 +183,29 @@ class Project_Issue_Controller extends Base_Controller {
 			->with('notice', $message);
 	}
 
+
+	private function show_tag ($Content) {
+		$result = "
+		<script>
+			parent.document.getElementById('div_currentlyAssigned_name').style.backgroundColor = '#e8e8e8';
+			parent.document.getElementById('div_currentlyAssigned_name').style.padding = '12px 10px';
+			parent.document.getElementById('div_currentlyAssigned_name').style.verticalAlign = 'middle';
+			parent.document.getElementById('div_currentlyAssigned_name').style.borderRadius = '6x';
+			var ad = parent.document.createElement(\"SPAN\");
+			var adTxt = parent.document.createTextNode(".$Content.");
+			ad.appendChild(adTxt);
+			parent.document.getElementById('div_currentlyAssigned_name').appendChild(ad);
+		</script>
+		";
+		return $result;
+	}
+
+
+
 	/**
 	 * Edit a issue
 	 *
-	 * @return View
+	 * @change assignation
 	 */
 	public function get_reassign() {
 		if (Input::get('Next') == 0 ) { $result = false; } else {
@@ -222,19 +241,100 @@ class Project_Issue_Controller extends Base_Controller {
 			}
 
 			//Show on screen what did just happened
+			$content  = '<div class="insides"><div class="topbar"><div class="data"><label class="label warning">';
+			$content .= __('tinyissue.label_reassigned');
+			$content .= '</label> ';
+			$content .= __('tinyissue.to');
+			$content .= ' <b>'.$WhoName.'</b> ';
+			$content .= __('tinyissue.by').' ';
+			$content .= \Auth::user()->firstname.' ';
+			$content .= \Auth::user()->lastname;
+			$content .= '</div></div></div>';
+			$t = time();
 			$result = "
 			<script>
-				parent.document.getElementById('div_currentlyAssigned_name').innerHTML = '<label class=\"label warning\">".__('tinyissue.label_reassigned')."</label> ".__('tinyissue.to')." ".$WhoName." " . __('tinyissue.by') . " " . \Auth::user()->firstname . " " . \Auth::user()->lastname . "';
-				parent.document.getElementById('div_currentlyAssigned_name').style.backgroundColor = '#e8e8e8';
-				parent.document.getElementById('div_currentlyAssigned_name').style.padding = '12px 10px';
-				parent.document.getElementById('div_currentlyAssigned_name').style.verticalAlign = 'middle';
-				parent.document.getElementById('div_currentlyAssigned_name').style.borderRadius = '6x';
+				var adLi = document.createElement(\"LI\");
+				adLi.className = 'comment';
+				adLi.id = 'comment".$t."';
+				parent.document.getElementById('ul_IssueDiscussion').appendChild(adLi);
+				parent.document.getElementById('comment".$t."').innerHTML = '".$content."';
 				parent.document.getElementById('span_currentlyAssigned_name').innerHTML = '".$WhoName."';
-				//alert('".$resul."');
 			</script>
 			";
 		}
 		return $result;
 	}
 
+	/**
+	 * Edit an issue
+	 *
+	 * change tags
+	 */
+	public function get_retag() {
+		if (Input::get('avant') == Input::get('apres') ) { $result = false; } else {
+			$LESgets = array_keys($_GET);
+			$Datas = explode("/", $LESgets[0]);
+			$Issue = $Datas[4];
+
+			//avant = before
+			//apres = after
+			$avant = explode("|",$_GET["avant"] );
+			foreach ($avant as $ind=>$val) { if (trim($val) == '') { unset($avant[$ind]); } }
+
+
+			if (substr($_GET["apres"], 0, 5) == 'xxxxx') {  //We add new tags
+				$_GET["apres"] = substr($_GET["apres"], 5);
+				$apres = explode(",",$_GET["apres"] );
+				foreach ($apres as $ind=>$val) { if (trim($val) == '') { unset($apres[$ind]); } }
+				$TagsDiff = array_diff($apres,$avant);
+				$Msg = __('tinyissue.tag_added');
+				foreach ($TagsDiff as $ind => $this) {
+					$TagNum = Tag::where('tag', '=', $this )->first(array('id','tag','bgcolor'));
+					$IssueTagNum = \DB::table('projects_issues_tags')->where('issue_id', '=', $Issue)->where('tag_id', '=', $TagNum->attributes['id'], 'AND' )->first(array('id'));
+					$now = date("Y-m-d H:i:s");
+					If ($IssueTagNum == NULL) {
+						\DB::table('projects_issues_tags')->insert(array('id'=>NULL,'issue_id'=>$Issue,'tag_id'=>$TagNum->attributes['id'],'created_at'=>$now,'updated_at'=>$now) );
+					} else {
+						\DB::table('projects_issues_tags')->where('issue_id', '=', $Issue)->where('tag_id', '=', $TagNum->attributes['id'], 'AND' )->update(array('updated_at'=>$now) );
+					}
+				}
+				$Action = NULL;
+			} else {		//We take a tag off
+				$apres = explode("|",$_GET["apres"] );
+				foreach ($apres as $ind=>$val) { if (trim($val) == '') { unset($apres[$ind]); } }
+				$TagsDiff = array_diff($avant,$apres);
+				foreach ($TagsDiff as $ind => $this) {
+					$TagNum = Tag::where('tag', '=', $this )->first(array('id','tag','bgcolor'));
+					$IssueTagNum =\DB::table('projects_issues_tags')
+					->where('issue_id','=',$Issue)
+					->where('tag_id','=',$TagNum->id,'AND')
+					->first('id');
+					\DB::table('projects_issues_tags')->delete($IssueTagNum->id);
+					$Msg = __('tinyissue.tag_removed');
+				}
+				$Action = $Issue;
+			}
+			\User\Activity::add(6, $Action, $Issue, $TagNum->attributes['id'] );
+
+			//Show on screen what did just happened
+			$content  = '<div class="insides"><div class="topbar"><div class="data">';
+			$content .= '<label style="background-color: '.$TagNum->attributes['bgcolor'].'; padding: 5px 10px; border-radius: 8px;">';
+			$content .= $TagNum->attributes['tag'].'</label>';
+			$content .= ' : <b>'.$Msg.'</b> ';
+			$content .= __('tinyissue.by') . ' ';
+			$content .= \Auth::user()->firstname . ' ' . \Auth::user()->lastname;
+			$content .= '</div></div></div>';
+			$t = time();
+			$result = "
+			<script>
+				var adLi = document.createElement(\"LI\");
+				adLi.className = 'comment';
+				adLi.id = 'comment".$t."';
+				parent.document.getElementById('ul_IssueDiscussion').appendChild(adLi);
+				parent.document.getElementById('comment".$t."').innerHTML = '".$content."';
+			</script>
+			";
+		}
+		return $result;
+	}
 }

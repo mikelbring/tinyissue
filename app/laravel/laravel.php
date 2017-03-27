@@ -131,7 +131,7 @@ $languages[] = Config::get('application.language');
 |--------------------------------------------------------------------------
 |
 | If the URI starts with one of the supported languages, we will set
-| the default lagnauge to match that URI segment and shorten the
+| the default language to match that URI segment and shorten the
 | URI we'll pass to the router to not include the lang segment.
 |
 */

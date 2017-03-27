@@ -3524,7 +3524,7 @@ jQuery.Event = function( src, props ) {
 		// Events bubbling up the document may have been marked as prevented
 		// by a handler lower down the tree; reflect the correct value.
 		this.isDefaultPrevented = ( src.defaultPrevented || src.returnValue === false ||
-			src.getPreventDefault && src.getPreventDefault() ) ? returnTrue : returnFalse;
+			src.defaultPrevented && src.defaultPrevented ) ? returnTrue : returnFalse;
 
 	// Event type
 	} else {
@@ -3645,7 +3645,7 @@ if ( !jQuery.support.submitBubbles ) {
 			});
 			// return undefined since we don't need an event listener
 		},
-		
+
 		postDispatch: function( event ) {
 			// If form was submitted by the user, bubble the event up the tree
 			if ( event._submit_bubble ) {
