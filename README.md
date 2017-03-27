@@ -50,7 +50,15 @@ We welcome and appreciate all contributions. The `develop` branch is the branch 
 The `master` branch is tagged releases only.
 
 # Changelog
-
+- v.1.5.2 : 15 March 2017
+	- reassign issue
+	- email system based on PHPmail: work every time you change assignation
+	- projects sorted by name
+	- percentage work done
+	- percentage time passed before deadline
+	- every single word on screen may be translated by app/application/language files
+	- install in many language
+	
 - v1.5 : 12 July 2015:
 	- fix: Time Display format now configurable, see config.example.php
 	- fix: SQL « tags » table not included during installation
