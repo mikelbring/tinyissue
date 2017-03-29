@@ -288,8 +288,10 @@ class Project_Issue_Controller extends Base_Controller {
 				foreach ($apres as $ind=>$val) { if (trim($val) == '') { unset($apres[$ind]); } }
 				$TagsDiff = array_diff($apres,$avant);
 				$Msg = __('tinyissue.tag_added');
-				foreach ($TagsDiff as $ind => $this) {
-					$TagNum = Tag::where('tag', '=', $this )->first(array('id','tag','bgcolor'));
+				//foreach ($TagsDiff as $ind => $this) {
+				foreach ($TagsDiff as $ind => $val) {
+					//$TagNum = Tag::where('tag', '=', $this )->first(array('id','tag','bgcolor'));
+					$TagNum = Tag::where('tag', '=', $val )->first(array('id','tag','bgcolor'));
 					$IssueTagNum = \DB::table('projects_issues_tags')->where('issue_id', '=', $Issue)->where('tag_id', '=', $TagNum->attributes['id'], 'AND' )->first(array('id'));
 					$now = date("Y-m-d H:i:s");
 					If ($IssueTagNum == NULL) {
@@ -303,8 +305,10 @@ class Project_Issue_Controller extends Base_Controller {
 				$apres = explode("|",$_GET["apres"] );
 				foreach ($apres as $ind=>$val) { if (trim($val) == '') { unset($apres[$ind]); } }
 				$TagsDiff = array_diff($avant,$apres);
-				foreach ($TagsDiff as $ind => $this) {
-					$TagNum = Tag::where('tag', '=', $this )->first(array('id','tag','bgcolor'));
+				//foreach ($TagsDiff as $ind => $this) {
+				foreach ($TagsDiff as $ind => $val) {
+				//	$TagNum = Tag::where('tag', '=', $this )->first(array('id','tag','bgcolor'));
+					$TagNum = Tag::where('tag', '=', $val )->first(array('id','tag','bgcolor'));
 					$IssueTagNum =\DB::table('projects_issues_tags')
 					->where('issue_id','=',$Issue)
 					->where('tag_id','=',$TagNum->id,'AND')
