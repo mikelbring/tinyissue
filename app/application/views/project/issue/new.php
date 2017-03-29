@@ -58,7 +58,7 @@
 						<input id="upload" type="file" name="file_upload" class="green-button" />
 						<input type="hidden" id="uploadbuttontext" name="uploadbuttontext" value="<?php echo __('tinyissue.fileupload_button'); ?>"/>
 					</div>
-					
+
 					<ul id="uploaded-attachments"></ul>
 				</td>
 			</tr>
@@ -76,3 +76,40 @@
 	</form>
 
 </div>
+<script type="text/javascript">
+function OteTag() {
+	return true;
+}
+function AddTag (tags){
+	return true;
+}
+
+function LitTags () {
+	return true;
+}
+
+<?php
+	$wysiwyg = Config::get('application.editor');
+	if (trim($wysiwyg['BasePage'	]) != '') {
+		if ($wysiwyg['BasePage'] == '/app/vendor/ckeditor/ckeditor.js') { ?>
+			function showckeditor (Quel) {
+				CKEDITOR.replace( Quel, {
+					language: '<?php echo \Auth::user()->language; ?>',
+					height: 175,
+					toolbar : [
+						{ name: 'Fichiers', items: ['Source']},
+						{ name: 'CopieColle', items: ['Cut','Copy','Paste','PasteText','PasteFromWord','RemoveFormat']},
+						{ name: 'FaireDefaire', items: ['Undo','Redo','-','Find','Replace','-','SelectAll']},
+						{ name: 'Polices', items: ['Bold','Italic','Underline','TextColor']},
+						{ name: 'ListeDec', items: ['horizontalrule','table','JustifyLeft','JustifyCenter','JustifyRight','Outdent','Indent','Blockquote']},
+						{ name: 'Liens', items: ['NumberedList','BulletedList','-','Link','Unlink']}
+					]
+				} );
+			}
+			setTimeout(function() { showckeditor ('body'); } , 567);
+
+		<?php } ?>
+	<?php } ?>
+
+
+</script>
