@@ -50,7 +50,7 @@
 			<?php foreach($issues as $row):  ?>
 			<li class="sortable-li" data-issue-id="<?php echo $row->id; ?>">
 				<a href="" class="comments"><?php echo $row->comment_count(); ?></a>
-				
+
 				<?php if(!empty($row->tags)): ?>
 				<div class="tags">
 				<?php foreach($row->tags()->order_by('tag', 'ASC')->get() as $tag): ?>
@@ -84,14 +84,14 @@
 					<?php
 					if (@$_GET["tag_id"] == 1) {
 						$config_app = require path('public') . 'config.app.php';
-						echo '<br /><br />'; 
+						echo '<br /><br />';
 						//Percentage of work done
 						$SizeXtot = 500;
 						$SizeX = $SizeXtot / 100;
 						$Etat = Todo::load_todo($row->id);
-						if (is_object($Etat)) { 
+						if (is_object($Etat)) {
 							$Percent = $Etat->weight;
-							echo '<div style="position: relative; top: -11px; left: 0; background-color: green; color:white; width: '.($Percent*$SizeX).'px; height: 4px; line-height:4px;" /></div>'; 
+							echo '<div style="position: relative; top: -11px; left: 0; background-color: green; color:white; width: '.($Percent*$SizeX).'px; height: 4px; line-height:4px;" /></div>';
 							echo '<div style="position: relative; top: -15px; left: '.(0 + ($Percent*$SizeX)).'px; margin-bottom: -4px; background-color: gray; color:white; width: '.($SizeXtot-($Percent*$SizeX)).'px; height: 4px; text-align: center; line-height:4px;" /></div>';
 						} else { $Percent = 10; }
 						//Time's going fast!
@@ -101,13 +101,13 @@
 						if (@$row->duration === 0) { $row->duration = 30; }
 						$DurRelat = round(($Dur / $row->duration)*100);
 						$DurColor = ($DurRelat < 65) ? 'green' : (( $DurRelat > $config_app['Percent'][3]) ? 'red' : 'yellow') ;
-						if ($DurRelat >= 50 && $Percent <= 50 ) { $DurColor = 'yellow'; } 
-						if ($DurRelat >= 75 && $Percent <= 50 ) { $DurColor = 'red'; } 
-						echo '<div style="position: relative; top: -10px; left: 0; background-color: '.$DurColor.'; color:white; width: '.(($DurRelat >= 100) ? $SizeXtot : ($DurRelat*$SizeX)).'px; height: 4px; text-align: left; line-height:4px;" /></div>'; 
+						if ($DurRelat >= 50 && $Percent <= 50 ) { $DurColor = 'yellow'; }
+						if ($DurRelat >= 75 && $Percent <= 50 ) { $DurColor = 'red'; }
+						echo '<div style="position: relative; top: -10px; left: 0; background-color: '.$DurColor.'; color:white; width: '.(($DurRelat >= 100) ? $SizeXtot : ($DurRelat*$SizeX)).'px; height: 4px; text-align: left; line-height:4px;" /></div>';
 						if ($DurRelat < 100) { echo '<div style="position: relative; top: -14px; left: '.(0 + ($DurRelat*$SizeX)).'px; margin-bottom: -24px; background-color: gray; color:white; width: '.($SizeXtot-($DurRelat*$SizeX)).'px; height: 4px; text-align: right; line-height:4px;" /></div>'; }
 						echo '<br clear="all" />';
 					}
-						
+
 					?>
 				</div>
 			</li>
@@ -118,3 +118,15 @@
 		<div id="sortable-save"><input id="sortable-save-button" class="button primary" type="submit" value="<?php echo __('tinyissue.save'); ?>" /></div>
 	</div>
 </div>
+<script type="text/javascript">
+function OteTag() {
+	return true;
+}
+function AddTag (tags){
+	return true;
+}
+
+function LitTags () {
+	return true;
+}
+</script>
