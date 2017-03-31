@@ -58,6 +58,25 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 <?php }else{
 
 	file_put_contents('../config.app.php', $config_file);
+
+	//From the MySQL_DB_Schema.sql file, we create a usable php file for php install
+	if (!file_exists('mysql-structure.php') && file_exists('MySQL_DB_Schema.sql') ) {
+		$FILEsql = file('MySQL_DB_Schema.sql');
+		$FILEphp = fopen('mysql-structure.php', 'w+');
+		$linePHP  = '<?php ';
+		$linePHP .= 'return array(';
+		foreach ($FILEsql as $lgn => $cnt) {
+			if (trim($cnt) == '----- First line of this file .... please let it here, first with NO carriage return before nor after. -----') { $cnt = ''; continue;}
+			if (trim($cnt) == '----- Last line of this file .... Anything bellow this line will be lost. -----') { $cnt = ''; break;}
+			if (substr($cnt, 0, 4) === '--# ') { $cnt = '"#'.substr($cnt, 4); }
+			if (substr($cnt, 0, 3) === '--#' ) { $cnt = '",'.substr($cnt, 3); }
+			$linePHP .= $cnt;
+		}
+		$linePHP .= ' " );';
+		fwrite($FILEphp, $linePHP);
+		fclose($FILEphp);
+	}
+	//From the freshly made mysql-structure.php file, we'll create tables and default data along the install.php process
 	require "./install.php";
 	$install = new install();
 	$database_check = $install->check_connect();
