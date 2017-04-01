@@ -93,6 +93,9 @@ function LitTags () {
 	if (trim($wysiwyg['BasePage'	]) != '') {
 		if ($wysiwyg['BasePage'] == '/app/vendor/ckeditor/ckeditor.js') { ?>
 			function showckeditor (Quel) {
+				CKEDITOR.config.entities = false;
+				CKEDITOR.config.entities_latin = false;
+				CKEDITOR.config.htmlEncodeOutput = false;
 				CKEDITOR.replace( Quel, {
 					language: '<?php echo \Auth::user()->language; ?>',
 					height: 175,
