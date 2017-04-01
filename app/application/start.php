@@ -30,12 +30,13 @@ Laravel\Event::listen(Laravel\Config::loader, function($bundle, $file) use ($con
 		case 'application':
 
 			$config = array(
-				'url' => isset($config_app['url']) ? $config_app['url'] : '',
-				'timezone' => $config_app['timezone'],
+				'editor' => $config_app['editor'],
 				'key' => $config_app['key'],
 				'index' => !$config_app['mod_rewrite'] ? 'index.php' : '',
 				'mail' => $config_app['mail'],
-				'my_bugs_app'=>$config_app['my_bugs_app']
+				'my_bugs_app'=>$config_app['my_bugs_app'],
+				'timezone' => $config_app['timezone'],
+				'url' => isset($config_app['url']) ? $config_app['url'] : ''
 			);
 
 			$load =  $config + $load;
@@ -43,12 +44,12 @@ Laravel\Event::listen(Laravel\Config::loader, function($bundle, $file) use ($con
 			break;
 
 		case 'database':
-			
+
 			$config['connections'][$config_app['database']['driver']] = array_merge(array(
 				'charset' => 'utf8',
 				'prefix' => ''
 			), $config_app['database']);
-			
+
 			$config['default'] = $config_app['database']['driver'];
 
 			$load = $config + $load;
@@ -140,7 +141,7 @@ Event::listen(Lang::loader, function($bundle, $language, $file)
 	$user = Auth::user() ;
 	if( ! is_null($user) && $user->language != '')
 		$language = $user->language ;
-	
+
 	return Lang::file($bundle, $language, $file);
 });
 
