@@ -141,7 +141,7 @@ class Project_Issue_Controller extends Base_Controller {
 		if(Input::get('body'))
 		{
 			$comment = Project\Issue\Comment::find(str_replace('comment', '', Input::get('id')))
-					->fill(array('comment' => Input::get('body')))
+					->fill(array('comment' => str_replace("'", "`", Input::get('body'))))
 					->save();
 
 			return Project\Issue\Comment::format(Input::get('body'));
