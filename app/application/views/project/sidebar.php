@@ -5,7 +5,7 @@ if(count($active_projects)>1){
 <form class="projects_selector">
 <fieldset><label for="projects_select"><?php echo __('tinyissue.select_a_project');?></label>
 <select name="projects_select" id="projects_select"  onchange="if (this.value) window.location.href=this.value">
-<?php 
+<?php
 	$Proj = array();
 	$SansAccent = array();
 	foreach($active_projects as $row) {
@@ -15,14 +15,14 @@ if(count($active_projects)>1){
 		$SansAccent[$ind] = htmlentities($val, ENT_NOQUOTES, 'utf-8');
 		$SansAccent[$ind] = preg_replace('#&([A-za-z])(?:uml|circ|tilde|acute|grave|cedil|ring);#', '\1', $SansAccent[$ind]);
 		$SansAccent[$ind] = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $SansAccent[$ind]);
-		$SansAccent[$ind] = preg_replace('#&[^;]+;#', '', $SansAccent[$ind]);		
+		$SansAccent[$ind] = preg_replace('#&[^;]+;#', '', $SansAccent[$ind]);
 	}
-	asort($SansAccent); 
+	asort($SansAccent);
 
 	foreach($SansAccent as $ind => $val) {
 		$selected = (substr($ind, strrpos($ind, "/")+1) == Project::current()->id) ? 'selected':'';
 		echo '<option value="'.$ind.'" '.$selected.'>'.$Proj[$ind].'</option>';
-	 } 
+	 }
 ?>
 </select>
 </fieldset>
@@ -71,8 +71,8 @@ if(count($active_projects)>1){
 <?php
 	$project_WebLnks = \DB::table('projects_links')->where('id_project', '=', Project::current()->id)->order_by('category','ASC')->get();
 	$WebLnk = array();
-	foreach($project_WebLnks as $WebLnks) { 
-		if (trim($WebLnks->desactivated) == '') { $WebLnk[$WebLnks->category] = $WebLnks->link; } 
+	foreach($project_WebLnks as $WebLnks) {
+		if (trim($WebLnks->desactivated) == '') { $WebLnk[$WebLnks->category] = $WebLnks->link; }
 	}
 if (count($WebLnk) > 0 ) {
 ?>
@@ -82,8 +82,8 @@ if (count($WebLnk) > 0 ) {
 </h2>
 <?php
 	echo '<ul>';
-	foreach($WebLnk as $categ => $link) { 
-		echo '<li><a href="'.$link.'" class="links" target="_blank">'.__('tinyissue.website_'.$categ).'</a></li>'; 
+	foreach($WebLnk as $categ => $link) {
+		echo '<li><a href="'.$link.'" class="links" target="_blank">'.__('tinyissue.website_'.$categ).'</a></li>';
 	}
 	echo '</ul>';
 }

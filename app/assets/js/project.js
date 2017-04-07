@@ -68,7 +68,7 @@ $(function() {
 
 		e.preventDefault();
 
-		if(confirm('Are sure you want to delete this comment?')){
+		if(confirm('Are you sure you want to delete this comment?')){
 
 			var saving = $('.global-saving span').html();
 			$('.global-saving span').html('Deleting');

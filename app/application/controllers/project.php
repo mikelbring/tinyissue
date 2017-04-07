@@ -43,14 +43,14 @@ class Project_Controller extends Base_Controller {
 		Asset::add('tag-it-js', '/app/assets/js/tag-it.min.js', array('jquery', 'jquery-ui'));
 		Asset::add('tag-it-css-base', '/app/assets/css/jquery.tagit.css');
 		Asset::add('tag-it-css-zendesk', '/app/assets/css/tagit.ui-zendesk.css');
-	
+
 		/* Get what to sort by */
 		$sort_by = Input::get('sort_by', '');
 		if (substr($sort_by, 0, strlen('tag:')) == 'tag:')
 		{
 			$sort_by_clause = DB::raw("
-				MIN(CASE WHEN tags.tag LIKE " . DB::connection('mysql')->pdo->quote(substr($sort_by, strlen('tag:')) . ':%') . " THEN 1 ELSE 2 END), 
-				IF(NOT ISNULL(tags.tag), 1, 2), 
+				MIN(CASE WHEN tags.tag LIKE " . DB::connection('mysql')->pdo->quote(substr($sort_by, strlen('tag:')) . ':%') . " THEN 1 ELSE 2 END),
+				IF(NOT ISNULL(tags.tag), 1, 2),
 				tags.tag
 			");
 		}
@@ -59,15 +59,15 @@ class Project_Controller extends Base_Controller {
 			$sort_by = 'updated';
 			$sort_by_clause = 'projects_issues.updated_at';
 		}
-		
+
 		/* Get what order to use for sorting */
 		$default_sort_order = ($sort_by == 'updated' ? 'desc' : 'asc');
 		$sort_order = Input::get('sort_order', $default_sort_order);
 		$sort_order = (in_array($sort_order, array('asc', 'desc')) ? $sort_order : $default_sort_order);
-		
+
 		/* Get which user's issues to show */
 		$assigned_to = Input::get('assigned_to', '');
-		
+
 		/* Get which tags to show */
 		/* by tag_id  */
 		$tags = Input::get('tags', '');
@@ -75,7 +75,7 @@ class Project_Controller extends Base_Controller {
 
 		/* Build query for issues */
 		$issues = \Project\Issue::with('tags');
-		
+
 		if ($tags || $tag || $sort_by != 'updated')
 		{
 			$issues = $issues
@@ -84,12 +84,12 @@ class Project_Controller extends Base_Controller {
 		}
 
 		$issues = $issues->where('project_id', '=', Project::current()->id);
-					
+
 		if ($assigned_to)
 		{
 			$issues = $issues->where('assigned_to', '=', $assigned_to);
 		}
-		
+
 		if ($tag) {
 			$tag_collection = explode(",", $tag);
 			$tag_amount = count($tag_collection);
@@ -101,7 +101,7 @@ class Project_Controller extends Base_Controller {
 			$tags_amount = count($tags_collection);
 			$issues = $issues->where_in('tags.tag', $tags_collection);//->get();
 		}
-		
+
 		$issues = $issues
 			->group_by('projects_issues.id')
 			->order_by($sort_by_clause, $sort_order);
@@ -111,7 +111,7 @@ class Project_Controller extends Base_Controller {
 			$issues = $issues->having(DB::raw('COUNT(DISTINCT `tags`.`tag`)'),'=',$tags_amount);
 			// L4 $issues = $issues->havingRaw("COUNT(DISTINCT `tags`.`tag`) = ".$tags_amount);
 		}
-			
+
 		$issues = $issues->get(array('projects_issues.*'));
 
 		/* Get which tab to highlight */
@@ -123,7 +123,7 @@ class Project_Controller extends Base_Controller {
 		} else if (Input::get('tag_id', '') == '2') { $active = 'closed';
 		} else { $active = 'open';
 		}
-		
+
 		/* Get sort options */
 		$tags = \Tag::order_by('tag', 'ASC')->get();
 		$sort_options = array('updated' => 'updated');
@@ -140,14 +140,14 @@ class Project_Controller extends Base_Controller {
 			}
 			$sort_options["tag:$tag"] = $tag;
 		}
-		
+
 		/* Get assigned users */
 		$assigned_users = array('' => '');
 		foreach(Project::current()->users as $user)
 		{
 			$assigned_users[$user->id] = $user->firstname . ' ' . $user->lastname;
 		}
-		
+
 		/* Build layout */
 		return $this->layout->nest('content', 'project.index', array(
 			'page' => View::make('project/index/issues', array(
@@ -159,7 +159,7 @@ class Project_Controller extends Base_Controller {
 			'active' => $active,
 			'open_count' => Project::current()->count_open_issues(),
 			'closed_count' => Project::current()->count_closed_issues(),
-			'assigned_count' => Project::current()->count_assigned_issues()			
+			'assigned_count' => Project::current()->count_assigned_issues()
 		));
 	}
 

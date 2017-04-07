@@ -7,7 +7,7 @@
 </h2>
 
 <ul>
-	<?php 
+	<?php
 		$Proj = array();
 		$SansAccent = array();
 		foreach(Project\User::active_projects() as $row) {
@@ -17,9 +17,9 @@
 			$SansAccent[$ind] = htmlentities($val, ENT_NOQUOTES, 'utf-8');
 			$SansAccent[$ind] = preg_replace('#&([A-za-z])(?:uml|circ|tilde|acute|grave|cedil|ring);#', '\1', $SansAccent[$ind]);
 			$SansAccent[$ind] = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $SansAccent[$ind]);
-			$SansAccent[$ind] = preg_replace('#&[^;]+;#', '', $SansAccent[$ind]);		
+			$SansAccent[$ind] = preg_replace('#&[^;]+;#', '', $SansAccent[$ind]);
 		}
-		asort($SansAccent); 
+		asort($SansAccent);
 	?>
 
 
