@@ -85,19 +85,19 @@ class Project extends Eloquent {
 				->where('assigned_to', '=', $user_id)
 				->count();
 	}
-	
+
 	public function count_open_issues()
 	{
 		return \Tag::find(1)->issues()
 				->where('project_id', '=', $this->id)
 				->count();
 	}
-	
+
 	public function count_closed_issues()
 	{
 		return \Tag::find(2)->issues()
 				->where('project_id', '=', $this->id)
-				->count();	
+				->count();
  	}
 	/**
 	* Select activity for a project
@@ -120,7 +120,7 @@ class Project extends Eloquent {
 			->order_by('created_at', 'DESC')
 			->take($activity_limit)
 			->get();
-			
+
 		if(!$project_activity)
 		{
 			return null;
@@ -188,7 +188,7 @@ class Project extends Eloquent {
 					));
 
 					break;
-					
+
 				case 6:
 
 					$tag_diff = json_decode($row->data, true);
@@ -336,7 +336,7 @@ class Project extends Eloquent {
 	public static function update_weblnks($input, $project) {
 		/* Update all the links attached to the project, setting the « desactivated » date as NOW */
 		\DB::table('projects_links')->where('id_project', '=', $project->id)->update(array('desactivated' => date("Y-m-d")));
-		
+
 		/* Insert new values, setting the passed due date as NOW */
 		if (trim($input['Dev']) != '' ) { \DB::table('projects_links')->insert(array('id_project' => $project->id, 'category' => 'dev', 'link' => $input['Dev'], 'created' => date("Y-m-d"))); }
 		if (trim($input['Git']) != '' ) { \DB::table('projects_links')->insert(array('id_project' => $project->id, 'category' => 'git', 'link' => $input['Git'], 'created' => date("Y-m-d"))); }

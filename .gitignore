@@ -3,3 +3,6 @@ _IDE_HELPER.php
 config.app.php
 .DS_Store
 README.md
+*.js~
+*.php~
+install/mysql-structure.php
