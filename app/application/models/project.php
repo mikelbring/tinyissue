@@ -79,7 +79,6 @@ class Project extends Eloquent {
 		{
 			$user_id = \Auth::user()->id;
 		}
-
 		return \Tag::find(1)->issues()
 				->where('project_id', '=', $this->id)
 				->where('assigned_to', '=', $user_id)

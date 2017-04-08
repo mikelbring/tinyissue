@@ -100,10 +100,19 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 				</p>
 
 				<p><a href="index.php?Lng=<?php echo $_GET["Lng"]; ?>" class="button primary"><?php echo $MyLng['RunInstall']; ?></a></p>
+				<div id="CountDown" style="width: 100%; text-align: center; padding-top:10px;">6</div>
 		  </td>
 	  </tr>
 	</table>
 </div>
+<script type="text/javascript">
+var CountDown = 6;
+setInterval(function () {
+	document.getElementById('CountDown').innerHTML = CountDown;
+	if (--CountDown <= 0) { document.location.href = "index.php?Lng=<?php echo $_GET["Lng"]; ?>";}
+}, 1000);
+
+</script>
 
 <?php
 	}

@@ -25,7 +25,13 @@ if(!$database_check['error']) {
 		if($_POST['email'] != ''&& $_POST['first_name'] != '' && $_POST['last_name'] != '' && $_POST['password'] != '') {
 			$finish = $install->create_tables($_POST);
 			if($finish) {
-				header('location: complete.php?Lng=fr');
+				session_start();
+				$_SESSION["Msg"]  = '<h2 style="color: #060;">'.$MyLng['Complete_awesome'].'</h2>';
+				$_SESSION["Msg"] .= '<p style="color: #060;">'.$MyLng['Complete_presentation'].'</p>';
+				$_SESSION["usr"] = $_POST['email'];  
+				$_SESSION["psw"] = $_POST['password'];  
+				//header('location: complete.php?Lng=fr');
+				header('location: ../');
 				die();
 			}
 		} else {

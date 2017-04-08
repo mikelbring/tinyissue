@@ -41,17 +41,18 @@ class install
 		foreach($this->mysql_structure as $query) {
 			mysqli_query($GLOBALS["___mysqli_ston"], $query);
 		}
-
 		/* Create Administrator Account */
 		$role = 4;
 		$email = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST['email']) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
 		$first_name = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST['first_name']) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
 		$last_name = ((isset($GLOBALS["___mysqli_ston"]) && is_object($GLOBALS["___mysqli_ston"])) ? mysqli_real_escape_string($GLOBALS["___mysqli_ston"], $_POST['last_name']) : ((trigger_error("[MySQLConverterToo] Fix the mysql_escape_string() call! This code does not work.", E_USER_ERROR)) ? "" : ""));
+		$email = (trim($email) == '' ) ? $_POST["email"] : $email;
+		$first_name = (trim($first_name) == '' ) ? $_POST["first_name"] : $first_name;
+		$last_name = (trim($last_name) == '' ) ? $_POST["last_name"] : $last_name;
 		$password = Laravel\Hash::make($_POST['password']);
 		$language = $_POST['language'];
-
 		/* Check if email exists if so change the password on it */
-		$test_query = "select * from users where email = '$email' and deleted = 0 LIMIT 1";
+		$test_query = "select * from users where email = '".$email."' and deleted = 0 LIMIT 1";
 		$test_result = mysqli_query($GLOBALS["___mysqli_ston"], $test_query);
 
 		if(mysqli_num_rows($test_result) >= 1) {
