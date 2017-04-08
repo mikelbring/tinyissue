@@ -19,7 +19,7 @@
 		<link rel="icon" type="image/png" href="<?php echo URL::to_asset('/favicon-32x32.png');?>" sizes="32x32">
 		<meta name="msapplication-TileColor" content="#39404f">
 		<meta name="msapplication-TileImage" content="<?php echo URL::to_asset('/mstile-144x144.png');?>">
-		<meta name="application-name" content="<?php Config::get('my_bugs_app.name'); ?>">	
+		<meta name="application-name" content="<?php Config::get('my_bugs_app.name'); ?>">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 
@@ -27,29 +27,34 @@
 		<?php echo Asset::styles(); ?>
 	</head>
 <body>
-<?php 
+<?php
+	session_start();
 	include "application/language/all.php";
-	$lng = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2)); 
+	$lng = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
 ?>
 	<div id="container">
 		<div id="login">
-			
+
 			<h1><span id="span_Welcome"><?php echo (isset($Welcome[$lng])) ? $Welcome[$lng] : $Welcome["en"]; ?></span><br><img src="<?php echo URL::to_asset('app/assets/images/layout/tinyissue.svg');?>" alt="<?php echo Config::get('application.my_bugs_app.name'); ?>" style="width:350px;;"></h1>
 			<form method="post">
 
 
 				<table class="form" >
 					<tr>
-						<td colspan="2" style="color: #a31500;"><?php echo Session::get('error'); ?></td>
+						<td colspan="2" style="color: #a31500;">
+							<?php echo Session::get('error');
+								echo @$_SESSION["Msg"];
+							?>
+						</td>
 					</tr>
 					<tr><th colspan="2" id="th_Title"><?php echo (isset($Title[$lng])) ? $Title[$lng] : $Title["en"]; ?></th></tr>
 					<tr>
 						<th><label for="email" id="label_Email"><?php echo (isset($Email[$lng])) ? $Email[$lng] : $Email["en"]; ?></label></th>
-						<td><input type="text" id="input_Email" name="email" id="email" autofocus /></td>
+						<td><input type="text" id="input_Email" name="email" id="email" autofocus value="<?php echo @$_SESSION["usr"]; ?>" /></td>
 					</tr>
 					<tr>
 						<th><label for="password" id="label_Password"><?php echo (isset($Password[$lng])) ? $Password[$lng] : $Password["en"]; ?></label></th>
-						<td><input type="password" id="password" name="password" /></td>
+						<td><input type="password" id="password" name="password" value="<?php echo @$_SESSION["psw"]; ?>" /></td>
 					</tr>
 					<tr>
 						<th></th>
@@ -76,23 +81,24 @@
 	</div>
 </body>
 
+<?php unset ($_SESSION["Msg"],$_SESSION["psw"],$_SESSION["usr"]) ?>
 <?php echo Asset::scripts(); ?>
 <script type="text/javascript">
 var values = new Array();
 <?php
 	foreach ($Language as $ind => $val) {
 		echo 'values["'.$ind.'"] = new Array(); ';
-		echo 'values["'.$ind.'"]["Email"] = "'.$Email[$ind].'"; 
+		echo 'values["'.$ind.'"]["Email"] = "'.$Email[$ind].'";
 		';
-		echo 'values["'.$ind.'"]["Login"] = "'.$Login[$ind].'"; 
+		echo 'values["'.$ind.'"]["Login"] = "'.$Login[$ind].'";
 		';
-		echo 'values["'.$ind.'"]["Password"] = "'.$Password[$ind].'"; 
+		echo 'values["'.$ind.'"]["Password"] = "'.$Password[$ind].'";
 		';
-		echo 'values["'.$ind.'"]["Remember"] = "'.$Remember[$ind].'"; 
+		echo 'values["'.$ind.'"]["Remember"] = "'.$Remember[$ind].'";
 		';
-		echo 'values["'.$ind.'"]["Title"] = "'.$Title[$ind].'"; 
+		echo 'values["'.$ind.'"]["Title"] = "'.$Title[$ind].'";
 		';
-		echo 'values["'.$ind.'"]["Welcome"] = "'.$Welcome[$ind].'"; 
+		echo 'values["'.$ind.'"]["Welcome"] = "'.$Welcome[$ind].'";
 		';
 	}
 ?>

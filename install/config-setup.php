@@ -76,12 +76,12 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 		fwrite($FILEphp, $linePHP);
 		fclose($FILEphp);
 	}
-	require "./install.php";
 	//From the freshly made mysql-structure.php file, we'll create tables and default data along the install.php process
-	$installBase = new install();
-	$database_check = $installBase->check_connect();
-	$installBase->create_database();
-
+	require "./install.php";
+	$install = new install();
+	$database_check = $install->check_connect();
+	$install->config = require '../config.app.php';
+	$install->create_database($_POST);
 ?>
 <!DOCTYPE html>
 <html>
@@ -100,7 +100,7 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 				</p>
 
 				<p><a href="index.php?Lng=<?php echo $_GET["Lng"]; ?>" class="button primary"><?php echo $MyLng['RunInstall']; ?></a></p>
-				<div id="CountDown" style="width: 100%; text-align: center; padding-top:10px;">5</div>
+				<div id="CountDown" style="width: 100%; text-align: center; padding-top:10px;">6</div>
 		  </td>
 	  </tr>
 	</table>
@@ -111,6 +111,7 @@ setInterval(function () {
 	document.getElementById('CountDown').innerHTML = CountDown;
 	if (--CountDown <= 0) { document.location.href = "index.php?Lng=<?php echo $_GET["Lng"]; ?>";}
 }, 1000);
+
 </script>
 
 <?php
