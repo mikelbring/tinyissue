@@ -7,14 +7,16 @@ class Crypter {
 	 *
 	 * @var string
 	 */
-	public static $cipher = MCRYPT_RIJNDAEL_256;
+//	public static $cipher = MCRYPT_RIJNDAEL_256;
+	public static $cipher = hash('sha256', 'sA*(DH');
 
 	/**
 	 * The encryption mode.
 	 *
 	 * @var string
 	 */
-	public static $mode = MCRYPT_MODE_CBC;
+	//public static $mode = MCRYPT_MODE_CBC;
+	public static $mode = OPENSSL_ZERO_PADDING,;
 
 	/**
 	 * The block size of the cipher.
@@ -33,11 +35,13 @@ class Crypter {
 	 */
 	public static function encrypt($value)
 	{
-		$iv = mcrypt_create_iv(static::iv_size(), static::randomizer());
+		//$iv = mcrypt_create_iv(static::iv_size(), static::randomizer());
+		$iv = openssl_random_pseudo_bytes(16);;
 
 		$value = static::pad($value);
 
-		$value = mcrypt_encrypt(static::$cipher, static::key(), $value, static::$mode, $iv);
+//		$value = mcrypt_encrypt(static::$cipher, static::key(), $value, static::$mode, $iv);
+		$value = openssl_encrypt($value, static::$cipher, static::key(),  static::$mode, $iv);
 
 		return base64_encode($iv.$value);
 	}
@@ -64,7 +68,9 @@ class Crypter {
 		// so we will trim all of the padding characters.
 		$key = static::key();
 
-		$value = mcrypt_decrypt(static::$cipher, $key, $value, static::$mode, $iv);
+		//$value = mcrypt_decrypt(static::$cipher, $key, $value, static::$mode, $iv);
+//		$value = mcrypt_decrypt(static::$cipher, $key, $value, static::$mode, $iv);
+		$value = openssl_decrypt($value, static::$cipher, $key, static::$mode, $iv);
 
 		return static::unpad($value);
 	}
@@ -79,23 +85,24 @@ class Crypter {
 		// There are various sources from which we can get random numbers
 		// but some are more random than others. We'll choose the most
 		// random source we can for this server environment.
-		if (defined('MCRYPT_DEV_URANDOM'))
-		{
-			return MCRYPT_DEV_URANDOM;
-		}
-		elseif (defined('MCRYPT_DEV_RANDOM'))
-		{
-			return MCRYPT_DEV_RANDOM;
-		}
-		// When using the default random number generator, we'll seed
-		// the generator on each call to ensure the results are as
-		// random as we can possibly get them.
-		else
-		{
-			mt_srand();
-
-			return MCRYPT_RAND;
-		}
+		return mt_rand();
+//		if (defined('MCRYPT_DEV_URANDOM'))
+//		{
+//			return MCRYPT_DEV_URANDOM;
+//		}
+//		elseif (defined('MCRYPT_DEV_RANDOM'))
+//		{
+//			return MCRYPT_DEV_RANDOM;
+//		}
+//		// When using the default random number generator, we'll seed
+//		// the generator on each call to ensure the results are as
+//		// random as we can possibly get them.
+//		else
+//		{
+//			mt_srand();
+//
+//			return MCRYPT_RAND;
+//		}
 	}
 
 	/**
@@ -105,7 +112,8 @@ class Crypter {
 	 */
 	protected static function iv_size()
 	{
-		return mcrypt_get_iv_size(static::$cipher, static::$mode);
+		//return mcrypt_get_iv_size(static::$cipher, static::$mode);
+		return openssl_pkey_get_details["bits"];
 	}
 
 	/**
