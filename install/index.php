@@ -14,7 +14,7 @@ $last_name_error = '';
 $email_error = '';
 $pass_error = '';
 
-require './install.php';
+require_once './install.php';
 
 $install = new install();
 $database_check = $install->check_connect();
@@ -23,7 +23,10 @@ $requirement_check = $install->check_requirements();
 if(!$database_check['error']) {
 	if(isset($_POST['email'])) {
 		if($_POST['email'] != ''&& $_POST['first_name'] != '' && $_POST['last_name'] != '' && $_POST['password'] != '') {
+			var_dump($_POST);
 			$finish = $install->create_tables($_POST);
+			session_start();
+			$_SESSION = $_POST;
 			if($finish) {
 				header('location: complete.php?Lng=fr');
 				die();

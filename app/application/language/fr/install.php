@@ -38,7 +38,7 @@ return array(
 	'OKconfAPPfile' => 'Il me semble que vous ne disposiez pas d`un fichier <code>config.app.php</code> valide.  Avant d`utiliser Bugs, il faut créer ce fichier.  C`est la première étape de l`installation.  Dans certains cas, il est possible de créer ce fichier <code>config.app.php</code> tout au cours de l`installation, mais pas tous les serveurs le permettent.  Commençons donc !',
 	'OkAPPfile' => 'C`est fait, votre fichier <code>config.app.php</code> a bien été créé. Veuillez maintenant cliquer ci-bas sur « Lancer l`installation » et passer les prochaines étapes d`installation.',
 	'Requirement_Check' => 'Veuillez installer toutes les extensions, tous les modules PHP requis.',
-	'RunInstall' => 'Lancer l`installation',
+	'RunInstall' => 'Aller à l`étape 2 de l`installation',
 	'SetupConfigFile' => 'Fichier de configuration',
 	'SQL_Database' => 'Base de données',
 	'SQL_Driver' => 'Pilote',
