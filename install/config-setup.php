@@ -55,7 +55,7 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 </div>
 
 
-<?php }else{
+<?php } else {
 
 	file_put_contents('../config.app.php', $config_file);
 
@@ -66,10 +66,10 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 		$linePHP  = '<?php ';
 		$linePHP .= 'return array(';
 		foreach ($FILEsql as $lgn => $cnt) {
-			if (trim($cnt) == '----- First line of this file .... please let it here, first with NO carriage return before nor after. -----') { $cnt = ''; continue;}
-			if (trim($cnt) == '----- Last line of this file .... Anything bellow this line will be lost. -----') { $cnt = ''; break;}
-			if (substr($cnt, 0, 4) === '--# ') { $cnt = '"#'.substr($cnt, 4); }
-			if (substr($cnt, 0, 3) === '--#' ) { $cnt = '",'.substr($cnt, 3); }
+			if (trim($cnt) == '#----- First line of this file .... please let it here, first with NO carriage return before nor after. -----') { $cnt = ''; continue;}
+			if (trim($cnt) == '#----- Last line of this file .... Anything bellow this line will be lost. -----') { $cnt = ''; break;}
+			if (substr($cnt, 0, 4) === '#--#') { $cnt = '"#'.substr($cnt, 4); }
+			if (substr($cnt, 0, 3) === '#--' ) { $cnt = '",'.substr($cnt, 3); }
 			$linePHP .= $cnt;
 		}
 		$linePHP .= ' " );';
