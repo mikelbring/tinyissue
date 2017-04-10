@@ -1,3 +1,5 @@
+#Update from release 1.3.1 to 1.3.2
+
 ALTER TABLE `projects`  ADD `default_assignee` bigint(20)  default '1' AFTER `updated_at`;
 ALTER TABLE `projects_issues` ADD `weight` bigint(20) NOT NULL DEFAULT '1' AFTER `status`;
 ALTER TABLE `projects_issues` ADD `duration` smallint(3) NOT NULL DEFAULT '30' AFTER `created_at`;
