@@ -1,11 +1,63 @@
 #Update from release 1.3.1 to 1.3.2
 
-ALTER TABLE `projects`  ADD  IF NOT EXISTS `default_assignee` bigint(20)  default '1' AFTER `updated_at`;
-ALTER TABLE `projects_issues` ADD  IF NOT EXISTS `weight` bigint(20) NOT NULL DEFAULT '1' AFTER `status`;
-ALTER TABLE `projects_issues` ADD  IF NOT EXISTS `duration` smallint(3) NOT NULL DEFAULT '30' AFTER `created_at`;
-ALTER TABLE `projects_issues` DROP `created_at`;
-ALTER TABLE `projects_issues` DROP datetime;
-ALTER TABLE `users` CHANGE `language` `language` VARCHAR( 5 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'en';
+delimiter '//'
+CREATE PROCEDURE addcolProjects() BEGIN
+IF NOT EXISTS( SELECT * FROM information_schema.COLUMNS WHERE COLUMN_NAME='default_assignee' AND TABLE_NAME='projects' )
+THEN ALTER TABLE `projects`  ADD `default_assignee` bigint(20)  default '1' AFTER `updated_at`;
+END IF;
+END;
+//
+
+CREATE PROCEDURE addcolWeight() BEGIN
+IF NOT EXISTS( SELECT * FROM information_schema.COLUMNS WHERE COLUMN_NAME='weight' AND TABLE_NAME='projects_issues' )
+THEN ALTER TABLE `projects_issues` ADD `weight` bigint(20) NOT NULL DEFAULT '1' AFTER `status`;
+END IF;
+END;
+//
+
+CREATE PROCEDURE addcolDuration() BEGIN
+IF NOT EXISTS( SELECT * FROM information_schema.COLUMNS WHERE COLUMN_NAME='duration' AND TABLE_NAME='projects_issues' )
+THEN ALTER TABLE `projects_issues` ADD  `duration` smallint(3) NOT NULL DEFAULT '30' AFTER `created_at`;
+END IF;
+END;
+//
+
+CREATE PROCEDURE addcolCreated_at() BEGIN
+IF EXISTS( SELECT * FROM information_schema.COLUMNS WHERE COLUMN_NAME='created_at' AND TABLE_NAME='projects_issues' )
+THEN ALTER TABLE `projects_issues` DROP `created_at`;
+END IF;
+END;
+//
+
+CREATE PROCEDURE addcolDatetime() BEGIN
+IF EXISTS( SELECT * FROM information_schema.COLUMNS WHERE COLUMN_NAME='datetime' AND TABLE_NAME='projects_issues' )
+THEN ALTER TABLE `projects_issues` DROP datetime;
+END IF;
+END;
+//
+
+CREATE PROCEDURE addcolLanguage() BEGIN
+IF EXISTS( SELECT * FROM information_schema.COLUMNS WHERE COLUMN_NAME='language' AND TABLE_NAME='users' )
+THEN ALTER TABLE `users` CHANGE `language` `language` VARCHAR( 5 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT 'en';
+ELSE ALTER TABLE `users` ADD `language` VARCHAR(5) NOT NULL DEFAULT 'en' AFTER `lastname`;
+END IF;
+END;
+//
+
+delimiter ';'
+CALL addcolProjects();
+CALL addcolWeight();
+CALL addcolDuration();
+CALL addcolCreated_at();
+CALL addcolDatetime();
+CALL addcolLanguage();
+DROP PROCEDURE addcolProjects;
+DROP PROCEDURE addcolWeight;
+DROP PROCEDURE addcolDuration;
+DROP PROCEDURE addcolCreated_at;
+DROP PROCEDURE addcolDatetime;
+DROP PROCEDURE addcolLanguage;
+
 
 #CREATE issue-tag relationship table
 CREATE TABLE  IF NOT EXISTS  `projects_issues_tags` (
@@ -42,7 +94,7 @@ CREATE TABLE  IF NOT EXISTS  `tags` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE 'utf8_general_ci';
 
 #CREATE ToDo Table
-CREATE TABLE  IF NOT EXISTS  IF NOT EXISTS `users_todos` (
+CREATE TABLE  IF NOT EXISTS `users_todos` (
   `id` bigint(20) unsigned NOT NULL auto_increment,
   `issue_id` bigint(20) default NULL,
   `user_id` bigint(20) default NULL,

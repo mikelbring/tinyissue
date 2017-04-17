@@ -84,6 +84,7 @@ return array(
 	'label_reopened' => 'Réouvert',
 	'language' => 'Langue',
 	'last_name' => 'Nom',
+	'let_update_it' => 'Mettre à jour',
 	'logout' => 'Déconnexion',
 	'minute' =>  'minute',
 	'month' =>  'mois',
