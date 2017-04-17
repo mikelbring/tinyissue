@@ -83,6 +83,7 @@ return array(
 	'label_reopened' => 'Reopened',
 	'language' => 'Language',
 	'last_name' => 'Last Name',
+	'let_update_it' => 'Let update Bugs',
 	'logout' => 'Logout',
 	'minute' =>  'minute',
 	'month' =>  'month',
