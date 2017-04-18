@@ -6,9 +6,10 @@
 
 # Installing Bugs
 
-- Create a MySQL Database
-- Make /uploads/ write-able (CHMOD 777)
-- Open /install/ in your browser
+- Create a MySQL Database  ( note name and password, you will need them during install process )
+- Make /uploads/ write-able ( CHMOD -R  770 )
+- set  www-data  ( CHOWN -R www-data:www-data )  as owner of the Bugs's main directory and sub-directories
+- Open index.php ... it should bring you to ./install/index.php page and open the installation forms
 - Delete or rename /install/
 
 Enjoy!
@@ -24,10 +25,10 @@ Enjoy!
 ## Requirements:
 
 - Tested on: Apache, IIS
-- PHP 5.3+
+- PHP 5.3+  :  ready for PHP 7.0.18; not yet for 7.1
 - MySQL 5+
 - PDO Extension for PHP (MySQL)
-- MCrypt Extension for PHP
+- MCrypt Extension for PHP : soon MCrypt will be removed from Bugs project
 - Javascript Enabled - Bugs also uses heavy Javascript to make it easier to use
 
 ### How to contribute
