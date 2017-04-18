@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `permissions` (
   `auto_has` varchar(255) character set UTF8 default NULL,
   PRIMARY KEY  (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
-#--#
+#--
 
 #--#Create Projects Table
 CREATE TABLE IF NOT EXISTS `projects` (
