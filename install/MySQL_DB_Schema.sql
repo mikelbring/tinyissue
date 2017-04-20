@@ -289,3 +289,9 @@ INSERT INTO projects_issues_tags (issue_id, tag_id, created_at, updated_at)
 INSERT INTO `activity` (`id`, `description`, `activity`)
 VALUES ('6', 'Updated issue tags', 'update-issue-tags');
 #----- Last line of this file .... Anything bellow this line will be lost. -----
+
+#--#Create a first admin user:
+##--# email = myemail@email.com
+##--# password = admin
+INSERT INTO `users` (`id`, `role_id`, `email`, `password`, `firstname`, `lastname`, `language`, `created_at`, `updated_at`, `deleted`) VALUES
+(NULL,	4,	'myemail@email.com',	'XhS.DHsB8wt1o',	'admin',	'admin',	'en',	NOW(),	NOW(),	0)
