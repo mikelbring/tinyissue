@@ -143,18 +143,21 @@
 				<a href="http://daringfireball.net/projects/markdown/basics/" ><?php echo __('tinyissue.format_with_markdown'); ?></a>
 				</div>
 					<div style="width: 90%">
-					<!-- Tags modification  -->
-					<?php
-						//echo __('tinyissue.tags');
-						$TAGS = new Project_Issue_Controller();
-						$Tomates = $TAGS->get_edit($issue->id);
-						echo Form::text('tags', Input::get('tags', implode(",", $IssueTags)), array('id' => 'tags', 'name' =>'MesTags', 'onblur' =>'AdaptTags(this.value);')); ?>
+						<!-- Tags modification  -->
+						<?php
+							echo __('tinyissue.tags');
+							$TAGS = new Project_Issue_Controller();
+							$Tomates = $TAGS->get_edit($issue->id);
+							$Retagage = $TAGS->get_retag($issue->id);
+							echo Form::text('tags', Input::get('tags', implode(",", $IssueTags)), array('id' => 'tags', 'name' =>'MesTags', 'onblur' =>'AdaptTags(this.value);'));
+						?>
 						<script type="text/javascript">
 						$(function(){
 							$('#tags').tagit({
 								autocomplete: { source: '<?php echo URL::to('ajax/tags/suggestions/filter'); ?>' }
 							});
 						});
+						<?php echo $Retagage; ?>
 						</script>
 					</div>
 			</p>

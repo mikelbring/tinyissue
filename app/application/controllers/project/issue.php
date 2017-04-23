@@ -273,7 +273,9 @@ class Project_Issue_Controller extends Base_Controller {
 	public function get_retag() {
 		if (Input::get('avant') == Input::get('apres') ) { $result = false; } else {
 			$LESgets = array_keys($_GET);
-			$Datas = explode("/", $LESgets[0]);
+			$PosiPoint = strpos($_SERVER['REQUEST_URI'],".");
+			$LaPage = substr($_SERVER['REQUEST_URI'], $PosiPoint+5);
+			$Datas = explode("/", $LaPage);
 			$Issue = $Datas[4];
 
 			//avant = before
