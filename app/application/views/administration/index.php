@@ -34,8 +34,7 @@
 		</tr>
 		<tr>
 			<th>Tiny Issue <?php echo __('tinyissue.version'); ?></th>
-			<td>
-			<?php
+			<td><?php
 					$project_status = \DB::table('update_history')->where('Description', 'LIKE', 'Version%')->order_by('DteRelease','DESC')->get();
 					echo $project_status[0]->description;
 				?>
