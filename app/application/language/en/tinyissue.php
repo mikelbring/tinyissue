@@ -95,7 +95,7 @@ return array(
 	'new' => 'New',
 	'no_activity' => 'This project does not have any activity!',
 	'no_issues' => 'This project does not have any issues that match your search query!',
-	'no_one' => 'No one',
+	'no_one' => 'Not a single',
 	'on_issue' => 'on issue',
 	'on_project' => 'On Project',
 	'on' => 'on',
