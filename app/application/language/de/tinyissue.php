@@ -56,10 +56,10 @@ return array(
 	'error404_means' => 'What does this mean?',
 	'error404_p1' => 'We couldn\'t find the page you requested on our servers. We\'re really sorry about that. It\'s our fault, not yours. We\'ll work hard to get this page back online as soon as possible.',
 	'error404_p2' => 'Perhaps you would like to go to our',
-	'fileupload_button' => 'Datei anhängen'
+	'fileupload_button' => 'Datei anhängen',
 	'first_name' => 'Vorname',
-	'homepage' =>  'home page', 
-	'hour' =>  'hour', 
+	'homepage' =>  'home page',
+	'hour' =>  'hour',
 	'in' => 'in',
 	'issue_assigned_to_you' => 'dir zugeordnetes Ticket',
 	'issue_has_been_closed' => 'Das Ticket wurde geschlossen und ist nur mehr lesbar.',
