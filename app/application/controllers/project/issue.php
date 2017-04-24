@@ -276,7 +276,7 @@ class Project_Issue_Controller extends Base_Controller {
 			$PosiPoint = strpos($_SERVER['REQUEST_URI'],".");
 			$LaPage = substr($_SERVER['REQUEST_URI'], $PosiPoint+5);
 			$Datas = explode("/", $LaPage);
-			$Issue = $Datas[4];
+			$Issue = $Datas[3];
 
 			//avant = before
 			//apres = after
@@ -296,7 +296,7 @@ class Project_Issue_Controller extends Base_Controller {
 					$TagNum = Tag::where('tag', '=', $val )->first(array('id','tag','bgcolor'));
 					$IssueTagNum = \DB::table('projects_issues_tags')->where('issue_id', '=', $Issue)->where('tag_id', '=', $TagNum->attributes['id'], 'AND' )->first(array('id'));
 					$now = date("Y-m-d H:i:s");
-					If ($IssueTagNum == NULL) {
+					if ($IssueTagNum == NULL) {
 						\DB::table('projects_issues_tags')->insert(array('id'=>NULL,'issue_id'=>$Issue,'tag_id'=>$TagNum->attributes['id'],'created_at'=>$now,'updated_at'=>$now) );
 					} else {
 						\DB::table('projects_issues_tags')->where('issue_id', '=', $Issue)->where('tag_id', '=', $TagNum->attributes['id'], 'AND' )->update(array('updated_at'=>$now) );
