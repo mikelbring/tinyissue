@@ -46,6 +46,7 @@ return array(
 	'dashboard_description' => 'Un aperçu de toutes les activités concernant vos projets actifs.',
 	'dashboard' => 'Tableau de bord',
 	'day' =>  'jour',
+	'days' =>  'jours',
 	'decade' =>  'décennie',
 	'default_assignee' => 'Assignation par défaut',
 	'delete_project_confirm' => 'Êtes-vous sûr de vouloir supprimer ce projet ? Vous ne pourrez pas faire marche arrière !',

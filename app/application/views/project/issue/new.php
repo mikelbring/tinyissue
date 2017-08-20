@@ -1,3 +1,4 @@
+<?php $config_app = require path('public') . 'config.app.php'; ?>
 <h3>
 	<?php echo __('tinyissue.create_a_new_issue'); ?>
 	<span><?php echo __('tinyissue.create_a_new_issue_in'); ?> <a href="<?php echo $project->to(); ?>"><?php echo $project->name; ?></a></span>
@@ -40,6 +41,12 @@
 					</script>
 				</td>
 		</tr>
+			<tr>
+				<th><?php echo __('tinyissue.duration'); ?></th>
+				<td>
+					<input type="number" name="duration" style="width: 60px;" value="<?php echo $config_app['duration']; ?>" min="1" max="400" />&nbsp;<?php echo __('tinyissue.days'); ?>
+				</td>
+			</tr>
 
 
 			<?php if(Auth::user()->permission('issue-modify')): ?>

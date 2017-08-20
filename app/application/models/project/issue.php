@@ -352,7 +352,8 @@ class Issue extends \Eloquent {
 		$fill = array(
 			'title' => $input['title'],
 			'body' => $input['body'],
-			'assigned_to' => $input['assigned_to']
+			'assigned_to' => $input['assigned_to'],
+			'duration' => $input['duration']
 		);
 
 		/* Add to activity log for assignment if changed */
