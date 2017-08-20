@@ -45,6 +45,7 @@ return array(
 	'dashboard_description' => 'An overview of all the activity involving your active projects.',
 	'dashboard' => 'Dashboard',
 	'day' =>  'day',
+	'days' =>  'days',
 	'decade' =>  'decade',
 	'default_assignee' => 'Default Assignee',
 	'delete_project_confirm' => 'Are you sure you want to delete this project? There is no going back!',

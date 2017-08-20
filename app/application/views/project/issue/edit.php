@@ -39,6 +39,12 @@
 					</script>
 				</td>
 			</tr>
+			<tr>
+				<th><?php echo __('tinyissue.duration'); ?></th>
+				<td>
+					<input type="number" name="duration" style="width: 60px;" value="<?php echo Input::old('duration', $issue->duration); ?>" min="1" max="400" />&nbsp;<?php echo __('tinyissue.days'); ?>
+				</td>
+			</tr>
 			<?php if(Auth::user()->permission('issue-modify')): ?>
 			<tr>
 				<th><?php echo __('tinyissue.assigned_to'); ?></th>
