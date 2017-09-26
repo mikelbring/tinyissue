@@ -208,19 +208,20 @@ class Project_Issue_Controller extends Base_Controller {
 	 * @change assignation
 	 */
 	public function get_reassign() {
-		if (Input::get('Next') == 0 ) { $result = false; } else {
+		if (Input::get('Suiv') == 0 ) { $result = false; } else {
 			//Let note that into the issue table
-			$resul  = __('tinyissue.edit_issue')." : ";
-			$Modif = Project\Issue::where('id', '=', Input::get('Issue'))->update(array('assigned_to' => Input::get('Next')));
-			$resul .= ($Modif) ? "Succès" : "Échec";
+			$result  = __('tinyissue.edit_issue')." : ";
+			$Modif = Project\Issue::where('id', '=', Input::get('Issue'))->update(array('assigned_to' => Input::get('Suiv')));
+			$result .= ($Modif) ? "Succès" : "Échec";
 
 			//Let note that into the activity table so it cans show the reassigning history
-			$resul .= "\\n";
-			$resul .= __('tinyissue.activity')." : ";
-			$resul .= (\User\Activity::add(5, Input::get('Prev'), Input::get('Issue'), Input::get('Next') )) ? "Succès" : "Échec";
+			$result .= "\\n";
+			$result .= __('tinyissue.activity')." : ";
+			$Modif = (\User\Activity::add(5, Input::get('Prec'), Input::get('Issue'), Input::get('Suiv') ));
+			$result .= ($Modif) ? "Succès" : "Échec";
 
 			//Search for new assignee infos
-			$Who = \User::where('id', '=', Input::get('Next') )->get(array('firstname','lastname','email'));
+			$Who = \User::where('id', '=', Input::get('Suiv') )->get(array('firstname','lastname','email'));
 			$WhoName = $Who[0]->attributes["firstname"].' '.$Who[0]->attributes["lastname"];
 			$WhoAddr = $Who[0]->attributes["email"];
 			$thisIssue = \Project\Issue::where('id', '=', Input::get('Issue'))->get('*');
@@ -236,31 +237,23 @@ class Project_Issue_Controller extends Base_Controller {
 				$text .= "\n\n";
 				$text .= sprintf(__('email.reassigned_by'),\Auth::user()->firstname." ".\Auth::user()->lastname);
 				$text .= "\n\n";
-				$text .= __('email.more_url')." http://". $_SERVER['SERVER_ADDR'] ."/project/".$project_id."/issue/".Input::get('Issue')."";
+//				$text .= __('email.more_url')." http://". $_SERVER['SERVER_ADDR'] ."/project/".$project_id."/issue/".Input::get('Issue')."";
+				$text .= __('email.more_url')." http://". $_SERVER['SERVER_NAME'] ."/project/".$project_id."/issue/".Input::get('Issue')."";
 				\Mail::send_email($text, $WhoAddr, $subject);
 			}
 
 			//Show on screen what did just happened
-			$content  = '<div class="insides"><div class="topbar"><div class="data"><label class="label warning">';
-			$content .= __('tinyissue.label_reassigned');
-			$content .= '</label> ';
-			$content .= __('tinyissue.to');
-			$content .= ' <b>'.$WhoName.'</b> ';
-			$content .= __('tinyissue.by').' ';
-			$content .= \Auth::user()->firstname.' ';
-			$content .= \Auth::user()->lastname;
-			$content .= '</div></div></div>';
 			$t = time();
-			$result = "
-			<script>
-				var adLi = document.createElement(\"LI\");
-				adLi.className = 'comment';
-				adLi.id = 'comment".$t."';
-				parent.document.getElementById('ul_IssueDiscussion').appendChild(adLi);
-				parent.document.getElementById('comment".$t."').innerHTML = '".$content."';
-				parent.document.getElementById('span_currentlyAssigned_name').innerHTML = '".$WhoName."';
-			</script>
-			";
+				$content  = '<div class="insides"><div class="topbar"><div class="data">';
+				$content .= '<label class="label warning">';
+				$content .= __('tinyissue.label_reassigned').'</label>&nbsp;';
+				$content .= __('tinyissue.to') . ' ';
+				$content .= ' <b>'.$WhoName.'</b> ';
+				$content .= __('tinyissue.by') . ' ';
+				$content .= \Auth::user()->firstname . ' ' . \Auth::user()->lastname;
+				$content .= ' --- '.date("Y-m-d H:s").'</b> ';
+				$content .= '</div></div></div>';
+				$result = $content;
 		}
 		return $result;
 	}
@@ -271,76 +264,69 @@ class Project_Issue_Controller extends Base_Controller {
 	 * change tags
 	 */
 	public function get_retag() {
-		if (Input::get('avant') == Input::get('apres') ) { $result = false; } else {
-			$LESgets = array_keys($_GET);
+			$content = "";
 			$PosiPoint = strpos($_SERVER['REQUEST_URI'],".");
 			$LaPage = substr($_SERVER['REQUEST_URI'], $PosiPoint+5);
 			$Datas = explode("/", $LaPage);
 			$Issue = $Datas[3];
+			$Msg = "";
+			$Show = false;
 
-			//avant = before
-			//apres = after
-			$avant = explode("|",$_GET["avant"] );
-			foreach ($avant as $ind=>$val) { if (trim($val) == '') { unset($avant[$ind]); } }
+			$Modif = Input::get('Modif') ?? false;
+			$Quel = Input::get('Quel') ?? "xyzxyz";
+			$TagNum = Tag::where('tag', '=', $Quel )->first(array('id','tag','bgcolor'));
+			if (!isset($TagNum) || @$TagNum == '' ) { $Modif = false; $Quel = "xyzxyz"; }
 
-
-			if (substr($_GET["apres"], 0, 5) == 'xxxxx') {  //We add new tags
-				$_GET["apres"] = substr($_GET["apres"], 5);
-				$apres = explode(",",$_GET["apres"] );
-				foreach ($apres as $ind=>$val) { if (trim($val) == '') { unset($apres[$ind]); } }
-				$TagsDiff = array_diff($apres,$avant);
-				$Msg = __('tinyissue.tag_added');
-				//foreach ($TagsDiff as $ind => $this) {
-				foreach ($TagsDiff as $ind => $val) {
-					//$TagNum = Tag::where('tag', '=', $this )->first(array('id','tag','bgcolor'));
-					$TagNum = Tag::where('tag', '=', $val )->first(array('id','tag','bgcolor'));
-					$IssueTagNum = \DB::table('projects_issues_tags')->where('issue_id', '=', $Issue)->where('tag_id', '=', $TagNum->attributes['id'], 'AND' )->first(array('id'));
-					$now = date("Y-m-d H:i:s");
-					if ($IssueTagNum == NULL) {
-						\DB::table('projects_issues_tags')->insert(array('id'=>NULL,'issue_id'=>$Issue,'tag_id'=>$TagNum->attributes['id'],'created_at'=>$now,'updated_at'=>$now) );
-					} else {
-						\DB::table('projects_issues_tags')->where('issue_id', '=', $Issue)->where('tag_id', '=', $TagNum->attributes['id'], 'AND' )->update(array('updated_at'=>$now) );
-					}
+		
+			/**
+			 * Edit an issue
+			 * Adding a tag
+			 */
+			if ($Modif == 'AddOneTag' ) {  
+				$IssueTagNum = \DB::table('projects_issues_tags')->where('issue_id', '=', $Issue)->where('tag_id', '=', $TagNum->attributes['id'], 'AND' )->first(array('id'));
+				$now = date("Y-m-d H:i:s");
+				if ($IssueTagNum == NULL) {
+					\DB::table('projects_issues_tags')->insert(array('id'=>NULL,'issue_id'=>$Issue,'tag_id'=>$TagNum->attributes['id'],'created_at'=>$now,'updated_at'=>$now) );
+				} else {
+					\DB::table('projects_issues_tags')->where('issue_id', '=', $Issue)->where('tag_id', '=', $TagNum->attributes['id'], 'AND' )->update(array('updated_at'=>$now) );
 				}
 				$Action = NULL;
-			} else {		//We take a tag off
-				$apres = explode("|",$_GET["apres"] );
-				foreach ($apres as $ind=>$val) { if (trim($val) == '') { unset($apres[$ind]); } }
-				$TagsDiff = array_diff($avant,$apres);
-				//foreach ($TagsDiff as $ind => $this) {
-				foreach ($TagsDiff as $ind => $val) {
-				//	$TagNum = Tag::where('tag', '=', $this )->first(array('id','tag','bgcolor'));
-					$TagNum = Tag::where('tag', '=', $val )->first(array('id','tag','bgcolor'));
-					$IssueTagNum =\DB::table('projects_issues_tags')
-					->where('issue_id','=',$Issue)
-					->where('tag_id','=',$TagNum->id,'AND')
-					->first('id');
-					\DB::table('projects_issues_tags')->delete($IssueTagNum->id);
-					$Msg = __('tinyissue.tag_removed');
-				}
-				$Action = $Issue;
+				$Msg = __('tinyissue.tag_added');
+				$Show = true;
 			}
-			\User\Activity::add(6, $Action, $Issue, $TagNum->attributes['id'] );
 
-			//Show on screen what did just happened
-			$content  = '<div class="insides"><div class="topbar"><div class="data">';
-			$content .= '<label style="background-color: '.$TagNum->attributes['bgcolor'].'; padding: 5px 10px; border-radius: 8px;">';
-			$content .= $TagNum->attributes['tag'].'</label>';
-			$content .= ' : <b>'.$Msg.'</b> ';
-			$content .= __('tinyissue.by') . ' ';
-			$content .= \Auth::user()->firstname . ' ' . \Auth::user()->lastname;
-			$content .= '</div></div></div>';
-			$t = time();
-			$result = "
-			<script>
-				var adLi = document.createElement(\"LI\");
-				adLi.className = 'comment';
-				adLi.id = 'comment".$t."';
-				parent.document.getElementById('ul_IssueDiscussion').appendChild(adLi);
-				parent.document.getElementById('comment".$t."').innerHTML = '".$content."';
-			</script>
-			";
-		}
-		return $result;
+			/**
+			 * Edit an issue
+			 * Taking a tag off
+			 */
+			if ($Modif == 'eraseTag') {	
+				$IssueTagNum =\DB::table('projects_issues_tags')->where('issue_id','=',$Issue)->where('tag_id','=',$TagNum->id,'AND')->first('id');
+				\DB::table('projects_issues_tags')->delete($IssueTagNum->id);
+				$Action = $Issue;
+				$Modif = true;
+				$Msg = '<span style="color:#F00;">'.__('tinyissue.tag_removed').'</span>';
+				$Show = true;
+			}
+			
+			/**
+			 * Update database
+			 */
+			if ($Show) { \User\Activity::add(6, $Action, $Issue, $TagNum->attributes['id'] ); }
+
+			/**
+			 * Show on screen what just happened
+			 */
+			if (isset($TagNum) && $Quel != "xyzxyz") {
+				$content .= '<div class="insides"><div class="topbar"><div class="data">';
+				$content .= '<label style="background-color: '.$TagNum->attributes['bgcolor'].'; padding: 5px 10px; border-radius: 8px;">';
+				$content .= $TagNum->attributes['tag'].'</label>';
+				$content .= ' : <b>'.$Msg.'</b> ';
+				$content .= __('tinyissue.by') . ' ';
+				$content .= \Auth::user()->firstname . ' ' . \Auth::user()->lastname;
+				$content .= '</div></div></div>';
+				$t = time();
+				$result = $content;
+			}
+		return $content;
 	}
 }

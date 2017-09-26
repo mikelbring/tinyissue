@@ -4,6 +4,8 @@ $(function() {
 
 	var links = document.links;
 	$(document.links).filter(function() {
+		var Ceci = this.href;
+    	if (Ceci.substr(0, 14) == 'javascript:%20') { return false; }
     	return this.hostname != window.location.hostname;
 	}).attr('target', '_blank');
 

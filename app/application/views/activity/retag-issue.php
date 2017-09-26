@@ -13,7 +13,7 @@
 		<strong><?php echo __('tinyissue.no_one'); ?></strong>
 		<?php endif; ?>
 		<?php echo __('tinyissue.by'); ?>
-		<strong>Bonjour dans retag-issue<?php echo $user->firstname . ' ' . $user->lastname; ?></strong>
+		<strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong>
 
 		<span class="time">
 			<?php echo date(Config::get('application.my_bugs_app.date_format'), strtotime($activity->created_at)); ?>
