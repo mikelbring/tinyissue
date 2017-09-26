@@ -85,7 +85,6 @@
 		<?php foreach($issue->activity() as $activity): ?>
 			<?php echo $activity; ?>
 		<?php endforeach; ?>
-
 	</ul>
 	<div id="div_currentlyAssigned_name" class="topbar"></div>
 
@@ -115,9 +114,9 @@
 
 					<div class="dropdown">
 						<ul>
-							<li class="unassigned"><a href="<?php echo $issue->to('reassign'); ?>?Prev=<?php echo Project\Issue::current()->assigned->id.'&Next=0&Issue='.Project\Issue::current()->id; ?>" class="user0<?php echo !Project\Issue::current()->assigned ? ' assigned' : ''; ?>" target="ContenuVariable"><?php echo __('tinyissue.no_one'); ?></a></li>
+							<li class="unassigned"><a href="javascript: Reassignment(<?php echo $project->id.','.((Project\Issue::current()->assigned_to == '') ? 0 : Project\Issue::current()->assigned_id).',0,'.Project\Issue::current()->id; ?>);" class="user0<?php echo !Project\Issue::current()->assigned_id ? ' assigned' : ''; ?>" ><?php echo __('tinyissue.no_one'); ?></a></li>
 							<?php foreach(Project::current()->users()->get() as $row): ?>
-							<li><a href="<?php echo $issue->to('reassign'); ?>?Prev=<?php echo Project\Issue::current()->assigned->id.'&Next='.$row->id.'&Issue='.Project\Issue::current()->id; ?>" class="user0<?php echo !Project\Issue::current()->assigned ? ' assigned' : ''; ?>" target="ContenuVariable"><?php echo $row->firstname . ' ' . $row->lastname; ?></a></li>
+							<li><a href="javascript: Reassignment(<?php echo $project->id.','.((Project\Issue::current()->assigned_id == '') ? 0 : Project\Issue::current()->assigned_id).','.$row->id.','.Project\Issue::current()->id; ?>);" class="user0<?php echo !Project\Issue::current()->assigned ? ' assigned' : ''; ?>" ><?php echo $row->firstname . ' ' . $row->lastname; ?></a></li>
 							<?php endforeach; ?>
 						</ul>
 					</div>
@@ -132,7 +131,7 @@
 			<?php echo __('tinyissue.comment_on_this_issue'); ?>
 		</h4>
 
-		<form method="post" action="">
+		<form method="post" action="" enctype="multipart/form-data">
 			<!-- New options in the form : percentage of work done after this ticket  -->
 			<p>
 				<textarea name="comment" style="width: 98%; height: 90px;"></textarea>
@@ -157,16 +156,18 @@
 								autocomplete: { source: '<?php echo URL::to('ajax/tags/suggestions/filter'); ?>' }
 							});
 						});
+						//Viendra ici
 						<?php echo $Retagage; ?>
 						</script>
 					</div>
 			</p>
 			<p>
-				<div class="upload-wrap green-button">
+				<div class="upload-wrap green-button" onclick="document.getElementById('upload').style.display = 'block';">
 						<?php echo __('tinyissue.fileupload_button'); ?>
 						<input id="upload" type="file" name="file_upload" class="green-button" />
 						<input type="hidden" id="uploadbuttontext" name="uploadbuttontext" value="<?php echo __('tinyissue.fileupload_button'); ?>"/>
-					</div>			</p>
+					</div>
+			</p>
 
 			<ul id="uploaded-attachments"></ul>
 
@@ -187,40 +188,77 @@
 	<?php echo HTML::link(Project\Issue::current()->to('status?status=1'), __('tinyissue.reopen_issue')); ?>
 	<?php endif; ?>
 </div>
+
+
 <script type="text/javascript">
 var d = new Date();
 var t = d.getTime();
 var AllTags = "";
-function OteTag() {
-	var avant = LitTags();
-	setTimeout(function() {
-		apres = LitTags();
-		document.getElementById('ContenuVariable').src = '<?php echo $_SERVER['REQUEST_URI']; ?>/retag?avant=' + avant + '&apres=' + apres +'';
-	} , 123);
-	AllTags = apres;
-}
-function AddTag (tags){
+
+
+function AddTag (Quel,d) {
+	if (d == true ) { return true; }
 	var n = new Date();
 	var now = n.getTime();
-	if (now - t > 1000 ) {
-		document.getElementById('ContenuVariable').src = '<?php echo $_SERVER['REQUEST_URI']; ?>/retag?avant=' + AllTags + '&apres=xxxxx' + tags +'';
-	}
-	AllTags = LitTags();
+	var Modif = "AddOneTag";
+	var IDcomment = 'comment' + now;
+	var xhttpTAG = new XMLHttpRequest();
+	var NextPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/retag?Modif=' + Modif + '&Quel=' + Quel;
+	xhttpTAG.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		if (xhttpTAG.responseText != '' ) {
+				var adLi = document.createElement("LI");
+				adLi.className = 'comment';
+				adLi.id = IDcomment;
+				document.getElementById('ul_IssueDiscussion').appendChild(adLi);
+				document.getElementById(IDcomment).innerHTML = xhttpTAG.responseText;
+			}
+		}
+	};
+	xhttpTAG.open("GET", NextPage, true);
+	xhttpTAG.send(); 
 }
 
-function LitTags () {
-	var NosTags = "";
-	var contenu = document.getElementById('TagItAll');
-	var Fils = contenu.children;
-	for (i = 0; i < Fils.length; i++) {
-		Tout = Fils[i].innerHTML;
-		etiq = Tout.substring(Tout.indexOf('>', 14)+1, Tout.indexOf('<', Tout.indexOf('>', 14)));
-		if (etiq != '<input aria-haspopup="true" aria-autocomplete="list" role="textbox" autocomplete="off" class="ui-widget-content ui-autocomplete-input" type="text">' && etiq != '<input class="ui-widget-content" type="text">' ) {
-			NosTags = NosTags + etiq + "|";
-		}
-	}
-	return NosTags;
+function OteTag(Quel) {
+	Modif = "eraseTag";
+	var xhttpDAG = new XMLHttpRequest();
+	var NextPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/retag?Modif=' + Modif + '&Quel=' + Quel;
+	xhttpDAG.onreadystatechange = function() {
+	    if (this.readyState == 4 && this.status == 200) {
+			var adLi = document.createElement("LI");
+			adLi.className = 'comment';
+			adLi.id = IDcomment;
+			document.getElementById('ul_IssueDiscussion').appendChild(adLi);
+			document.getElementById(IDcomment).innerHTML = xhttpDAG.responseText;
+	    }
+	};
+	xhttpDAG.open("GET", NextPage, true);
+	xhttpDAG.send(); 
 }
+
+function Reassignment (Project, Prev, Suiv, Issue) {
+	var n = new Date();
+	var Modif = "false";
+	if (n-d > 3000 ) { Modif = "AddOneTag"; }
+	var now = n.getTime();
+	var IDcomment = 'comment' + now;
+	var xhttpASGMT = new XMLHttpRequest();
+	var NextPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/reassign?Modif=' + Modif + '&Project=' + Project + '&Prev=' + Prev + '&Suiv=' + Suiv + '&Issue=' + Issue;
+	xhttpASGMT.onreadystatechange = function() {
+	if (this.readyState == 4 && this.status == 200) {
+		if (xhttpASGMT.responseText != '' ) {
+				var adLi = document.createElement("LI");
+				adLi.className = 'comment';
+				adLi.id = IDcomment;
+				document.getElementById('ul_IssueDiscussion').appendChild(adLi);
+				document.getElementById(IDcomment).innerHTML = xhttpASGMT.responseText;
+			}
+		}
+	};
+	xhttpASGMT.open("GET", NextPage, true);
+	xhttpASGMT.send(); 
+}
+
 
 <?php
 	$wysiwyg = Config::get('application.editor');
@@ -247,5 +285,5 @@ function LitTags () {
 
 		<?php } ?>
 	<?php } ?>
-	setTimeout(function() { var debut = LitTags (); } , 497);
+	//setTimeout(function() { var debut = LitTags (); } , 497);
 </script>

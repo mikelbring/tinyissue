@@ -1,8 +1,7 @@
 <?php
 
 /* Redirect if we have not installed */
-if(!file_exists(__DIR__ . '/config.app.php'))
-{
+if(!file_exists(__DIR__ . '/config.app.php')) {
 	header("Location: ./install");
 	exit;
 }

@@ -11,17 +11,14 @@ class Attachment extends \Eloquent {
 	* @param  array  $input
 	* @return bool
 	*/
-	public static function upload($input)
-	{
+	public static function upload($input) {
 		$path = \Config::get('application.upload_path');
 
-		if(!file_exists($path = $path . $input['project_id']))
-		{
+		if(!file_exists($path = $path . $input['project_id'])) {
 			mkdir($path);
 		}
 
-		if(!file_exists($path = $path . '/' . $input['upload_token']))
-		{
+		if(!file_exists($path = $path . '/' . $input['upload_token'])) {
 			mkdir($path);
 		}
 

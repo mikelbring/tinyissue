@@ -73,8 +73,10 @@ class Comment extends  \Eloquent {
 				$Idtags[] =  $activity->id;
 			}
 		}
+		if (isset($Idtags)) {
 		$issue->tags()->sync($Idtags);
 		$issue->save();
+		}
 
 		/* Update the project */
 		$issue->updated_at = date('Y-m-d H:i:s');
