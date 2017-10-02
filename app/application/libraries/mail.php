@@ -9,7 +9,7 @@ class Mail {
 	 * @return  int
 	 */
 	public static function send_email($message, $to, $subject) {
-		require  path('app') .  'libraries/PHPmailer/class.phpmailer.php';
+		require_once  path('app') .  'libraries/PHPmailer/class.phpmailer.php';
 		$options = Config::get('application.mail');
 
 		$mail = new PHPMailer();

@@ -47,7 +47,7 @@ CREATE TABLE `projects_issues` (
   `updated_at` datetime DEFAULT NULL,
   `closed_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) AUTO_INCREMENT = 2 ENGINE=MyISAM DEFAULT CHARSET=utf8;
 #--
 
 #--#Create Projects Issues Attachments Table
@@ -216,10 +216,10 @@ INSERT IGNORE INTO `permissions` (`id`, `permission`, `description`, `auto_has`)
 	(2, 'issue-create', 'Create issues in projects assigned to', NULL),
 	(3, 'issue-comment', 'Comment in issues in projects assigned to', '1'),
 	(4, 'issue-modify', 'Modify issues in projects assigned to', '1'),
-	(11, 'project-all', 'View, modify all projects and issues', '1,2,3,4'),
 	(6, 'administration', 'Administration tools, such as user management and application settings.', NULL),
 	(9, 'project-create', 'Create a new project', NULL),
-	(10, 'project-modify', 'Modify a project assigned to', NULL);
+	(10, 'project-modify', 'Modify a project assigned to', NULL),
+	(11, 'project-all', 'View, modify all projects and issues', '1,2,3,4');
 #--
 
 #--#Insert Roles Data
@@ -262,7 +262,9 @@ VALUES
 	(2,'Commented on a issue','comment'),
 	(3,'Closed an issue','close-issue'),
 	(4,'Reopened an issue','reopen-issue'),
-	(5,'Reassigned an issue','reassign-issue');
+	(5,'Reassigned an issue','reassign-issue'),
+	(6,'Updated issue tags','update-issue-tags'),
+	(7,'Attached a file to issue','attached-file');
 #--
 
 #--#Create default tags : id 9

@@ -68,7 +68,7 @@ CREATE TABLE  IF NOT EXISTS  `projects_issues_tags` (
   `updated_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `issue_tag` (`issue_id`,`tag_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) AUTO_INCREMENT = 2 ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 #CREATE Projects Links Table
 CREATE TABLE  IF NOT EXISTS  `projects_links` (
@@ -112,7 +112,9 @@ VALUES
 	(2,'Commented on a issue','comment'),
 	(3,'Closed an issue','close-issue'),
 	(4,'Reopened an issue','reopen-issue'),
-	(5,'Reassigned an issue','reassign-issue');
+	(5,'Reassigned an issue','reassign-issue'),
+	(6,'Updated issue tags','update-issue-tags'),
+	(7,'Attached a file to issue','attaches-issue-file');
 
 #INSERT default tags : id 9
 INSERT IGNORE INTO `tags` (`id`, `tag`, `bgcolor`, `created_at`, `updated_at`) VALUES
@@ -132,7 +134,8 @@ INSERT IGNORE INTO projects_issues_tags (issue_id, tag_id, created_at, updated_a
 	FROM projects_issues
 );
 
-#INSERT activity type for tag update
-INSERT IGNORE INTO `activity` (`id`, `description`, `activity`)
-VALUES ('6', 'Updated issue tags', 'update-issue-tags');
+#INSERT activity type for tag update and for uploaded files
+INSERT IGNORE INTO `activity` (`id`, `description`, `activity`) VALUES  
+	('6', 'Updated issue tags', 'update-issue-tags'), 
+	('7', 'Attached a file to issue', 'attached-file');
 

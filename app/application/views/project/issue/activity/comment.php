@@ -29,17 +29,6 @@
 		</div>
 		<?php endif; ?>
 
-		<ul class="attachments">
-			<?php foreach($comment->attachments()->get() as $attachment): ?>
-			<li>
-				<?php if(in_array($attachment->fileextension, Config::get('application.image_extensions'))): ?>
-					<a href="<?php echo URL::base() . Config::get('application.attachment_path') . $project->id . '/' . $attachment->upload_token . '/' . rawurlencode($attachment->filename) ?>" title="<?php echo $attachment->filename; ?>"><img src="<?php echo URL::base() . Config::get('application.attachment_path') . $project->id . '/' . $attachment->upload_token . '/' . $attachment->filename; ?>" style="max-width: 100px;"  alt="<?php echo $attachment->filename; ?>" /></a>
-				<?php else: ?>
-					<a href="<?php echo URL::base() . Config::get('application.attachment_path') . $project->id . '/' . $attachment->upload_token . '/' . rawurlencode($attachment->filename); ?>" title="<?php echo $attachment->filename; ?>"><?php echo $attachment->filename; ?></a>
-				<?php endif; ?>
-			</li>
-			<?php endforeach; ?>
-		</ul>
 	</div>
 	<div class="clr"></div>
 </li>

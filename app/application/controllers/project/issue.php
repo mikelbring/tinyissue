@@ -4,14 +4,13 @@ class Project_Issue_Controller extends Base_Controller {
 
 	public $layout = 'layouts.project';
 
-	public function __construct()
-	{
+	public function __construct() {
 		parent::__construct();
 
 		$this->filter('before', 'project');
 		$this->filter('before', 'issue')->except('new');
 		$this->filter('before', 'permission:issue-modify')
-				->only(array('edit_comment', 'delete_comment', 'reassign', 'retag', 'status', 'edit'));
+				->only(array('edit_comment', 'delete_comment', 'reassign', 'retag', 'status', 'edit', 'upload', 'checkExt'));
 	}
 
 	/**
@@ -20,8 +19,7 @@ class Project_Issue_Controller extends Base_Controller {
 	 *
 	 * @return View
 	 */
-	public function get_new()
-	{
+	public function get_new() {
 		Asset::add('tag-it-js', '/app/assets/js/tag-it.min.js', array('jquery', 'jquery-ui'));
 		Asset::add('tag-it-css-base', '/app/assets/css/jquery.tagit.css');
 		Asset::add('tag-it-css-zendesk', '/app/assets/css/tagit.ui-zendesk.css');
@@ -31,8 +29,8 @@ class Project_Issue_Controller extends Base_Controller {
 		));
 	}
 
-	public function post_new()
-	{
+
+	public function post_new() {
 		$issue = Project\Issue::create_issue(Input::all(), Project::current());
 
 		if(!$issue['success'])
@@ -53,8 +51,7 @@ class Project_Issue_Controller extends Base_Controller {
 	 *
 	 * @return View
 	 */
-	public function get_index()
-	{
+	public function get_index() {
 		/* Delete a comment */
 		if(Input::get('delete') && Auth::user()->permission('issue-modify'))
 		{
@@ -93,16 +90,14 @@ class Project_Issue_Controller extends Base_Controller {
 	 *
 	 * @return View
 	 */
-	public function get_edit()
-	{
+	public function get_edit() {
 		Asset::add('tag-it-js', '/app/assets/js/tag-it.min.js', array('jquery', 'jquery-ui'));
 		Asset::add('tag-it-css-base', '/app/assets/css/jquery.tagit.css');
 		Asset::add('tag-it-css-zendesk', '/app/assets/css/tagit.ui-zendesk.css');
 
 		/* Get tags as string */
 		$issue_tags = '';
-		foreach(Project\Issue::current()->tags as $tag)
-		{
+		foreach(Project\Issue::current()->tags as $tag) {
 			$issue_tags .= (!empty($issue_tags) ? ',' : '') . $tag->tag;
 		}
 
@@ -113,12 +108,10 @@ class Project_Issue_Controller extends Base_Controller {
 		));
 	}
 
-	public function post_edit()
-	{
+	public function post_edit() {
 		$update = Project\Issue::current()->update_issue(Input::all());
 
-		if(!$update['success'])
-		{
+		if(!$update['success']) {
 			return Redirect::to(Project\Issue::current()->to('edit'))
 				->with_input()
 				->with_errors($update['errors'])
@@ -136,10 +129,8 @@ class Project_Issue_Controller extends Base_Controller {
 	 * @request ajax
 	 * @return string
 	 */
-	public function post_edit_comment()
-	{
-		if(Input::get('body'))
-		{
+	public function post_edit_comment() {
+		if(Input::get('body')) {
 			$comment = Project\Issue\Comment::find(str_replace('comment', '', Input::get('id')))
 					->fill(array('comment' => str_replace("'", "`", Input::get('body'))))
 					->save();
@@ -154,8 +145,7 @@ class Project_Issue_Controller extends Base_Controller {
 	 *
 	 * @return Redirect
 	 */
-	public function get_delete_comment()
-	{
+	public function get_delete_comment() {
 		Project\Issue\Comment::delete_comment(Input::get('comment'));
 
 		return Redirect::to(Project\Issue::current()->to())
@@ -201,11 +191,24 @@ class Project_Issue_Controller extends Base_Controller {
 	}
 
 
+	/**
+	 * Check if an extension file icon exists
+	 * /project/(:num)/issue/index
+	 *
+	 * @request ajax
+	 * @return string
+	 */
+	public function get_checkExt() {
+		return (file_exists("../app/assets/images/upload_type/".strtolower(Input::get('ext').".png"))) ? "yes" : "non";
+	}
+
 
 	/**
-	 * Edit a issue
+	 * Change an issue's assignation
+	 * /project/(:num)/issue/index
 	 *
-	 * @change assignation
+	 * @request ajax
+	 * @return string
 	 */
 	public function get_reassign() {
 		if (Input::get('Suiv') == 0 ) { $result = false; } else {
@@ -237,7 +240,6 @@ class Project_Issue_Controller extends Base_Controller {
 				$text .= "\n\n";
 				$text .= sprintf(__('email.reassigned_by'),\Auth::user()->firstname." ".\Auth::user()->lastname);
 				$text .= "\n\n";
-//				$text .= __('email.more_url')." http://". $_SERVER['SERVER_ADDR'] ."/project/".$project_id."/issue/".Input::get('Issue')."";
 				$text .= __('email.more_url')." http://". $_SERVER['SERVER_NAME'] ."/project/".$project_id."/issue/".Input::get('Issue')."";
 				\Mail::send_email($text, $WhoAddr, $subject);
 			}
@@ -259,9 +261,10 @@ class Project_Issue_Controller extends Base_Controller {
 	}
 
 	/**
-	 * Edit an issue
+	 * Change issue's tags
 	 *
-	 * change tags
+	 * @request ajax
+	 * @return string
 	 */
 	public function get_retag() {
 			$content = "";
@@ -328,5 +331,43 @@ class Project_Issue_Controller extends Base_Controller {
 				$result = $content;
 			}
 		return $content;
+	}
+
+	/**
+	 * Add document to an existant issue
+	 *
+	 * upload file
+	 * $_FILE contains name, type, tmp_name,error,size
+	 *
+	 * @request ajax
+	 * @return string
+	 */ 
+	public function post_upload() {
+		$TheFile	= $_FILES["Loading"];
+		if(move_uploaded_file($TheFile["tmp_name"], "../uploads/".$_GET["Nom"])) {
+			$PosiPoint = strpos($_SERVER['REQUEST_URI'],".");
+			$LaPage = substr($_SERVER['REQUEST_URI'], $PosiPoint+5);
+			$Datas = explode("/", $LaPage);
+			$now = date("Y-m-d H:i:s");
+			$Issue = $Datas[3];
+			if ($Issue == 1) {		//To attache a file to a new issue 
+				//We give it the next available issue number
+				$NxIssue = \DB::table('projects_issues')->order_by('id','DESC')->get();
+				$Issue = $NxIssue[0]->id + 1;
+				//We give it the next available issue comment number
+				$Quel = \DB::table('projects_issues_comments')->order_by('id','DESC')->get();
+				$newID = $Quel[0]->id + 1;
+			} else {
+				$Quel = \DB::table('projects_issues_comments')->where('issue_id', '=', $Issue)->order_by('id','DESC')->get();
+				$newID = (isset($Quel[0]->id)) ? $Quel[0]->id : NULL ;
+			}
+			\DB::table('projects_issues_attachments')->insert(array('id'=>NULL,'issue_id'=>$Issue,'comment_id'=>$newID,'uploaded_by'=>$_GET["Who"],'filesize'=>$TheFile["size"],'filename'=>$TheFile["name"],'fileextension'=>$_GET["ext"],'upload_token'=>$TheFile["tmp_name"],'created_at'=>$now,'updated_at'=>$now) );
+			$Quel = \DB::table('projects_issues_attachments')->where('issue_id', '=', $Issue)->order_by('id','DESC')->get();
+			\User\Activity::add(7, $_GET["Who"], $Issue, $Quel[0]->id );
+			$msg = $TheFile["error"];
+		} else {
+			return false;
+		}
+		return $msg;
 	}
 }

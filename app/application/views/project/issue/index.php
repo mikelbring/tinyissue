@@ -161,15 +161,20 @@
 						</script>
 					</div>
 			</p>
-			<p>
-				<div class="upload-wrap green-button" onclick="document.getElementById('upload').style.display = 'block';">
-						<?php echo __('tinyissue.fileupload_button'); ?>
-						<input id="upload" type="file" name="file_upload" class="green-button" />
-						<input type="hidden" id="uploadbuttontext" name="uploadbuttontext" value="<?php echo __('tinyissue.fileupload_button'); ?>"/>
+			<ul id="uploaded-attachments">
+				<p>
+					<div id="div_upload" class="upload-wrap green-button" onclick="document.getElementById('div_upload').style.width = '280px'; document.getElementById('span_butupload').style.display = 'block'; ">
+						<span id="upload_title"><?php echo __('tinyissue.fileupload_button'); ?></span>
+						<span id="span_butupload" style="display: none;">
+							<input id="file_upload" type="file" name="file_upload" class="green-button" onchange="IMGupload(this);" />
+							<input type="hidden" id="uploadbuttontext" name="uploadbuttontext" value="<?php echo __('tinyissue.fileupload_button'); ?>" style="color:#000; background-color:#99F;" />
+						</span>
 					</div>
-			</p>
-
-			<ul id="uploaded-attachments"></ul>
+					<div id="div_barupload" style="display: none; position:relative; left: 450px; top: -50px">
+						<progress id="progressBar" value="0" max="100" style="width:300px;"></progress>
+					</div>
+				</p>
+			</ul>
 
 			<p style="margin-top: 10px;">
 				<input type="submit" class="button primary" value="<?php echo __('tinyissue.comment'); ?>" />
@@ -198,10 +203,8 @@ var AllTags = "";
 
 function AddTag (Quel,d) {
 	if (d == true ) { return true; }
-	var n = new Date();
-	var now = n.getTime();
 	var Modif = "AddOneTag";
-	var IDcomment = 'comment' + now;
+	var IDcomment = 'comment' + new Date().getTime();
 	var xhttpTAG = new XMLHttpRequest();
 	var NextPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/retag?Modif=' + Modif + '&Quel=' + Quel;
 	xhttpTAG.onreadystatechange = function() {
@@ -217,6 +220,63 @@ function AddTag (Quel,d) {
 	};
 	xhttpTAG.open("GET", NextPage, true);
 	xhttpTAG.send(); 
+}
+
+function IMGupload(input) {
+	var IDcomment = 'comment' + new Date().getTime();
+	var fil = document.getElementById("file_upload").files[0];
+	var ext = fil['name'].substring(fil['name'].lastIndexOf('.') + 1).toLowerCase();
+	var img = "../../../../app/assets/images/icons/file_01.png?"; 
+	var xhttpCHK = new XMLHttpRequest();
+	var CheckPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/checkExt?ext=' + ext;
+	xhttpCHK.onreadystatechange = function() {
+	   if (this.readyState == 4 && this.status == 200) {
+			var formdata = new FormData();
+			formdata.append("Loading", fil);
+			if (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg") { 
+				img = "../../../../uploads/" + fil['name'];
+			} else if (xhttpCHK.responseText == 'yes' ) {
+				img = "../../../../app/assets/images/upload_type/" + ext + ".png";
+			}
+			var xhttpUPLD = new XMLHttpRequest();
+			var NextPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/upload?Nom=' + fil['name'] + '&Who=' + <?php echo \Auth::user()->id; ?> + '&ext=' + ext;
+		
+			xhttpUPLD.onreadystatechange = function() {
+			if (this.readyState == 3 ) {
+				document.getElementById('div_barupload').style.display = "block";
+			}
+			if (this.readyState == 4 && this.status == 200) {
+				if (xhttpUPLD.responseText != '' ) {
+						var adLi = document.createElement("LI");
+						adLi.className = 'comment';
+						adLi.id = IDcomment;
+						document.getElementById('ul_IssueDiscussion').appendChild(adLi);
+						var msg = '<div class="insides"><div class="topbar"><div class="data">';
+						msg = msg + '<a href="../../../../uploads/' + fil['name'] + "?" + new Date().getTime() + '" target="_blank" />';
+						msg = msg + '<img src="' + img + '" height="30" align="right" border="0" />';
+						msg = msg + '</a>';
+						msg = msg + ((xhttpUPLD.responseText == 0) ? '<?php echo __('tinyissue.fileupload_succes'); ?>' : '<?php echo __('tinyissue.fileupload_failed'); ?>' );
+						msg = msg + '<a href="../../../../uploads/' + fil['name'] + "?" + new Date().getTime() + '" target="_blank" />';
+						msg = msg + '<b>' + fil['name'] + '</b>';
+						msg = msg + '</div></div></div>';
+						document.getElementById(IDcomment).innerHTML = msg;
+						document.getElementById("file_upload").value = "";
+						document.getElementById('div_barupload').style.display = "none";
+						document.getElementById('span_butupload').style.display = 'none';
+					}
+				}
+			};
+			xhttpUPLD.open("POST", NextPage, true);
+			xhttpUPLD.send(formdata); 
+			xhttpUPLD.upload.addEventListener("progress", IMGupload_progressHandler, false);
+		}
+	};
+	xhttpCHK.open("GET", CheckPage, true);
+	xhttpCHK.send(); 
+}
+function IMGupload_progressHandler(event){
+	var percent = (event.total == 0) ? 1 : Math.round((event.loaded / event.total) * 100);
+	document.getElementById("progressBar").value = percent;
 }
 
 function OteTag(Quel) {
@@ -240,8 +300,7 @@ function Reassignment (Project, Prev, Suiv, Issue) {
 	var n = new Date();
 	var Modif = "false";
 	if (n-d > 3000 ) { Modif = "AddOneTag"; }
-	var now = n.getTime();
-	var IDcomment = 'comment' + now;
+	var IDcomment = 'comment' + n.getTime();
 	var xhttpASGMT = new XMLHttpRequest();
 	var NextPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/reassign?Modif=' + Modif + '&Project=' + Project + '&Prev=' + Prev + '&Suiv=' + Suiv + '&Issue=' + Issue;
 	xhttpASGMT.onreadystatechange = function() {
