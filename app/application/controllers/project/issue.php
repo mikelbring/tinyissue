@@ -275,8 +275,8 @@ class Project_Issue_Controller extends Base_Controller {
 			$Msg = "";
 			$Show = false;
 
-			$Modif = Input::get('Modif') ?? false;
-			$Quel = Input::get('Quel') ?? "xyzxyz";
+			$Modif = (isset(Input::get('Modif'))) ? Input::get('Modif') :  false;
+			$Quel = (isset(Input::get('Quel'))) ? Input::get('Quel') : "xyzxyz";
 			$TagNum = Tag::where('tag', '=', $Quel )->first(array('id','tag','bgcolor'));
 			if (!isset($TagNum) || @$TagNum == '' ) { $Modif = false; $Quel = "xyzxyz"; }
 
@@ -349,7 +349,7 @@ class Project_Issue_Controller extends Base_Controller {
 			$LaPage = substr($_SERVER['REQUEST_URI'], $PosiPoint+5);
 			$Datas = explode("/", $LaPage);
 			$now = date("Y-m-d H:i:s");
-			$Issue = $Datas[3];
+			$Issue = (isset($Datas[3])) ? $Datas[3] : 1;
 			if ($Issue == 1) {		//To attache a file to a new issue 
 				//We give it the next available issue number
 				$NxIssue = \DB::table('projects_issues')->order_by('id','DESC')->get();
