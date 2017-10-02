@@ -275,8 +275,8 @@ class Project_Issue_Controller extends Base_Controller {
 			$Msg = "";
 			$Show = false;
 
-			$Modif = (isset(Input::get('Modif'))) ? Input::get('Modif') :  false;
-			$Quel = (isset(Input::get('Quel'))) ? Input::get('Quel') : "xyzxyz";
+			$Modif = (Input::get('Modif') !== NULL) ? Input::get('Modif') :  false;
+			$Quel = (Input::get('Quel')  !== NULL ) ? Input::get('Quel') : "xyzxyz";
 			$TagNum = Tag::where('tag', '=', $Quel )->first(array('id','tag','bgcolor'));
 			if (!isset($TagNum) || @$TagNum == '' ) { $Modif = false; $Quel = "xyzxyz"; }
 
