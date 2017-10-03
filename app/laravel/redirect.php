@@ -177,9 +177,9 @@ class Redirect extends Response {
 		// properly if we've outputted any content from
 		// within Laravel.
 
-//		while (ob_get_level() > 0) {
-//			ob_end_clean();
-//		}
+		while (ob_get_level() > 0) {
+			ob_end_clean();
+		}
 		return parent::send();
 	}
 

@@ -35,7 +35,7 @@ class Section {
 	{
 		if ($content === '')
 		{
-			//ob_start() and static::$last[] = $section;
+			ob_start() and static::$last[] = $section;
 		}
 		else
 		{
@@ -79,8 +79,8 @@ class Section {
 	 */
 	public static function stop()
 	{
-//		static::extend($last = array_pop(static::$last), ob_get_clean());
-		static::extend($last = array_pop(static::$last), "");
+		static::extend($last = array_pop(static::$last), ob_get_clean());
+//		static::extend($last = array_pop(static::$last), "");
 		return $last;
 	}
 
