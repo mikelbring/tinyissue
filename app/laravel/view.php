@@ -376,8 +376,7 @@ class View implements ArrayAccess {
 		// loops which could incur performance penalties.
 		$__contents = $this->load();
 
-		ob_start() and extract($__data, EXTR_SKIP);
-
+		//ob_start() and extract($__data, EXTR_SKIP);
 		// We'll include the view contents for parsing within a catcher
 		// so we can avoid any WSOD errors. If an exception occurs we
 		// will throw it out to the exception handler.
@@ -391,10 +390,11 @@ class View implements ArrayAccess {
 		// to the client and confuse the user with junk.
 		catch (\Exception $e)
 		{
-			ob_get_clean(); throw $e;
+			//ob_get_clean(); 
+			throw $e;
 		}
-
-		$content = ob_get_clean();
+		//$content = ob_get_clean();
+		$content = "";
 
 		// The view filter event gives us a last chance to modify the
 		// evaluated contents of the view and return them. This lets

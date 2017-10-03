@@ -67,17 +67,18 @@ class FileBinaryMimeTypeGuesser implements MimeTypeGuesserInterface
             return null;
         }
 
-        ob_start();
+//        ob_start();
 
         // need to use --mime instead of -i. see #6641
         passthru(sprintf($this->cmd, escapeshellarg($path)), $return);
         if ($return > 0) {
-            ob_end_clean();
+//            ob_end_clean();
 
             return null;
         }
 
-        $type = trim(ob_get_clean());
+//        $type = trim(ob_get_clean());
+		$type = "";
 
         if (!preg_match('#^([a-z0-9\-]+/[a-z0-9\-]+)#i', $type, $match)) {
             // it's not a type, but an error message
