@@ -12,9 +12,7 @@ class Error {
 	public static function exception($exception, $trace = true)
 	{
 		static::log($exception);
-
 		ob_get_level() and ob_end_clean();
-
 		$message = $exception->getMessage();
 
 		// For Laravel view errors we want to show a prettier error:

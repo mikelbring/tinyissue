@@ -78,6 +78,7 @@ class FileBinaryMimeTypeGuesser implements MimeTypeGuesserInterface
         }
 
         $type = trim(ob_get_clean());
+//		$type = "";
 
         if (!preg_match('#^([a-z0-9\-]+/[a-z0-9\-]+)#i', $type, $match)) {
             // it's not a type, but an error message

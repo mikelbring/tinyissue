@@ -90,34 +90,26 @@ class View implements ArrayAccess {
 	 * @param  array   $data
 	 * @return void
 	 */
-	public function __construct($view, $data = array())
-	{
+	public function __construct($view, $data = array()) {
 		$this->view = $view;
 		$this->data = $data;
 
 		// In order to allow developers to load views outside of the normal loading
 		// conventions, we'll allow for a raw path to be given in place of the
 		// typical view name, giving total freedom on view loading.
-		if (starts_with($view, 'path: '))
-		{
+		if (starts_with($view, 'path: ')) {
 			$this->path = substr($view, 6);
-		}
-		else
-		{
+		} else {
 			$this->path = $this->path($view);
 		}
 
 		// If a session driver has been specified, we will bind an instance of the
 		// validation error message container to every view. If an error instance
 		// exists in the session, we will use that instance.
-		if ( ! isset($this->data['errors']))
-		{
-			if (Session::started() and Session::has('errors'))
-			{
+		if ( ! isset($this->data['errors'])) {
+			if (Session::started() and Session::has('errors')) {
 				$this->data['errors'] = Session::get('errors');
-			}
-			else
-			{
+			} else {
 				$this->data['errors'] = new Messages;
 			}
 		}
@@ -213,8 +205,7 @@ class View implements ArrayAccess {
 	 * @param  array   $data
 	 * @return View
 	 */
-	public static function make($view, $data = array())
-	{
+	public static function make($view, $data = array()) {
 		return new static($view, $data);
 	}
 
@@ -377,7 +368,6 @@ class View implements ArrayAccess {
 		$__contents = $this->load();
 
 		ob_start() and extract($__data, EXTR_SKIP);
-
 		// We'll include the view contents for parsing within a catcher
 		// so we can avoid any WSOD errors. If an exception occurs we
 		// will throw it out to the exception handler.
@@ -391,10 +381,11 @@ class View implements ArrayAccess {
 		// to the client and confuse the user with junk.
 		catch (\Exception $e)
 		{
-			ob_get_clean(); throw $e;
+			ob_get_clean(); 
+			throw $e;
 		}
-
 		$content = ob_get_clean();
+		//$content = "";
 
 		// The view filter event gives us a last chance to modify the
 		// evaluated contents of the view and return them. This lets

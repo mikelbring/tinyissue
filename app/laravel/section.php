@@ -80,7 +80,7 @@ class Section {
 	public static function stop()
 	{
 		static::extend($last = array_pop(static::$last), ob_get_clean());
-
+//		static::extend($last = array_pop(static::$last), "");
 		return $last;
 	}
 

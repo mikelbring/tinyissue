@@ -176,11 +176,10 @@ class Redirect extends Response {
 		// that symphony will send our redirect headers
 		// properly if we've outputted any content from
 		// within Laravel.
-		while (ob_get_level() > 0)
-		{
+
+		while (ob_get_level() > 0) {
 			ob_end_clean();
 		}
-
 		return parent::send();
 	}
 
