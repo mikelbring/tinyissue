@@ -5,7 +5,7 @@
 				<?php
 					$FileTypes = (is_dir('../app/assets/images/upload_type')) ? $FileTypes= scandir('../app/assets/images/upload_type') : array();
 					$What = \DB::table('projects_issues_attachments')->where('id', '=', $activity->attributes['action_id'])->order_by('id','DESC')->get();
-					if ($What[0]->filename === NULL) {
+					if (@$What[0]->filename === NULL) {
 						$Who = \User::where('id', '=', $activity->attributes['user_id'] )->get(array('firstname','lastname','email'));
 						echo '<a href="../../../../uploads/'.$What[0]->filename.'" target="_blank" />';
 						echo '<img src="'.(( in_array(strtolower($What[0]->fileextension), array('jpg','jpeg','gif','png'))) ? '../../../../uploads/'.$What[0]->filename : ((( in_array(strtolower($What[0]->fileextension).'.png', $FileTypes)) ? '../../../../app/assets/images/upload_type/'.$What[0]->fileextension.'.png' : '../../../../app/assets/images/icons/file_01.png'))).'" height="30" align="right" border="0" />';
