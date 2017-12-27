@@ -139,8 +139,11 @@
 				<?php echo __('tinyissue.percentage_of_work_done'); ?> : <input type="number" name="Pourcentage" value="<?php echo ((is_object($Etat)) ? (($Etat->weight == 100) ? 91 : $Etat->weight+1) : 10 ); ?>" min="<?php echo ((is_object($Etat)) ? (($Etat->weight == 100) ? 91 : $Etat->weight) : 10); ?>" max="100" /> %
 				</span>
 				<div style="text-align: right; width: 98%; margin-top: -25px;">
+<!-- 
 				<a href="http://daringfireball.net/projects/markdown/basics/" ><?php echo __('tinyissue.format_with_markdown'); ?></a>
-				</div>
+ -->
+ 				<br /><br />
+ 				</div>
 					<div style="width: 90%">
 						<!-- Tags modification  -->
 						<?php

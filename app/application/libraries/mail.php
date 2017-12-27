@@ -15,8 +15,8 @@ class Mail {
 		$mail = new PHPMailer();
 		$mail->Mailer = $options['transport'];
 		switch ($options['transport']) {
-			case 'smtp':											//If you correct the smtp part, please correct ALSO the default part
-				require  path('app') .  'libraries/PHPmailer/class.smtp.php';
+			case 'smtp':												//If you correct the smtp part, please correct ALSO the default part
+				require_once  path('app') .  'libraries/PHPmailer/class.smtp.php';
 				$mail->SMTPDebug = 0;								// 0 = no output, 1 = errors and messages, 2 = messages only.
 				if ($options['smtp']['encryption'] == '') {
 				} else {
@@ -36,12 +36,12 @@ class Mail {
 				//Please submit your code
 				//On March 14th, 2017 I had no time to go further on this
 				break;
-			default:												//If you correct the default part, please correct ALSO the smtp part
-				require  path('app') .  'libraries/PHPmailer/class.smtp.php';
-				$mail->SMTPDebug = 1;								// 0 = no output, 1 = errors and messages, 2 = messages only.
+			default:															//If you correct the default part, please correct ALSO the smtp part
+				require_once path('app') .  'libraries/PHPmailer/class.smtp.php';
+				$mail->SMTPDebug = 1;									// 0 = no output, 1 = errors and messages, 2 = messages only.
 				if ($options['smtp']['encryption'] == '') {
 				} else {
-					$mail->SMTPAuth = true;							// enable SMTP authentication
+					$mail->SMTPAuth = true;								// enable SMTP authentication
 					$mail->SMTPSecure = $options['smtp']['encryption'];	// sets the prefix to the server
 					$mail->Host = $options['smtp']['server'];
 					$mail->Port = $options['smtp']['port'];
