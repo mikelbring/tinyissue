@@ -76,7 +76,14 @@ return array(
 			'username' => 'xyzxyz',
 			'password' => '******'
 		),
-		'encoding' => 'UTF-8'
+		'encoding' => 'UTF-8',
+		/*
+		* Final delivery format
+		* Default: text/plain
+		* 'text/plain' or 'html'  must be lower case
+		*/
+		'plainHTML' => 'text/plain',
+		'linelenght' => 80
 	),
 
 	/**  Timezone

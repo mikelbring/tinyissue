@@ -164,46 +164,40 @@ class Todo extends Eloquent {
 	* @param int       $issue_id
 	* @return array
 	*/
-	public static function update_todo($issue_id = 0, $new_status = 1)
-	{
-    $user_id = Auth::user()->id;
-    
-    $todo = Todo::load_todo($issue_id, $user_id);
-    if(!$todo)
-		{
+	public static function update_todo($issue_id = 0, $new_status = 1) {
+		$user_id = Auth::user()->id;
+		 
+		$todo = Todo::load_todo($issue_id, $user_id);
+		if(!$todo) {
 			return array(
-				'success' => FALSE,
-				'errors' => __('tinyissue.todos_err_loadfailed'),
+			'success' => FALSE,
+			'errors' => __('tinyissue.todos_err_loadfailed'),
 			);
 		}
-
-    // Sanity check on status value.
-    // @TODO Handle N configurable status codes
-    $new_status = (int)$new_status;
-    if ($new_status >= 0 && $new_status <= 3) 
-    {
-      $todo->status = $new_status;
-      $todo->save();
-      
-      // Close issue if todo is moved to closed lane. 
-      if ($new_status == 0) {
-        $issue = Project\Issue::find($issue_id);
-        if (!empty($issue)) 
-        {
-          $issue->change_status(0);
-        }
-      }
-      
-      return array(
-        'success' => TRUE
-      );
-    }
-    else 
-    {
+		
+		// Sanity check on status value.
+		// @TODO Handle N configurable status codes
+		$new_status = (int)$new_status;
+		if ($new_status >= 0 && $new_status <= 3) {
+			$todo->status = $new_status;
+			$todo->save();
+			
+			// Close issue if todo is moved to closed lane. 
+			if ($new_status != 0) {
+				$config_app = require path('public') . 'config.app.php';
+				$Moyenne = ($config_app['Percent'][$new_status] + $config_app['Percent'][$new_status + 1]) / 2;
+				$todo->weight = $Moyenne;
+				$todo->updated_at = date("Y-m-d H:i:s");
+				$todo->save();
+			}
+			$issue = Project\Issue::find($issue_id);
+			if (!empty($issue)) { $issue->change_status($new_status); }
+			return array('success' => TRUE);
+		} else {
 			return array(
-				'success' => FALSE,
-				'errors' => __('tinyissue.todos_err_update'),
+			'success' => FALSE,
+			'errors' => __('tinyissue.todos_err_update'),
 			);
-    }
+		}
 	}
 }
