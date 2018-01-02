@@ -45,7 +45,7 @@ class Mail {
 		if ($mail->ContentType == 'html') {
 			$mail->IsHTML(true);
 			$mail->WordWrap = ($options[isset('linelenght'])) ? $options['linelenght'] : 80;
-			$mail->Body    = $message;
+			$mail->Body = $message;
 			$mail->AltBody = strip_tags($message);
 		} else {
 			$mail->IsHTML(false);

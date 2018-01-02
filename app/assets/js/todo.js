@@ -43,6 +43,8 @@ $(function(){
         function( data ) {
           if (!data.success) {
             alert(data.errors);
+          } else {
+	        	    document.location.href="todo";
           }
         }, "json" );
     }
