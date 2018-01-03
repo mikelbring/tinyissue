@@ -119,6 +119,7 @@ return array(
 	'remove' => 'Remove',
 	'reopen_issue' => 'Reopen Issue',
 	'reopen' => 'Reopen',
+	'report' => 'Reports',
 	'role' => 'Role',
 	'roles_modify' => 'Apply modifications',
 	'save' => 'Save',

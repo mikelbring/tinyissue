@@ -19,10 +19,15 @@ return array(
 		'password' => 'database_password',
 	),
 
-	/**  Date format */
+	/**  Date format
+	  * Check http://php.net/manual/en/function.date.php for informations
+	  * Internationnal date and time:   				'date_format'=>'Y-m-d H:i',
+	  * Internationnal date and time with seconds:  'date_format'=>'Y-m-d H:i:s',
+	  * USA way of writing time:							'date_format'=>'F jS \a\t g:i A',
+	**/           
 	'my_bugs_app'=>array(
 		'name'=> 'Bugs',
-		'date_format'=>'F jS \a\t g:i A',
+		'date_format'=>'Y-m-d H:i',
 	),
 
 	/**  wysiwyg editor
@@ -94,10 +99,10 @@ return array(
 
 	/**  Session key
 	 * Put in a random key combination to use as your session keys
-	 * Up to 32 characters
+	 * You must use 16 or 32 characters
 	 * You can use this online generator: http://online-code-generator.com/generate-salt-random-string.php
 	 */
-	'key' => 'yourrandomkey',
+	'key' => 'UseAtLeast16char',
 
 	/**  mod_rewrite
 	 * True if you are using mod rewrite
