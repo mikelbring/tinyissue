@@ -39,13 +39,8 @@ class Projects_Controller extends Base_Controller {
 
 		$contenu .= '<li>Copie des fichiers de config de Reports</li>';
 		//Copying the Reports files into the appropriate path of Reports' sub-directories
-		$BugsDir = substr($_SERVER['SCRIPT_FILENAME'], strlen($_SERVER["DOCUMENT_ROOT"]."/"));
-		$NbRep = substr_count($BugsDir, "/");
-		$racine = "../../../../";
-		echo '<br /><br />';
-		for($x=0; $x<$NbRep; $x++) { $racine .= "../"; }
 		chdir("vendor/Reports/Bugs_Reporting");
-		$NewDir = $racine.$_POST["Path"]."/".$_POST["SubDir"];
+		$NewDir = $_SERVER["DOCUMENT_ROOT"]."/".$_POST["Path"]."/".$_POST["SubDir"];
 		if (!file_exists($NewDir)) { mkdir ($NewDir); }
 		$No = array(".", "..");
 		$Rep1 = scandir(".");
@@ -78,6 +73,7 @@ class Projects_Controller extends Base_Controller {
 				} else { copy("./".$file1, $NewDir."/".$file1); }
 			}
 		}
+		chdir("../../..");
 		
 		$contenu .= '<li>Modification du fichier de config de Reports</li>';
 		$ConfigDatabase = Config::get('database.connections.mysql');
