@@ -1,20 +1,9 @@
-<?php 
-include_once "BugsRepConfig.php";
-include 'includes/fetch_records.php'; 
-?>
+<?php include 'fetch_records.php'; ?>
 <!DOCTYPE html>
 <html lang="en">
-<head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta name="description" content="Shop Managent System">
-        <meta name="author" content="Bwire Charles Mashauri">
-
+<head> 
         <link rel="shortcut icon" href="../img/favicon_1.ico">
-
         <title>Bugs - Admin Dashboard</title>
-        <link href='http://fonts.googleapis.com/css?family=Source+Sans+Pro:100,300,400,600,700,900,400italic' rel='stylesheet'>
-
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/bootstrap-reset.css" rel="stylesheet">
         <link href="css/animate.css" rel="stylesheet">
@@ -37,54 +26,28 @@ include 'includes/fetch_records.php';
   ga('send', 'pageview');
 
 </script>
-
-    </head>
-
-
-    <body>
-
-     
+</head>
+<body>
         <aside class="left-panel">
-
-       
             <div class="logo">
                 <a href="./" class="logo-expanded">
-                    <img src="img/single-logo.png" alt="logo">
                     <span class="nav-label">Bugs Reporting</span>
                 </a>
             </div>
-
             <nav class="navigation">
                 <ul class="list-unstyled">
                     <li class="has-submenu active"><a href="#"><i class="ion-home"></i> <span class="nav-label">Home</span></a>
                         <ul class="list-unstyled">
                             <li class="active"><a href="./">Dashboard</a></li>
-                      
                         </ul>
                     </li>
-                   
-                    <li class="has-submenu"><a href="#"><i class="ion-bag"></i> <span class="nav-label">Reports</span></a>
-                        <ul class="list-unstyled">
-                            <li><a href="report.php">General Issue Reports</a></li>
-							<li><a href="#">Pending Issues Reports</a></li>
-							<li><a href="#">Closed Issues Reports</a></li>
-							<li><a href="#">Reassignment Issues Reports</a></li></ul>
-                    </li>
-                    
             </nav>
-                
         </aside>
-
         <section class="content">
-            
-          
-            
-
             <div class="wraper container-fluid">
-
                 <div class="row">
                     <div class="col-lg-3 col-sm-6">
-                        <div class="widget-panel widget-style-2 bg-success">
+                        <div class="widget-panel widget-style-2 bg-purple">
                             <i class="ion-android-contacts"></i> 
                             <h2 class="m-0 counter"><?php echo number_format($system_users); ?></h2>
                             <div>System Users</div>
@@ -98,26 +61,50 @@ include 'includes/fetch_records.php';
                         </div>
                     </div>
                     <div class="col-lg-3 col-sm-6">
-                        <div class="widget-panel widget-style-2 bg-danger">
+                        <div class="widget-panel widget-style-2 bg-purple">
                             <i class="ion-close-circled"></i> 
                             <h2 class="m-0 counter"><?php echo number_format($open); ?></h2>
                             <div>Open Tickets</div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-sm-6">
-                        <div class="widget-panel widget-style-2 bg-warning">
+                        <div class="widget-panel widget-style-2 bg-purple">
                             <i class="ion-alert-circled"></i> 
                             <h2 class="m-0 counter"><?php echo number_format($closed); ?></h2>
                             <div>Closed Tickets</div>
                         </div>
                     </div>
-                </div> 
-
-
-               
-            <footer class="footer">
-                <?php echo date('Y'); ?> © Developed by Wycliffe Onyiego.
-            </footer>
+                </div>
+				<div class="wraper container-fluid" >
+                <a href="general.php"><div class="row">
+                    <div class="col-lg-3 col-sm-6">
+                        <div class="widget-panel widget-style-2 bg-success">
+                            <i class="fa fa-pie-chart"></i> 
+                             <div>General Issues Report</div>
+                        </div>
+                    </div></a>
+                    <a href="open.php"><div class="col-lg-3 col-sm-6">
+                        <div class="widget-panel widget-style-2 bg-info">
+                            <i class="fa fa-pie-chart"></i> 
+                            <div>Open/ Pending Issues Report</div>
+                        </div>
+                    </div></a>
+                    <a href="closed.php"><div class="col-lg-3 col-sm-6">
+                        <div class="widget-panel widget-style-2 bg-danger">
+                            <i class="fa fa-pie-chart"></i> 
+                            <div>Closed Issues Report</div>
+                        </div>
+                    </div></a>
+                    <a href="progress.php"><div class="col-lg-3 col-sm-6">
+                        <div class="widget-panel widget-style-2 bg-warning">
+                            <i class="fa fa-pie-chart"></i> 
+                             <div>Issues Progress Report</div>
+                        </div>
+                    </div>
+                </div></a>
+            <center><footer class="footer">
+                <?php echo date('d/m/Y'); ?> © Bugs Reporting.
+            </footer></center>
         </section>
 		<script type="text/javascript">
 	</script>
@@ -147,10 +134,7 @@ include 'includes/fetch_records.php';
         <script src="js/jquery.dashboard.js"></script>
         <script src="js/jquery.todo.js"></script>
 		 <script src="js/canvasjs.min.js"></script>
-
-
         <script type="text/javascript">
-
             jQuery(document).ready(function($) {
                 $('.counter').counterUp({
                     delay: 100,
@@ -158,8 +142,5 @@ include 'includes/fetch_records.php';
                 });
             });
         </script>
-    
-
     </body>
-
 </html>
