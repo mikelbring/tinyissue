@@ -1,5 +1,9 @@
 <?php
 include_once "BugsRepConfig.php";
+include_once "lang/en.php";
+if (file_exists("lang/".$language.".php")) { include_once "lang/".$language.".php"; }
+$Report_Title = $Report_General_Title;
+
 $conn = mysqli_connect($db_host, $db_user, $db_pass, $db_name);
 if (!$conn) {
 	die ('Failed to connect to MySQL: ' . mysqli_connect_error());	
@@ -131,7 +135,7 @@ function printContent(el){
 
 		/* Table Header */
 		.data-table thead th {
-			background-color: #508abb;
+			background-color: #57c386;
 			color: #FFFFFF;
 			border-color: #6ea1cc !important;
 			text-transform: uppercase;
@@ -179,40 +183,25 @@ function printContent(el){
 
 @page { margin: 20; }
 
-	</style>
-	<!--<link href="css/receipt_style.css" rel="stylesheet">--> 
+</style>
+<!--<link href="css/receipt_style.css" rel="stylesheet">--> 
 </head>
+
 <body>
-<center><div class = "form-inline">
-				<label><center>Date:</label>
-				<input type = "text" class = "form-control" placeholder = "Start"  id = "date1"/>
-				<label>To</label>
-				<input type = "text" class = "form-control" placeholder = "End"  id = "date2"/>
-				<button type = "button" class = "btn btn-primary" id = "btn_search"><span class = "glyphicon glyphicon-search"></span></button> <button type = "button" id = "reset" class = "btn btn-success"><span class = "glyphicon glyphicon-refresh"><span></button>&nbsp;&nbsp;
-			<span class="pull-right">
-						<input type="text" class="search form-control" placeholder="Search">
-					</span></div></center></br>
-<div id="div1">
-<center><img alt="" src="images/tinyissue.SVG"></center>
-	<h1><b>Bugs System General Issues Report</b></h1></br>
-	<table class="meta">
-								<tr>
-					<th><span>PRINT DATE:</span></th>
-					<td><span><?php echo "" . date("Y/m/d") . "<br>";?></span></td>
-				</tr></table></br>
+	<?php include_once "Report_Header.php"; ?>
 	<table class="data-table" id="load_data">
 	<thead>
-			<tr>
-				<th>Projects</th>
-				<th>Ticket Number</th>
-				<th>Submitted By</th>
-				<th>Assigned To</th>								
-				<th>Issue Title</th>
-				<th>Issue Description</th>
-				<th>Date Submitted</th>
-				<th>Date Closed</th>
-			</tr>
-		</thead>
+		<tr>
+			<th><?php echo $Report_Header_Projects; ?></th>
+			<th><?php echo $Report_Header_TickNumb; ?></th>
+			<th><?php echo $Report_Header_SubmitBy; ?></th>								
+			<th><?php echo $Report_Header_AssignTo; ?></th>
+			<th><?php echo $Report_Header_IssTitle; ?></th>
+			<th><?php echo $Report_Header_Descript; ?></th>
+			<th><?php echo $Report_Header_SubmiDte; ?></th>
+			<th><?php echo $Report_Header_CloseDte; ?></th>
+		</tr>
+	</thead>
 		<tbody>
 		<?php
 		while ($row = mysqli_fetch_array($query))
@@ -229,35 +218,7 @@ function printContent(el){
 				</tr>';
 		}?>
 		</tbody>
-		<tfoot>
-			<tr>
-				<th colspan="7">TOTAL  TICKETS</th>
-				<th><?php echo number_format($total); ?></th>
-			</tr>
-		</tfoot>
-	</table>
-	</div></br></br>
-	<center><a style="color:blue; background-color:white;" onclick = "return confirm('Are you sure you want to go back ?')" href="index.php">Back</a>
-	| <b><button style="color:blue; background-color:white;" onclick="printContent('div1')">Print Report</button></b></center>
-
-<div class="container">
-	<div class="row">
-		<b><center><div class="btn-group pull-center" style=" padding: 10px;">
-			<div class="dropdown">
-  <button style="color:red" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-     <span class="glyphicon glyphicon-th-list"></span> Export Report
-   
-  <center></b></button>
-  <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-   
-								
-								<b><li><a href="#" onclick="$('#load_data').tableExport({type:'excel',escape:'false'});"> <img src="images/xls.png" width="50px"> Excel</a></b></li>
-								<b><li><a href="#" onclick="$('#load_data').tableExport({type:'doc',escape:'false'});"> <img src="images/word.png" width="50px"> Word</a></b></li>
-								
-  </ul>
-</div>
-		</div>
-	</div>		
+	<?php include_once "Report_Footer.php"; ?>
 	
 	</body>
 </html>

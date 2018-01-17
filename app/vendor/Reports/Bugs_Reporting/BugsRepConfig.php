@@ -3,6 +3,7 @@ $db_host = 'localhost'; // Server Name
 $db_user = 'root'; // Username
 $db_pass = ''; // Password
 $db_name = 'bugs'; // Database Name
+$language = 'en'M  //Your prefered language
 
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
 
