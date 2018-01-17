@@ -1,9 +1,14 @@
 <?php include 'fetch_records.php'; ?>
 <!DOCTYPE html>
-<html lang="en">
+<?php 
+	$lang = (file_exists("lang/".$language.".php")) ? $language : 'en'; 
+	include_once "lang/en.php";
+	if (file_exists("lang/".$language.".php")) { include_once "lang/".$language.".php"; }
+	echo '<html lang="'.$lang.'">';
+?>
 <head> 
         <link rel="shortcut icon" href="../img/favicon_1.ico">
-        <title>Bugs - Admin Dashboard</title>
+        <title><?php echo $index_title; ?></title>
         <link href="css/bootstrap.min.css" rel="stylesheet">
         <link href="css/bootstrap-reset.css" rel="stylesheet">
         <link href="css/animate.css" rel="stylesheet">
@@ -31,16 +36,18 @@
         <aside class="left-panel">
             <div class="logo">
                 <a href="./" class="logo-expanded">
-                    <span class="nav-label">Bugs Reporting</span>
+                    <span class="nav-label"><?php echo $index_topleft; ?></span>
                 </a>
             </div>
             <nav class="navigation">
                 <ul class="list-unstyled">
-                    <li class="has-submenu active"><a href="#"><i class="ion-home"></i> <span class="nav-label">Home</span></a>
+                    <li class="has-submenu active"><a href="#"><i class="ion-home"></i> <span class="nav-label"><?php echo $index_leftHome; ?></span></a>
                         <ul class="list-unstyled">
-                            <li class="active"><a href="./">Dashboard</a></li>
+                            <li class="active"><a href="./"><?php echo $index_leftDash; ?></a></li>
                         </ul>
                     </li>
+                    <li class="has-submenu active"><a href="#"><i class="ion-home"></i> <span class="nav-label">Bugs</span></a>
+               </ul>
             </nav>
         </aside>
         <section class="content">
@@ -50,58 +57,59 @@
                         <div class="widget-panel widget-style-2 bg-purple">
                             <i class="ion-android-contacts"></i> 
                             <h2 class="m-0 counter"><?php echo number_format($system_users); ?></h2>
-                            <div>System Users</div>
+                            <div><?php echo $index_Users; ?></div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-sm-6">
                         <div class="widget-panel widget-style-2 bg-purple">
                             <i class="ion-ios7-cart"></i> 
                             <h2 class="m-0 counter"><?php echo number_format($tickets); ?></h2>
-                            <div>Total Tickets</div>
+                            <div><?php echo $index_TicketsTot; ?></div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-sm-6">
                         <div class="widget-panel widget-style-2 bg-purple">
                             <i class="ion-close-circled"></i> 
                             <h2 class="m-0 counter"><?php echo number_format($open); ?></h2>
-                            <div>Open Tickets</div>
+                            <div><?php echo $index_TicketsOpn; ?></div>
                         </div>
                     </div>
                     <div class="col-lg-3 col-sm-6">
                         <div class="widget-panel widget-style-2 bg-purple">
                             <i class="ion-alert-circled"></i> 
                             <h2 class="m-0 counter"><?php echo number_format($closed); ?></h2>
-                            <div>Closed Tickets</div>
+                            <div><?php echo $index_TicketsClo; ?></div>
                         </div>
                     </div>
                 </div>
 				<div class="wraper container-fluid" >
-                <a href="general.php"><div class="row">
+                <div class="row">
+                    <a href="progress.php"><div class="col-lg-3 col-sm-6">
+                        <div class="widget-panel widget-style-2 bg-warning">
+                            <i class="fa fa-pie-chart"></i> 
+                             <div><?php echo $index_IssuesPro; ?></div>
+                        </div>
+                    </div></a>
+                    <a href="general.php">
                     <div class="col-lg-3 col-sm-6">
                         <div class="widget-panel widget-style-2 bg-success">
                             <i class="fa fa-pie-chart"></i> 
-                             <div>General Issues Report</div>
+                             <div><?php echo $index_IssuesTot; ?></div>
                         </div>
                     </div></a>
                     <a href="open.php"><div class="col-lg-3 col-sm-6">
                         <div class="widget-panel widget-style-2 bg-info">
                             <i class="fa fa-pie-chart"></i> 
-                            <div>Open/ Pending Issues Report</div>
+                            <div><?php echo $index_IssuesOpn; ?></div>
                         </div>
                     </div></a>
                     <a href="closed.php"><div class="col-lg-3 col-sm-6">
                         <div class="widget-panel widget-style-2 bg-danger">
                             <i class="fa fa-pie-chart"></i> 
-                            <div>Closed Issues Report</div>
+                            <div><?php echo $index_IssuesClo; ?></div>
                         </div>
                     </div></a>
-                    <a href="progress.php"><div class="col-lg-3 col-sm-6">
-                        <div class="widget-panel widget-style-2 bg-warning">
-                            <i class="fa fa-pie-chart"></i> 
-                             <div>Issues Progress Report</div>
-                        </div>
-                    </div>
-                </div></a>
+                </div>
             <center><footer class="footer">
                 <?php echo date('d/m/Y'); ?> © Bugs Reporting.
             </footer></center>

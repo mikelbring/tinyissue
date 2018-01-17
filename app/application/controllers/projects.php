@@ -78,10 +78,11 @@ class Projects_Controller extends Base_Controller {
 		$contenu .= '<li>Modification du fichier de config de Reports</li>';
 		$ConfigDatabase = Config::get('database.connections.mysql');
 		$LineBug = file($NewDir.'/BugsRepConfig.php');
-		$LineBug[2] = "\$db_user = '".$ConfigDatabase["username"]."'\n;";
-		$LineBug[3] = "\$db_pass = '".$ConfigDatabase["password"]."'\n;"; 
-		$LineBug[4] = "\$db_name = '".$ConfigDatabase["database"]."'\n;"; 
+		$LineBug[2] = "\$db_user = '".$ConfigDatabase["username"]."';\n";
+		$LineBug[3] = "\$db_pass = '".$ConfigDatabase["password"]."';\n"; 
+		$LineBug[4] = "\$db_name = '".$ConfigDatabase["database"]."';\n"; 
 		$LineBug[5] = "\$language = '".$_POST["language"]."';\n"; 
+		$LineBug[6] = "\$BugsDir = 'http://".$_SERVER["SERVER_ADDR"].substr($_SERVER["SCRIPT_FILENAME"], strlen($_SERVER["DOCUMENT_ROOT"]))."';\n"; 
 		$NewConfigFile = fopen($NewDir.'/BugsRepConfig.php', 'w');
 		fwrite($NewConfigFile, implode("",$LineBug));
 		fclose($NewConfigFile);
