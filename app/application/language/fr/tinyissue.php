@@ -120,6 +120,7 @@ return array(
 	'remove' => 'Supprimer',
 	'reopen_issue' => 'Rouvrir le billet',
 	'reopen' => 'Réouvrir',
+	'report' => 'Rapports',
 	'role' => 'Rôle',
 	'roles_modify' => 'Appliquer les modifications',
 	'save' => 'Enregistrer',

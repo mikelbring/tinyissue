@@ -113,6 +113,7 @@ return array(
 	'remove' => 'Eliminar',
 	'reopen_issue' => 'Reabrir incidencia',
 	'reopen' => 'Reabierta',
+	'report' => 'Informes',
 	'role' => 'Rol',
 	'roles_modify' => 'Modificar',
 	'save' => 'Guardar',

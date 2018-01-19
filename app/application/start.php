@@ -14,7 +14,7 @@
 
 ini_set('display_errors', 'On');
 
-$config_app = require path('public') . 'config.app.php';
+$config_app = require_once path('public') . 'config.app.php';
 
 Laravel\Event::listen(Laravel\Config::loader, function($bundle, $file) use ($config_app)
 {
@@ -28,7 +28,6 @@ Laravel\Event::listen(Laravel\Config::loader, function($bundle, $file) use ($con
 	switch($file)
 	{
 		case 'application':
-
 			$config = array(
 				'editor' => $config_app['editor'],
 				'key' => $config_app['key'],
