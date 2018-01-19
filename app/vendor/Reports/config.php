@@ -1,0 +1,1 @@
+'MesSites/Developpement/Rapports/','Bugs/','fr'
