@@ -42,6 +42,8 @@ For any coding contribution, please use a git tool ( visit https://git-scm.com/b
 Then, push you modification throw a new branch. NEVER push on master. 
 
 # Changelog
+- v.1.6 : soon 
+	- please visit [Nice changes to come](https://github.com/pixeline/bugs/projects)
 - v.1.5.2 : 15 March 2017
 	- reassign issue
 	- email system based on PHPmail: work every time you change assignation
@@ -71,4 +73,5 @@ various layout tweaks.
 
 # Main Developers
 
-- [Alexandre Plennevaux](https://pixeline.be)
+- [Alexandre Plennevaux](https://pixeline.be) ... to 2016
+- [Patrick Allaire, ptre](http://cartefoi.net) from 2016 to now
