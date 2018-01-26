@@ -38,6 +38,9 @@ Enjoy!
 We welcome and appreciate all contributions. The `develop` branch is the branch you should base all pull requests and development off of.
 The `master` branch is tagged releases only.
 
+For any coding contribution, please use a git tool ( visit https://git-scm.com/book/fr/v2/D%C3%A9marrage-rapide-Installation-de-Git to know more ) and push a new branch
+NEVER push on master. 
+
 # Changelog
 - v.1.5.2 : 15 March 2017
 	- reassign issue
