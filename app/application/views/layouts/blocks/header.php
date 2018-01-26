@@ -32,6 +32,7 @@
 		<?php echo Asset::scripts(); ?>
 		<?php $wysiwyg = Config::get('application.editor');
 			if (trim($wysiwyg['BasePage']) != '') {
+				if (file_exists($wysiwyg['directory'].'/Bugs_code/header.php')) { include_once $wysiwyg['directory'].'/Bugs_code/header.php'; }
 				if (substr($wysiwyg['BasePage'], -2) == 'js') { echo '<script src="'.URL::base().$wysiwyg['BasePage'].'"></script>'; }
 				if (substr($wysiwyg['BasePage'], -3) == 'php') { include $wysiwyg['BasePage']; }
 			}
@@ -42,7 +43,6 @@
 				$ReportsConfig = explode(",",$Configurations[0]);
 				foreach($ReportsConfig as $ind => $val ) { $ReportsConfig[$ind] = substr($val, 1, strlen($val)-2); }
 			}
-
 		?>
 	</head>
 <body>
