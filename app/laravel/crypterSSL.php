@@ -13,7 +13,7 @@ class Crypter {
 	 *
 	 * @var string
 	 */
-	public static $mode = OPENSSL_ZERO_PADDING;
+	public static $mode = 'AES-128-CBC';
 
 	/**
 	 * The block size of the cipher.
@@ -32,10 +32,8 @@ class Crypter {
 	 */
 	public static function encrypt($value) {
 		$iv = random_bytes($iv_size);
-
 		$value = static::pad($value);
-
-		$value = openssl_encrypt($value, static::$cipher, static::key(), static::$mode, $iv);
+		$value = openssl_encrypt($value, static::$cipher, static::key(), OPENSSL_RAW_DATA, $iv);
 
 		return base64_encode($iv.$value);
 	}
@@ -46,22 +44,19 @@ class Crypter {
 	 * @param  string  $value
 	 * @return string
 	 */
-	public static function decrypt($value)
-	{
+	public static function decrypt($value) {
 		$value = base64_decode($value);
 
 		// To decrypt the value, we first need to extract the input vector and
 		// the encrypted value. The input vector size varies across different
 		// encryption ciphers and modes, so we'll get the correct size.
 		$iv = substr($value, 0, static::iv_size());
-
 		$value = substr($value, static::iv_size());
 
 		// Once we have the input vector and the value, we can give them both
 		// to OpenSSL for decryption. The value is sometimes padded with \0,
 		// so we will trim all of the padding characters.
-
-		$value = openssl_decrypt($value, static::$cipher, static::key(), static::$mode, $iv);
+		$value = openssl_decrypt($value, static::$mode, static::key(), OPENSSL_RAW_DATA, $iv);
 
 		return static::unpad($value);
 	}
