@@ -198,8 +198,7 @@ abstract class Driver {
 	 *
 	 * @return string
 	 */
-	protected function token()
-	{
+	protected function token() {
 		return $this->name().'_login';
 	}
 

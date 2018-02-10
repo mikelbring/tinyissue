@@ -20,6 +20,7 @@ $install = new install();
 $database_check = $install->check_connect();
 $requirement_check = $install->check_requirements();
 
+
 if(!$database_check['error']) {
 	if(isset($_POST['email'])) {
 		if($_POST['email'] != ''&& $_POST['first_name'] != '' && $_POST['last_name'] != '' && $_POST['password'] != '') {
@@ -67,10 +68,10 @@ if(!$database_check['error']) {
 					echo '<h2>'.$MyLng['Installation'].'</h2>';
 					if(count($requirement_check) > 0) {
 						echo '<strong>'.$MyLng['Requirement_Check'].'</strong><br />';
-						foreach ($requirement_check as $key => $value) { echo $value.'<br />'; }
+						foreach ($requirement_check as $key => $value) { echo ' - '.$value.'<br />'; }
 						die();
 					}
-					if(count($database_check['error']) > 0) {
+					if($database_check['error']) {
 						echo $MyLng['Database_Check'].$database_check['error'];
 						die();
 					}

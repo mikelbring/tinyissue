@@ -345,19 +345,30 @@ class Project_Issue_Controller extends Base_Controller {
 	public function post_upload() {
 		$TheFile	= $_FILES["Loading"];
 		if(move_uploaded_file($TheFile["tmp_name"], "../uploads/".$_GET["Nom"])) {
+			//Make sure the file will be open to all users, not only the php engine
+			////  5: Read and execute  (not write)
+			////  6: Read and write (not execute)
+			////  7: Read, write, execute
+			////755 = Everything for owner, read and execute for strangers
+			////775 = Everything for owner and group, read and execute for strangers
+			////776 = Everything for owner and group, read and write for strangers
+			chmod("../uploads/".$_GET["Nom"], "0775");
+			//Common data for the insertion into database: file's type, date, ect
 			$PosiPoint = strpos($_SERVER['REQUEST_URI'],".");
 			$LaPage = substr($_SERVER['REQUEST_URI'], $PosiPoint+5);
 			$Datas = explode("/", $LaPage);
 			$now = date("Y-m-d H:i:s");
 			$Issue = (isset($Datas[3])) ? $Datas[3] : 1;
-			if ($Issue == 1) {		//To attache a file to a new issue 
-				//We give it the next available issue number
+			if ($Issue == 1) {		
+				//Attach a file to a new issue 
+				////We give it the next available issue number
 				$NxIssue = \DB::table('projects_issues')->order_by('id','DESC')->get();
 				$Issue = $NxIssue[0]->id + 1;
-				//We give it the next available issue comment number
+				////We give it the next available issue comment number
 				$Quel = \DB::table('projects_issues_comments')->order_by('id','DESC')->get();
 				$newID = $Quel[0]->id + 1;
 			} else {
+				//Attach a file to an existing issue
 				$Quel = \DB::table('projects_issues_comments')->where('issue_id', '=', $Issue)->order_by('id','DESC')->get();
 				$newID = (isset($Quel[0]->id)) ? $Quel[0]->id : NULL ;
 			}
