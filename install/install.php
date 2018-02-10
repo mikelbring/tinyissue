@@ -26,7 +26,8 @@ class install
 
 		if(!extension_loaded('pdo')) { 		$errors[] = 'pdo extension not found.'; }
 		if(!extension_loaded('pdo_mysql')) { 	$errors[] = 'mysql driver for pdo not found .'; }
-		if(!extension_loaded('mcrypt')) { 		$errors[] = 'mcrypt extension not found.'; }
+		if(version_compare(PHP_VERSION, '7.1', '<') && !extension_loaded('mcrypt')) { 		$errors[] = 'mcrypt extension not found.'; }
+		if(version_compare(PHP_VERSION, '7.0', '>') && !extension_loaded('openSSL')) { 		$errors[] = 'openSSL extension not found.'; }
 		if(version_compare(PHP_VERSION, '5.3.0', '<')) { 	$errors[] = 'PHP too old for Bugs. PHP 5.3.0 or above is needed.'; }
 
 		return $errors;
