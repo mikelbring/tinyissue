@@ -42,8 +42,8 @@
 				<table class="form" >
 					<tr>
 						<td colspan="2" style="color: #a31500;">
-							<?php echo Session::get('error');
-								echo @$_SESSION["Msg"];
+							<?php 
+								if (Session::get('error') !== NULL) { echo (isset($WrongPwd[$lng])) ? $WrongPwd[$lng] : $WrongPwd["en"]; }
 							?>
 						</td>
 					</tr>
