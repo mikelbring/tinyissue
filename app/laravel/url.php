@@ -113,9 +113,14 @@ class URL {
 		{
 			$root .= '/'.Config::get('application.index');
 		}
-
 		$languages = Config::get('application.languages');
-
+		if (is_null($languages)) { 
+			$languages = scandir(Config::get('application.index').'application/language');
+			array_shift($languages);
+			array_shift($languages);
+			array_shift($languages);
+		}
+		
 		if ( ! $asset and $locale and count($languages) > 0)
 		{
 			if (in_array($default = Config::get('application.language'), $languages))
