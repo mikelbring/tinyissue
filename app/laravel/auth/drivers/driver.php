@@ -50,8 +50,7 @@ abstract class Driver {
 	 *
 	 * @return bool
 	 */
-	public function guest()
-	{
+	public function guest() {
 		return ! $this->check();
 	}
 
@@ -60,8 +59,7 @@ abstract class Driver {
 	 *
 	 * @return bool
 	 */
-	public function check()
-	{
+	public function check()	{
 		return ! is_null($this->user());
 	}
 
@@ -72,8 +70,7 @@ abstract class Driver {
 	 *
 	 * @return mixed|null
 	 */
-	public function user()
-	{
+	public function user() {
 		if ( ! is_null($this->user)) return $this->user;
 
 		return $this->user = $this->retrieve($this->token);
@@ -198,8 +195,7 @@ abstract class Driver {
 	 *
 	 * @return string
 	 */
-	protected function token()
-	{
+	protected function token() {
 		return $this->name().'_login';
 	}
 
