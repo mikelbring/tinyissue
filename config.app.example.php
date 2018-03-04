@@ -37,9 +37,19 @@ return array(
 	  *  Do not mark this as comment
 	  *  Fill out with the entire path, begining with app/
 	  *  Editor base page type permitted:  .js   .php
+	  ////This (below) for ckeditor
+			'directory' = > 'vendor/ckeditor',  
+			'BasePage' => '/app/vendor/ckeditor/ckeditor.js',
+			'name' => 'ckeditor',
+	  ////This (below) for Trumbowyg editor
+		'directory' = > 'vendor/Trumbowyg/',  
+		'BasePage' => '/app/vendor/Trumbowyg/trumbowyg.min.js',
+		'name' => 'trumbowyg',
 	*/
-	'editor' => array(
+	'editor' => array( 
 		'BasePage' => '/app/vendor/ckeditor/ckeditor.js',
+		'directory' => 'vendor/ckeditor',
+		'name' => 'ckeditor',
 	),
 
 
