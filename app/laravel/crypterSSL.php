@@ -31,7 +31,7 @@ class Crypter {
 	 * @return string
 	 */
 	public static function encrypt($value) {
-		$iv = random_bytes($iv_size);
+		$iv = random_bytes(static::iv_size());
 		$value = static::pad($value);
 		$value = openssl_encrypt($value, static::$cipher, static::key(), OPENSSL_RAW_DATA, $iv);
 
@@ -73,8 +73,8 @@ class Crypter {
 	 * @return string
 	 */
 	protected static function pad($value) {
-		$pad = static::$block - (Str::length($value) % static::$block);
 
+		$pad = static::$block - (Str::length($value) % static::$block);
 		return $value .= str_repeat(chr($pad), $pad);
 	}
 
@@ -88,11 +88,12 @@ class Crypter {
 		$pad = ord($value[($length = Str::length($value)) - 1]);
 
 		if ($pad and $pad < static::$block) {
+
 			// If the correct padding is present on the string, we will remove
 			// it and return the value. Otherwise, we'll throw an exception
 			// as the padding appears to have been changed.
-			if (preg_match('/'.chr($pad).'{'.$pad.'}$/', $value)) {
-				return substr($value, 0, $length - $pad);
+			if (strpos($value, '|')) {
+				return substr($value, 0, strpos($value, '|'));
 			} else {
 				// If the padding characters do not match the expected padding
 				// for the value we'll bomb out with an exception since the
@@ -100,7 +101,6 @@ class Crypter {
 				throw new \Exception("Decryption error. Padding is invalid.");
 			}
 		}
-
 		return $value;
 	}
 
