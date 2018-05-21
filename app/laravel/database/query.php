@@ -229,8 +229,7 @@ class Query {
 	 * @param  array   $bindings
 	 * @return Query
 	 */
-	public function raw_or_where($where, $bindings = array())
-	{
+	public function raw_or_where($where, $bindings = array()) {
 		return $this->raw_where($where, $bindings, 'OR');
 	}
 
@@ -243,25 +242,20 @@ class Query {
 	 * @param  string  $connector
 	 * @return Query
 	 */
-	public function where($column, $operator = null, $value = null, $connector = 'AND')
-	{
+	public function where($column, $operator = null, $value = null, $connector = 'AND') {
 		// If a Closure is passed into the method, it means a nested where
 		// clause is being initiated, so we will take a different course
 		// of action than when the statement is just a simple where.
-		if ($column instanceof Closure)
-		{
+		if ($column instanceof Closure) {
 			return $this->where_nested($column, $connector);
 		}
-
 		$type = 'where';
-
 		$this->wheres[] = compact('type', 'column', 'operator', 'value', 'connector');
-
 		$this->bindings[] = $value;
-
 		return $this;
 	}
 
+    
 	/**
 	 * Add an or where condition to the query.
 	 *
@@ -399,8 +393,7 @@ class Query {
 	 * @param  mixed  $max       
 	 * @return Query
 	 */
-	public function or_where_not_between($column, $min, $max)
-	{
+	public function or_where_not_between($column, $min, $max) {
 		return $this->where_not_between($column, $min, $max, 'OR');
 	}
 
@@ -412,8 +405,7 @@ class Query {
 	 * @param  bool    $not
 	 * @return Query
 	 */
-	public function where_null($column, $connector = 'AND', $not = false)
-	{
+	public function where_null($column, $connector = 'AND', $not = false) {
 		$type = ($not) ? 'where_not_null' : 'where_null';
 
 		$this->wheres[] = compact('type', 'column', 'connector');
@@ -427,8 +419,7 @@ class Query {
 	 * @param  string  $column
 	 * @return Query
 	 */
-	public function or_where_null($column)
-	{
+	public function or_where_null($column) {
 		return $this->where_null($column, 'OR');
 	}
 

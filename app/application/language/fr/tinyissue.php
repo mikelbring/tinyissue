@@ -134,6 +134,8 @@ return array(
 	'sort_asc' => 'asc',
 	'sort_by' => 'Ordre de tri: ',
 	'sort_desc' => 'desc',
+	'sort_option_id'  => 'ID',
+	'sort_option_updated'  => 'À jour',
 	'sortable_issue_howto' => 'Glissez / Déposez les tâches pour les réordonner.',
 	'status' => 'état',
 	'tag_added' => 'étiquette ajoutée',
