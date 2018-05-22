@@ -133,6 +133,8 @@ return array(
 	'sort_asc' => 'asc',
 	'sort_by' => 'Sort By',
 	'sort_desc' => 'desc',
+	'sort_option_id'  => 'ID',
+	'sort_option_updated'  => 'Updated',
 	'sortable_issue_howto' => 'Drag and drop issues to re-order them.',
 	'status' => 'Status',
 	'tag_added' => 'tag added',

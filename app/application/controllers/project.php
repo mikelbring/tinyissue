@@ -38,26 +38,22 @@ class Project_Controller extends Base_Controller {
 	 *
 	 * @return View
 	 */
-	public function get_issues()
-	{
+	public function get_issues() {
 		Asset::add('tag-it-js', '/app/assets/js/tag-it.min.js', array('jquery', 'jquery-ui'));
 		Asset::add('tag-it-css-base', '/app/assets/css/jquery.tagit.css');
 		Asset::add('tag-it-css-zendesk', '/app/assets/css/tagit.ui-zendesk.css');
 
 		/* Get what to sort by */
 		$sort_by = Input::get('sort_by', '');
-		if (substr($sort_by, 0, strlen('tag:')) == 'tag:')
-		{
+		if (substr($sort_by, 0, strlen('tag:')) == 'tag:') {
 			$sort_by_clause = DB::raw("
 				MIN(CASE WHEN tags.tag LIKE " . DB::connection('mysql')->pdo->quote(substr($sort_by, strlen('tag:')) . ':%') . " THEN 1 ELSE 2 END),
 				IF(NOT ISNULL(tags.tag), 1, 2),
 				tags.tag
 			");
-		}
-		else
-		{
-			$sort_by = 'updated';
-			$sort_by_clause = 'projects_issues.updated_at';
+		} else {
+			$sort_by = ($sort_by == 'id') ? 'id' : 'updated';
+			$sort_by_clause = ($sort_by == 'id') ? 'projects_issues.id' :  'projects_issues.updated_at';
 		}
 
 		/* Get what order to use for sorting */
@@ -76,17 +72,16 @@ class Project_Controller extends Base_Controller {
 		/* Build query for issues */
 		$issues = \Project\Issue::with('tags');
 
-		if ($tags || $tag || $sort_by != 'updated')
-		{
+		if ($tags || $tag || $sort_by != 'updated') {
 			$issues = $issues
 				->join('projects_issues_tags', 'projects_issues_tags.issue_id', '=', 'projects_issues.id')
 				->join('tags', 'tags.id', '=', 'projects_issues_tags.tag_id');
 		}
 
 		$issues = $issues->where('project_id', '=', Project::current()->id);
+		$issues = (Input::get('tag_id', '') == '2') ? $issues->where_null('closed_at', 'and', true) : $issues->where_null('closed_at', 'and', false); 
 
-		if ($assigned_to)
-		{
+		if ($assigned_to) {
 			$issues = $issues->where('assigned_to', '=', $assigned_to);
 		}
 
@@ -95,13 +90,12 @@ class Project_Controller extends Base_Controller {
 			$tag_amount = count($tag_collection);
 			$issues = $issues->where_in('tags.id', $tag_collection);//->get();
 		}
-		if ($tags)
-		{
+		if ($tags) {
 			$tags_collection = explode(',', $tags);
 			$tags_amount = count($tags_collection);
 			$issues = $issues->where_in('tags.tag', $tags_collection);//->get();
 		}
-
+echo 'Voici en ligne 101 la valeur évaluée: '.$sort_by_clause.'<br />';
 		$issues = $issues
 			->group_by('projects_issues.id')
 			->order_by($sort_by_clause, $sort_order);
@@ -126,16 +120,14 @@ class Project_Controller extends Base_Controller {
 
 		/* Get sort options */
 		$tags = \Tag::order_by('tag', 'ASC')->get();
-		$sort_options = array('updated' => 'updated');
-		foreach ($tags as $tag)
-		{
+		//Patrick a remplacé la ligne 129 par la 130
+		//$sort_options = array('updated' => 'updated');
+		$sort_options = array('id' => __('tinyissue.sort_option_id'), 'updated' => __('tinyissue.sort_option_updated'));
+		foreach ($tags as $tag) {
 			$colon_pos = strpos($tag->tag, ':');
-			if ($colon_pos !== false)
-			{
+			if ($colon_pos !== false) {
 				$tag = substr($tag->tag, 0, $colon_pos);
-			}
-			else
-			{
+			} else {
 				$tag = $tag->tag;
 			}
 			$sort_options["tag:$tag"] = $tag;
@@ -143,8 +135,7 @@ class Project_Controller extends Base_Controller {
 
 		/* Get assigned users */
 		$assigned_users = array('' => '');
-		foreach(Project::current()->users as $user)
-		{
+		foreach(Project::current()->users as $user) {
 			$assigned_users[$user->id] = $user->firstname . ' ' . $user->lastname;
 		}
 
