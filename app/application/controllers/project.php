@@ -82,7 +82,12 @@ class Project_Controller extends Base_Controller {
 		$issues = (Input::get('tag_id', '') == '2') ? $issues->where_null('closed_at', 'and', true) : $issues->where_null('closed_at', 'and', false); 
 
 		if ($assigned_to) {
-			$issues = $issues->where('assigned_to', '=', $assigned_to);
+			$issues = $issues->where(Input::get('limit_contrib','assigned_to'), '=', $assigned_to);
+		}
+		
+		if (Input::get('limit_period') != '') {
+			$issues = $issues->where('projects_issues.'.Input::get('limit_event','created_at'), '>=', Input::get('DateInit',''));
+			$issues = $issues->where('projects_issues.'.Input::get('limit_event','created_at'), '<=', Input::get('DateFina',''));
 		}
 
 		if ($tag) {
@@ -95,10 +100,10 @@ class Project_Controller extends Base_Controller {
 			$tags_amount = count($tags_collection);
 			$issues = $issues->where_in('tags.tag', $tags_collection);//->get();
 		}
-echo 'Voici en ligne 101 la valeur évaluée: '.$sort_by_clause.'<br />';
 		$issues = $issues
 			->group_by('projects_issues.id')
 			->order_by($sort_by_clause, $sort_order);
+//echo 'Voici en ligne 101 la valeur évaluée: '.$sort_by_clause.'<br />';
 
 		if($tags && $tags_amount>1){
 			// L3
@@ -120,8 +125,6 @@ echo 'Voici en ligne 101 la valeur évaluée: '.$sort_by_clause.'<br />';
 
 		/* Get sort options */
 		$tags = \Tag::order_by('tag', 'ASC')->get();
-		//Patrick a remplacé la ligne 129 par la 130
-		//$sort_options = array('updated' => 'updated');
 		$sort_options = array('id' => __('tinyissue.sort_option_id'), 'updated' => __('tinyissue.sort_option_updated'));
 		foreach ($tags as $tag) {
 			$colon_pos = strpos($tag->tag, ':');

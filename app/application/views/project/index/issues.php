@@ -5,7 +5,7 @@
 				<table class="form" style="width: 100%;">
 				<tr>
 					<th style="width: 10%"><?php echo __('tinyissue.tags'); ?></th>
-					<td style="width: 90%">
+					<td colspan="4">
 						<?php echo Form::text('tags', Input::get('tags', ''), array('id' => 'tags')); ?>
 						<script type="text/javascript">
 						$(function(){
@@ -20,21 +20,40 @@
 				</tr>
 				<tr>
 					<th style="width: 10%"><?php echo __('tinyissue.sort_by'); ?></th>
-					<td style="width: 90%">
+					<td style="width: 35%">
 						<?php echo Form::select('sort_by', $sort_options, Input::get('sort_by', '')); ?>
 						<?php echo Form::select('sort_order', array('asc' => __('tinyissue.sort_asc'), 'desc' => __('tinyissue.sort_desc')), $sort_order); ?>
 						<input name="tag_id" value="<?php echo Input::get('tag_id', '1'); ?>" type="hidden" />
 					</td>
-				</tr>
-				<tr>
-					<th style="width: 10%"><?php echo __('tinyissue.assigned_to'); ?></th>
-					<td style="width: 90%">
+					<th style="width: 10%">
+						<?php echo __('tinyissue.limits'); ?>
+					</th>
+					<td style="width: 45%; font-weight: bold;">
+						<?php echo Form::select('limit_contrib', array( 'assigned_to' => __('tinyissue.limit_contrib_assignedTo'),'created_by'  => __('tinyissue.limit_contrib_createdBy'),'closed_by'   => __('tinyissue.limit_contrib_closedBy'),'updated_by'  => __('tinyissue.limit_contrib_updatedBy')), Input::get('limit_contrib', '')); ?>
 						<?php echo Form::select('assigned_to', $assigned_users, Input::get('assigned_to', '')); ?>
 					</td>
 				</tr>
 				<tr>
+					<th style="width: 10%">
+					</th>
+					<td style="width: 35%">
+					</td>
 					<th style="width: 10%"></th>
-					<td style="width: 90%"><input type="submit" value="<?php echo __('tinyissue.show_results'); ?>" class="button primary" /></td>
+					<td style="width: 45%">
+						<?php echo Form::select('limit_event', array('created_at' => __('tinyissue.limit_event_createdAt'),'updated_at' => __('tinyissue.limit_event_updatedAt'),'closed_at'  => __('tinyissue.limit_event_closedAt')), Input::get('limit_event', '')); ?>
+						<?php echo Form::select('limit_period',array('' => "", 'week' 	=> __('tinyissue.limit_period_week'),'month' 	=> __('tinyissue.limit_period_month'),'months' => __('tinyissue.limit_period_months')), Input::get('limit_period', ''),array("onchange"=>"CalculonsDates(this.value);" ) ); ?>
+					</td>
+				</tr>
+				<tr>
+					<th style="width: 10%"></th>
+					<td style="width: 35%">
+						<input type="submit" value="<?php echo __('tinyissue.show_results'); ?>" class="button primary" />
+					</td>
+					<th style="width: 10%"></th>
+					<td style="width: 45%">
+						<?php echo Form::date('DateInit', input::get('DateInit',(date("Y")-1).date("-m-d")), array('id' => 'input_DateInit')); ?>
+						<?php echo Form::date('DateFina', input::get('DateFina',date("Y-m-d")), array('id' => 'input_DateFina')); ?>
+					</td>
 				</tr>
 				</table>
 			</form>
@@ -120,6 +139,21 @@
 	</div>
 </div>
 <script type="text/javascript">
+function CalculonsDates(Quoi) {
+	var auj = new Date();
+	var dat = new Date();
+	var duree = 365;
+	if (Quoi == 'week') { duree = 7; }
+	if (Quoi == 'month') { duree = 31; }
+	if (Quoi == 'months') { duree = 62; }
+	dat.setDate(auj.getDate() - duree);
+	document.getElementById('input_DateInit').value = dat.getFullYear()+"-"+pad((dat.getMonth()+1),2)+"-"+pad(dat.getDate(),2);
+}
+function pad(n, width, z) {
+  z = z || '0';
+  n = n + '';
+  return n.length >= width ? n : new Array(width - n.length + 1).join(z) + n;
+}
 function OteTag() {
 	return true;
 }
