@@ -36,19 +36,16 @@ class Route extends Task {
 	 *
 	 * @return void
 	 */
-	protected function route()
-	{
+	protected function route() {
 		// We'll call the router using the method and URI specified by
 		// the developer on the CLI. If a route is found, we will not
 		// run the filters, but simply dump the result.
 		$route = Router::route(Request::method(), $_SERVER['REQUEST_URI']);
 
-		if ( ! is_null($route))
-		{
-			var_dump($route->response());
-		}
-		else
-		{
+		if ( ! is_null($route)) {
+			//Patrick a remplacé un var_dump par un return
+			return ($route->response());
+		} else {
 			echo '404: Not Found';
 		}
 	}

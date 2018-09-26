@@ -32,10 +32,10 @@ function __($key, $replacements = array(), $language = null)
  * @param  mixed  $value
  * @return void
  */
-function dd($value)
-{
+function dd($value) {
 	echo "<pre>";
-	var_dump($value);
+	//Patrick a ôté ici un var_dump
+	echo "Likes an error occured here.  Please report the app/laravel/helpers.php page which was reading value = ".$value.'<br />';;
 	echo "</pre>";
 	die;
 }
