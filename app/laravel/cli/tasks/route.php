@@ -44,7 +44,8 @@ class Route extends Task {
 
 		if ( ! is_null($route)) {
 			//Patrick a remplacé un var_dump par un return
-			return ($route->response());
+			//return ($route->response());
+			return false;
 		} else {
 			echo '404: Not Found';
 		}
