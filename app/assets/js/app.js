@@ -6,7 +6,7 @@ $(function(){
 
    	setTimeout(function(){
    		$('.global-notice').slideUp();
-   	}, 15000);
+   	}, 7500);
 
    	$('.global-notice').live('click', function(){
    		$('.global-notice').slideUp();
