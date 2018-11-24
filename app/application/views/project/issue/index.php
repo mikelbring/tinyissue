@@ -136,12 +136,22 @@
 			<p>
 				<textarea name="comment" style="width: 98%; height: 90px;"></textarea>
 				<span style="text-align: left; width: 50%;">
-				<?php echo __('tinyissue.percentage_of_work_done'); ?> : <input type="number" name="Pourcentage" value="<?php echo ((is_object($Etat)) ? (($Etat->weight == 100) ? 91 : $Etat->weight+1) : 10 ); ?>" min="<?php echo ((is_object($Etat)) ? (($Etat->weight == 100) ? 91 : $Etat->weight) : 10); ?>" max="100" /> %
+				<?php 
+					$percent = ((is_object($Etat)) ? (($Etat->weight == 100) ? 91 : $Etat->weight+1) : 10 );
+					if (Project\Issue::current()->assigned->id == \Auth::user()->id ) { 
+						echo __('tinyissue.percentage_of_work_done').':';
+						echo '<input type="number" name="Pourcentage" value="'.$percent.'" min="'.$percent.'" max="100" /> %';
+					} else { 
+						echo '<br />'; 
+						echo __('tinyissue.percentage_of_work_done').':&nbsp;&nbsp;';
+						echo $percent;
+						echo '<input type="hidden" name="Pourcentage" value="'.$percent.'"  /> %';
+						echo '<br />'; 
+					} 
+				?>
 				</span>
 				<div style="text-align: right; width: 98%; margin-top: -25px;">
-<!-- 
-				<a href="http://daringfireball.net/projects/markdown/basics/" ><?php echo __('tinyissue.format_with_markdown'); ?></a>
- -->
+
  				<br /><br />
  				</div>
 					<div style="width: 90%">
