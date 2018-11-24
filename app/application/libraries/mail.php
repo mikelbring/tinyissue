@@ -9,13 +9,16 @@ class Mail {
 	 * @return  int
 	 */
 	public static function send_email($message, $to, $subject) {
-		if ($options['transport'] == 'mail') {
+		$optMail = Config::get('application.mail');
+		$passage_ligne = (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $to)) ? "\r\n" : "\n";
+
+		if ($optMail['transport'] == 'mail') {
 			$message = str_replace('"', "``", $message); 
 			$message = stripslashes($message);
 			$message = str_replace("'", "`", $message); 
 	
 			$boundary = md5(uniqid(microtime(), TRUE));
-			$headers = 'From: "'.$options['from']['name'].'" <'.$options['from']['email'].'>'.$passage_ligne;
+			$headers = 'From: "'.$optMail['from']['name'].'" <'.$optMail['from']['email'].'>'.$passage_ligne;
 			$headers .= 'Mime-Version: 1.0'.$passage_ligne;
 			$headers .= 'Content-Type: multipart/mixed; boundary="'.$boundary.'"';
 			$headers .= $passage_ligne;
@@ -24,7 +27,7 @@ class Mail {
 			$body .= $passage_ligne; 	
 			$body .= $passage_ligne; 	
 			$body .= '--'.$boundary.''.$passage_ligne;
-			$body .= 'Content-Type: text/html; charset="'.$options['encoding'].'"'.$passage_ligne;
+			$body .= 'Content-Type: text/html; charset="'.$optMail['encoding'].'"'.$passage_ligne;
 			$body .= $passage_ligne; 	
 			$body .= $passage_ligne;
 			$body .= $message;
@@ -32,14 +35,14 @@ class Mail {
 			$body .= '--'.$boundary."n";
 	
 			$body .= $passage_ligne.'';
-			mail($to, $subject, $body, $headers);
+			$result = mail($to, $subject, $body, $headers);
 		} else {
 			require_once  path('app') .  'libraries/PHPmailer/class.phpmailer.php';
-			$options = Config::get('application.mail');
+			$optMail = Config::get('application.mail');
 	
 			$mail = new PHPMailer();
-			$mail->Mailer = $options['transport'];
-			switch ($options['transport']) {
+			$mail->Mailer = $optMail['transport'];
+			switch ($optMail['transport']) {
 				case 'PHP':
 					require_once path('app') . 'libraries/PHPmailer/class.phpmailer.php';
 					//Please submit your code
@@ -63,27 +66,27 @@ class Mail {
 				default:																		//smtp is the second default value after "mail" which has its own code up
 					require_once path('app') . 'libraries/PHPmailer/class.smtp.php';
 					$mail->SMTPDebug = 1;												// 0 = no output, 1 = errors and messages, 2 = messages only.
-					if ($options['smtp']['encryption'] == '') {
+					if ($optMail['smtp']['encryption'] == '') {
 					} else {
 						$mail->SMTPAuth = true;											// enable SMTP authentication
-						$mail->SMTPSecure = $options['smtp']['encryption'];	// sets the prefix to the server
-						$mail->Host = $options['smtp']['server'];
-						$mail->Port = $options['smtp']['port'];
-						$mail->Username = $options['smtp']['username'];
-						$mail->Password = $options['smtp']['password'];
+						$mail->SMTPSecure = $optMail['smtp']['encryption'];	// sets the prefix to the server
+						$mail->Host = $optMail['smtp']['server'];
+						$mail->Port = $optMail['smtp']['port'];
+						$mail->Username = $optMail['smtp']['username'];
+						$mail->Password = $optMail['smtp']['password'];
 					}
 					//Please submit your code
 					//On March 14th, 2017 I had no time to go further on this
 					break;
 			}
 	
-			$mail->CharSet = (isset($options['encoding'])) ? $options['encoding'] : 'windows-1250';
-			$mail->SetFrom ($options['from']['email'], $options['from']['name']);
+			$mail->CharSet = (isset($optMail['encoding'])) ? $optMail['encoding'] : 'windows-1250';
+			$mail->SetFrom ($optMail['from']['email'], $optMail['from']['name']);
 			$mail->Subject = $subject;
 			$mail->ContentType = (isset($option['plainHTML'])) ? $option['plainHTML'] : 'text/plain';
 			if ($mail->ContentType == 'html') {
 				$mail->IsHTML(true);
-				$mail->WordWrap = (isset($options['linelenght'])) ? $options['linelenght'] : 80;
+				$mail->WordWrap = (isset($optMail['linelenght'])) ? $optMail['linelenght'] : 80;
 				$mail->Body = $message;
 				$mail->AltBody = strip_tags($message);
 			} else {
