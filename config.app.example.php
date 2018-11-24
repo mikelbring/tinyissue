@@ -61,8 +61,11 @@ return array(
 	 * Default Mail Transport
 	 *	|
 	 *	| Possible Values
-	 *	| 	mail (PHP Mail Function)
-	 *	| 	sendmail (Sendmail)
+	 *	| 	mail (PHP Mail Function) --- default
+	 *	| 	PHP (php language mail function)
+	 *	| 	sendmail (Sendmail - almost the same as 'mail' option but with authentications details)
+	 *	| 	gmail (using Google's gmail system)
+	 *	| 	pop3 (Define Custom POP3)
 	 *	| 	smtp (Define Custom SMTP)
 	 *
 	 */
@@ -76,7 +79,7 @@ return array(
 		 * Transport settings if using mail or smtp
 		 * 'mail' or 'smtp' must be lower case
 		 */
-		'transport' => 'smtp',
+		'transport' => 'mail',
 		'sendmail' => array('path' => ''),
 		'smtp' => array(
 			'server' => 'smtp.gmail.com',
@@ -91,13 +94,19 @@ return array(
 			'username' => 'xyzxyz',
 			'password' => '******'
 		),
+
+		/* Characters encoding  
+		* Possible values or endless, but most usual are 'UTF-8' (Europe) or 'iso-8859-1' (North-America)
+		* Default value : 'UTF-8'  
+		*/
 		'encoding' => 'UTF-8',
+
 		/*
 		* Final delivery format
-		* Default: text/plain
-		* 'text/plain' or 'html'  must be lower case
+		* Default: multipart/mixed
+		* 'text/plain' or 'html'  or 'multipart/mixed' must be lower case
 		*/
-		'plainHTML' => 'text/plain',
+		'plainHTML' => 'multipart/mixed',
 		'linelenght' => 80
 	),
 
