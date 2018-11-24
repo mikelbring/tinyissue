@@ -314,6 +314,7 @@ function Reassignment (Project, Prev, Suiv, Issue) {
 				adLi.id = IDcomment;
 				document.getElementById('ul_IssueDiscussion').appendChild(adLi);
 				document.getElementById(IDcomment).innerHTML = xhttpASGMT.responseText;
+//				document.reload();
 			}
 		}
 	};

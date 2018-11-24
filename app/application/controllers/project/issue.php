@@ -241,7 +241,7 @@ class Project_Issue_Controller extends Base_Controller {
 				$text .= sprintf(__('email.reassigned_by'),\Auth::user()->firstname." ".\Auth::user()->lastname);
 				$text .= "\n\n";
 				$text .= __('email.more_url')." http://". $_SERVER['SERVER_NAME'] ."/project/".$project_id."/issue/".Input::get('Issue')."";
-				\Mail::send_email($text, $WhoAddr, $subject);
+				mail($WhoAddr, $subject,$text);
 			}
 
 			//Show on screen what did just happened
