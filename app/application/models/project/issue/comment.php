@@ -114,14 +114,12 @@ class Comment extends  \Eloquent {
 
 		/* Notify the person to whom the issue is currently assigned, unless that person is the one making the comment */
 		if($issue->assigned_to && $issue->assigned_to != \Auth::user()->id && (!empty($issue->assigned->email))) {
-// \Mail::send_email($text, $issue->assigned->email, $subject);
-			mail($issue->assigned->email, $subject,$text);
+ 			\Mail::send_email($text, $issue->assigned->email, $subject);
 		}
 
 		/* Notify the person who created the issue, unless that person is the one making the comment */
 		if($issue->created_by && $issue->created_by != \Auth::user()->id  && (!empty($issue->user->email))) {
-			mail($issue->assigned->email, $subject,$text);
-//			\Mail::send_email($text, $issue->user->email, $subject);
+			\Mail::send_email($text, $issue->user->email, $subject);
 		}
 
 		return $comment;
