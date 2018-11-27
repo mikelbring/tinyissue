@@ -339,6 +339,7 @@ class Project_Issue_Controller extends Base_Controller {
 		$msg = 0;
 		$now = date("Y-m-d H:i:s");
 		$Issue = Project\Issue::current()->id;
+		$Project = Project::current()->id;
 		//Common data for the insertion into database: file's type, date, ect
 		if ($Issue == 1) {		
 			//Attach a file to a new issue 
@@ -392,7 +393,7 @@ class Project_Issue_Controller extends Base_Controller {
 			//Keep track into the database
 			\DB::table('projects_issues_attachments')->insert(array('id'=>NULL,'issue_id'=>$Issue,'comment_id'=>$idComment,'uploaded_by'=>$Qui,'filesize'=>$TheFile["size"],'filename'=>$rep.$fileName,'fileextension'=>$_GET["ext"],'upload_token'=>$TheFile["tmp_name"],'created_at'=>$now,'updated_at'=>$now) );
 			$Quel = \DB::table('projects_issues_attachments')->where('issue_id', '=', $Issue)->order_by('id','DESC')->get();
-			if (\User\Activity::add(7, $Qui, $Issue, $Quel[0]->id, $fileName )) { $msg = $msg + 1; } else { $msg = $TheFile["error"]; }
+			if (\User\Activity::add(7, $Project, $Issue, $Quel[0]->id, $fileName )) { $msg = $msg + 1; } else { $msg = $TheFile["error"]; }
 		} else {
 			return 0;
 		}
