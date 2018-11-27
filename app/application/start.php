@@ -25,10 +25,10 @@ Laravel\Event::listen(Laravel\Config::loader, function($bundle, $file) use ($con
 
 	$load = Laravel\Config::file($bundle, $file);
 
-	switch($file)
-	{
+	switch($file) {
 		case 'application':
 			$config = array(
+				'attached' => $config_app['attached'],
 				'editor' => $config_app['editor'],
 				'key' => $config_app['key'],
 				'index' => !$config_app['mod_rewrite'] ? 'index.php' : '',
@@ -37,22 +37,16 @@ Laravel\Event::listen(Laravel\Config::loader, function($bundle, $file) use ($con
 				'timezone' => $config_app['timezone'],
 				'url' => isset($config_app['url']) ? $config_app['url'] : ''
 			);
-
 			$load =  $config + $load;
-
 			break;
 
 		case 'database':
-
 			$config['connections'][$config_app['database']['driver']] = array_merge(array(
 				'charset' => 'utf8',
 				'prefix' => ''
 			), $config_app['database']);
-
 			$config['default'] = $config_app['database']['driver'];
-
 			$load = $config + $load;
-
 			break;
 	}
 

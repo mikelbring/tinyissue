@@ -69,47 +69,27 @@ class Issue extends \Eloquent {
 		$activities = array();
 
 
-		foreach(\User\Activity::where('item_id', '=', $issue->id)->order_by('created_at', 'ASC')->get() as $activity)
-		{
+		foreach(\User\Activity::where('item_id', '=', $issue->id)->order_by('created_at', 'ASC')->get() as $activity) {
 			$activities[] = $activity;
 
-			switch($activity->type_id)
-			{
+			switch($activity->type_id) {
 				case 2:
-
-					if(!isset($users[$activity->user_id]))
-					{
-						$users[$activity->user_id] = \User::find($activity->user_id);
-					}
-
-					if(!isset($comments[$activity->action_id]))
-					{
-						$comments[$activity->action_id] = \Project\Issue\Comment::find($activity->action_id);
-					}
-
+					if(!isset($users[$activity->user_id])) 		{ $users[$activity->user_id] = \User::find($activity->user_id); }
+					if(!isset($comments[$activity->action_id]))	{ $comments[$activity->action_id] = \Project\Issue\Comment::find($activity->action_id); }
 					break;
 
 				case 5:
+					if(!isset($users[$activity->user_id]))		{ $users[$activity->user_id] = \User::find($activity->user_id); }
+					if(!isset($users[$activity->action_id])) 	{ $users[$activity->action_id] = \User::find($activity->action_id); }
+					break;
 
-					if(!isset($users[$activity->user_id]))
-					{
-						$users[$activity->user_id] = \User::find($activity->user_id);
-					}
-
-					if(!isset($users[$activity->action_id]))
-					{
-						$users[$activity->action_id] = \User::find($activity->action_id);
-					}
-
+				case 7:
+					if(!isset($users[$activity->user_id]))		{ $users[$activity->user_id] = \User::find($activity->user_id); }
+					if(!isset($users[$activity->action_id])) 	{ $users[$activity->action_id] = \User::find($activity->action_id); }
 					break;
 
 				default:
-
-					if(!isset($users[$activity->user_id]))
-					{
-						$users[$activity->user_id] = \User::find($activity->user_id);
-					}
-
+					if(!isset($users[$activity->user_id])) 	{ $users[$activity->user_id] = \User::find($activity->user_id); }
 					break;
 			}
 		}
@@ -121,12 +101,9 @@ class Issue extends \Eloquent {
 		$return = array();
 
 
-		foreach($activities as $row)
-		{
-			switch($row->type_id)
-			{
+		foreach($activities as $row) {
+			switch($row->type_id) {
 				case 2:
-
 					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issue,
 						'project' => $project,
@@ -134,60 +111,48 @@ class Issue extends \Eloquent {
 						'comment' => $comments[$row->action_id],
 						'activity' => $row
 					));
-
-				break;
+					break;
 
 				case 3:
-
-				$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
-					'issue' => $issue,
-					'project' => $project,
-					'user' => $users[$row->user_id],
-					'activity' => $row
-				));
-
-				break;
-
+					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
+						'issue' => $issue,
+						'project' => $project,
+						'user' => $users[$row->user_id],
+						'activity' => $row
+					));
+					break;
 
 				case 5:
-
-				$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
-					'issue' => $issue,
-					'project' => $project,
-					'user' => $users[$row->user_id],
-					'assigned' => $users[$row->action_id],
-					'activity' => $row
-				));
-
-				break;
+					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
+						'issue' => $issue,
+						'project' => $project,
+						'user' => $users[$row->user_id],
+						'assigned' => $users[$row->action_id],
+						'activity' => $row
+					));
+					break;
 
 				case 6:
-
-				$tag_diff = json_decode($row->data, true);
-				$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
-					'issue' => $issue,
-					'project' => $project,
-					'user' => $users[$row->user_id],
-					'tag_diff' => $tag_diff,
-					'tag_counts' => array('added' => sizeof($tag_diff['added_tags']), 'removed' => sizeof($tag_diff['removed_tags'])),
-					'activity' => $row
-				));
-
-				break;
-
+					$tag_diff = json_decode($row->data, true);
+					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
+						'issue' => $issue,
+						'project' => $project,
+						'user' => $users[$row->user_id],
+						'tag_diff' => $tag_diff,
+//						'tag_counts' => array('added' => sizeof($tag_diff['added_tags']), 'removed' => sizeof($tag_diff['removed_tags'])),
+						'activity' => $row
+					));
+					break;
 				default:
-
-				$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
-					'issue' => $issue,
-					'project' => $project,
-					'user' => $users[$row->user_id],
-					'activity' => $row
-				));
-
-				break;
+					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
+						'issue' => $issue,
+						'project' => $project,
+						'user' => $users[$row->user_id],
+						'activity' => $row
+					));
+					break;
 			}
 		}
-
 		return $return;
 
 	}
