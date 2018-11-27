@@ -360,11 +360,11 @@ class Project_Issue_Controller extends Base_Controller {
 		$rep = (substr($pref["directory"], 0, 1) == '/') ? $pref["directory"] : "../".$pref["directory"];
 		if($pref["method"] == 'i') {
 			if (!file_exists($rep."/".$Issue."/".$idComment)) {
-				if (!file_exists($rep."/".$Issue)) {
-					if (mkdir ($rep."/".$Issue, 0775)) { $msg = $msg + 1; }
+				if (!file_exists($rep.$Issue)) {
+					if (mkdir ($rep.$Issue, 0775)) { $msg = $msg + 1; }
 				}
-				$rep = $rep."/".$Issue;
 			}
+			$rep = $rep.$Issue."/";
 		}
 
 		////Second: setting the file's name
