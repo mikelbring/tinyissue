@@ -7,6 +7,29 @@ return array(
 	 */
 	'url' => '',
 
+	/**  Directories
+	 Here, you'll define where to store informations
+	 'directory' : where to store the files you'll attach to an issue
+	   | Default value : 'uplaods/'  ... which means  /var/www/html/Bugs_directory/uploads/
+	   | if you want to store wherever in your computer, give the absolute path starting this with a '/'  like  '/home/user/Documents/Downloads/'
+	 'format' : how to name the downloaded files attached to an issue, each component of this variable will be separated by an undescore
+	   | Possible values are limited to : 'ICN', 'NCI', 'CIN'
+	   | 'C' like 'Comment' refering to comment's number
+	   | 'I' like 'Issue' refering to issue's number
+	   | 'N' like 'Name' a somewhat given name
+	   | Defalut value : 'ICN'	will produce something like I_C_name.ext
+	 'method' : how to store the attached files
+	   | Possible values are limited to : 'd', 'i'
+	   | 'd' like 'directories' : all together in a single directory
+	   | 'i' like 'issue' : each issue has its own sub-directory   ... if you chose this option, the 'I' value of 'format' will be skipped
+	   | Default value : 'i'
+	 */
+	'attached' => array(
+		'directory' => 'uploads/',
+		'format' => 'ICN',
+		'method' => 'i'
+	),
+
 	/**  Database
 	 * Fill out your database settings. Make sure that the driver is correct: 'mysql' for MySQL, 'sqlsrv' for MSSQL,
 	 * 'pgsql' for PostgreSQL, or 'sqlite' for SQLite
@@ -29,6 +52,12 @@ return array(
 		'name'=> 'Bugs',
 		'date_format'=>'Y-m-d H:i',
 	),
+
+	/**  Timezone
+	 * Specify your timezone
+	 * - http://php.net/manual/en/timezones.php
+	 */
+	'timezone' => 'Europe/Brussels',
 
 	/**  wysiwyg editor
 	  *  Default : 'BasePage'=>'/app/vendor/ckeditor/ckeditor.js',
@@ -109,12 +138,6 @@ return array(
 		'plainHTML' => 'multipart/mixed',
 		'linelenght' => 80
 	),
-
-	/**  Timezone
-	 * Specify your timezone
-	 * - http://php.net/manual/en/timezones.php
-	 */
-	'timezone' => 'Europe/Brussels',
 
 	/**  Session key
 	 * Put in a random key combination to use as your session keys

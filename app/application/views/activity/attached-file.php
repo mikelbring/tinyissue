@@ -13,7 +13,8 @@
 						echo '<span style="font-weight: bold; color: #090;">'.__('tinyissue.fileuploaded').'</span> '.__('tinyissue.by').' ';
 						echo $Who[0]->attributes["firstname"].' '.$Who[0]->attributes["lastname"].' : ';
 						echo '<a href="'.URL::base().Config::get('application.attachment_path').$What[0]->filename.'" style="font-weight: bold; color: #009; text-decoration:underline;" target="_blank">';
-						echo '<b>'.$What[0]->filename.'</b>';
+						//echo '<b>'.$What[0]->filename.'</b>';
+						echo '<b> TOMATES VERTES '.$activity->attributes['data'].'</b>';
 						echo '</a>';
 						echo ' - '.date(Config::get('application.my_bugs_app.date_format'), strtotime($activity->attributes['updated_at']));
 					}

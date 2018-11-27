@@ -33,8 +33,7 @@ class Project_Issue_Controller extends Base_Controller {
 	public function post_new() {
 		$issue = Project\Issue::create_issue(Input::all(), Project::current());
 
-		if(!$issue['success'])
-		{
+		if(!$issue['success']) {
 			return Redirect::to(Project::current()->to('issue/new'))
 				->with_input()
 				->with_errors($issue['errors'])
@@ -53,10 +52,8 @@ class Project_Issue_Controller extends Base_Controller {
 	 */
 	public function get_index() {
 		/* Delete a comment */
-		if(Input::get('delete') && Auth::user()->permission('issue-modify'))
-		{
+		if(Input::get('delete') && Auth::user()->permission('issue-modify')) {
 			Project\Issue\Comment::delete_comment(str_replace('comment', '', Input::get('delete')));
-
 			return true;
 		}
 
@@ -71,16 +68,12 @@ class Project_Issue_Controller extends Base_Controller {
 	 *
 	 * @return Redirect
 	 */
-	public function post_index()
-	{
-		if(!Input::get('comment'))
-		{
+	public function post_index() {
+		if(!Input::get('comment')) {
 			return Redirect::to(Project\Issue::current()->to() . '#new-comment')
 				->with('notice-error', __('tinyissue.you_put_no_comment'));
 		}
-
 		$comment = \Project\Issue\Comment::create_comment(Input::all(), Project::current(), Project\Issue::current());
-
 		return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
 			->with('notice', __('tinyissue.your_comment_added'));
 	}
@@ -268,10 +261,7 @@ class Project_Issue_Controller extends Base_Controller {
 	 */
 	public function get_retag() {
 			$content = "";
-			$PosiPoint = strpos($_SERVER['REQUEST_URI'],".");
-			$LaPage = substr($_SERVER['REQUEST_URI'], $PosiPoint+5);
-			$Datas = explode("/", $LaPage);
-			$Issue = $Datas[3];
+			$Issue = Project\Issue::current()->id;
 			$Msg = "";
 			$Show = false;
 
@@ -343,41 +333,80 @@ class Project_Issue_Controller extends Base_Controller {
 	 * @return string
 	 */ 
 	public function post_upload() {
+		$pref = Config::get('application.attached');
+		$url =\URL::home();
+		$Qui = \Auth::user()->id;
+		$msg = 0;
+		$now = date("Y-m-d H:i:s");
+		$Issue = Project\Issue::current()->id;
+		//Common data for the insertion into database: file's type, date, ect
+		if ($Issue == 1) {		
+			//Attach a file to a new issue 
+			////We give it the next available issue number
+			$NxIssue = \DB::table('projects_issues')->order_by('id','DESC')->get();
+			$Issue = $NxIssue[0]->id + 1;
+			////We give it the next available issue comment number
+			$Quel = \DB::table('projects_issues_comments')->order_by('id','DESC')->get();
+			$idComment = $Quel[0]->id + 1;
+		} else {
+			//Attach a file to an existing issue
+			$Quel = \DB::table('projects_issues_comments')->where('issue_id', '=', $Issue)->order_by('id','DESC')->get();
+			$idComment = (isset($Quel[0]->id)) ? $Quel[0]->id : NULL ;
+		}
+
+		//Preparing the name and directories' names according to user preferences
+		///First: preparing the directories
 		$TheFile	= $_FILES["Loading"];
-		if(move_uploaded_file($TheFile["tmp_name"], "../uploads/".$_GET["Nom"])) {
-			//Make sure the file will be open to all users, not only the php engine
+		$rep = (substr($pref["directory"], 0, 1) == '/') ? $pref["directory"] : "../".$pref["directory"];
+		if($pref["method"] == 'i') {
+			if (!file_exists($rep."/".$Issue."/".$idComment)) {
+				if (!file_exists($rep."/".$Issue)) {
+					if (mkdir ($rep."/".$Issue, 0775)) { $msg = $msg + 1; }
+				}
+				$rep = $rep."/".$Issue;
+			}
+		}
+
+		////Second: setting the file's name
+		$fileName = (($pref["method"] == 'i') ? "" : $Issue."_").$idComment."_".$_GET["Nom"];	//Default value  ( 'ICN' )
+		switch ($pref["format"]) {
+			case "NCI":
+				$fileName = $_GET["Nom"]."_".$idComment.(($pref["method"] == 'i') ? "" : "_".$Issue);
+				break;
+			case "CIN":
+				$fileName = $idComment."_".(($pref["method"] == 'i') ? "" : $Issue."_").$_GET["Nom"];
+				break;
+		}
+
+		if(move_uploaded_file($TheFile["tmp_name"], $rep.$fileName)) {
+			$msg = $msg + 1;
+			//Make sure the file will be openable to all users, not only the php engine
 			////  5: Read and execute  (not write)
 			////  6: Read and write (not execute)
 			////  7: Read, write, execute
 			////755 = Everything for owner, read and execute for strangers
 			////775 = Everything for owner and group, read and execute for strangers
 			////776 = Everything for owner and group, read and write for strangers
-			chmod("../uploads/".$_GET["Nom"], "0775");
-			//Common data for the insertion into database: file's type, date, ect
-			$PosiPoint = strpos($_SERVER['REQUEST_URI'],".");
-			$LaPage = substr($_SERVER['REQUEST_URI'], $PosiPoint+5);
-			$Datas = explode("/", $LaPage);
-			$now = date("Y-m-d H:i:s");
-			$Issue = (isset($Datas[3])) ? $Datas[3] : 1;
-			if ($Issue == 1) {		
-				//Attach a file to a new issue 
-				////We give it the next available issue number
-				$NxIssue = \DB::table('projects_issues')->order_by('id','DESC')->get();
-				$Issue = $NxIssue[0]->id + 1;
-				////We give it the next available issue comment number
-				$Quel = \DB::table('projects_issues_comments')->order_by('id','DESC')->get();
-				$newID = $Quel[0]->id + 1;
-			} else {
-				//Attach a file to an existing issue
-				$Quel = \DB::table('projects_issues_comments')->where('issue_id', '=', $Issue)->order_by('id','DESC')->get();
-				$newID = (isset($Quel[0]->id)) ? $Quel[0]->id : NULL ;
-			}
-			\DB::table('projects_issues_attachments')->insert(array('id'=>NULL,'issue_id'=>$Issue,'comment_id'=>$newID,'uploaded_by'=>$_GET["Who"],'filesize'=>$TheFile["size"],'filename'=>$TheFile["name"],'fileextension'=>$_GET["ext"],'upload_token'=>$TheFile["tmp_name"],'created_at'=>$now,'updated_at'=>$now) );
+			if (chmod($rep.$fileName, "0775")) { $msg = $msg + 1; }
+
+			//Keep track into the database
+			\DB::table('projects_issues_attachments')->insert(array('id'=>NULL,'issue_id'=>$Issue,'comment_id'=>$idComment,'uploaded_by'=>$Qui,'filesize'=>$TheFile["size"],'filename'=>$rep.$fileName,'fileextension'=>$_GET["ext"],'upload_token'=>$TheFile["tmp_name"],'created_at'=>$now,'updated_at'=>$now) );
 			$Quel = \DB::table('projects_issues_attachments')->where('issue_id', '=', $Issue)->order_by('id','DESC')->get();
-			\User\Activity::add(7, $_GET["Who"], $Issue, $Quel[0]->id );
-			$msg = $TheFile["error"];
+			if (\User\Activity::add(7, $Qui, $Issue, $Quel[0]->id, $fileName )) { $msg = $msg + 1; } else { $msg = $TheFile["error"]; }
 		} else {
-			return false;
+			return 0;
+		}
+		if (is_numeric($msg)) {
+
+			$msg .= ';';
+			$msg .= '<div class="insides"><div class="topbar"><div class="data">';
+			$msg .= '<span style="font-weight: bold; color: #090;">'.__('tinyissue.fileuploaded').'</span>';
+			$msg .= '<a href="'.$url.$rep.$fileName.'?'.$now.'" target="_blank" />';
+			$msg .= '<img src="'.((in_array(strtolower($_GET["ext"]), array("jpg","png","gif","jpeg"))) ? $url.$rep.$fileName : $_GET["icone"]).'" height="30" align="right" border="0" />';
+			$msg .= '</a>';
+			$msg .= '<a href="'.$url.$rep.$fileName.'?'.$now.'" target="_blank" />';
+			$msg .= '<b>'.$fileName.'</b>';
+			$msg .= '</div></div></div>';
 		}
 		return $msg;
 	}

@@ -122,7 +122,9 @@
 					</div>
 				</li>
 				<li>
+					<?php if (Project\Issue::current()->assigned->id == \Auth::user()->id ) { ?>
 					<a href="<?php echo Project\Issue::current()->to('status?status=0'); ?>" onclick="return confirm('<?php echo __('tinyissue.close_issue_confirm'); ?>');" class="close"><?php echo __('tinyissue.close_issue'); ?></a>
+					<?php } else { echo '&nbsp;'; } ?>
 				</li>
 			</ul>
 		<?php endif; ?>
@@ -252,31 +254,36 @@ function IMGupload(input) {
 				img = "../../../../app/assets/images/upload_type/" + ext + ".png";
 			}
 			var xhttpUPLD = new XMLHttpRequest();
-			var NextPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/upload?Nom=' + fil['name'] + '&Who=' + <?php echo \Auth::user()->id; ?> + '&ext=' + ext;
+			var NextPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/upload?Nom=' + fil['name'];
+			NextPage = NextPage + '&ext=' + ext;
+			NextPage = NextPage + '&fileName=' + fil['name'];
+			NextPage = NextPage + '&icone=' + img;
 		
 			xhttpUPLD.onreadystatechange = function() {
 			if (this.readyState == 3 ) {
 				document.getElementById('div_barupload').style.display = "block";
 			}
 			if (this.readyState == 4 && this.status == 200) {
-				if (xhttpUPLD.responseText != '' ) {
-						var adLi = document.createElement("LI");
-						adLi.className = 'comment';
-						adLi.id = IDcomment;
-						document.getElementById('ul_IssueDiscussion').appendChild(adLi);
-						var msg = '<div class="insides"><div class="topbar"><div class="data">';
-						msg = msg + '<a href="../../../../uploads/' + fil['name'] + "?" + new Date().getTime() + '" target="_blank" />';
-						msg = msg + '<img src="' + img + '" height="30" align="right" border="0" />';
-						msg = msg + '</a>';
-						msg = msg + ((xhttpUPLD.responseText == 0) ? '<?php echo __('tinyissue.fileupload_succes'); ?>' : '<?php echo __('tinyissue.fileupload_failed'); ?>' );
-						msg = msg + '<a href="../../../../uploads/' + fil['name'] + "?" + new Date().getTime() + '" target="_blank" />';
-						msg = msg + '<b>' + fil['name'] + '</b>';
-						msg = msg + '</div></div></div>';
-						document.getElementById(IDcomment).innerHTML = msg;
-						document.getElementById("file_upload").value = "";
+				var bons = ["NonAccepté", "1;", "2;", "3;", "4;"];
+				var recu = xhttpUPLD.responseText;
+				var resultat = recu.substr(0,2);
+				var adLi = document.createElement("LI");
+
+				adLi.className = 'comment';
+				adLi.id = IDcomment;
+				document.getElementById('ul_IssueDiscussion').appendChild(adLi);
+
+				if ( bons.indexOf(resultat) > 0 ) {
+						var msg = recu.substr(2);
+						setTimeout(function() { document.getElementById('div_barupload').style.display = "none"; }, 7560);
+					} else {
+						msg = '<?php echo __('tinyissue.fileupload_failed'); ?><br />' + recu.substr(3);
 						document.getElementById('div_barupload').style.display = "none";
-						document.getElementById('span_butupload').style.display = 'none';
 					}
+
+					document.getElementById(IDcomment).innerHTML = msg;
+					document.getElementById("file_upload").value = "";
+					document.getElementById('span_butupload').style.display = 'none';
 				}
 			};
 			xhttpUPLD.open("POST", NextPage, true);
