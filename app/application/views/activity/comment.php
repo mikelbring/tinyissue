@@ -6,7 +6,7 @@
 
 	<div class="data">
 		<span class="comment">
-			<?php echo str_replace(array("<p>","</p>"), "", \Sparkdown\Markdown('"' . Str::limit($comment->comment, 60) . '"')); ?>
+			<?php echo str_replace(array("<p>","</p>"), "", \Sparkdown\Markdown('"' . Str::limit(strip_tags($comment->comment), 60) . '"')); ?>
 		</span>
 		<?php echo __('tinyissue.by'); ?>
 		<strong><?php echo $user->firstname . ' ' . $user->lastname; ?></strong> <?php echo __('tinyissue.on_issue'); ?> <a href="<?php echo $issue->to(); ?>"><?php echo $issue->title; ?></a>
