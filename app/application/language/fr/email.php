@@ -11,6 +11,7 @@ return array(
 	'new_issue' => 'Un nouveau billet "%s" a été créé pour le projet "%s"',
 	'new_comment' => 'Le billet "%s" du projet "%s" a un nouveau commentaire',
 	'assignment' => 'Un nouveau billet "%s" a été créé pour le projet "%s" et vous a été assigné.',
+	'assigned_by' => 'Assigné par: %s',
 	'reassignment' => 'Le billet "%s" du projet "%s" vous a été réassigné',
 	'update' => 'Le billet "%s" du projet "%s" a été mis à jour',
 

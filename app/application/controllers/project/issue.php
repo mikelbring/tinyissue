@@ -40,6 +40,30 @@ class Project_Issue_Controller extends Base_Controller {
 				->with('notice-error', __('tinyissue.we_have_some_errors'));
 		}
 
+		//Send an email to the assignee
+		$val = explode("/",$issue['issue']->to());
+		$issue_num = $val[count($val)-1];
+		//Search for new assignee infos
+		$thisIssue = \Project\Issue::where('id', '=', $issue_num)->get('*');
+		$Who = \User::where('id', '=', $thisIssue[0]->attributes["assigned_to"] )->get(array('firstname','lastname','email'));
+		$WhoName = $Who[0]->attributes["firstname"].' '.$Who[0]->attributes["lastname"];
+		$WhoAddr = $Who[0]->attributes["email"];
+		$Issue_title = $thisIssue[0]->attributes["title"];
+		$Project = \Project::where('id', '=', $thisIssue[0]->attributes["project_id"])->get(array('id', 'name'));
+		$project_id = $Project[0]->attributes["id"];
+		$project_nm = $Project[0]->attributes["name"];
+		$project = \Project::find($project_id);
+		
+		//Email process
+			$subject  = sprintf(__('email.assignment'),$Issue_title,$project_nm);
+			$text  = sprintf(__('email.assignment'),$Issue_title,$project_nm);
+			$text .= "\n\n";
+			$text .= sprintf(__('email.assigned_by'),\Auth::user()->firstname." ".\Auth::user()->lastname);
+			$text .= "\n\n";
+			$text .= __('email.more_url')." http://". $_SERVER['SERVER_NAME'] ."/project/".$project_id."/issue/".$issue_num."";
+			mail($WhoAddr, $subject,$text);
+		//End of email process
+
 		return Redirect::to($issue['issue']->to())
 			->with('notice', __('tinyissue.issue_has_been_created'));
 	}

@@ -89,7 +89,7 @@ return array(
 	'label_reopened' => 'Réouvert',
 	'language' => 'Langue',
 	'last_name' => 'Nom',
-	'let_update_it' => 'Mettre à jour',
+	'let_update_it' => 'Mettre BUGS à jour',
 	'limit_event_createdAt' => 'Date de création',
 	'limit_event_updatedAt' => 'Dernière modification',
 	'limit_event_closedAt' => 'Date de fermeture',

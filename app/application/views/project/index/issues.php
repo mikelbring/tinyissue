@@ -29,7 +29,7 @@
 						<?php echo __('tinyissue.limits'); ?>
 					</th>
 					<td style="width: 45%; font-weight: bold;">
-						<?php echo Form::select('limit_contrib', array( 'assigned_to' => __('tinyissue.limit_contrib_assignedTo'),'created_by'  => __('tinyissue.limit_contrib_createdBy'),'closed_by'   => __('tinyissue.limit_contrib_closedBy'),'updated_by'  => __('tinyissue.limit_contrib_updatedBy')), Input::get('limit_contrib', '')); ?>
+						<?php echo Form::select('limit_contrib', array( 'assigned_to' => __('tinyissue.limit_event_createdAt'),'created_by'  => __('tinyissue.limit_contrib_createdBy'),'closed_by'   => __('tinyissue.limit_contrib_closedBy'),'updated_by'  => __('tinyissue.limit_contrib_updatedBy')), Input::get('limit_contrib', '')); ?>
 						<?php echo Form::select('assigned_to', $assigned_users, Input::get('assigned_to', '')); ?>
 					</td>
 				</tr>
