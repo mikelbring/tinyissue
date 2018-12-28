@@ -98,26 +98,32 @@
 					<?php echo __('tinyissue.assigned_to'); ?>
 
 					<?php if(Project\Issue::current()->assigned): ?>
-						<a href="javascript:void(0);" class="currently_assigned">
 						<span id="span_currentlyAssigned_name">
 						<?php echo Project\Issue::current()->assigned->firstname; ?>
 						<?php echo Project\Issue::current()->assigned->lastname; ?>
+						&nbsp;&nbsp;
+						<img src="../../../../app/assets/images/layout/dropdown-arrow.png" height="10" />
 						</span>
-						</a>
 					<?php else: ?>
-						<a href="javascript:void(0);" class="currently_assigned">
-							<span id="span_currentlyAssigned_name">
-							<?php echo __('tinyissue.no_one'); ?>
-							</span>
-						</a>
+						<span id="span_currentlyAssigned_name">
+						<?php echo __('tinyissue.no_one'); ?>
+						&nbsp;&nbsp;
+						<img src="../../../../app/assets/images/layout/dropdown-arrow.png" height="10" />
+						</span>
 					<?php endif; ?>
 
 					<div class="dropdown">
-						<ul>
-							<li class="unassigned"><a href="javascript: Reassignment(<?php echo $project->id.','.((Project\Issue::current()->assigned_to == '') ? 0 : Project\Issue::current()->assigned_id).',0,'.Project\Issue::current()->id; ?>);" class="user0<?php echo !Project\Issue::current()->assigned_id ? ' assigned' : ''; ?>" ><?php echo __('tinyissue.no_one'); ?></a></li>
-							<?php foreach(Project::current()->users()->get() as $row): ?>
-							<li><a href="javascript: Reassignment(<?php echo $project->id.','.((Project\Issue::current()->assigned_id == '') ? 0 : Project\Issue::current()->assigned_id).','.$row->id.','.Project\Issue::current()->id; ?>);" class="user0<?php echo !Project\Issue::current()->assigned ? ' assigned' : ''; ?>" ><?php echo $row->firstname . ' ' . $row->lastname; ?></a></li>
-							<?php endforeach; ?>
+						<ul id="dropdown_ul">
+							<li class="unassigned" id="dropdown_li_0"><a href="javascript: Reassignment(<?php echo $project->id.','.((Project\Issue::current()->assigned_to == '') ? 0 : Project\Issue::current()->assigned_id).',0,'.Project\Issue::current()->id; ?>);" class="user0<?php echo !Project\Issue::current()->assigned_id ? ' assigned' : ''; ?>" ><?php echo __('tinyissue.no_one'); ?></a></li>
+							<?php 
+								foreach(Project::current()->users()->get() as $row) {
+									echo '<li id="dropdown_li_'.$row->id.'">';
+									echo ( $row->id == Project\Issue::current()->assigned->id) ? '<span style="color: #FFF; margin-left: 10px; font-weight: bold;">' : '<a href="javascript: Reassignment('.$project->id.','.((Project\Issue::current()->assigned_id == '') ? 0 : Project\Issue::current()->assigned_id).','.$row->id.','.Project\Issue::current()->id.');" class="user0'.((!Project\Issue::current()->assigned) ? ' assigned' : '').'" >';
+									echo $row->firstname . ' ' . $row->lastname; 
+									echo ( $row->id == Project\Issue::current()->assigned->id) ? '</span>' : '</a>'; 
+									echo '</li>';
+								}
+							?>
 						</ul>
 					</div>
 				</li>
@@ -331,6 +337,23 @@ function Reassignment (Project, Prev, Suiv, Issue) {
 				adLi.id = IDcomment;
 				document.getElementById('ul_IssueDiscussion').appendChild(adLi);
 				document.getElementById(IDcomment).innerHTML = xhttpASGMT.responseText;
+				
+				var MyDropDown = document.getElementById('dropdown_ul');
+				var items = MyDropDown.getElementsByTagName("li");
+				for (var i = 1; i < items.length; ++i) {
+					var monID = items[i].getAttribute('id');
+					var num = monID.substring(12);
+					var contenu = items[i].innerHTML;
+					var nomDeb = contenu.indexOf('>',0);
+					var nomFin = contenu.indexOf('<', nomDeb);
+					var nom = contenu.substring(nomDeb+1,nomFin);
+					var contenu = '<a class="user0" href="javascript: Reassignment(' + Project + ', ' + Prev + ', ' + num + ',' + Issue + ');">' + nom + '</a>';
+					if (num == Suiv) {
+						contenu = '<span style="color: #FFF; margin-left: 10px; font-weight: bold;">' + nom + '</span>';
+						document.getElementById('span_currentlyAssigned_name').innerHTML = nom;
+					}
+					items[i].innerHTML = contenu;
+				}
 			}
 		}
 	};
