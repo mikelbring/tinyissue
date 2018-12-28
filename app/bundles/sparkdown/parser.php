@@ -1068,12 +1068,12 @@ class Markdown_Parser {
 
 		$list_str = preg_replace_callback('{
 			(\n)?							# leading line = $1
-			(^[ ]*)							# leading whitespace = $2
-			('.$marker_any_re.'				# list marker and space = $3
-				(?:[ ]+|(?=\n))	# space only required if item is not empty
+			(^[ ]*)						# leading whitespace = $2
+			('.$marker_any_re.'		# list marker and space = $3
+				(?:[ ]+|(?=\n))		# space only required if item is not empty
 			)
-			((?s:.*?))						# list item text   = $4
-			(?:(\n+(?=\n))|\n)				# tailing blank line = $5
+			((?s:.*?))					# list item text   = $4
+			(?:(\n+(?=\n))|\n)		# tailing blank line = $5
 			(?= \n* (\z | \2 ('.$marker_any_re.') (?:[ ]+|(?=\n))))
 			}xm',
 			array(&$this, '_processListItems_callback'), $list_str);
@@ -1311,11 +1311,11 @@ class Markdown_Parser {
 
 	function doBlockQuotes($text) {
 		$text = preg_replace_callback('/
-			  (								# Wrap whole match in $1
+			  (							# Wrap whole match in $1
 				(?>
 				  ^[ ]*>[ ]?			# ">" at the start of a line
 					.+\n					# rest of the first line
-				  (.+\n)*					# subsequent consecutive lines
+				  (.+\n)*				# subsequent consecutive lines
 				  \n*						# blanks
 				)+
 			  )
@@ -2484,27 +2484,27 @@ class MarkdownExtra_Parser extends Markdown_Parser {
 		# Process definition terms.
 		$list_str = preg_replace_callback('{
 			(?>\A\n?|\n\n+)					# leading line
-			(								# definition terms = $1
+			(										# definition terms = $1
 				[ ]{0,'.$less_than_tab.'}	# leading whitespace
-				(?![:][ ]|[ ])				# negative lookahead for a definition 
-											#   mark (colon) or more whitespace.
-				(?> \S.* \n)+?				# actual term (not whitespace).	
+				(?![:][ ]|[ ])					# negative lookahead for a definition 
+													#   mark (colon) or more whitespace.
+				(?> \S.* \n)+?					# actual term (not whitespace).	
 			)			
 			(?=\n?[ ]{0,3}:[ ])				# lookahead for following line feed 
-											#   with a definition mark.
+													#   with a definition mark.
 			}xm',
 			array(&$this, '_processDefListItems_callback_dt'), $list_str);
 
 		# Process actual definitions.
 		$list_str = preg_replace_callback('{
-			\n(\n+)?						# leading line = $1
-			(								# marker space = $2
+			\n(\n+)?								# leading line = $1
+			(										# marker space = $2
 				[ ]{0,'.$less_than_tab.'}	# whitespace before colon
-				[:][ ]+						# definition mark (colon)
+				[:][ ]+							# definition mark (colon)
 			)
-			((?s:.+?))						# definition text = $3
-			(?= \n+ 						# stop at next definition mark,
-				(?:							# next term or end of text
+			((?s:.+?))							# definition text = $3
+			(?= \n+ 								# stop at next definition mark,
+				(?:								# next term or end of text
 					[ ]{0,'.$less_than_tab.'} [:][ ]	|
 					<dt> | \z
 				)						
