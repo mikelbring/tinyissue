@@ -722,9 +722,12 @@ p{
 }
 .issue-actions .assigned-to .dropdown{
 	display: none;
-	position: absolute; top: 0; right: 1px;
+	position: absolute; 
+	top: 0; 
+	right: 1px;
 	padding-top: 26px;
 	background: url('../images/layout/dropdown-top-arrow.png') 173px 20px no-repeat;
+	z-index: 499;
 }
 .issue-actions .assigned-to .dropdown ul{
 	border-radius: 4px;
