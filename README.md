@@ -1,5 +1,3 @@
-I'll be out for threee weeks ... please patient if ever you encounter any bug or need help (back around mid-may 2017).
-
 # Bugs
 
 [Visit the project](http://pixeline.github.io/bugs/)
