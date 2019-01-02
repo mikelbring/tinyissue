@@ -112,7 +112,7 @@
 						</span>
 					<?php endif; ?>
 
-					<div class="dropdown">
+					<div class="dropdown" style="z-index: 10000;">
 						<ul id="dropdown_ul">
 							<li class="unassigned" id="dropdown_li_0"><a href="javascript: Reassignment(<?php echo $project->id.','.((Project\Issue::current()->assigned_to == '') ? 0 : Project\Issue::current()->assigned_id).',0,'.Project\Issue::current()->id; ?>);" class="user0<?php echo !Project\Issue::current()->assigned_id ? ' assigned' : ''; ?>" ><?php echo __('tinyissue.no_one'); ?></a></li>
 							<?php 
