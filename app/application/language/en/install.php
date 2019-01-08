@@ -5,7 +5,7 @@ return array(
 	'Complete_login' => 'Proceed to Login',
 	'Complete_presentation' => 'Installation is finished.  Please <strong>delete</strong> this install or rename this folder to prevent anyone from creating an account! In the future you can use the installer to recover an account.',
 	'Database_Error' => 'Database Error',
-	'database_check' => 'Please fix your config.app.php - ',
+	'Database_check' => 'Please fix your config.app.php - Database section ',
 	'Database_Connect Error' => 'Database Connect Error',
 	'Database_CreateDatabase_success' => 'The following database has been created: ',
 	'Database_CreateDatabase_failed' => 'I can NOT create the database as you asked.  Please check if the users you designated has rights to do so (permission fault).',

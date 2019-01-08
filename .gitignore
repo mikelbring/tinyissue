@@ -1,8 +1,12 @@
 .idea*
 _IDE_HELPER.php
 config.app.php
+config.app.surete.php
 .DS_Store
 README.md
 *.js~
 *.php~
+.gitignore~
 install/mysql-structure.php
+app/vendor/Trumbowyg/
+

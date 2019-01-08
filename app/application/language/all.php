@@ -53,3 +53,5 @@ $WrongPwd["it"] = 'Ooops, il tuo nome utente o la tua password non corrispondono
 $WrongPwd["ru"] = 'Упсс, имя пользователя и пароль не совпадают.';
 $WrongPwd["zh-CN"] = '哎呀, 您的账号或密码不符';
 $WrongPwd["zh-TW"] = '哎呦, 您的帳號或密碼不符';
+
+$NoConfigApp = "A major error occured: the template file for configuration does not exists!";

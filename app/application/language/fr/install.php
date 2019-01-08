@@ -5,7 +5,7 @@ return array(
 	'Complete_login' => 'Entrez ...et profitez-en.',
 	'Complete_presentation' => 'L`installation est terminée.  Veuillez <b>supprimer</b> le sous-répertoire <i><b>install</b></i> ou - au moins - le changer de nom. Ceci mettra votre système plus en sécurité.  En effet, un pirate pourrait utiliser ce répertoire et ses fichiers pour modifier la configuration de votre gestionnaire <b><i>Bugs</i></b>.',
 	'Database_Error' => 'Impossible de lire la base de données',
-	'Database_Check' => 'Veuillez vérifier et corriger adéquatement les informations conservées dans le fichier config.app.php - ',
+	'Database_check' => 'Veuillez vérifier et corriger adéquatement les informations conservées dans le fichier config.app.php - configuration de la base de données ',
 	'Database_Connect Error' => 'Vérifiez mot de passe et identifiant à la base de données: connexion échouée',
 	'Database_CreateDatabase_success' => 'Nous avons créé la base de données suivante: ',
 	'Database_CreateDatabase_failed' => 'Vous ne disposez pas des droits nécessaires à la création d`une base de données',

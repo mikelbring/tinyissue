@@ -1,0 +1,3 @@
+<script>
+document.location.href="../index.php/login";
+</script>

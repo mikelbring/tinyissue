@@ -3,6 +3,7 @@ function ChgLng(Lng = 'en') {
 	document.location.href = 'index.php?Lng=' + Lng;
 }
 </script>
+
 <?php
 if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 	if(!file_exists('../config.app.example.php')) { die($NoConfigApp); }
@@ -106,7 +107,7 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 	</table>
 </div>
 <script type="text/javascript">
-var CountDown = 6;
+var CountDown = 600;
 setInterval(function () {
 	document.getElementById('CountDown').innerHTML = CountDown;
 	if (--CountDown <= 0) { document.location.href = "index.php?Lng=<?php echo $_GET["Lng"]; ?>";}
@@ -204,7 +205,7 @@ if(!file_exists('../config.app.php')){ ?>
 				<td>
 					<select name="email_transport">
 					<option value="smtp">smtp</option>
-					<option value="mail">mail</option>
+					<option value="mail" selected="selected">mail</option>
 					<option value="sendmail">sendmail</option>
 					</select>
 				</td>
