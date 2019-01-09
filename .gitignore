@@ -9,4 +9,4 @@ README.md
 .gitignore~
 install/mysql-structure.php
 app/vendor/Trumbowyg/
-
+images/
