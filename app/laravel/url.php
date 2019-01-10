@@ -14,8 +14,7 @@ class URL {
 	 *
 	 * @return string
 	 */
-	public static function full()
-	{
+	public static function full() {
 		return static::to(URI::full());
 	}
 
@@ -24,8 +23,7 @@ class URL {
 	 *
 	 * @return string
 	 */
-	public static function current()
-	{
+	public static function current() {
 		return static::to(URI::current(), null, false, false);
 	}
 
@@ -35,15 +33,13 @@ class URL {
 	 * @param  bool    $https
 	 * @return string
 	 */
-	public static function home($https = null)
-	{
+	public static function home($https = null) {
 		$route = Router::find('home');
 
 		// If a route named "home" exists, we'll route to that instead of using
 		// the single slash root URI. This allows the HTTPS attribute to be
 		// respected instead of being hard-coded in the redirect.
-		if ( ! is_null($route))
-		{
+		if ( ! is_null($route)) {
 			return static::to_route('home');
 		}
 
@@ -55,8 +51,7 @@ class URL {
 	 *
 	 * @return string
 	 */
-	public static function base()
-	{
+	public static function base() {
 		if (isset(static::$base)) return static::$base;
 
 		$base = 'http://localhost';
@@ -64,12 +59,9 @@ class URL {
 		// If the application's URL configuration is set, we will just use that
 		// instead of trying to guess the URL from the $_SERVER array's host
 		// and script variables as this is a more reliable method.
-		if (($url = Config::get('application.url')) !== '')
-		{
+		if (($url = Config::get('application.url')) !== '') {
 			$base = $url;
-		}
-		else
-		{
+		} else {
 			$base = Request::foundation()->getRootUrl();
 		}
 
