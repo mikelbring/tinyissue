@@ -181,10 +181,8 @@ function array_forget(&$array, $key)
  * @param  mixed    $default
  * @return mixed
  */
-function array_first($array, $callback, $default = null)
-{
-	foreach ($array as $key => $value)
-	{
+function array_first($array, $callback, $default = null) {
+	foreach ($array as $key => $value) {
 		if (call_user_func($callback, $key, $value)) return $value;
 	}
 
@@ -197,23 +195,18 @@ function array_first($array, $callback, $default = null)
  * @param  array  $array
  * @return array
  */
-function array_strip_slashes($array)
-{
+function array_strip_slashes($array) {
 	$result = array();
 
-	foreach($array as $key => $value)
-	{
+	foreach($array as $key => $value) {
 		$key = stripslashes($key);
 
 		// If the value is an array, we will just recurse back into the
 		// function to keep stripping the slashes out of the array,
 		// otherwise we will set the stripped value.
-		if (is_array($value))
-		{
+		if (is_array($value)) {
 			$result[$key] = array_strip_slashes($value);
-		}
-		else
-		{
+		} else {
 			$result[$key] = stripslashes($value);
 		}
 	}

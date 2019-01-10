@@ -73,10 +73,8 @@ class HTML {
 	 * @param  array   $attributes
 	 * @return string
 	 */
-	public static function script($url, $attributes = array())
-	{
+	public static function script($url, $attributes = array()) {
 		$url = URL::to_asset($url);
-
 		return '<script src="'.$url.'"'.static::attributes($attributes).'></script>'.PHP_EOL;
 	}
 
@@ -97,14 +95,10 @@ class HTML {
 	 * @param  array   $attributes
 	 * @return string
 	 */
-	public static function style($url, $attributes = array())
-	{
+	public static function style($url, $attributes = array()) {
 		$defaults = array('media' => 'all', 'type' => 'text/css', 'rel' => 'stylesheet');
-
 		$attributes = $attributes + $defaults;
-
 		$url = URL::to_asset($url);
-
 		return '<link href="'.$url.'"'.static::attributes($attributes).'>'.PHP_EOL;
 	}
 
@@ -115,8 +109,7 @@ class HTML {
 	 * @param  array   $attributes
 	 * @return string
 	 */
-	public static function span($value, $attributes = array())
-	{
+	public static function span($value, $attributes = array()) {
 		return '<span'.static::attributes($attributes).'>'.static::entities($value).'</span>';
 	}
 
