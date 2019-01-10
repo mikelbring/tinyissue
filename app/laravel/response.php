@@ -27,10 +27,8 @@ class Response {
 	 * @param  array  $headers
 	 * @return void
 	 */
-	public function __construct($content, $status = 200, $headers = array())
-	{
+	public function __construct($content, $status = 200, $headers = array()) {
 		$this->content = $content;
-
 		$this->foundation = new FoundationResponse('', $status, $headers);
 	}
 
@@ -53,8 +51,7 @@ class Response {
 	 * @param  array     $headers
 	 * @return Response
 	 */
-	public static function make($content, $status = 200, $headers = array())
-	{
+	public static function make($content, $status = 200, $headers = array()) {
 		return new static($content, $status, $headers);
 	}
 
@@ -73,8 +70,7 @@ class Response {
 	 * @param  array     $data
 	 * @return Response
 	 */
-	public static function view($view, $data = array())
-	{
+	public static function view($view, $data = array()) {
 		return new static(View::make($view, $data));
 	}
 
@@ -91,10 +87,8 @@ class Response {
 	 * @param  array     $headers
 	 * @return Response
 	 */
-	public static function json($data, $status = 200, $headers = array())
-	{
+	public static function json($data, $status = 200, $headers = array()) {
 		$headers['Content-Type'] = 'application/json; charset=utf-8';
-
 		return new static(json_encode($data), $status, $headers);
 	}
 
