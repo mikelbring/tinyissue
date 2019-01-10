@@ -307,8 +307,7 @@ class Form {
 	 * @return string
 	 */
 	public static function url($name, $value = null, $attributes = array()) {
-		return "Baboom ne sait pas ou trouver cela";
-//		return static::input('url', $name, $value, $attributes);
+		return static::input('url', $name, $value, $attributes);
 	}
 
 	/**
