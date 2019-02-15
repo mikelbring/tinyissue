@@ -15,4 +15,8 @@
 					]
 				} );
 			}
-			setTimeout(function() { showckeditor ('comment'); } , 567);
+			setTimeout(function() {
+				var TextareaName = 'comment';
+				if (document.getElementById('texteara_body')) { TextareaName = 'body'; }
+				showckeditor (TextareaName);
+			} , 567);

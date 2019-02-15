@@ -20,7 +20,7 @@
 			<tr>
 				<th><?php echo __('tinyissue.issue'); ?></th>
 				<td>
-					<textarea name="body" style="width: 98%; height: 150px;"><?php echo Input::old('body'); ?></textarea>
+					<textarea name="body" id="texteara_body" style="width: 98%; height: 150px;"><?php echo Input::old('body'); ?></textarea>
 					<?php echo $errors->first('body', '<span class="error">:message</span>'); ?>
 				</td>
 			</tr>
