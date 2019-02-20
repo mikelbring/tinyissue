@@ -219,7 +219,16 @@ if(!file_exists('../config.app.php')){ ?>
 			<tr>
 				<th><?php echo $MyLng['Email_port']; ?></th>
 				<td>
-					<input type="text" name="email_port" value="" placeholder="default: 25; gmail: 587" />
+					<select name="email_port">
+					<option value="25"> 25 (default)</option>
+					<option value="587">587 (gmail)</option>
+					<option value="465">465 (SSL / TLS)</option>
+					<?php
+						for ($x=1; $x<999; $x++) {
+							echo '<option value="'.$x.'">'.$x.'</option>';
+						}
+					?>
+					</select>
 				</td>
 			</tr>
 			<tr>
@@ -253,21 +262,22 @@ if(!file_exists('../config.app.php')){ ?>
 				<th><?php echo $MyLng['Time_Timezone']; ?></th>
 				<td>
 					<select name="timezone">
-<?php
-$timezones = timezone_identifiers_list();
-
-echo 'select name="timezone" size="10">' . "\n";
-
-foreach($timezones as $timezone)
-{
-  echo '<option';
-  echo $timezone == 'Europe/Brussels' ? ' selected' : '';
-  echo '>' . $timezone . '</option>' . "\n";
-}
-
-echo '</select>' . "\n";
-?>
-						</select>
+						<?php
+						$timezones = timezone_identifiers_list();
+						
+						echo 'select name="timezone" size="10">' . "\n";
+						
+						foreach($timezones as $timezone)
+						{
+						  echo '<option';
+//						  echo $timezone == 'Europe/Brussels' ? ' selected' : '';
+						  echo $timezone == date("e") ? ' selected' : '';
+						  echo '>' . $timezone . '</option>' . "\n";
+						}
+						
+						echo '</select>' . "\n";
+						?>
+					</select>
 					</td>
 				</tr>
 				<tr>

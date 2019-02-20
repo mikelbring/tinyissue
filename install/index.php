@@ -3,7 +3,15 @@ include_once "../app/application/language/all.php";
 $EnLng = require_once("../app/application/language/en/install.php");
 if (!isset($_GET["Lng"]) || !file_exists("../app/application/language/".@$_GET["Lng"]."/install.php")) { $_GET["Lng"] = 'en'; }
 if (@$_GET["Lng"] != 'en' ) { $MyLng = require_once("../app/application/language/".$_GET["Lng"]."/install.php"); $MyLng = array_merge($EnLng, $MyLng); } else {$MyLng = $EnLng; }
-require './config-setup.php';
+if (!file_exists('./config-setup.php')) {
+	echo '<script>';
+	echo 'alert("Install already has been proceessed");';
+	echo 'document.location.href="../index.php";';
+	echo '</script>';
+	die();
+} else {
+	require './config-setup.php';
+}
 require '../app/laravel/hash.php';
 require '../app/laravel/str.php';
 
@@ -31,6 +39,7 @@ if(!$database_check['error']) {
 				$_SESSION["usr"] = $_POST['email'];  
 				$_SESSION["psw"] = $_POST['password'];  
 				//header('location: complete.php?Lng=fr');
+				unlink ("./config-setup.php");
 				header('location: ../');
 				die();
 			}
