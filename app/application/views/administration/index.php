@@ -48,12 +48,10 @@
 </div>
 <div class="pad2">
 	<?php
-		//exec("git diff origin/master", $aJour, $statut);
-		exec("git fetch origin ; git diff --name-only master origin/master", $aJour, $statut);
-		//var_dump($aJour);
-		echo ((count($aJour) == 1 ) ? '' : (( strpos($aJour[count($aJour)-1], "..") != 0  ) ? $aJour[count($aJour)-1] : $aJour[count($aJour)-2] ) ).'<br /><br />';
+		$aJour = shell_exec("git fetch origin ; git diff --name-only master origin/master 2>&1");
+		//echo ((count($aJour) == 1 ) ? '' : (( strpos($aJour[count($aJour)-1], "..") != 0  ) ? $aJour[count($aJour)-1] : $aJour[count($aJour)-2] ) ).'<br /><br />';
 		echo '<h4>État du logiciel : ';
-		echo (count($aJour) == 0) ?  'Tout est à jour, félicitations!' : '<a href="install/update.php">Besoin de mise à niveau, cliquez ici.</a>';
+		echo ($aJour == NULL) ?  'Tout est à jour, félicitations!' : '<a href="install/update.php">Besoin de mise à niveau, cliquez ici.</a>';
 		echo '</h4>';
 		echo '<br /><br />';
 		exec("git log -1 --pretty=format:'%h - %s (%ci)' --abbrev-commit", $gitVersion);
