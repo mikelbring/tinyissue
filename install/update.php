@@ -11,7 +11,10 @@
 	$prevSQL = versionsSQL (array());
 	var_dump($prevSQL);
 	
-	echo'<br /><br />';	
+	echo'<br /><br />';
+	exec("git pull", $chgmts);
+	var_dump($chgmts);	
+	echo'<br /><br />';
 	
 	$aftrSQL = versionsSQL ($prevSQL);
 	var_dump($aftrSQL);
