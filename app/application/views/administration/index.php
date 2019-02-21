@@ -48,8 +48,10 @@
 </div>
 <div class="pad2">
 	<?php
-		exec("git diff origin/master", $aJour, $statut);
+		//exec("git diff origin/master", $aJour, $statut);
+		exec("git fetch origin ; git diff --name-only master origin/master", $aJour, $statut);
 		//var_dump($aJour);
+		echo 'La ligne finale dit ceci: '.$aJour[count($aJour)-1].'<br /><br />';
 		echo '<h4>État du logiciel : ';
 		echo (count($aJour) == 0) ?  'Tout est à jour, félicitations!' : '<a href="install/update.php">Besoin de mise à niveau, cliquez ici.</a>';
 		echo '</h4>';
