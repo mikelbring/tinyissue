@@ -1,3 +1,4 @@
 #!/bin/bash
-git log -1 --pretty=format:'%h - %s (%ci)' --abbrev-commit > updates_status.txt
+git diff origin/master  > updates_status.txt
+git log -1 --pretty=format:'%h - %s (%ci)' --abbrev-commit >> updates_status.txt
 
