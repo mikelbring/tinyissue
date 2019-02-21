@@ -46,3 +46,16 @@
 	</table>
 
 </div>
+<div class="pad2">
+	<?php
+		exec("git diff origin/master", $aJour, $statut);
+		//var_dump($aJour);
+		echo '<h4>État du logiciel : ';
+		echo (count($aJour) == 0) ?  'Tout est à jour, félicitations!' : '<a href="install/update.php">Besoin de mise à niveau, cliquez ici.</a>';
+		echo '</h4>';
+		echo '<br /><br />';
+		exec("git log -1 --pretty=format:'%h - %s (%ci)' --abbrev-commit", $gitVersion);
+		echo '<br /><br />';
+		echo 'La variable version dit ceci : '.substr($gitVersion[0], 0, strpos($gitVersion[0], "-"));
+	?>
+</div>
