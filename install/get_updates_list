@@ -2,4 +2,3 @@
 git diff origin/master  > updates_status.txt
 git log -1 --pretty=format:'%h - %s (%ci)' --abbrev-commit >> updates_status.txt
 git fetch origin ; git diff --name-only master origin/master
-echo 'Belle surprise'
