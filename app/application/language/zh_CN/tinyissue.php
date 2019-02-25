@@ -14,6 +14,7 @@ return array(
 	'assign_a_user' => '分配成员',
 	'assign_users_and_edit_the_project' => '分配成员并编辑项目',
 	'assign_users' => '分配成员',
+	'assign_users_holder' => '分配成员',
 	'assigned_to' => '分配给',
 	'assigned_users_description' => '将成员分配至这个项目',
 	'assigned_users' => '分配的成员',

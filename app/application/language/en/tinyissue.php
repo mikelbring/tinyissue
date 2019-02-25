@@ -16,6 +16,7 @@ return array(
 	'assign_a_user' => 'Assign a user',
 	'assign_users_and_edit_the_project' => 'Assign users and edit the project',
 	'assign_users' => 'Assign Users',
+	'assign_users_holder' => 'Assign a user',
 	'assigned_to' => 'Assigned To',
 	'assigned_users_description' => 'Users assigned to this project',
 	'assigned_users' => 'Assigned Users',

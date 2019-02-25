@@ -14,6 +14,7 @@ return array(
 	'assign_a_user' => 'Assegna un utente',
 	'assign_users_and_edit_the_project' => 'Assegna gli utenti e modifica il progetto',
 	'assign_users' => 'Assegna Utenti',
+	'assign_users_holder' => 'Assegna Utenti',
 	'assigned_to' => 'Assignato A',
 	'assigned_users_description' => 'Utenti assegnati a questo progetto',
 	'assigned_users' => 'Utenti Assegnati',

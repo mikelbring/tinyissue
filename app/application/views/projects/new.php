@@ -9,7 +9,7 @@
 		<table class="form" style="width: 80%;">
 			<tr>
 				<th style="width: 10%;"><?php echo __('tinyissue.name');?></th>
-				<td><input type="text" name="name" style="width: 90%;" /></td>
+				<td><input type="text" name="name" style="width: 90%;  background-color: #FFF; color: #000; border-width: 2px; border-color: #999;" /></td>
 			</tr>
 		</table>
 
@@ -27,7 +27,7 @@
 		<tr>
 			<th style="width: 10%;"><?php echo __('tinyissue.assign_users');?></th>
 			<td>
-				<input type="text" id="add-user-project" style="margin: 0;" placeholder="Assign a user" />
+				<input type="text" id="add-user-project" style="margin: 0;  background-color: #FFF; color: #000; border-width: 2px; border-color: #999;" placeholder="<?php echo __('tinyissue.assign_users_holder');?>" />
 
 				<ul class="assign-users" style="width: 218px;">
 					<li class="project-user<?php echo Auth::user()->id; ?>">

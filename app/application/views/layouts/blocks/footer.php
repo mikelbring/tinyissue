@@ -7,7 +7,7 @@
 	<a href="javascript: void(0);" class="global-saving"><span><?php echo __('tinyissue.saving');?></span></a>
 
 <footer>
-	<small class="bugs-version-number">Bugs version: <a href="install/update.php"><?php echo  Config::get('tinyissue.version') ?></a></small>
+	<small class="bugs-version-number">Bugs version: <a href="administration"><?php echo  Config::get('tinyissue.version') ?></a></small>
 </footer>
 
 </body>
