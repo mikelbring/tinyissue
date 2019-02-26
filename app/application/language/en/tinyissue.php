@@ -80,6 +80,7 @@ return array(
 	'issue_has_been_updated' => 'This issue has been updated!',
 	'issue_percent' => 'Percentage done',
 	'issue' => 'Issue',
+	'issues' => 'Issues',
 	'issues_assigned_to_you' => 'Issues Assigned To You',
 	'label_attachedfile' => 'Attached file',
 	'label_closed' => 'Closed',

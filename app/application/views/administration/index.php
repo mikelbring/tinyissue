@@ -7,16 +7,29 @@
 
 	<table class="table">
 		<tr>
-			<th><a href="administration/users"><?php echo __('tinyissue.total_users'); ?></a></th>
-			<td><?php echo $users; ?></td>
+			<th style="border-top: 1px solid #ddd;"><a href="administration/users"><?php echo __('tinyissue.total_users'); ?></a></th>
+			<td style="border-top: 1px solid #ddd;"><?php echo $users; ?></td>
 		</tr>
 		<tr>
-			<th><a href="projects"><?php echo ($active_projects < 2) ? __('tinyissue.active_project') : __('tinyissue.active_projects'); ?></a></th>
-			<td><?php echo ($active_projects == 0) ? __('tinyissue.no_one') : $active_projects; ?></td>
+			<th><a href="<?php echo URL::to('roles'); ?>"><?php echo __('tinyissue.role'); ?>s</a></th>
+			<td><?php echo @$roles; ?></td>
 		</tr>
 		<tr>
-			<th><a href="projects?status=0"><?php echo ($archived_projects < 2) ? __('tinyissue.archived_project') : __('tinyissue.archived_projects'); ?></a></th>
-			<td><?php echo ($archived_projects == 0) ? __('tinyissue.no_one') : $archived_projects; ?></td>
+			<th><a href="projects"><?php echo __('tinyissue.projects'); ?></a>
+			<div style="margin-left: 20%;">
+				<ul>
+				<li><a href="projects"><?php echo ($active_projects < 2) ? __('tinyissue.active_project') : __('tinyissue.active_projects'); ?></a></li>
+				<li><a href="projects?status=0"><?php echo ($archived_projects < 2) ? __('tinyissue.archived_project') : __('tinyissue.archived_projects'); ?></a></li>
+				</ul>
+			</div>			
+			</th>
+			<td>
+				<?php echo ($active_projects + $archived_projects); ?><br />
+				<?php echo ($active_projects == 0) ? __('tinyissue.no_one') : $active_projects; ?><br />
+				<?php echo ($archived_projects == 0) ? __('tinyissue.no_one') : $archived_projects; ?><br />
+			</td>
+		</tr>
+		<tr>
 		</tr>
 		
 		<tr>
@@ -24,20 +37,22 @@
 			<td><?php echo $tags; ?></td>
 		</tr>
 		<tr>
-			<th><a href="<?php echo URL::to('roles'); ?>"><?php echo __('tinyissue.role'); ?>s</a></th>
-			<td><?php echo @$roles; ?></td>
+			<th><?php echo __('tinyissue.issues'); ?>
+			<div style="margin-left: 20%;">
+				<ul>
+				<li><?php echo __('tinyissue.open_issues'); ?></li>
+				<li><?php echo __('tinyissue.closed_issues'); ?></li>
+				</ul>
+			</div>
+			</th>
+			<td><?php echo ($issues['open']+$issues['closed']); ?><br />
+			<?php echo $issues['open']; ?><br />
+			<?php echo $issues['closed']; ?><br />
+			</td>
 		</tr>
 		<tr>
-			<th><?php echo __('tinyissue.open_issues'); ?></th>
-			<td><?php echo $issues['open']; ?></td>
-		</tr>
-		<tr>
-			<th><?php echo __('tinyissue.closed_issues'); ?></th>
-			<td><?php echo $issues['closed']; ?></td>
-		</tr>
-		<tr>
-			<th>Tiny Issue <?php echo __('tinyissue.version'); ?></th>
-			<td>v<?php echo Config::get('tinyissue.version'); ?></td>
+			<th><?php echo __('tinyissue.version'); ?></th>
+			<td><?php echo Config::get('tinyissue.version'); ?></td>
 		</tr>
 		<tr>
 			<th><?php echo __('tinyissue.version_release_date'); ?></th>
