@@ -17,7 +17,7 @@
 	var_dump($chgmts);
 	echo '<br />';	
 	echo '---------------- Fin de liste --------------------------';
-	echo'<br /><br />';
+	echo'<br />';
 	
 	$aftrSQL = versionsSQL ($prevSQL);
 	var_dump($aftrSQL);
