@@ -31,7 +31,15 @@
 		</script>
 		<?php echo Asset::styles(); ?>
 		<?php echo Asset::scripts(); ?>
-		<?php $wysiwyg = Config::get('application.editor');
+		<?php
+			if (date("Y-m-d", fileatime ("../install/get_updates_list")) != date("Y-m-d")) {
+				include "../app/application/libraries/checkVersion.php";
+				$Etat =  ($verActu == $verNum) ? '' :  $styleAdmin = 'class=".blink_me" style="color: yellow; text-decoration: underline wavy red; " ';
+				file_put_contents ("../install/get_updates_list", $Etat);
+			}
+			$styleAdmin = file_get_contents ("../install/get_updates_list");
+
+			$wysiwyg = Config::get('application.editor');
 			if (trim($wysiwyg['BasePage']) != '') {
 				if (file_exists($wysiwyg['directory'].'/Bugs_code/header.php')) { include_once $wysiwyg['directory'].'/Bugs_code/header.php'; }
 				if (substr($wysiwyg['BasePage'], -2) == 'js') { echo '<script src="'.URL::base().$wysiwyg['BasePage'].'"></script>'; }
@@ -57,7 +65,7 @@
 				<li><?php echo __('tinyissue.welcome');?>, <a href="<?php echo URL::to('user/settings'); ?>" class="user"><?php echo Auth::user()->firstname; ?></a></li>
 				<?php if(Auth::user()->permission('administration')): ?>
 				<li><a href="<?php echo URL::to('administration/users'); ?>"><?php echo __('tinyissue.users');?></a></li>
-				<li><a href="<?php echo URL::to('administration'); ?>"><?php echo __('tinyissue.administration');?></a></li>
+				<li><a href="<?php echo URL::to('administration'); ?>" <?php echo $styleAdmin; ?>><?php echo __('tinyissue.administration');?></a></li>
 				<?php endif; ?>
 				<li class="logout"><a href="<?php echo URL::to('user/logout'); ?>"><?php echo __('tinyissue.logout');?></a></li>
 			</ul>

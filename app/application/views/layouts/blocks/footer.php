@@ -9,6 +9,5 @@
 <footer>
 	<small class="bugs-version-number">Bugs version: <a href="administration"><?php echo  Config::get('tinyissue.version') ?></a></small>
 </footer>
-
 </body>
 </html>
