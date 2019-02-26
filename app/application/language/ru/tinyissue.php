@@ -14,6 +14,7 @@ return array(
 	'assign_a_user' => 'Назначьте пользователю',
 	'assign_users_and_edit_the_project' => 'Назначьте пользователей и отредактируйте проект',
 	'assign_users' => 'Назанчение пользователей',
+	'assign_users_holder' => 'Назанчение пользователей',
 	'assigned_to' => 'Назначено',
 	'assigned_users_description' => 'Пользователи, назначенные на данный проект',
 	'assigned_users' => 'Назначенные пользователи',

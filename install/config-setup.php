@@ -270,7 +270,6 @@ if(!file_exists('../config.app.php')){ ?>
 						foreach($timezones as $timezone)
 						{
 						  echo '<option';
-//						  echo $timezone == 'Europe/Brussels' ? ' selected' : '';
 						  echo $timezone == date("e") ? ' selected' : '';
 						  echo '>' . $timezone . '</option>' . "\n";
 						}

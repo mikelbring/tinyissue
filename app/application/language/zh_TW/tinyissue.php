@@ -14,6 +14,7 @@ return array(
 	'assign_a_user' => '分配使用者',
 	'assign_users_and_edit_the_project' => '分配使用者並編輯專案',
 	'assign_users' => '分配使用者',
+	'assign_users_holder' => '分配使用者',
 	'assigned_to' => '分配給',
 	'assigned_users_description' => '將使用者分配至這個專案',
 	'assigned_users' => '分配的使用者',

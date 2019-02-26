@@ -12,7 +12,7 @@
 			<tr>
 				<th style="width: 10%"><?php echo __('tinyissue.title'); ?></th>
 				<td>
-					<input type="text" name="title" style="width: 98%;" value="<?php echo Input::old('title'); ?>" />
+					<input type="text" name="title" style="width: 98%; background-color: #FFF; color: #000; border-width: 2px; border-color: #999;" value="<?php echo Input::old('title'); ?>" />
 
 					<?php echo $errors->first('title', '<span class="error">:message</span>'); ?>
 				</td>
@@ -20,7 +20,7 @@
 			<tr>
 				<th><?php echo __('tinyissue.issue'); ?></th>
 				<td>
-					<textarea name="body" id="texteara_body" style="width: 98%; height: 150px;"><?php echo Input::old('body'); ?></textarea>
+					<textarea name="body" id="texteara_body" style="width: 98%; height: 150px; background-color: #FFF; color: #000; border-width: 2px; border-color: #999;"><?php echo Input::old('body'); ?></textarea>
 					<?php echo $errors->first('body', '<span class="error">:message</span>'); ?>
 				</td>
 			</tr>

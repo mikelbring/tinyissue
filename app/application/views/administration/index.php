@@ -46,3 +46,27 @@
 	</table>
 
 </div>
+<div class="pad2">
+	<?php
+//		exec("../../../../../../../../get_updates_list 2>&1", $aJour);
+//var_dump($aJour);
+		echo '<br />------------------------------<br />';
+//		//exec("git diff origin/master", $aJour, $statut);
+		$aJour = `git fetch origin ; git diff --name-only master origin/master`;
+//		$aJour = shell_exec("git fetch origin ; git diff --name-only master origin/master 2>&1");
+//		exec("git fetch origin ; git diff --name-only master origin/master", $aJour, $statut);
+//		$DernLng = system("git fetch origin ; git diff --name-only master origin/master", $aJour);
+		var_dump($aJour);
+		echo '<br />------------------------------<br />';
+//		var_dump($DernLng);
+//		echo '<br /><br />';
+		//echo ((count($aJour) == 1 ) ? '' : (( strpos($aJour[count($aJour)-1], "..") != 0  ) ? $aJour[count($aJour)-1] : $aJour[count($aJour)-2] ) ).'<br /><br />';
+		echo '<h4>État du logiciel : ';
+		echo ($aJour == NULL) ?  'Tout est à jour, félicitations!' : '<a href="install/update.php">Besoin de mise à niveau, cliquez ici.</a>';
+		echo '</h4>';
+		echo '<br /><br />';
+		exec("git log -1 --pretty=format:'%h - %s (%ci)' --abbrev-commit", $gitVersion);
+		echo '<br /><br />';
+		echo 'La variable version dit ceci : '.substr($gitVersion[0], 0, strpos($gitVersion[0], "-"));
+	?>
+</div>

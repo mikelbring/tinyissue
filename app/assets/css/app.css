@@ -1,5 +1,9 @@
 /* css reset */html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre,a, abbr, acronym, address, big, cite, code,del, dfn, em, font, img, ins, kbd, q, s, samp,small, strike, strong, sub, sup, tt, var,dl, dt, dd, ol, ul, li,fieldset, form, label, legend,table, caption, tbody, tfoot, thead, tr, th, td {margin: 0;padding: 0;border: 0;outline: 0;font-weight: inherit;font-size: 100%;font-family: inherit;vertical-align: baseline;}:focus {outline: 0;}body {line-height: 1;color: black;background: white;}ol, ul {list-style: none;}table {border-collapse: separate;border-spacing: 0;}caption, th, td {text-align: left;font-weight: normal;}blockquote:before, blockquote:after,q:before, q:after {content: "";}blockquote, q {	quotes: "" "";}/* end css reset */
 
+* {
+  box-sizing: border-box;
+}
+
 body {
     font: normal 12px Helvetica, "Lucida Grande", Arial, sans-serif;
     color: #424242;
@@ -130,6 +134,15 @@ code{
 .label.info {
   background-color: #5f6074;
 }
+
+footer{
+	position: fixed;
+	bottom: 0;
+	text-align: right;
+	padding-right: 1%;
+	width: 100%;
+}
+
 /* Notices */
 .global-notice{
 	width: 100%;
@@ -421,6 +434,14 @@ p{
 }
 #sidebar .pad{
 	padding: 0 18px;
+}
+.pad2{
+	position: absolute; 
+	right: 0;
+	text-align:left; 
+	top: 30%; 
+	vertical-align: baseline; 
+	width: 50%;
 }
 #sidebar h2{
 	font-size: 18px;

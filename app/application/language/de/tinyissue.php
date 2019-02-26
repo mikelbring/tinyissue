@@ -14,6 +14,7 @@ return array(
 	'assign_a_user' => 'Benutzer zuordnen',
 	'assign_users_and_edit_the_project' => 'Benutzer zuordnen und Projekt editieren',
 	'assign_users' => 'Benutzer zuordnen',
+	'assign_users_holder' => 'Benutzer zuordnen',
 	'assigned_to' => 'Zugeordnet zu',
 	'assigned_users_description' => 'Benutzer zugeordnet zu diesem Projekt',
 	'assigned_users' => 'Zugeordnete Benutzer',

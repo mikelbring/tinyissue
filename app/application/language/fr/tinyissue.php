@@ -16,6 +16,7 @@ return array(
 	'assign_a_user' => 'Affecter',
 	'assign_users_and_edit_the_project' => 'Attribuer des utilisateurs et modifier le projet.',
 	'assign_users' => 'Utilisateurs affectés',
+	'assign_users_holder' => 'Usager responsable',
 	'assigned_to' => 'Attribué à',
 	'assigned_users_description' => 'Utilisateurs affectés à ce projet',
 	'assigned_users' => 'Utilisateurs affectés',
