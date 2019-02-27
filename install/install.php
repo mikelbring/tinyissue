@@ -6,8 +6,9 @@ class install
 
 	function __construct() {
 		$this->config = require '../config.app.php';
-		$this->mysql_structure = require './mysql-structure.php';
-		$this->language = require '../app/application/language/'.$_GET["Lng"].'/install.php';
+		if (file_exists('./mysql-structure.php')) { $this->mysql_structure = require './mysql-structure.php'; 
+			$this->language = require '../app/application/language/'.$_GET["Lng"].'/install.php';
+		}
 
 	}
 

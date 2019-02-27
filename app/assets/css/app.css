@@ -196,6 +196,7 @@ textarea, input[type=text], input[type=password]{
 	padding: 7px;
 	font: normal 13px Helvetica, "Lucida Grande", Arial, sans-serif;
  	color: #424242;
+ 	background-color: #DEDFDC;
 	box-shadow: 0 -1px 1px #b6b6b6;
 }
 .action,
@@ -1064,4 +1065,14 @@ background-image: linear-gradient(to bottom, #292929 6%, #737273 100%);
   left: 0;
   width: 100%;
   height: 30px;
+}
+
+.blink_me {
+  animation: blinker 1s linear infinite;
+}
+
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
 }
