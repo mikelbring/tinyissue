@@ -55,5 +55,4 @@ if (trim(@$_POST["versionYour"]) != '' && trim(@$_POST["versionDisp"]) != '' && 
 	echo 'Accès interdit';
 	echo '<script>document.location.href="index.php";</script>';
 }
-
 ?>
