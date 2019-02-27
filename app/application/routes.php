@@ -19,6 +19,7 @@ Route::controller(array(
 	'projects',
 	'login',
 	'user',
+	'administration.update',
 	'administration.users',
 	'administration',
 	'ajax.project',

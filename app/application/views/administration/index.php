@@ -68,11 +68,20 @@
 		if ($verActu == $verNum) {
 			echo __('tinyissue.version_good').'!</h4>';
 		} else {
-			echo '<a href="install/update.php">'.__('tinyissue.version_need').'.</a></h4>';
+			echo '<a href="javascript: agissons.submit();">'.__('tinyissue.version_need').'.</a></h4>';
 			echo __('tinyissue.version_your').' : '.$verActu.'<br />';
 			echo __('tinyissue.version_disp').' : '.$verNum.'<br />';
 			echo __('tinyissue.version_commit').' : '.$verCommit.'<br />';
 			echo '<a href="https://github.com/pixeline/bugs/releases" target="_blank">'.__('tinyissue.version_details').'</a> <br />';
+			echo '<form action="'.URL::to('administration/update').'" method="post" id="agissons">';
+			echo '<input type="hidden" name="Etape" value="1" />';
+			echo '<input type="hidden" name="versionYour" value="'.$verActu.'" />';
+			echo '<input type="hidden" name="versionDisp" value="'.$verNum.'" />';
+			echo '<input type="hidden" name="versionComm" value="'.$verCommit.'" />';
+			echo '<br /><br />';
+			echo '<input type="submit" value="'.__('tinyissue.update').'" class="button	primary"/>';
+			echo Form::token();
+			echo '</form>';
 		}
 		echo '<br /><br />';
 	?>
