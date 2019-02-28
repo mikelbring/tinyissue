@@ -1,4 +1,4 @@
-<h2>
+	<h2>
 	<?php if(Auth::user()->permission('project-create')): ?>
 	<a href="<?php echo URL::to('projects/new'); ?>" class="add" title="New Project"><?php __('tinyissue.new'); ?></a>
 	<?php endif; ?>
@@ -8,10 +8,12 @@
 
 <ul>
 	<?php
+		$NbIssues = array();
 		$Proj = array();
 		$SansAccent = array();
 		foreach(Project\User::active_projects() as $row) {
-			$Proj[$row->to()] = $row->name.'&nbsp;<span class="info-open-issues" title="Number of Open Tickets">('.$row->count_open_issues().')</span>';
+			$NbIssues[$row->to()] = $row->count_open_issues();
+			$Proj[$row->to()] = $row->name.'&nbsp;<span class="info-open-issues" title="Number of Open Tickets">('.$NbIssues[$row->to()].')</span>';
 		}
 		foreach ($Proj as $ind => $val ){
 			$SansAccent[$ind] = htmlentities($val, ENT_NOQUOTES, 'utf-8');
@@ -25,7 +27,7 @@
 
 	<?php foreach($SansAccent as $ind => $val): ?>
 	<li>
-		<a href="<?php echo $ind; ?>"><?php echo $Proj[$ind]; ?> </a>
+		<a href="<?php echo $ind.(($NbIssues[$ind] == 0) ? '' : '/issues?tag_id=1'); ?>"><?php echo $Proj[$ind]; ?> </a>
 	</li>
 	<?php endforeach ?>
 
