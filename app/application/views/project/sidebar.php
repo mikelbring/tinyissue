@@ -6,10 +6,12 @@ if(count($active_projects)>1){
 <fieldset><label for="projects_select"><?php echo __('tinyissue.select_a_project');?></label>
 <select name="projects_select" id="projects_select"  onchange="if (this.value) window.location.href=this.value">
 <?php
+	$NbIssues = array();
 	$Proj = array();
 	$SansAccent = array();
 	foreach($active_projects as $row) {
-		$Proj[$row->to()] = $row->name;
+		$NbIssues[$row->to()] = $row->count_open_issues();
+		$Proj[$row->to()] = $row->name.' ('.$NbIssues[$row->to()].')';
 	}
 	foreach ($Proj as $ind => $val ){
 		$SansAccent[$ind] = htmlentities($val, ENT_NOQUOTES, 'utf-8');
@@ -21,7 +23,7 @@ if(count($active_projects)>1){
 
 	foreach($SansAccent as $ind => $val) {
 		$selected = (substr($ind, strrpos($ind, "/")+1) == Project::current()->id) ? 'selected':'';
-		echo '<option value="'.$ind.'" '.$selected.'>'.$Proj[$ind].'</option>';
+		echo '<option value="'.$ind.(($NbIssues[$ind] == 0) ? '' : '/issues?tag_id=1').'" '.$selected.'>'.$Proj[$ind].'</option>';
 	 }
 ?>
 </select>
