@@ -76,7 +76,7 @@ return array(
 	'homepage' =>  'page d\'accueil',
 	'hour' =>  'heure',
 	'in'=>'dans',
-	'issue_assigned_to_you' => 'Billet vous sont attribué',
+	'issue_assigned_to_you' => 'Billets vous sont attribués',
 	'issue_has_been_closed' => 'Le billet a été fermé. Il est maintenat en lecture seule.',
 	'issue_has_been_created' => 'Le billet a été créé !',
 	'issue_has_been_reopened' => 'Le billet a été ré-ouvert. Vous pouvez maintenant travailler dessus.',
