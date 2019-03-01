@@ -322,7 +322,6 @@ p{
 	color: #98a3bd;
 }
 #header .logo{
-	text-indent: 100%;
 	position: absolute; 
 	left: 15px;
 	white-space: nowrap;
@@ -332,6 +331,30 @@ p{
 	background: url('../images/layout/tinyissue.svg') no-repeat;
 	background-size: contain;
 	top:0;
+	z-index: 8;
+}
+.logoVersion {
+	color: #999;
+	left:20px;
+	font-size: 85%;
+	height: 26%;
+	position: absolute;
+	vertical-align: bottom;
+	top: 74%;
+	z-index: 4;
+}
+
+div.adminListe a {
+	font-weight: normal;
+}
+
+div.adminListe {
+	margin-left: 20%; 
+	font-weight: normal;
+}
+
+#logo_version.logoVersion a{
+	color: #F00;
 }
 .bugs-version-number{
 	font-size:10px;
