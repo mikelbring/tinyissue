@@ -56,10 +56,24 @@
 	</head>
 <body>
 
-	<iframe name="ContenuVariable" id="ContenuVariable" style="display:none; height:250px; width: 80%; left: 200px; position:absolute; background-color: #FFF; z-index:100;"></iframe>
 	<div id="container">
-
 		<div id="header">
+			<a href="<?php echo URL::to(); ?>" class="logo" title="<?php echo  Config::get('application.my_bugs_app.name') ?>" ></a>
+			<div class="logoVersion" id="logo_version" >version: 
+			<?php 
+				if ($styleAdmin != '') { echo '<a href="administration" id="aLogoVersion"> '; } 
+				echo  Config::get('tinyissue.version').Config::get('tinyissue.release'); 
+				if ($styleAdmin != '') { echo '</a>'; } 
+			?>
+			</div>
+
+			<ul class="nav">
+				<li class="dashboard <?php echo $active == 'dashboard' ? 'active' : ''; ?>"><a href="<?php echo URL::to(); ?>"><?php echo __('tinyissue.dashboard');?></a></li>
+				<li class="issues <?php echo $active == 'issues' ? 'active' : ''; ?>"><a href="<?php echo URL::to('user/issues'); ?>"><?php echo __('tinyissue.your_issues');?></a></li>
+				<li class="todo <?php echo $active == 'todo' ? 'active' : ''; ?>"><a href="<?php echo URL::to('todo'); ?>"><?php echo __('tinyissue.your_todos');?></a></li>
+				<li class="projects <?php echo $active == 'projects' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects'); ?>"><?php echo __('tinyissue.projects');?></a></li>
+				<li><a href="<?php echo ($RepInstalled) ? 'http://127.0.0.1/'.$ReportsConfig[0].'/'.$ReportsConfig[1] : URL::to('projects/reports'); ?>" target="<?php echo ($RepInstalled) ? '_blank' : ''; ?>"><?php echo __('tinyissue.report');?></a></li>
+ 			</ul>
 
 			<ul class="nav-right">
 				<li><?php echo __('tinyissue.welcome');?>, <a href="<?php echo URL::to('user/settings'); ?>" class="user"><?php echo Auth::user()->firstname; ?></a></li>
@@ -69,16 +83,6 @@
 				<?php endif; ?>
 				<li class="logout"><a href="<?php echo URL::to('user/logout'); ?>"><?php echo __('tinyissue.logout');?></a></li>
 			</ul>
-
-			<a href="<?php echo URL::to(); ?>" class="logo" title="<?php echo  Config::get('application.my_bugs_app.name') ?>"><?php echo Config::get('application.my_bugs_app.name') ?></a>
-
-			<ul class="nav">
-				<li class="dashboard <?php echo $active == 'dashboard' ? 'active' : ''; ?>"><a href="<?php echo URL::to(); ?>"><?php echo __('tinyissue.dashboard');?></a></li>
-				<li class="issues <?php echo $active == 'issues' ? 'active' : ''; ?>"><a href="<?php echo URL::to('user/issues'); ?>"><?php echo __('tinyissue.your_issues');?></a></li>
-				<li class="todo <?php echo $active == 'todo' ? 'active' : ''; ?>"><a href="<?php echo URL::to('todo'); ?>"><?php echo __('tinyissue.your_todos');?></a></li>
-				<li class="projects <?php echo $active == 'projects' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects'); ?>"><?php echo __('tinyissue.projects');?></a></li>
-				<li><a href="<?php echo ($RepInstalled) ? 'http://127.0.0.1/'.$ReportsConfig[0].'/'.$ReportsConfig[1] : URL::to('projects/reports'); ?>" target="<?php echo ($RepInstalled) ? '_blank' : ''; ?>"><?php echo __('tinyissue.report');?></a></li>
- 			</ul>
 
 		</div>
 
