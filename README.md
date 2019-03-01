@@ -40,8 +40,8 @@ For any coding contribution, please use a git tool ( visit https://git-scm.com/b
 Then, push you modification throw a new branch. NEVER push on master. 
 
 # Changelog
-- v.1.6 : soon 
-	- please visit [Nice changes to come](https://github.com/pixeline/bugs/projects)
+- v.1.6 : February 2019 
+	- all what planned in [Nice changes to come](https://github.com/pixeline/bugs/projects) is now running good.
 - v.1.5.2b : 23 septembre 2018
 	- Wysyg text editor  ( you can install the one you like )
 	- sorting project's issues
