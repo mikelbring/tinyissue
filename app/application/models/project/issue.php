@@ -546,36 +546,22 @@ class Issue extends \Eloquent {
 		/* Notify the person being assigned to. */
 		/* If no one is assigned, notify all users who are assigned to this project and who have permission to modify the issue. */
 		/* Do not notify the person creating the issue. */
-		if($issue->assigned_to)
-		{
-			if($issue->assigned_to != \Auth::user()->id)
-			{
+		if($issue->assigned_to) {
+			if($issue->assigned_to != \Auth::user()->id) {
 				$project = \Project::current();
 
 				//$subject = 'New issue "' . $issue->title . '" was submitted to "' . $project->name . '" project and assigned to you';
 				$subject = sprintf(__('email.assignment'),$issue->title,$project->name);
-				$text = \View::make('email.new_assigned_issue', array(
-					'project' => $project,
-					'issue' => $issue,
-				));
-
+				$text = \View::make('email.new_assigned_issue', array( 'project' => $project, 'issue' => $issue, ));
 				\Mail::send_email($text, $issue->assigned->email, $subject);
 			}
-		}
-		else
-		{
+		} else {
 			$project = \Project::current();
-			foreach($project->users()->get() as $row)
-			{
-				if($row->id != \Auth::user()->id && $row->permission('project-modify'))
-				{
+			foreach($project->users()->get() as $row) {
+				if($row->id != \Auth::user()->id && $row->permission('project-modify')) {
 					//$subject = 'New issue "' . $issue->title . '" was submitted to "' . $project->name . '" project';
 					$subject = sprintf(__('email.new_issue'),$issue->title,$project->name);
-					$text = \View::make('email.new_issue', array(
-						'project' => $project,
-						'issue' => $issue,
-					));
-
+					$text = \View::make('email.new_issue', array('project' => $project, 'issue' => $issue, ));
 					\Mail::send_email($text, $row->email, $subject);
 				}
 			}
