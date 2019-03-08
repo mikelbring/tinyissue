@@ -60,7 +60,7 @@ class Project_Issue_Controller extends Base_Controller {
 			$text .= "\n\n";
 			$text .= sprintf(__('email.assigned_by'),\Auth::user()->firstname." ".\Auth::user()->lastname);
 			$text .= "\n\n";
-			$text .= __('email.more_url')." http://". $_SERVER['SERVER_NAME'] ."/project/".$project_id."/issue/".$issue_num."";
+			$text .= __('email.more_url').Project::current()->to('issue')."/".$issue_num."";
 			mail($WhoAddr, $subject,$text);
 		//End of email process
 
@@ -257,7 +257,7 @@ class Project_Issue_Controller extends Base_Controller {
 				$text .= "\n\n";
 				$text .= sprintf(__('email.reassigned_by'),\Auth::user()->firstname." ".\Auth::user()->lastname);
 				$text .= "\n\n";
-				$text .= __('email.more_url')." http://". $_SERVER['SERVER_NAME'] ."/project/".$project_id."/issue/".Input::get('Issue')."";
+				$text .= __('email.more_url').Project::current()->to('issue')."/".Input::get('Issue')."";
 				mail($WhoAddr, $subject,$text);
 			}
 

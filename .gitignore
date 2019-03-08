@@ -8,6 +8,7 @@ README.md
 *.php~
 .gitignore~
 install/mysql-structure.php
+install/surete_config-setup.php
 app/vendor/Trumbowyg/
 images/
 version

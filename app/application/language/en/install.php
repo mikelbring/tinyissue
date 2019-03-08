@@ -1,5 +1,6 @@
 <?php
 return array(
+	'Already_installed' => 'Install already has been proceessed.\nIf you read this and Bugs is not running properly, please \n-erase the config.app.php, \n-copy the install/config-setup.php file from git repository \n-process the install again. \nYour data will not be lost.',
 	'Button_CreateConfig' => 'Create Config',
 	'Complete_awesome' => 'Awesome!',
 	'Complete_login' => 'Proceed to Login',

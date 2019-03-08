@@ -1,3 +1,9 @@
+<?php
+	session_start();
+	include "application/language/all.php";
+	$lng = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
+	if (file_exists("../install/config-setup.php")) { unlink ("../install/config-setup.php"); }
+?>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -27,11 +33,6 @@
 		<?php echo Asset::styles(); ?>
 	</head>
 <body>
-<?php
-	session_start();
-	include "application/language/all.php";
-	$lng = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
-?>
 	<div id="container">
 		<div id="login">
 
