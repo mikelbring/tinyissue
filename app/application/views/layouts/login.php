@@ -2,7 +2,8 @@
 	session_start();
 	include "application/language/all.php";
 	$lng = strtolower(substr($_SERVER['HTTP_ACCEPT_LANGUAGE'], 0, 2));
-	if (file_exists("../install/config-setup.php")) { unlink ("../install/config-setup.php"); }
+	if (file_exists("../install/config-setup.php")) { unlink ("../install/config-setup.php"); 
+	}
 ?>
 <!DOCTYPE html>
 <html>

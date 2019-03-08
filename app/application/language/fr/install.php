@@ -1,6 +1,6 @@
 <?php
 return array(
-	'Already_installed' => 'L`application BUGS est déjà isntallée.\nSi vous lisez le présent message et que BUGS ne fonctionne pas correctement, veuillez :  \n-effacer le fichier config.app.php, \n-copier le fichier install/config-setup.php depuis le dépôt git  \n-installer de nouveau. \nVos données ne devraient pas être perdues.',
+	'Already_installed' => 'L`application BUGS est déjà isntallée.\nSi vous lisez le présent message et que BUGS ne fonctionne pas correctement, veuillez :  \n-effacer le fichier config.app.php, \n-copier le fichier install/config-setup.php depuis le dépôt git  \n-installer de nouveau. \nVos données ne devraient pas être perdues.\n',
 	'Button_CreateConfig' => 'Créer',
 	'Complete_awesome' => 'Félicitations!',
 	'Complete_login' => 'Entrez ...et profitez-en.',
