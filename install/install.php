@@ -1,5 +1,4 @@
 <?php
-
 class install {
 	public $config;
 
