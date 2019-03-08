@@ -1,7 +1,6 @@
 <?php
 
-class install
-{
+class install {
 	public $config;
 
 	function __construct() {
@@ -94,12 +93,9 @@ class install
 		return true;
 	}
 
-	private function check_db($connect)
-	{
+	private function check_db($connect) {
 		@$database_connect = ((bool)mysqli_query( $connect, "USE " . $this->config['database']['database']));
-
-		if($database_connect)
-		{
+		if($database_connect) {
 			return $database_connect;
 		}
 

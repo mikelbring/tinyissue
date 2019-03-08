@@ -1,11 +1,12 @@
 <?php
+session_start();
 include_once "../app/application/language/all.php";
 $EnLng = require_once("../app/application/language/en/install.php");
 if (!isset($_GET["Lng"]) || !file_exists("../app/application/language/".@$_GET["Lng"]."/install.php")) { $_GET["Lng"] = 'en'; }
 if (@$_GET["Lng"] != 'en' ) { $MyLng = require_once("../app/application/language/".$_GET["Lng"]."/install.php"); $MyLng = array_merge($EnLng, $MyLng); } else {$MyLng = $EnLng; }
 if (!file_exists('./config-setup.php')) {
 	echo '<script>';
-	echo 'alert("Install already has been proceessed");';
+	echo 'alert("'.$MyLng["Already_installed"].'");';
 	echo 'document.location.href="../index.php";';
 	echo '</script>';
 	die();
@@ -27,19 +28,15 @@ $install = new install();
 $database_check = $install->check_connect();
 $requirement_check = $install->check_requirements();
 
-
 if(!$database_check['error']) {
 	if(isset($_POST['email'])) {
 		if($_POST['email'] != ''&& $_POST['first_name'] != '' && $_POST['last_name'] != '' && $_POST['password'] != '') {
 			$finish = $install->create_tables($_POST);
 			if($finish) {
-				session_start();
 				$_SESSION["Msg"]  = '<h2 style="color: #060;">'.$MyLng['Complete_awesome'].'</h2>';
 				$_SESSION["Msg"] .= '<p style="color: #060;">'.$MyLng['Complete_presentation'].'</p>';
 				$_SESSION["usr"] = $_POST['email'];  
 				$_SESSION["psw"] = $_POST['password'];  
-				//header('location: complete.php?Lng=fr');
-				unlink ("./config-setup.php");
 				header('location: ../');
 				die();
 			}
