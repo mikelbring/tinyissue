@@ -16,6 +16,7 @@ if (!file_exists('./config-setup.php')) {
 require '../app/laravel/hash.php';
 require '../app/laravel/str.php';
 
+
 $first_name_error = '';
 $last_name_error = '';
 $email_error = '';

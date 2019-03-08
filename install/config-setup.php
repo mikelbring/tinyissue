@@ -1,5 +1,7 @@
 <script type="text/javascript">
-function ChgLng(Lng = 'en') { document.location.href = 'index.php?Lng=' + Lng; }
+function ChgLng(Lng = 'en') { 
+	document.location.href = 'index.php?Lng=' + Lng; 
+}
 </script>
 
 <?php
