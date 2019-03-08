@@ -4,3 +4,4 @@ return array(
 	'version' => '1.6',
 	'release' => '1d'
 );
+
