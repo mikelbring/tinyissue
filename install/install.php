@@ -1,7 +1,6 @@
 <?php
 class install {
 	public $config;
-
 	function __construct() {
 		$this->config = require '../config.app.php';
 		if (file_exists('./mysql-structure.php')) { $this->mysql_structure = require './mysql-structure.php'; 
