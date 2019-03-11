@@ -36,7 +36,7 @@ if(!$database_check['error']) {
 				$_SESSION["Msg"] .= '<p style="color: #060;">'.$MyLng['Complete_presentation'].'</p>';
 				$_SESSION["usr"] = $_POST['email'];  
 				$_SESSION["psw"] = $_POST['password'];  
-				header('location: ../');
+				echo '<script>document.location.href = "../";</script>';
 				die();
 			}
 		} else {
@@ -62,6 +62,7 @@ if(!$database_check['error']) {
 
 </head>
 <body>
+<div class="InstallLogo"></div>
 
 <div id="container">
 	<form method="post" action="index.php?Lng=<?php echo $_GET["Lng"]; ?>" autocomplete="off">

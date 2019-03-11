@@ -38,6 +38,7 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 	<link href="../app/assets/css/install.css" media="all" type="text/css" rel="stylesheet">
 </head>
 <body>
+<div class="InstallLogo"></div>
 
 <div id="container">
 	<table class="form">
@@ -90,6 +91,7 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 
 </head>
 <body>
+<div class="InstallLogo"></div>
 
 <div id="container">
 	<table class="form">
@@ -126,6 +128,7 @@ if(!file_exists('../config.app.php')){ ?>
 
 </head>
 <body>
+<div class="InstallLogo"></div>
 
 <div id="container">
 	<p style="text-align:center;">
