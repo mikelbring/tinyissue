@@ -1,8 +1,8 @@
 # Bugs
 
-[Visit the project](http://pixeline.github.io/bugs/)
+[Visit the project](http://bugs.rcmission.net/)
 
-![Printscreen](http://pixeline.github.io/bugs/images/bugs-index.png "Main screen")
+![Printscreen](http://bugs.rcmission.net/)
 
 # Installing Bugs
 
@@ -10,7 +10,6 @@
 - Make /uploads/ write-able ( CHMOD -R  770 )
 - set  www-data  ( CHOWN -R www-data:www-data )  as owner of the Bugs's main directory and sub-directories
 - Open index.php ... it should bring you to ./install/index.php page and open the installation forms
-- Delete or rename /install/
 
 Enjoy!
 
@@ -25,7 +24,7 @@ Enjoy!
 ## Requirements:
 
 - Tested on: Apache, IIS
-- PHP 5.3+  :  ready for PHP 7.0.18; works good under PHP 7.2
+- PHP 5.3+  :  ready for PHP 7.0.18; works good under PHP 7.2 and over
 - MySQL 5+
 - PDO Extension for PHP (MySQL)
 - MCrypt Extension for PHP : soon MCrypt will be removed from Bugs project
