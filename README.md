@@ -1,8 +1,8 @@
 # Bugs
 
-[Visit the project](http://pixeline.github.io/bugs/)
+[Visit the project](http://bugs.rcmission.net/)
 
-![Printscreen](http://pixeline.github.io/bugs/images/bugs-index.png "Main screen")
+![Printscreen](http://bugs.rcmission.net/)
 
 # Installing Bugs
 
