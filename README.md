@@ -1,8 +1,8 @@
 # Bugs
 
-[Visit the project](http://pixeline.github.io/bugs/)
+[Visit the project](http://bugs.rcmission.net/)
 
-![Printscreen](http://pixeline.github.io/bugs/images/bugs-index.png "Main screen")
+![Printscreen](http://bugs.rcmission.net/)
 
 # Installing Bugs
 
@@ -10,7 +10,6 @@
 - Make /uploads/ write-able ( CHMOD -R  770 )
 - set  www-data  ( CHOWN -R www-data:www-data )  as owner of the Bugs's main directory and sub-directories
 - Open index.php ... it should bring you to ./install/index.php page and open the installation forms
-- Delete or rename /install/
 
 Enjoy!
 
@@ -60,7 +59,7 @@ Then, push you modification throw a new branch. NEVER push on master.
 	
 - v1.5 : 12 July 2015:
 	- fix: Time Display format now configurable, see config.example.php
-	- fix: SQL « tags » table not included during installation
+	- fix: SQL « tags » table now included during installation
 	- fix: Bugs assets now load correctly if inside a subfolder
 
 various layout tweaks.
