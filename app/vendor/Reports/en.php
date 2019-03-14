@@ -1,4 +1,10 @@
 <?php
+$Reports["en"] = 'Bug`s issues report manager';
+$Reports["es"] = 'Sistema de informes por todos billetes de BUGS';
+$Reports["fr"] = 'Rapports et statistiques des billets BUGS';
+$Reports["pt-BR"] = 'Rapports et statistiques des billets BUGS';
+$Reports["it"] = 'Bug`s issues report manager';
+
 $index_title = 'Bugs - Admin Dashboard';
 $index_topleft = 'Bugs Reporting';
 $index_leftHome = 'Home';
@@ -11,6 +17,18 @@ $index_IssuesTot = 'General Issues Report';
 $index_IssuesOpn = 'Open/ Pending Issues Report';
 $index_IssuesClo = 'Closed Issues Report';
 $index_IssuesPro = 'Issues Progress Report';
+$Install['Avant'] = 'Before';
+$Install['Apres'] = 'After';
+$Install['Bpath'] = 'BUGS`s name in « PHP Reports » ';
+$Install['Cfrmt'] = 'The file (see name and path up) is moved and PHP reports is able to use it : ';
+$Install['Etape'] = array('Please move the following file <br />','to to « PHP reports » main directory ');
+$Install['FormS'] = 'Submit';
+$Install['Infos'] = 'Before to process the following form, you must install <a href="https://github.com/Patriboom/BugsReports">PHP Reports</a>';
+$Install['LetGo'] = 'Let`s go';
+$Install['Nenni'] = 'Not yet';
+$Install['Ouais'] = 'Yes, it`s done.';
+$Install['Rlang'] = 'Language used in « PHP Reports »';
+$Install['Rpath'] = 'Full path of « PHP Reports »';
 $Report_Filter_Date = 'Date';
 $Report_Filter_DateStr = 'Start';
 $Report_Filter_DateEnd = 'End';

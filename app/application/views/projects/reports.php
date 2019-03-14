@@ -1,72 +1,108 @@
-<!DOCTYPE html>
-<html>
-<head>
-<title>Reports installation</title>
-<meta name="generator" content="Bluefish">
-<meta name="author" content="Patrick Allaire, ptre">
-<meta name="date" content="2018-01-02">
-<meta name="copyright" content="Patrick Allaire, ptre">
-<meta name="keywords" content="Links Bugs and Reports">
-<meta name="description" content="">
-<meta name="ROBOTS" content="NOINDEX, NOFOLLOW">
-<meta http-equiv="content-type" content="text/html; charset=UTF-8">
-<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8">
-<meta http-equiv="content-style-type" content="text/css">
-<meta http-equiv="expires" content="0">
-</head>
-<body>
 <?php 
-include_once "../app/application/language/all.php";
-
-include "../app/vendor/Reports/en.php";  $en = $reports; 
+include_once "../app/vendor/Reports/en.php";  
+$en = $Install; 
 if (file_exists("../app/vendor/Reports/".Auth::user()->language.".php")) { 
 	include "../app/vendor/Reports/".Auth::user()->language.".php";
-	$reports = array_merge($en, $reports);
 }
-$RepInstalled = false;
+$reports = array_merge($en, $Install);
 if (file_exists("vendor/Reports/config.php")) { 
-	$RepInstalled = true; 
-	$Configurations = file("vendor/Reports/config.php"); 
-	$ReportsConfig = explode(",",$Configurations[0]);
-	foreach($ReportsConfig as $ind => $val ) { $ReportsConfig[$ind] = substr($val, 1, strlen($val)-2); }
+	include_once "vendor/Reports/config.php"; 
 }
+$ConfigExiste = (file_exists('vendor/Reports/BugsRepConfig.php')) ? true : false;
+
 ?>
-<div style="text-align:center; width: 100%;">
-<img src="../../app/vendor/Reports/ScreenShot.png" width="1200" alt=""/>
-</div>
 
 <div style="padding-top: 50px; padding-bottom: 75px; width: 75%; baground-color: #CCC; position: relative; left: 15%; font-size: 150%;">
-<form name="LinkBugsReports" method="POST" action="reports">
-<table width="100%" align="center" style="background-color: #edf0f0;  border-color: #000; border-radius: 15px;  border-style: solid;">
-<tr><td colspan="2" style="border-top-left-radius: 15px; border-top-right-radius: 15px; text-align: center; font-weight: bold; color: #FFF; background-color: #162338; font-size: 175%; font-weight: bold; text-align:center;"><?php echo $reports['titre']; ?></td></tr>
-<tr><td colspan="2" style="padding: 45px;"><?php echo (($RepInstalled) ? $reports["Apres"] : $reports["Avant"]);  ?><br /><br /><hr /></td></tr>
-<?php if($RepInstalled) { ?>
-<tr><td colspan="2" style="padding: 45px;"><?php echo $reports["LetGo"].' : <br /><a href="http://127.0.0.1/'.$ReportsConfig[0].'/'.$ReportsConfig[1].'" target="_blank" style="color:#00F;">http://127.0.0.1/'.$ReportsConfig[0].'/'.$ReportsConfig[1].'</a>';  ?><br /><br /><hr /></td></tr>
-<?php } ?>
-<tr>
-	<td style="text-align:right;"><?php echo $reports["Rpath"]; ?> : </td>
-	<td>http://127.0.0.1/<input name="Path" value="<?php echo (($RepInstalled) ? $ReportsConfig[0] : ''); ?>" size="30"></td>
-</tr>
-<tr>
-	<td style="text-align:right;"><?php echo $reports["Bpath"]; ?> : </td>
-	<td><input name="SubDir" value="<?php echo (($RepInstalled) ? $ReportsConfig[1] : 'Bugs'); ?>" size="10"></td>
-</tr>
-<tr>
-	<td style="text-align:right;"><?php echo $reports["Rlang"]; ?> : </td>
-	<td>
-		<select name="language" id="language" style="background-color: #FFF;">
-		<?php
-			foreach ($Language as $ind => $lang) {
-				echo '<option value="'.$ind.'" '.(($ind == Auth::user()->language) ? 'selected="selected"' : '').'>'.$lang.'</option>';
-			}
-		?>
-		</select>
-	</td>
-</tr>
-<tr><td colspan="2" style="padding: 45px; text-align: center;"><input type="submit" name="Soumettre" value="<?php echo $reports["FormS"];  ?>" /></td></tr>
-</table>
-</form>
-</div>
 
+<table width="100%" align="center" style="background-color: #edf0f0;  border-color: #000; border-radius: 15px;  border-style: solid;">
+<tr><td colspan="2" style="border-top-left-radius: 15px; border-top-right-radius: 15px; text-align: center; font-weight: bold; color: #FFF; background-color: #162338; font-size: 175%; font-weight: bold;"><?php echo $Reports[Auth::user()->language]; ?><br clear="all" /><img src="../app/vendor/Reports/ScreenShot.png" width="90%" alt=""/></td></tr>
+<?php 
+if(!$RepInstalled) {
+	echo '<tr>';
+	echo '<td colspan="2" style="padding: 45px; color: #FFF; background-color: #162338; font-size: 125%; font-weight: bold ">';
+	if ($ConfigExiste) {
+		echo $Install['Etape'][0];
+		echo '<span style="color: #f8e81c; font-decoration: italic;">'.substr($_SERVER["SCRIPT_FILENAME"], 0, -9).'vendor/Reports/<u>BugsRepConfig.php</u></span> ';
+		echo '<br />';
+		echo $Install['Etape'][1];
+		echo '<br />';
+		echo '<span style="color: #f8e81c; font-decoration: italic;">'.$ReportsConfig[0].'</span> ';
+		echo '<br />';
+	} else {
+		echo $Install['Infos'].'<br /><br />'.(($RepInstalled) ? $reports["Apres"] : $reports["Avant"]);
+	}
+	echo '</td>';
+	echo '</tr>';
+}
+if($RepInstalled) {
+	echo '<tr>';
+	echo '<td colspan="2" style="padding: 45px;">';
+	echo $reports["LetGo"].' : <br /><a href="'.$ReportsConfig[0].'" target="_blank" class="links" style="color:#00F;">'.$ReportsConfig[0].'</a>';
+	echo '<br /><br />';
+	echo '<hr />';
+	echo '</td>';
+	echo '</tr>';
+} else {
+	if ($ConfigExiste) {
+		echo '<form name="LinkBugsReports" method="POST" action="reports" >';
+		echo '<input name="Etape" value="Activation" type="hidden" />';
+		echo '<tr>';
+		echo '<td width="70%" style="text-align:right; background-color: #CCC; padding-top: 45px;">';
+		echo $reports["Cfrmt"];
+		echo '<td width="30%" style="text-align:left; background-color: #CCC; padding-top: 45px; padding-left: 1%;">';
+		echo '<input name="Installed" value="true" type="radio" /">&nbsp;'.$Install['Ouais'];
+		echo '<br />';
+		echo '<input name="Installed" value="false" type="radio" checked="checked" /">&nbsp;'.$Install['Nenni'];
+		echo '</td>';
+		echo '</tr>';
+	} else {
+		echo '<form name="LinkBugsReports" method="POST" action="reports" onsubmit="return Verifie()"  >';
+		echo '<input name="Etape" value="Definition" type="hidden" />';
+		echo '<tr>';
+		echo '<td style="text-align:right; background-color: #CCC; padding-top: 45px;">';
+		echo $reports["Rpath"];
+		echo '<td style="text-align:left; background-color: #CCC; padding-top: 45px; padding-left: 1%;">';
+		echo '<input name="Path" id="input_Rpath"  value="'.(($RepInstalled) ? $ReportsConfig[0] : '').'" size="30" placeholder="http://127.0.0.1/Reports/">';
+		echo '</td>';
+		echo '</tr>';
+		echo '<tr>';
+		echo '<td style="text-align:right; background-color: #CCC;">'.$reports["Rlang"].' : </td>';
+		echo '<td style="text-align:left; background-color: #CCC; padding-left: 1%;">';
+		echo '<select name="language" id="language">';
+		include_once "../app/application/language/all.php";
+		foreach ($Language as $ind => $lang) {
+			echo '<option value="'.$ind.'" '.(($ind == Auth::user()->language) ? 'selected="selected"' : '').'>'.$lang.'</option>';
+		}
+		echo '</select>';
+		echo '</td>';
+		echo '</tr>';
+	}
+	echo '<tr>';
+	echo '<td colspan="2" style="padding: 45px; background-color: #CCC; text-align: center; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;  ">';
+	echo '<input type="submit" name="Soumettre" value="'.$reports["FormS"].'" />';
+	echo '</td>';
+	echo '</tr>';
+	echo '</table>';
+	echo '</form>';
+} 
+?>
+</div>
+<script type="text/javascript" >
+	function Verifie() {
+		var resu = true;
+		var msg = '';
+		var Rpath = document.getElementById('input_Rpath').value;
+		if (resu == true && Rpath.trim() == '')  {
+			msg = msg + "Vous devez indiquer le chemin complet menant aux rapports";
+			resu = false;
+		}
+		if (resu == true && Rpath.substr(0, 7)  != 'http://' && Rpath.substr(0, 8)  != 'https://')  {
+			msg = msg + "Vous devez indiquer un chemin complet commençant par http:// ou https://";
+			resu = false;
+		}
+		if (msg != '') { alert(msg); }
+		return resu;
+	}
+</script>
 </body>
 </html>

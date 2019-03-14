@@ -24,7 +24,7 @@ strong{font-weight: bold;}
 
 div.InstallLogo {
 	background-color: #000;
-	background-image: url('../../../images/logo.png');
+	background-image: url('../../../app/assets/images/layout/logo.png');
 	background-position: center;
 	background-repeat: no-repeat;
 	background-size: 80%; 
