@@ -59,7 +59,7 @@ Then, push you modification throw a new branch. NEVER push on master.
 	
 - v1.5 : 12 July 2015:
 	- fix: Time Display format now configurable, see config.example.php
-	- fix: SQL « tags » table not included during installation
+	- fix: SQL « tags » table now included during installation
 	- fix: Bugs assets now load correctly if inside a subfolder
 
 various layout tweaks.
