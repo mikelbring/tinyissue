@@ -24,7 +24,7 @@ Enjoy!
 ## Requirements:
 
 - Tested on: Apache, IIS
-- PHP 5.3+  :  ready for PHP 7.0.18; works good under PHP 7.2
+- PHP 5.3+  :  ready for PHP 7.0.18; works good under PHP 7.2 and over
 - MySQL 5+
 - PDO Extension for PHP (MySQL)
 - MCrypt Extension for PHP : soon MCrypt will be removed from Bugs project
