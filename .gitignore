@@ -10,6 +10,7 @@ README.md
 install/mysql-structure.php
 install/surete_config-setup.php
 app/vendor/Trumbowyg/
+app/vendor/Reports/BugsRepConfig.php
 images/
 version
 
