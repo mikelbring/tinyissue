@@ -55,6 +55,13 @@
 				</td>
 			</tr>
 
+			<tr>
+				<th><?php echo __('tinyissue.priority'); ?></th>
+				<td>
+					<?php echo Form::select('status', array(1=>__('tinyissue.priority_desc_1'),2=>__('tinyissue.priority_desc_2'),3=>__('tinyissue.priority_desc_3'),4=>__('tinyissue.priority_desc_4'),5=>__('tinyissue.priority_desc_5')), 3); ?>
+				</td>
+			</tr>
+
 
 			<?php if(Auth::user()->permission('issue-modify')): ?>
 			<tr>
@@ -188,6 +195,13 @@ function Reassignment (Project, Prev, Suiv, Issue) {
 	if (trim(@$wysiwyg['directory']) != '') {
 		if (file_exists($wysiwyg['directory']."/Bugs_code/showeditor.js")) {
 			include_once $wysiwyg['directory']."/Bugs_code/showeditor.js"; 
+			if ($wysiwyg['name'] == 'ckeditor') {
+				echo "
+				setTimeout(function() {
+					showckeditor ('body');
+				} , 567);
+				";
+			}
 		} 
 	} 
 ?>

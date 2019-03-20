@@ -60,6 +60,8 @@ class Project_Issue_Controller extends Base_Controller {
 			$text .= "\n\n";
 			$text .= sprintf(__('email.assigned_by'),\Auth::user()->firstname." ".\Auth::user()->lastname);
 			$text .= "\n\n";
+			$text .= sprintf(__('tinyissue.priority')." : ".__('tinyissue.priority_desc_'.$thisIssue[0]->attributes["status"]));
+			$text .= "\n\n";
 			$text .= __('email.more_url').Project::current()->to('issue')."/".$issue_num."";
 			mail($WhoAddr, $subject,$text);
 		//End of email process
@@ -422,7 +424,6 @@ class Project_Issue_Controller extends Base_Controller {
 			return 0;
 		}
 		if (is_numeric($msg)) {
-
 			$msg .= ';';
 			$msg .= '<div class="insides"><div class="topbar"><div class="data">';
 			$msg .= '<span style="font-weight: bold; color: #090;">'.__('tinyissue.fileuploaded').'</span>';

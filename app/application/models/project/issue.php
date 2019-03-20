@@ -60,8 +60,7 @@ class Issue extends \Eloquent {
 		$project_id = $this->project_id;
 		$project = \Project::find($project_id);
 
-		foreach(\Activity::all() as $row)
-		{
+		foreach(\Activity::all() as $row) {
 			$activity_type[$row->id] = $row;
 		}
 
@@ -224,44 +223,36 @@ class Issue extends \Eloquent {
 	* @param  int   $status
 	* @return void
 	*/
-	public function change_status($status)
-	{
+	public function change_status($status) {
 
 		/* Retrieve all tags */
 		$tags = $this->tags;
 		$tag_ids = array();
-		foreach($tags as $tag)
-		{
+		foreach($tags as $tag) {
 			$tag_ids[$tag->id] = $tag->id;
 		}
 
-		if($status == 0)
-		{
+		if($status == 0) {
 			$this->closed_by = \Auth::user()->id;
 			$this->closed_at = date('Y-m-d H:i:s');
 
 			/* Update tags */
 			$tag_ids[2] = 2;
-			if(isset($tag_ids[1]))
-			{
+			if(isset($tag_ids[1])) {
 				unset($tag_ids[1]);
 			}
 
-			if(isset($tag_ids[8]))
-			{
+			if(isset($tag_ids[8])) {
 				unset($tag_ids[8]);
 			}
 
 			/* Add to activity log */
 			\User\Activity::add(3, $this->project_id, $this->id);
-		}
-		else
-		{
+		} else {
 
 			/* Update tags */
 			$tag_ids[1] = 1;
-			if(isset($tag_ids[2]))
-			{
+			if(isset($tag_ids[2])) {
 				unset($tag_ids[2]);
 			}
 
@@ -273,12 +264,9 @@ class Issue extends \Eloquent {
 		$this->save();
 
 		/* Notify the person to whom the issue is currently assigned, unless that person is the one changing the status */
-		if($this->assigned_to && $this->assigned_to != \Auth::user()->id)
-		{
+		if($this->assigned_to && $this->assigned_to != \Auth::user()->id) {
 			$project = \Project::current();
-			//$verb = ($this->status == 0 ? 'closed' : 'reopened');
 			$verb = ($this->status == 0 ? __('email.closed') : __('email.reopened'));
-			//$subject = 'Issue "' . $this->title . '" in "' . $project->name . '" project was ' . $verb;
 			$subject = sprintf(__('email.issue_changed'),$this->title,$project->name,$verb);
 			$text = \View::make('email.change_status_issue', array(
 				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
@@ -297,8 +285,7 @@ class Issue extends \Eloquent {
 	* @param  array  $input
 	* @return array
 	*/
-	public function update_issue($input)
-	{
+	public function update_issue($input) {
 		$rules = array(
 			'title' => 'required|max:200',
 			'body' => 'required'
@@ -318,12 +305,12 @@ class Issue extends \Eloquent {
 			'title' => $input['title'],
 			'body' => $input['body'],
 			'assigned_to' => $input['assigned_to'],
-			'duration' => $input['duration']
+			'duration' => $input['duration'],
+			'status' => $input['status']
 		);
 
 		/* Add to activity log for assignment if changed */
-		if($input['assigned_to'] != $this->assigned_to)
-		{
+		if($input['assigned_to'] != $this->assigned_to) {
 			\User\Activity::add(5, $this->project_id, $this->id, \Auth::user()->id);
 		}
 
@@ -334,10 +321,8 @@ class Issue extends \Eloquent {
 		$this->set_tags('update');
 
 		/* Notify the person to whom the issue is currently assigned, unless that person is the one making the update */
-		if($this->assigned_to && $this->assigned_to != \Auth::user()->id)
-		{
+		if($this->assigned_to && $this->assigned_to != \Auth::user()->id) {
 			$project = \Project::current();
-
 			$subject = sprintf(__('email.update'),$this->title,$project->name);
 			$text = \View::make('email.update_issue', array(
 				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
@@ -361,19 +346,14 @@ class Issue extends \Eloquent {
 	* @param  string	Mode (create or update)
 	* @return void
 	*/
-	public function set_tags($mode)
-	{
-		if ($mode == 'create')
-		{
+	public function set_tags($mode) {
+		if ($mode == 'create') {
 			/* Set old tag ids to contain just the status:open tag */
 			$old_tag_ids = array(1);
-		}
-		else
-		{
+		} else {
 			/* Save old tags to determine if we need to record activity */
 			$old_tag_ids = array();
-			foreach($this->tags as $tag)
-			{
+			foreach($this->tags as $tag) {
 				$old_tag_ids[] = $tag->id;
 			}
 		}
@@ -382,17 +362,13 @@ class Issue extends \Eloquent {
 		$tags = \Input::get('tags', '');
 		$new_tag_ids = array();
 
-		if(trim($tags) != '')
-		{
+		if(trim($tags) != '') {
 			$tags = explode(',', $tags);
 
 			/* Only users with administration permission should be able to add new tags */
-			if(\Auth::user()->permission('administration'))
-			{
-				foreach($tags as $tag)
-				{
-					if (!\Tag::where('tag', '=', $tag)->first())
-					{
+			if(\Auth::user()->permission('administration')) {
+				foreach($tags as $tag) {
+					if (!\Tag::where('tag', '=', $tag)->first()) {
 						$tag_object = new \Tag;
 						$tag_object->fill(array('tag' => $tag));
 						$tag_object->save();
@@ -401,38 +377,30 @@ class Issue extends \Eloquent {
 			}
 
 			$tag_records = \Tag::where_in('tag', $tags)->get();
-			foreach($tag_records as $tag_record)
-			{
+			foreach($tag_records as $tag_record) {
 				$new_tag_ids[] = $tag_record->id;
 			}
 		}
 
-		if ($this->status == 1)
-		{
+		//if ($this->status == 1) {
+		if ($this->status > 0) {
 			$force_tag = 1;
 			$exclude_tag = 2;
-		}
-		else
-		{
+		} else {
 			$force_tag = 2;
 			$exclude_tag = 1;
 		}
 
 		$found_tag = false;
-		foreach($new_tag_ids as $key => $val)
-		{
-			if($val == $force_tag)
-			{
+		foreach($new_tag_ids as $key => $val) {
+			if($val == $force_tag) {
 				$found_tag = true;
-			}
-			else if($val == $exclude_tag)
-			{
+			} else if($val == $exclude_tag) {
 				unset($new_tag_ids[$key]);
 			}
 		}
 
-		if (!$found_tag)
-		{
+		if (!$found_tag) {
 			$new_tag_ids[] = $force_tag;
 		}
 
@@ -442,12 +410,10 @@ class Issue extends \Eloquent {
 		$added_tags = array_diff($new_tag_ids, $old_tag_ids);
 		$removed_tags = array_diff($old_tag_ids, $new_tag_ids);
 		$has_tag_diff = (!empty($added_tags) || !empty($removed_tags));
-		if ($has_tag_diff)
-		{
+		if ($has_tag_diff) {
 			$tag_data = array();
 			$tag_data_resource = \Tag::where_in('id', array_merge($added_tags, $removed_tags))->get();
-			foreach($tag_data_resource as $tag)
-			{
+			foreach($tag_data_resource as $tag) {
 				$tag_data[$tag->id] = $tag->to_array();
 			}
 
@@ -497,8 +463,7 @@ class Issue extends \Eloquent {
 	* @param  \Project  $project
 	* @return Issue
 	*/
-	public static function create_issue($input, $project)
-	{
+	public static function create_issue($input, $project) {
 		$rules = array(
 			'title' => 'required|max:200',
 			'body' => 'required'
@@ -506,8 +471,7 @@ class Issue extends \Eloquent {
 
 		$validator = \Validator::make($input, $rules);
 
-		if($validator->fails())
-		{
+		if($validator->fails()) {
 			return array(
 				'success' => false,
 				'errors' => $validator->errors
@@ -522,11 +486,10 @@ class Issue extends \Eloquent {
 			'title' => $input['title'],
 			'body' => $input['body'],
 			'duration' => $input['duration'],
-			'status' => 1
+			'status' => $input['status']
 		);
 
-		if(\Auth::user()->permission('issue-modify'))
-		{
+		if(\Auth::user()->permission('issue-modify')) {
 			$fill['assigned_to'] = $input['assigned_to'];
 		}
 
@@ -574,13 +537,12 @@ class Issue extends \Eloquent {
 		);
 	}
 
-	public static function count_issues()
-	{
+	public static function count_issues() {
 		/* Count Open Issues - Project must be open */
 		$count = \DB::table('projects_issues')
 									->join('projects', 'projects.id', '=', 'projects_issues.project_id')
 									->where('projects.status', '=', 1)
-									->where('projects_issues.status', '=', 1)
+									->where('projects_issues.status', '>', 1)
 									->count();
 		$open_issues = !$count ? 0 : $count;
 
