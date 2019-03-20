@@ -85,4 +85,32 @@
 		}
 		echo '<br /><br />';
 	?>
+	-----------------------------------------------------------------------
+	<br /><br />
+	<?php
+	
+echo passthru('git status', $retval);
+echo '<br /><br />';
+ $last_line = passthru('git status', $retval);
+ 
+echo '<hr />Voici la valeur de last_line : '.$last_line;
+echo '<hr />Valeur retournée par retval : '. $retval;	
+	
+	echo '<br /><br />';
+	echo '<br /><br />';
+	$Tomate = system("git status", $Baboom);
+	var_dump($Baboom);
+	echo '<br /><br />';
+	var_dump($Tomate);	
+////		require_once "vendor/Symfony/Component/Console/Application.php";
+////		require_once "vendor/Symfony/Component/Console/Shell.php";
+//
+//		use Symfony\Component\Console\Console;
+//		use Symfony\Component\Console\Shell;
+//		$app = new Shell($app, '1.0 (stable)');
+//		$app->add("ls -la");
+//		$app->run(); 
+	?>	
+	<br /><br />
+	-----------------------------------------------------------------------
 </div>
