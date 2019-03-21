@@ -1011,9 +1011,19 @@ ul.isssues li {
 
 #lane-status-0 {
   float: right; 
-  margin-right: 0; 
+  margin-right: 0;
 }
 
+.todo-line {
+	float: right; 
+	margin-right: 1%;
+	min-height: 600px;
+	height: 100%;
+	max-height: 800px;
+	border-left-color: gray;
+	border-left-style: dotted;
+	border-left-width:7px;
+}
 .todo-list-item {
   background-color: #fff;
   width: 100%;

@@ -88,7 +88,7 @@
 	</ul>
 	<div id="div_currentlyAssigned_name" class="topbar"></div>
 
-	<?php if(Project\Issue::current()->status == 1): ?>
+	<?php if(Project\Issue::current()->status > 0): ?>
 
 	<div class="new-comment" id="new-comment">
 		<?php if(Auth::user()->permission('issue-modify')): ?>
@@ -102,13 +102,13 @@
 						<?php echo Project\Issue::current()->assigned->firstname; ?>
 						<?php echo Project\Issue::current()->assigned->lastname; ?>
 						&nbsp;&nbsp;
-						<img src="../../../../app/assets/images/layout/dropdown-arrow.png" height="10" />
+						<img src="<?php echo URL::base();?>/app/assets/images/layout/dropdown-arrow.png" height="10" />
 						</span>
 					<?php else: ?>
 						<span id="span_currentlyAssigned_name">
 						<?php echo __('tinyissue.no_one'); ?>
 						&nbsp;&nbsp;
-						<img src="../../../../app/assets/images/layout/dropdown-arrow.png" height="10" />
+						<img src="<?php echo URL::base();?>/app/assets/images/layout/dropdown-arrow.png" height="10" />
 						</span>
 					<?php endif; ?>
 
@@ -140,9 +140,9 @@
 		</h4>
 
 		<form method="post" action="" enctype="multipart/form-data">
-			<!-- New options in the form : percentage of work done after this ticket  -->
 			<p>
-				<textarea name="comment" style="width: 98%; height: 90px;"></textarea>
+				<textarea name="comment" id="textarea_comment_0" style="width: 98%; height: 90px;"></textarea>
+				<!-- New options in the form : percentage of work done after this ticket  -->
 				<span style="text-align: left; width: 50%;">
 				<?php 
 					$percent = ((is_object($Etat)) ? (($Etat->weight == 100) ? 91 : $Etat->weight+1) : 10 );
@@ -367,6 +367,13 @@ function Reassignment (Project, Prev, Suiv, Issue) {
 	if (trim(@$wysiwyg['directory']) != '') {
 		if (file_exists($wysiwyg['directory']."/Bugs_code/showeditor.js")) {
 			include_once $wysiwyg['directory']."/Bugs_code/showeditor.js"; 
+			if ($wysiwyg['name'] == 'ckeditor') {
+				echo "
+				setTimeout(function() {
+					showckeditor ('comment');
+				} , 567);
+				";
+			}
 		} 
 	} 
 ?>

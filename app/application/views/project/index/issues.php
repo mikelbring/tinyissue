@@ -1,3 +1,7 @@
+<?php 
+$config_app = require path('public') . 'config.app.php';  
+if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = array("black","Orchid","Cyan","Lime","orange","red"); }
+?>
 <div class="blue-box">
 	<div class="inside-pad">
 		<div class="filter-and-sorting">
@@ -79,7 +83,7 @@
 				</div>
 				<?php endif; ?>
 
-				<a href="" class="id">#<?php echo $row->id; ?></a>
+				<a href="" class="id">#<?php echo $row->id; ?><?php if(@$_GET["tag_id"] ==1 ) { ?><br /><br /><span style="color: <?php echo $config_app['PriorityColors'][$row->status]; ?>; font-size: 200%;">&#9899;</span><?php } ?></span></a>
 				<div class="data">
 					<a href="<?php echo $row->to(); ?>"><?php echo $row->title; ?></a>
 					<div class="info">
@@ -103,7 +107,6 @@
 					</div>
 					<?php
 					if (@$_GET["tag_id"] == 1) {
-						$config_app = require path('public') . 'config.app.php';
 						echo '<br /><br />';
 						//Percentage of work done
 						$SizeXtot = 500;

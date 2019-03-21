@@ -63,6 +63,7 @@ $(function() {
 		var id = $(this).closest('.comment').attr('id');
 		$('#' + id + ' .issue').hide();
 		$('#' + id + ' .comment-edit').show();
+		AffichonsEditor(id);
 		return false;
 	});
 

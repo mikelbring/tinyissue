@@ -125,7 +125,7 @@ class Project_Controller extends Base_Controller {
 
 		/* Get sort options */
 		$tags = \Tag::order_by('tag', 'ASC')->get();
-		$sort_options = array('id' => __('tinyissue.sort_option_id'), 'updated' => __('tinyissue.sort_option_updated'));
+		$sort_options = array('id' => __('tinyissue.sort_option_id'), 'updated' => __('tinyissue.sort_option_updated'), 'status' => __('tinyissue.priority'));
 		foreach ($tags as $tag) {
 			$colon_pos = strpos($tag->tag, ':');
 			if ($colon_pos !== false) {

@@ -49,6 +49,13 @@
 	if (trim(@$wysiwyg['directory']) != '') {
 		if (file_exists($wysiwyg['directory']."/Bugs_code/showeditor.js")) {
 			include_once $wysiwyg['directory']."/Bugs_code/showeditor.js"; 
+			if ($wysiwyg['name'] == 'ckeditor') {
+				echo "
+				setTimeout(function() {
+					showckeditor ('body');
+				} , 567);
+				";
+			}
 		} 
 	} 
 ?>
