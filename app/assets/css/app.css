@@ -1020,7 +1020,7 @@ ul.isssues li {
 	min-height: 600px;
 	height: 100%;
 	max-height: 800px;
-	border-left-color: gray;
+	border-left-color: #cfcfcf;
 	border-left-style: dotted;
 	border-left-width:7px;
 }
