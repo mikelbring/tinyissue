@@ -95,7 +95,7 @@ class User extends Eloquent {
 			$projects[$project->id] = $project;
 
 			/* Loop through all the logic from the project and cache all the needed data so we don't load the same data twice */
-			foreach(User\Activity::where('parent_id', '=', $project->id)->order_by('status', 'DESC')->order_by('created_at', 'DESC')->take($activity_limit)->get() as $activity)
+			foreach(User\Activity::where('parent_id', '=', $project->id)->order_by('created_at', 'DESC')->take($activity_limit)->get() as $activity)
 			{
 				$dashboard[$project->id][] = $activity;
 
