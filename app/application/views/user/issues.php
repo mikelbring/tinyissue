@@ -1,3 +1,7 @@
+<?php 
+$config_app = require path('public') . 'config.app.php';  
+if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = array("black","Orchid","Cyan","Lime","orange","red"); }
+?>
 <h3>
 	<?php echo __('tinyissue.your_issues'); ?>
 	<span><?php echo __('tinyissue.your_issues_description'); ?></span>
@@ -26,7 +30,7 @@
 					</div>
 					<?php endif; ?>
 
-					<a href="<?php echo $row->to(); ?>" class="id">#<?php echo $row->id; ?></a>
+					<a href="<?php echo $row->to(); ?>" class="id">#<?php echo $row->id; ?><br /><span style="color: <?php echo $config_app['PriorityColors'][$row->status]; ?>; font-size: 200%;">&#9899;</span></span></a>
 					<div class="data">
 						<a href="<?php echo $row->to(); ?>"><?php echo $row->title; ?></a>
 						<div class="info">
