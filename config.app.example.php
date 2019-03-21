@@ -167,4 +167,17 @@ return array(
 	*/
 	'duration' => 30,
 
+	/**Priority
+	*Beside others tickets, 
+	*which ones need to be solved first  ( priority = 5 )
+	*which ones can wait ( priority = 1 )
+	*closed issues have priority = 0
+	
+	**PriorityColors chose the color of the dot marker
+	**Values can be either names or hexadecimals
+	**Names like:  black, darkviolet, blue, green ... ref https://www.w3schools.com/cssref/css_colors.asp
+	**Hexadecimal values starting with # code  like  #FF0000 #FFFF00  #123456
+	*/
+	'PriorityColors' => array("black","Orchid","Cyan","Lime","orange","red"),
+
 );

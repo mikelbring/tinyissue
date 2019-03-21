@@ -120,6 +120,7 @@ class User extends \Eloquent {
 				'issues' => \Tag::find(1)->issues()
 					->where('project_id', '=', $project->id)
 					->where('assigned_to', '=', $user->id)
+					->order_by('status', 'DESC')
 					->get()
 			);
 
