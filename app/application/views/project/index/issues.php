@@ -25,7 +25,7 @@ if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = arra
 				<tr>
 					<th style="width: 10%"><?php echo __('tinyissue.sort_by'); ?></th>
 					<td style="width: 35%">
-						<?php echo Form::select('sort_by', $sort_options, Input::get('sort_by', '')); ?>
+						<?php echo Form::select('sort_by', $sort_options, Input::get('sort_by', (Input::get('tag_id','') == 1) ? 'projects_issues.status' : 'projects_issues.updated_at')); ?>
 						<?php echo Form::select('sort_order', array('asc' => __('tinyissue.sort_asc'), 'desc' => __('tinyissue.sort_desc')), $sort_order); ?>
 						<input name="tag_id" value="<?php echo Input::get('tag_id', '1'); ?>" type="hidden" />
 					</td>

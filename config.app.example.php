@@ -178,6 +178,6 @@ return array(
 	**Names like:  black, darkviolet, blue, green ... ref https://www.w3schools.com/cssref/css_colors.asp
 	**Hexadecimal values starting with # code  like  #FF0000 #FFFF00  #123456
 	*/
-	'PriorityColors' => array("black","Orchid","Cyan","Lime","orange","red"),
+	'PriorityColors' => array("black","PaleGray","DarkCyan","Lime","orange","red"),
 
 );
