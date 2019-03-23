@@ -177,7 +177,14 @@ return array(
 	**Values can be either names or hexadecimals
 	**Names like:  black, darkviolet, blue, green ... ref https://www.w3schools.com/cssref/css_colors.asp
 	**Hexadecimal values starting with # code  like  #FF0000 #FFFF00  #123456
+	**If you don't wont to see the status marker, set the values to transparent
+	**Examples below:
+	****Default
+	****'PriorityColors' => array("black",	"PaleGray","DarkCyan","LimeGreen","Darkorange","Crimson"),
+	****'PriorityColors' => array("#000000","#acacac","#008B8B", "#32CD32",  "#FF8C00",   "#DC143C"),
+	****All transparent
+	****'PriorityColors' => array("transparent","transparent","transparent","transparent","transparent","transparent "),
 	*/
-	'PriorityColors' => array("black","Orchid","Cyan","Lime","orange","red"),
+	'PriorityColors' => array("black","PaleGray","DarkCyan","LimeGreen","Darkorange","Crimson"),
 
 );
