@@ -353,6 +353,97 @@ div.adminListe {
 	font-weight: normal;
 }
 
+
+div.stat {
+	color: #FFF;
+	display:inline-block;
+	width: 21%;
+	margin: 1%;
+	vertical-align: top;
+}
+
+.stat_element{
+	font-size: 150%;
+	width: 100%;
+	min-height: 120px;
+	border-radius:  15px;
+	padding-top: 20px;
+	padding-left: 60px;
+	margin-bottom: 10px;
+	}
+
+.stat_data {
+	font-size: 120%;
+	width: 100%;
+	min-height: 120px;
+	border-radius:  15px;
+	padding-top: 20px;
+	padding-left: 60px;
+	margin-bottom: 10px;
+}
+
+.stat_data:hover {
+	color: #000;
+}
+
+.stat_cnt {
+	display:inline-block;
+	height: 100%;
+	vertical-align: top;
+}
+
+.stat_img {
+	height: 100%;
+	display:inline-block;
+	width: 30%;
+	padding-left: 5%;
+}
+
+.stat_data img {
+	height: 50px;
+	margin-left: -50px;
+	margin-right: 10px;
+}
+
+.stat_element img {
+	height: 50px;
+	margin-left: -50px;
+	margin-right: 10px;
+}
+
+.stat_users {
+	background-color: #ebca64;
+}
+
+.stat_projects {
+	background-color: #57c386;
+}
+
+.stat_issues {
+	background-color: #45b6e0;
+}
+
+.stat_tags {
+	background-color: #d15151;
+}
+
+.stat_users_data {
+	background-color: #efd583;
+}
+
+.stat_projects_data {
+	background-color: #79cf9e;
+}
+
+.stat_issues_data {
+	background-color: #6ac5e6;
+}
+
+.stat_tags_data {
+	background-color: #da7474;
+}
+
+
 #logo_version.logoVersion a{
 	color: #F00;
 }

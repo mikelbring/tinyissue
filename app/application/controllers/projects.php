@@ -2,8 +2,7 @@
 
 class Projects_Controller extends Base_Controller {
 
-	public function get_index()
-	{
+	public function get_index() {
 		$status = Input::get('status', 1);
 		$projects_active = Project\User::active_projects(true);
 		$projects_inactive = Project\User::inactive_projects(true);
@@ -16,15 +15,33 @@ class Projects_Controller extends Base_Controller {
 		));
 	}
 
-	public function get_new()
-	{
+	public function get_new() {
 		Asset::script('project-new', '/app/assets/js/project-new.js', array('app'));
 
 		return $this->layout->with('active', 'projects')->nest('content', 'projects.new');
 	}
 
 	public function get_reports() {
-		return $this->layout->with('active', 'projects')->nest('content', 'projects.reports');
+//		return $this->layout->with('active', 'projects')->nest('content', 'projects.reports');
+		$status = Input::get('status', 1);
+		$projects_active = Project\User::active_projects(true);
+		$projects_inactive = Project\User::inactive_projects(true);
+		$tags = \DB::table('tags')->get();
+		$users = \DB::table('users')->get();
+		$issues_active = \DB::table('projects_issues')->whereNull('closed_at')->get();
+		$issues_inactive = \DB::table('projects_issues')->whereNotNull('closed_at')->get();
+
+		return $this->layout->with('active', 'projects')->nest('content', 'projects.reports', array(
+			'projects_active' =>  (int) count($projects_active),
+			'projects_inactive' =>  (int) count($projects_inactive),
+			'projects_total' =>  (int) count($projects_active) + count($projects_inactive),
+			'tags' => (int) count($tags),  	
+			'users' => (int) count($users),
+			'issues_active' =>  (int) count($issues_active),
+			'issues_inactive' =>  (int) count($issues_inactive),
+			'issues_total' =>  (int) count($issues_active) + count($issues_inactive)
+		));
+
 	}
 
 	public function post_reports() {
