@@ -1,108 +1,166 @@
-<?php 
-include_once "../app/vendor/Reports/en.php";  
-$en = $Install; 
-if (file_exists("../app/vendor/Reports/".Auth::user()->language.".php")) { 
-	include "../app/vendor/Reports/".Auth::user()->language.".php";
-}
-$reports = array_merge($en, $Install);
-if (file_exists("vendor/Reports/config.php")) { 
-	include_once "vendor/Reports/config.php"; 
-}
-$ConfigExiste = (file_exists('vendor/Reports/BugsRepConfig.php')) ? true : false;
+<h3>
+<img src="../app/assets/images/reports/Stat.png" width="50" align="left" />
+&nbsp;&nbsp;&nbsp;
+<?php echo __('tinyissue.reports_Production');?>
+</h3>
 
+<?php
+//To create new reports:
+////1. Create new model in /app/application/models/reports/*
+//////How to name the model:  type_spreadout.php
+//////type: tags, issues, projects, users
+//////spreadout:  all, active, inactive, progress
+////2. Add new line in /app/application/language/en/reports.php and other languages
+////3. Add div below in this actual file and modify the link's value in the javascript "onclick" function 
+if(@$Rapport_Prod != '') {
+	$NomSimple = substr($Rapport_Prod, strrpos($Rapport_Prod, "/")+1);
+	$NomSimple = substr($NomSimple, 0, -4);
+	echo '<h4 class="stat_'.substr($NomSimple, 0, strpos($NomSimple, "_")).'">';
+	echo '<a href="'.$Rapport_Prod.'" target="_blank">'.$NomSimple.'';
+	echo '<img src="../app/assets/images/upload_type/pdf.png" />';
+	echo '</a>';
+	echo '</h4>';
+}
 ?>
 
-<div style="padding-top: 50px; padding-bottom: 75px; width: 75%; baground-color: #CCC; position: relative; left: 15%; font-size: 150%;">
-
-<table width="100%" align="center" style="background-color: #edf0f0;  border-color: #000; border-radius: 15px;  border-style: solid;">
-<tr><td colspan="2" style="border-top-left-radius: 15px; border-top-right-radius: 15px; text-align: center; font-weight: bold; color: #FFF; background-color: #162338; font-size: 175%; font-weight: bold;"><?php echo $Reports[Auth::user()->language]; ?><br clear="all" /><img src="../app/vendor/Reports/ScreenShot.png" width="90%" alt=""/></td></tr>
+<div class="stat_form">
+<form action="reports?type=pdf" method="POST" id="form_reports">
+<b><?php echo __('tinyissue.reports_Filter');?> : </b>
+<?php echo __('tinyissue.reports_dteinit');?> : <input type="date" name="DteInit" id="input_DteInit" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<?php echo __('tinyissue.reports_dteends');?> : <input type="date" name="DteEnds" id="input_DteEnds" />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<input type="hidden" name="RapType" id="input_RapType" />
+<input type="hidden" name="Couleur" id="input_Couleur" />
+<select name="FilterUser" id="select_FiterUser">
+<option value="0"><?php echo __('tinyissue.reports_allusers');?></option>
 <?php 
-if(!$RepInstalled) {
-	echo '<tr>';
-	echo '<td colspan="2" style="padding: 45px; color: #FFF; background-color: #162338; font-size: 125%; font-weight: bold ">';
-	if ($ConfigExiste) {
-		echo $Install['Etape'][0];
-		echo '<span style="color: #f8e81c; font-decoration: italic;">'.substr($_SERVER["SCRIPT_FILENAME"], 0, -9).'vendor/Reports/<u>BugsRepConfig.php</u></span> ';
-		echo '<br />';
-		echo $Install['Etape'][1];
-		echo '<br />';
-		echo '<span style="color: #f8e81c; font-decoration: italic;">'.$ReportsConfig[0].'</span> ';
-		echo '<br />';
-	} else {
-		echo $Install['Infos'].'<br /><br />'.(($RepInstalled) ? $reports["Apres"] : $reports["Avant"]);
-	}
-	echo '</td>';
-	echo '</tr>';
-}
-if($RepInstalled) {
-	echo '<tr>';
-	echo '<td colspan="2" style="padding: 45px;">';
-	echo $reports["LetGo"].' : <br /><a href="'.$ReportsConfig[0].'" target="_blank" class="links" style="color:#00F;">'.$ReportsConfig[0].'</a>';
-	echo '<br /><br />';
-	echo '<hr />';
-	echo '</td>';
-	echo '</tr>';
-} else {
-	if ($ConfigExiste) {
-		echo '<form name="LinkBugsReports" method="POST" action="reports" >';
-		echo '<input name="Etape" value="Activation" type="hidden" />';
-		echo '<tr>';
-		echo '<td width="70%" style="text-align:right; background-color: #CCC; padding-top: 45px;">';
-		echo $reports["Cfrmt"];
-		echo '<td width="30%" style="text-align:left; background-color: #CCC; padding-top: 45px; padding-left: 1%;">';
-		echo '<input name="Installed" value="true" type="radio" /">&nbsp;'.$Install['Ouais'];
-		echo '<br />';
-		echo '<input name="Installed" value="false" type="radio" checked="checked" /">&nbsp;'.$Install['Nenni'];
-		echo '</td>';
-		echo '</tr>';
-	} else {
-		echo '<form name="LinkBugsReports" method="POST" action="reports" onsubmit="return Verifie()"  >';
-		echo '<input name="Etape" value="Definition" type="hidden" />';
-		echo '<tr>';
-		echo '<td style="text-align:right; background-color: #CCC; padding-top: 45px;">';
-		echo $reports["Rpath"];
-		echo '<td style="text-align:left; background-color: #CCC; padding-top: 45px; padding-left: 1%;">';
-		echo '<input name="Path" id="input_Rpath"  value="'.(($RepInstalled) ? $ReportsConfig[0] : '').'" size="30" placeholder="http://127.0.0.1/Reports/">';
-		echo '</td>';
-		echo '</tr>';
-		echo '<tr>';
-		echo '<td style="text-align:right; background-color: #CCC;">'.$reports["Rlang"].' : </td>';
-		echo '<td style="text-align:left; background-color: #CCC; padding-left: 1%;">';
-		echo '<select name="language" id="language">';
-		include_once "../app/application/language/all.php";
-		foreach ($Language as $ind => $lang) {
-			echo '<option value="'.$ind.'" '.(($ind == Auth::user()->language) ? 'selected="selected"' : '').'>'.$lang.'</option>';
-		}
-		echo '</select>';
-		echo '</td>';
-		echo '</tr>';
-	}
-	echo '<tr>';
-	echo '<td colspan="2" style="padding: 45px; background-color: #CCC; text-align: center; border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;  ">';
-	echo '<input type="submit" name="Soumettre" value="'.$reports["FormS"].'" />';
-	echo '</td>';
-	echo '</tr>';
-	echo '</table>';
-	echo '</form>';
-} 
+	foreach($users as $user) {
+		if ($user->firstname !='admin' && $user->lastname != 'admin' ) { echo '<option value="'.$user->id.'">'.$user->firstname.' '.$user->lastname.'</option>'; }
+	} 
 ?>
+</select>
+</form>
 </div>
-<script type="text/javascript" >
-	function Verifie() {
-		var resu = true;
-		var msg = '';
-		var Rpath = document.getElementById('input_Rpath').value;
-		if (resu == true && Rpath.trim() == '')  {
-			msg = msg + "Vous devez indiquer le chemin complet menant aux rapports";
-			resu = false;
+
+<div class="stat">
+	<div class="stat_element stat_users">
+		<img src="../app/assets/images/reports/users.png" align="left" />
+		<b><?php echo count($users); ?> <?php echo __('tinyissue.users');?></b><br />
+	</div>	
+	<div class="stat_data stat_users_data" onclick="document.getElementById('input_Couleur').value='efd583'; document.getElementById('input_RapType').value='users_list'; document.getElementById('form_reports').submit();">
+		<img src="../app/assets/images/reports/Stat_users.png" align="left" />
+		<b><?php echo __('tinyissue.reports_allusers');?></b><br />
+		<?php echo __('tinyissue.reports_allusersdesc');?>
+		
+	</div>	
+</div>
+
+<div class="stat">
+	<div class="stat_element stat_projects">
+		<img src="../app/assets/images/reports/projects.png" align="left" />
+		<b><?php echo $projects_total; ?> <?php echo __('tinyissue.projects');?></b><br />
+		<br />
+		<?php echo $projects_active; ?> <?php echo __('tinyissue.reports_proactive');?> <br />
+		<?php echo $projects_inactive; ?>  <?php echo __('tinyissue.reports_proinactive');?> <br />
+	</div>	
+	<div class="stat_data stat_projects_data" onclick="document.getElementById('input_Couleur').value='79cf9e'; document.getElementById('input_RapType').value='projects_all'; document.getElementById('form_reports').submit();">
+		<img src="../app/assets/images/reports/Stat_projects.png" align="left" />
+		<b><?php echo __('tinyissue.reports_allprojects');?></b><br />
+		<?php echo __('tinyissue.reports_allprojectsdesc');?>
+	</div>	
+	<div class="stat_data stat_projects_data" onclick="document.getElementById('input_Couleur').value='79cf9e'; document.getElementById('input_RapType').value='projects_active'; document.getElementById('form_reports').submit();">
+		<img src="../app/assets/images/reports/Stat_projects.png" align="left" />
+		<b><?php echo __('tinyissue.reports_allprojects');?></b><br />
+		<?php echo __('tinyissue.reports_actprojectsdesc');?>
+	</div>	
+</div>
+
+<div class="stat">
+	<div class="stat_element stat_issues">
+		<img src="../app/assets/images/reports/issues.png" align="left" />
+		<b><?php echo $issues_total; ?> <?php echo __('tinyissue.issues');?></b><br />
+		<br />
+		<?php echo $issues_active; ?> <?php echo __('tinyissue.reports_issactive');?><br />
+		<?php echo $issues_inactive; ?> <?php echo __('tinyissue.reports_issinactive');?><br />
+	</div>	
+	<div class="stat_data stat_issues_data" onclick="document.getElementById('input_Couleur').value='6ac5e6'; document.getElementById('input_RapType').value='issues_active'; document.getElementById('form_reports').submit();">
+		<img src="../app/assets/images/reports/Stat_issues.png" align="left" />
+		<b><?php echo __('tinyissue.reports_actissues');?></b><br />
+		<?php echo __('tinyissue.reports_actissuesdesc');?>
+	</div>	
+	<div class="stat_data stat_issues_data" onclick="document.getElementById('input_Couleur').value='6ac5e6'; document.getElementById('input_RapType').value='issues_inactive'; document.getElementById('form_reports').submit();">
+		<img src="../app/assets/images/reports/Stat_issues.png" align="left" />
+		<b><?php echo __('tinyissue.reports_inactissues');?></b><br />
+		<?php echo __('tinyissue.reports_inactissuesdesc');?>
+	</div>	
+	<div class="stat_data stat_issues_data" onclick="document.getElementById('input_Couleur').value='6ac5e6'; document.getElementById('input_RapType').value='issues_progress'; document.getElementById('form_reports').submit();">
+		<img src="../app/assets/images/reports/Stat_issues.png" align="left" />
+		<b><?php echo __('tinyissue.reports_progissues');?></b><br />
+		<?php echo __('tinyissue.reports_progissuesdesc');?>
+	</div>	
+</div>
+
+<div class="stat">
+	<div class="stat_element stat_tags">
+		<img src="../app/assets/images/reports/tags.png" align="left" />
+		<b><?php echo $tags; ?> <?php echo __('tinyissue.tags');?></b><br />
+	</div>	
+	<div class="stat_data stat_tags_data" onclick="document.getElementById('input_Couleur').value='da7474'; document.getElementById('input_RapType').value='tags_all'; document.getElementById('form_reports').submit();">
+		<img src="../app/assets/images/reports/Stat_tags.png" align="left" />
+		<b><?php echo __('tinyissue.reports_alltags');?></b><br />
+		<?php echo __('tinyissue.reports_alltagsdesc');?>
+	</div>	
+	<div class="stat_data stat_tags_data" onclick="document.getElementById('input_Couleur').value='da7474'; document.getElementById('input_RapType').value='tags_active'; document.getElementById('form_reports').submit();">
+		<img src="../app/assets/images/reports/Stat_tags.png" align="left" />
+		<b><?php echo __('tinyissue.reports_acttags');?></b><br />
+		<?php echo __('tinyissue.reports_acttagsdesc');?>
+	</div>	
+	<div class="stat_data stat_tags_data" onclick="document.getElementById('input_Couleur').value='da7474'; document.getElementById('input_RapType').value='tags_inactive'; document.getElementById('form_reports').submit();">
+		<img src="../app/assets/images/reports/Stat_tags.png" align="left" />
+		<b><?php echo __('tinyissue.reports_inacttags');?></b><br />
+		<?php echo __('tinyissue.reports_inacttagsdesc');?>
+	</div>	
+</div>
+
+<br /><br />
+<h3>
+<?php echo __('tinyissue.reports_archives');?>
+</h3>
+<?php
+	$rappLng = require ("application/language/en/reports.php"); 
+	if ( file_exists("application/language/".Auth::user()->language."/reports.php")) {
+		$rappMaLng = require "application/language/".Auth::user()->language."/reports.php";
+		$rappLng = array_merge($rappLng, $rappMaLng);
+	} 
+	$Liste = array();
+	$Ordre = array("users","projects","issues","tags");
+	$PasCeuxCi = array(".","..","index.php","index.htm","index.html");
+	$LesRap = scandir("storage/reports/", SCANDIR_SORT_DESCENDING);
+	foreach ($LesRap as $LeRap) {
+		if (!in_array($LeRap, $PasCeuxCi)) {
+			//echo $LeRap.'<br />';
+			$Rap = explode("_", substr($LeRap, 0, -4));
+			$Liste[$Rap[0]][$Rap[1]][$Rap[2]] = $LeRap;
 		}
-		if (resu == true && Rpath.substr(0, 7)  != 'http://' && Rpath.substr(0, 8)  != 'https://')  {
-			msg = msg + "Vous devez indiquer un chemin complet commençant par http:// ou https://";
-			resu = false;
-		}
-		if (msg != '') { alert(msg); }
-		return resu;
 	}
-</script>
-</body>
-</html>
+
+	foreach ($Ordre as $col) {
+		echo '<div class="stat">';
+		if (isset($Liste[$col])) {
+			foreach($Liste[$col] as $ligne  => $LesDates) {
+				foreach ($LesDates as $LaDate => $Fichier) {
+					if (isset($Liste[$col][$ligne][$LaDate])) {
+						echo '<div class="stat_data stat_'.$col.'_data" onclick="window.open(\'../app/storage/reports/'.$Fichier.'\');" >';
+						echo '<img src="../app/assets/images/upload_type/pdf.png" align="left" />';
+						echo '<span style="font-size: 120%; font-weight: bold;">'.$rappLng[$col].'</span><br />';
+						echo $rappLng[$ligne].'<br />';
+						echo substr($LaDate, 0, 4),'-'.substr($LaDate, 4, 2).'-'.substr($LaDate, 6, 2).' '.substr($LaDate, 8, 2).'h'.substr($LaDate, 10, 2).':'.substr($LaDate, 12, 2).'<br />';
+						echo '</div>';
+					}
+				}
+			}
+		}
+		echo '</div>';
+	}
+?>

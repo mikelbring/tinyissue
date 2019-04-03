@@ -1,0 +1,38 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Header</title>
+<link type="text/css" rel="stylesheet" href="../fpdf.css">
+</head>
+<body>
+<h1>Header</h1>
+<code>Header()</code>
+<h2>Description</h2>
+Cette méthode permet de définir l'en-tête de page. Elle est appelée automatiquement par
+AddPage() et ne devrait donc pas être appelée explicitement par l'application.
+L'implémentation de Header() dans FPDF est vide, donc vous devez dériver la classe et
+redéfinir la méthode si vous voulez un traitement particulier pour vos en-têtes.
+<h2>Exemple</h2>
+<div class="doc-source">
+<pre><code>class PDF extends FPDF
+{
+function Header()
+{
+    // Police Arial gras 15
+    $this-&gt;SetFont('Arial','B',15);
+    // Décalage
+    $this-&gt;Cell(80);
+    // Titre encadré
+    $this-&gt;Cell(30,10,'Titre',1,0,'C');
+    // Saut de ligne
+    $this-&gt;Ln(20);
+}
+}</code></pre>
+</div>
+<h2>Voir</h2>
+<a href="footer.htm">Footer</a>
+<hr style="margin-top:1.5em">
+<div style="text-align:center"><a href="index.htm">Index</a></div>
+</body>
+</html>
