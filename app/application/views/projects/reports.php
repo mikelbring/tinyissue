@@ -139,7 +139,7 @@ if(@$Rapport_Prod != '') {
 	$LesRap = scandir("storage/reports/", SCANDIR_SORT_DESCENDING);
 	foreach ($LesRap as $LeRap) {
 		if (!in_array($LeRap, $PasCeuxCi)) {
-			echo $LeRap.'<br />';
+			//echo $LeRap.'<br />';
 			$Rap = explode("_", substr($LeRap, 0, -4));
 			$Liste[$Rap[0]][$Rap[1]][$Rap[2]] = $LeRap;
 		}
@@ -155,7 +155,7 @@ if(@$Rapport_Prod != '') {
 						echo '<img src="../app/assets/images/upload_type/pdf.png" align="left" />';
 						echo '<span style="font-size: 120%; font-weight: bold;">'.$rappLng[$col].'</span><br />';
 						echo $rappLng[$ligne].'<br />';
-						echo $LaDate.'<br />';
+						echo substr($LaDate, 0, 4),'-'.substr($LaDate, 4, 2).'-'.substr($LaDate, 6, 2).' '.substr($LaDate, 8, 2).'h'.substr($LaDate, 10, 2).':'.substr($LaDate, 12, 2).'<br />';
 						echo '</div>';
 					}
 				}
