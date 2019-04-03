@@ -50,9 +50,9 @@ class Projects_Controller extends Base_Controller {
 		$pdf = new FPDF("P", "mm", "Letter", true, 'UTF-8', false);
 		$pdf->SetMargins(10, 1, 10);
 		$pdf->SetAuthor("Patrick Allaire, ptre", true);
-		$pdf->SetCreator('Voici une Info à venir', true);
+		$pdf->SetCreator('Patrick Allaire, 2019; pour BUGS', true);
 		$pdf->SetTitle("BUGS report", true);
-		$pdf->SetSubject("Voici une info à venir");
+		$pdf->SetSubject("BUTS report and statistics about issues");
 		$pdf->SetKeywords('BUGS tickets report rapport');
 		$pdf->SetFont("Times", "", 12);
 		$pdf->SetTextColor(0,0,0);

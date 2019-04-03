@@ -33,7 +33,7 @@ if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = arra
 						<?php echo __('tinyissue.limits'); ?><br />
 					</th>
 					<td style="width: 45%; font-weight: bold;">
-						<?php echo Form::select('limit_contrib', array( 'assigned_to' => __('tinyissue.limits_contrib_assignedTo'),'created_by'  => __('tinyissue.limits_contrib_createdBy'),'closed_by'   => __('tinyissue.limits_contrib_closedBy'),'updated_by'  => __('tinyissue.limits_contrib_updatedBy')), Input::get('limit_contrib', '')); ?>
+						<?php echo Form::select('limit_contrib', array( 'assigned_to' => __('tinyissue.limits_contrib_assignedto'),'created_by'  => __('tinyissue.limits_contrib_createdBy'),'closed_by'   => __('tinyissue.limits_contrib_closedby'),'updated_by'  => __('tinyissue.limits_contrib_updatedby')), Input::get('limit_contrib', '')); ?>
 						<?php echo Form::select('assigned_to', $assigned_users, Input::get('assigned_to', '')); ?>
 					</td>
 				</tr>
@@ -44,7 +44,7 @@ if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = arra
 					</td>
 					<th style="width: 10%"></th>
 					<td style="width: 45%">
-						<?php echo Form::select('limit_event', array('created_at' => __('tinyissue.limits_event_createdAt'),'updated_at' => __('tinyissue.limits_event_updatedAt'),'closed_at'  => __('tinyissue.limits_event_closedAt')), Input::get('limit_event', '')); ?>
+						<?php echo Form::select('limit_event', array('created_at' => __('tinyissue.limits_event_createdat'),'updated_at' => __('tinyissue.limits_event_updatedAt'),'closed_at'  => __('tinyissue.limits_event_closedAt')), Input::get('limit_event', '')); ?>
 						<?php echo Form::select('limit_period',array('' => "", 'week' 	=> __('tinyissue.limits_period_week'),'month' 	=> __('tinyissue.limits_period_month'),'months' => __('tinyissue.limits_period_months')), Input::get('limit_period', ''),array("onchange"=>"CalculonsDates(this.value);" ) ); ?>
 					</td>
 				</tr>

@@ -1,6 +1,10 @@
 <?php
 //Définition des variables communes à tous les rapports
-$rappLng = require_once( (file_exists("application/language/".Auth::user()->language."/reports.php")) ? "application/language/".Auth::user()->language."/reports.php" : "application/language/en/reports.php"); 
+$rappLng = require ("application/language/en/reports.php"); 
+if ( file_exists("application/language/".Auth::user()->language."/reports.php")) {
+	$rappMaLng = require ("application/language/".Auth::user()->language."/reports.php");
+	$rappLng = array_merge($rappLng, $rappMaLng);
+} 
 $compte = 0;
 $colorStatus = array(
 	0 => array(220,220,220),
@@ -74,6 +78,5 @@ foreach($results as $result) {
 	if (isset($PosiX['special1']) && isset($result->special1)) { $pdf->Text($PosiX['special1'], ($pdf->GetY())-1,  $result->special1); }
 	if (isset($PosiX['special2']) && isset($result->special2)) { $pdf->Text($PosiX['special2'], ($pdf->GetY())-1,  $result->special2); }
 	if (isset($PosiX['special3']) && isset($result->special3)) { $pdf->Text($PosiX['special3'], ($pdf->GetY())-1,  $result->special3); }
-	//$pdf->Text(150, ($pdf->GetY())-1, (($result->status == 1) ? '' : substr($result->updated_at,	0, 10)));
 	if (++$compte >= 20) { EnTete ($pdf, $colonnes, $untel,$rappLng); $compte = 0;}
 }
