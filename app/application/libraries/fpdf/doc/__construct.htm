@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>__construct</title>
+<link type="text/css" rel="stylesheet" href="../fpdf.css">
+</head>
+<body>
+<h1>__construct</h1>
+<code>__construct([<b>string</b> orientation [, <b>string</b> unit [, <b>mixed</b> size]]])</code>
+<h2>Description</h2>
+Il s'agit du constructeur de la classe. Il permet de fixer le format des pages, leur
+orientation par défaut ainsi que l'unité de mesure utilisée dans toutes les méthodes (sauf
+pour les tailles de police).
+<h2>Paramètres</h2>
+<dl class="param">
+<dt><code>orientation</code></dt>
+<dd>
+Orientation des pages par défaut. Les valeurs possibles sont (indépendamment de la casse) :
+<ul>
+<li><code>P</code> ou <code>Portrait</code></li>
+<li><code>L</code> ou <code>Landscape</code></li>
+</ul>
+La valeur par défaut est <code>P</code>.
+</dd>
+<dt><code>unit</code></dt>
+<dd>
+Unité de mesure utilisateur. Les valeurs possibles sont :
+<ul>
+<li><code>pt</code> : point</li>
+<li><code>mm</code> : millimètre</li>
+<li><code>cm</code> : centimètre</li>
+<li><code>in</code> : pouce</li>
+</ul>
+Un point est égal à 1/72ème de pouce, c'est-à-dire environ 0,35 millimètre. C'est une unité
+très courante en typographie; les tailles de police sont exprimées dans cette unité.
+<br>
+Un pouce vaut 2,54 centimètres.
+<br>
+<br>
+La valeur par défaut est <code>mm</code>.
+</dd>
+<dt><code>size</code></dt>
+<dd>
+Le format utilisé pour les pages. Il peut s'agir d'une des valeurs ci-dessous (indépendamment
+de la casse) :
+<ul>
+<li><code>A3</code></li>
+<li><code>A4</code></li>
+<li><code>A5</code></li>
+<li><code>Letter</code></li>
+<li><code>Legal</code></li>
+</ul>
+ou bien d'un tableau contenant la largeur et la hauteur (exprimées dans l'unité donnée par
+<code>unit</code>).<br>
+<br>
+La valeur par défaut est <code>A4</code>.
+</dd>
+</dl>
+<h2>Exemple</h2>
+Exemple avec un format personnalisé de 100x150 mm :
+<div class="doc-source">
+<pre><code>$pdf = new FPDF('P','mm',array(100,150));</code></pre>
+</div>
+<hr style="margin-top:1.5em">
+<div style="text-align:center"><a href="index.htm">Index</a></div>
+</body>
+</html>

@@ -98,6 +98,13 @@ h4 span{
 	color: #999;
 }
 
+h4 a {
+	font-size: 160%;
+	color: #000;
+	text-align: right;
+	width: 100%;
+}
+
 code{
 	border: 1px solid rgb(204, 204, 204);
 	padding: 3px;
@@ -353,6 +360,12 @@ div.adminListe {
 	font-weight: normal;
 }
 
+div.stat_form { 
+	background-color: #ededed;
+	padding-top:5px; 
+	padding-bottom:5px; 
+	width: 100%;
+}
 
 div.stat {
 	color: #FFF;
@@ -384,6 +397,14 @@ div.stat {
 
 .stat_data:hover {
 	color: #000;
+	box-shadow: 5px 5px 15px grey;
+}
+
+.stat_data:active {
+	border-color: black;
+	border-width: 4px;
+	border-style: solid;
+	box-shadow: 5px 5px 5px black;
 }
 
 .stat_cnt {

@@ -21,7 +21,7 @@ class Projects_Controller extends Base_Controller {
 		return $this->layout->with('active', 'projects')->nest('content', 'projects.new');
 	}
 
-	public function get_reports() {
+	public function get_reports($RapProduit = '') {
 //		return $this->layout->with('active', 'projects')->nest('content', 'projects.reports');
 		$status = Input::get('status', 1);
 		$projects_active = Project\User::active_projects(true);
@@ -36,80 +36,30 @@ class Projects_Controller extends Base_Controller {
 			'projects_inactive' =>  (int) count($projects_inactive),
 			'projects_total' =>  (int) count($projects_active) + count($projects_inactive),
 			'tags' => (int) count($tags),  	
-			'users' => (int) count($users),
+			'users' => $users,
 			'issues_active' =>  (int) count($issues_active),
 			'issues_inactive' =>  (int) count($issues_inactive),
-			'issues_total' =>  (int) count($issues_active) + count($issues_inactive)
+			'issues_total' =>  (int) count($issues_active) + count($issues_inactive),
+			'Rapport_Prod' => $RapProduit
 		));
 
 	}
 
 	public function post_reports() {
-		if ($_POST["Etape"] == 'Activation') {
-			$fileConfig = fopen('vendor/Reports/config.php', "r");
-			while ($UneLigne = fgets($fileConfig)) {
-				$Ligne[] = $UneLigne;
-			}
-			$Ligne[1] = '$RepInstalled = '.$_POST["Installed"].';
-';
-			$fileConfig = fopen('vendor/Reports/config.php', 'w');
-			fwrite($fileConfig, implode("", $Ligne));
-			fclose($fileConfig);
-		}
-		if ($_POST["Etape"] == 'Definition') {
-			//Fichier de configuration de Report_bugs
-			$ConfigDatabase = Config::get('database.connections.mysql');
-			$configCont  = "<?php \n";
-			$configCont .= "\$db_host = '".$ConfigDatabase["host"]."';\n";
-			$configCont .= "\$db_user = '".$ConfigDatabase["username"]."';\n";
-			$configCont .= "\$db_pass = '".$ConfigDatabase["password"]."';\n"; 
-			$configCont .= "\$db_name = '".$ConfigDatabase["database"]."';\n"; 
-			$configCont .= "\$language = '".$_POST["language"]."';\n"; 
-			$configCont .= "\$BugsDir = 'http://".$_SERVER["SERVER_ADDR"].substr($_SERVER["SCRIPT_FILENAME"], strlen($_SERVER["DOCUMENT_ROOT"]))."';\n"; 
-			$configCont .= "\n"; 
-			$configCont .= "\$conn = new mysqli(\$db_host, \$db_user, \$db_pass, \$db_name);\n";
-			$configCont .= "\n"; 
-			$configCont .= "if (\$conn->connect_error) { \n "; 
-			$configCont .= "\tdie('Connection failed: ' . \$conn->connect_error);\n"; 
-			$configCont .= "}\n\n"; 
-			$configCont .= "?>";
-	
-			$fileConfig = fopen('vendor/Reports/BugsRepConfig.php', 'w');
-			fwrite($fileConfig, $configCont);
-			fclose($fileConfig);
-			
-			//Comparaison du serveur de destination et du serveur d'origine
-			$comparable = "false";
-			$ServOrig = "http://".$_SERVER["SERVER_ADDR"];
-			$ServOrigLen = strlen($ServOrig);
-			$ServOrigs = "https://".$_SERVER["SERVER_ADDR"];
-			$ServOrigsLen = strlen($ServOrig);
-			if ( substr($_POST["Path"], 0, $ServOrigLen ) == $ServOrig  ) { $comparable = "true";  $Chemin = substr($_POST["Path"], $ServOrigLen +1 ); } 
-			if ( substr($_POST["Path"], 0, $ServOrigsLen) == $ServOrigs ) { $comparable = "true";  $Chemin = substr($_POST["Path"], $ServOrigsLen +1); }
-			if (!file_exists($_SERVER["DOCUMENT_ROOT"].DIRECTORY_SEPARATOR.@$Chemin)) { $comparable = "false"; }
-	
-			//Copie du fichier BugsRepConfig.php
-			if ($comparable == "true") {
-				if (copy(substr($_SERVER["SCRIPT_FILENAME"], 0, -9).'app/vendor/Reports/BugsRepConfig.php', $_SERVER["DOCUMENT_ROOT"].DIRECTORY_SEPARATOR.$Chemin."BugsRepConfig.php" )) {
-					//La copie du fichier a fonctionné
-				} else {
-					$comparable = "false";
-				}
-			}
-	
-	
-		//Writing the Reports configuration usefull to Bugs into the config.app.php file (Bugs' config file)
-		$configCont = "<?php
-\$RepInstalled = ".$comparable.";
-\$ReportsConfig = array('".$_POST["Path"]."','".$_POST["language"]."');
-?>
-";
-			$fileConfig = fopen('vendor/Reports/config.php', 'w');
-			fwrite($fileConfig, $configCont);
-			fclose($fileConfig);
-		}
-	
-		return Redirect::to('projects/reports');
+		require_once("../app/application/libraries/fpdf/fpdf.php");
+		$pdf = new FPDF("P", "mm", "Letter", true, 'UTF-8', false);
+		$pdf->SetMargins(10, 1, 10);
+		$pdf->SetAuthor("Patrick Allaire, ptre", true);
+		$pdf->SetCreator('Voici une Info à venir', true);
+		$pdf->SetTitle("BUGS report", true);
+		$pdf->SetSubject("Voici une info à venir");
+		$pdf->SetKeywords('BUGS tickets report rapport');
+		$pdf->SetFont("Times", "", 12);
+		$pdf->SetTextColor(0,0,0);
+		include ("../app/application/models/reports/index.php");
+
+		$pdf->output("../app/storage/reports/".$_POST["RapType"]."_".date("YmdHis").".pdf", "F");
+		return $this->get_reports("../app/storage/reports/".$_POST["RapType"]."_".date("YmdHis").".pdf");
 	}
 
 	public function post_new() {
@@ -122,6 +72,9 @@ class Projects_Controller extends Base_Controller {
 		return Redirect::to('projects/new')
 			->with_errors($create['errors'])
 			->with('notice-error', __('tinyissue.we_have_some_errors'));
+	}
+	
+	private function frontPage() {
 	}
 
 }
