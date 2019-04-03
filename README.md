@@ -40,7 +40,7 @@ Then, push you modification throw a new branch. NEVER push on master.
 
 # Changelog
 - v.1.6 : February 2019 
-	- correction file 1h: reports are now totally integrated to BUGS which produces pdf files
+	- correction file 1j: reports are now totally integrated to BUGS which produces pdf files
 								 3 avril 2019
 	- correction file 1i: update system now also updates the config file
 								 23 mars 2019
