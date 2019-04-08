@@ -46,9 +46,6 @@
 				if (substr($wysiwyg['BasePage'], -3) == 'php') { include $wysiwyg['BasePage']; }
 			}
 			$RepInstalled = false;
-//			if (file_exists("vendor/Reports/config.php")) { 
-//				include_once "vendor/Reports/config.php"; 
-//			}
 		?>
 	</head>
 <body>
@@ -72,7 +69,7 @@
 <!-- 
 				<li><a href="<?php echo ($RepInstalled) ? $ReportsConfig[0] : URL::to('projects/reports'); ?>" target="<?php echo ($RepInstalled) ? '_blank' : ''; ?>"><?php echo __('tinyissue.report');?></a></li>
  -->
-				<li><a href="<?php echo URL::to('projects/reports'); ?>" "><?php echo __('tinyissue.report');?></a></li>
+				<li class="reports <?php echo $active == 'repprts' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects/reports'); ?>" "><?php echo __('tinyissue.report');?></a></li>
  			</ul>
 
 			<ul class="nav-right">

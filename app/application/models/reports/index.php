@@ -42,6 +42,25 @@ function EnTete ($pdf, $colonnes, $untel, $rappLng) {
 
 //Selon le type de rapport demandé
 include_once "application/models/reports/".$_POST["RapType"].".php";
+
+//Ajustement de la largeur des colonnes en fonction du papier utilisé
+$Ajusteur = 1;		//216mm x 279mm (Letter)
+$NbLignes = 20;	//216mm x 279mm (Letter)
+switch ($_POST["Papier"]) {
+	case "A4":
+		$Ajusteur = 210/216;	// 210mm
+		$NbLignes =	21;		// 297mm
+		break;
+	case "B4":
+		$Ajusteur = 250/216;	//250mm
+		$NbLignes = 27;		// 353mm
+		break;
+	case "Legal":
+		$NbLignes =	27;		// 356 mm 
+}
+for ($x=0; $x<count($colonnes); $x++) {
+	$colonnes[$x] = $colonnes[$x] * $Ajusteur;
+}
 ////Definition de la requête, section du filtrage et du tri
 if (trim(@$_POST["DteInit"]) != '' ) { $query .= $etOU." ".$ChampDTE." >= '".$_POST["DteInit"]."' "; $etOU = " AND ";}
 if (trim(@$_POST["DteEnds"]) != '' ) { $query .= $etOU." ".$ChampDTE." <= '".$_POST["DteEnds"]."' "; $etOU = " AND ";}
@@ -78,5 +97,5 @@ foreach($results as $result) {
 	if (isset($PosiX['special1']) && isset($result->special1)) { $pdf->Text($PosiX['special1'], ($pdf->GetY())-1,  $result->special1); }
 	if (isset($PosiX['special2']) && isset($result->special2)) { $pdf->Text($PosiX['special2'], ($pdf->GetY())-1,  $result->special2); }
 	if (isset($PosiX['special3']) && isset($result->special3)) { $pdf->Text($PosiX['special3'], ($pdf->GetY())-1,  $result->special3); }
-	if (++$compte >= 20) { EnTete ($pdf, $colonnes, $untel,$rappLng); $compte = 0;}
+	if (++$compte >= $NbLignes) { EnTete ($pdf, $colonnes, $untel,$rappLng); $compte = 0;}
 }

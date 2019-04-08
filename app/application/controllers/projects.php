@@ -47,7 +47,7 @@ class Projects_Controller extends Base_Controller {
 
 	public function post_reports() {
 		require_once("../app/application/libraries/fpdf/fpdf.php");
-		$pdf = new FPDF("P", "mm", "Letter", true, 'UTF-8', false);
+		$pdf = new FPDF("P", "mm", ucfirst($_POST["Papier"]), true, 'UTF-8', false);
 		$pdf->SetMargins(10, 1, 10);
 		$pdf->SetAuthor("Patrick Allaire, ptre", true);
 		$pdf->SetCreator('Patrick Allaire, 2019; pour BUGS', true);

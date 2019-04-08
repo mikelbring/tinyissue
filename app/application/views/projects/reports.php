@@ -25,10 +25,12 @@ if(@$Rapport_Prod != '') {
 
 <div class="stat_form">
 <form action="reports?type=pdf" method="POST" id="form_reports">
-<b><?php echo __('tinyissue.reports_Filter');?> : </b>
-<?php echo __('tinyissue.reports_dteinit');?> : <input type="date" name="DteInit" id="input_DteInit" />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<?php echo __('tinyissue.reports_dteends');?> : <input type="date" name="DteEnds" id="input_DteEnds" />
+<b><?php echo __('tinyissue.reports_Filter');?> : </b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<?php echo __('tinyissue.reports_dteinit');?> : <input type="date" name="DteInit" id="input_DteInit" <?php echo ((isset($_POST["DteInit"])) ? 'value="'.$_POST["DteInit"].'"' : '' ); ?> />
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<?php echo __('tinyissue.reports_dteends');?> : <input type="date" name="DteEnds" id="input_DteEnds" <?php echo ((isset($_POST["DteEnds"])) ? 'value="'.$_POST["DteEnds"].'"' : '' ); ?> />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <input type="hidden" name="RapType" id="input_RapType" />
 <input type="hidden" name="Couleur" id="input_Couleur" />
@@ -36,9 +38,15 @@ if(@$Rapport_Prod != '') {
 <option value="0"><?php echo __('tinyissue.reports_allusers');?></option>
 <?php 
 	foreach($users as $user) {
-		if ($user->firstname !='admin' && $user->lastname != 'admin' ) { echo '<option value="'.$user->id.'">'.$user->firstname.' '.$user->lastname.'</option>'; }
+		if ($user->firstname !='admin' && $user->lastname != 'admin' ) { echo '<option value="'.$user->id.'" '.((@$_POST["FilterUser"] == $user->id) ? 'selected="selected"' : '' ).'>'.$user->firstname.' '.$user->lastname.'</option>'; }
 	} 
 ?>
+</select>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<select name="Papier" id="select_papier">
+<option value="Letter" 	<?php echo (@$_POST["Papier"] == 'Letter') ? 'selected="selected"' : '';  ?>	>Lettre</option>
+<option value="A4"		<?php echo (@$_POST["Papier"] == 'A4') 	 ? 'selected="selected"' : '';  ?>	>A4</option>
+<option value="Legal"	<?php echo (@$_POST["Papier"] == 'Legal')  ? 'selected="selected"' : '';  ?>	>Legal</option>
 </select>
 </form>
 </div>
