@@ -522,6 +522,9 @@ div.stat {
 #header .nav li.projects a{
 	background: url('../images/layout/icon-projects_inactive.png') no-repeat 0 0;
 }
+#header .nav li.reportss a{
+	background: url('../images/layout/icon-reports_inactive.png') no-repeat 0 0;
+}
 #header .nav li.issues a{
 	background: url('../images/layout/icon-issues_inactive.png') no-repeat 0 0;
 }
@@ -548,6 +551,10 @@ div.stat {
 #header .nav li.projects a:hover,
 #header .nav li.projects.active a{
 	background: url('../images/layout/icon-projects.png') no-repeat 0 0;
+}
+#header .nav li.reports a:hover,
+#header .nav li.reports.active a{
+	background: url('../images/layout/icon-reports.png') no-repeat 0 0;
 }
 #header .nav li.settings.active a,
 #header .nav li.settings a:hover{

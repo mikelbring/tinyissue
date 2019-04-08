@@ -63,7 +63,7 @@ class Comment extends  \Eloquent {
 		\DB::table('users_todos')->where('issue_id', '=', $issue->id)->update(array('status' => (($input['Pourcentage'] > $config_app['Percent'][3]) ? 3: 2), 'weight' => $input['Pourcentage'], 'updated_at'=>date("Y-m-d H:m:s")));
 
 		/* Update the status of this issue according to its percentage done;  */
-		\DB::table('projects_issues')->where('id', '=', $issue->id)->update(array('closed_by' => (($input['Pourcentage'] == 100 ) ? \Auth::user()->id : NULL), 'status' => (($input['Pourcentage'] == 100 )? 0 : 1),'status' => (($input['Pourcentage'] == 100 )? 0 : 1)));
+		\DB::table('projects_issues')->where('id', '=', $issue->id)->update(array('closed_by' => (($input['Pourcentage'] == 100 ) ? \Auth::user()->id : NULL), 'status' => (($input['Pourcentage'] == 100 )? 0 : $issue->status)));
 
 		/*Update tags attached to this issue */
 		$MesTags = explode(",", $input["MesTags"]);

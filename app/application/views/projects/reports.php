@@ -25,7 +25,9 @@ if(@$Rapport_Prod != '') {
 
 <div class="stat_form">
 <form action="reports?type=pdf" method="POST" id="form_reports">
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <b><?php echo __('tinyissue.reports_Filter');?> : </b>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <?php echo __('tinyissue.reports_dteinit');?> : <input type="date" name="DteInit" id="input_DteInit" <?php echo ((isset($_POST["DteInit"])) ? 'value="'.$_POST["DteInit"].'"' : '' ); ?> />
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <?php echo __('tinyissue.reports_dteends');?> : <input type="date" name="DteEnds" id="input_DteEnds" <?php echo ((isset($_POST["DteEnds"])) ? 'value="'.$_POST["DteEnds"].'"' : '' ); ?> />
@@ -40,6 +42,7 @@ if(@$Rapport_Prod != '') {
 	} 
 ?>
 </select>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <select name="Papier" id="select_papier">
 <option value="Letter" 	<?php echo (@$_POST["Papier"] == 'Letter') ? 'selected="selected"' : '';  ?>	>Lettre</option>
 <option value="A4"		<?php echo (@$_POST["Papier"] == 'A4') 	 ? 'selected="selected"' : '';  ?>	>A4</option>
