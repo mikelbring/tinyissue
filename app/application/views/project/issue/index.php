@@ -43,8 +43,8 @@
 	?>
 	&nbsp;&nbsp;&nbsp;
 	<?php
+		$IssueTags = array();
 		if(!empty($issue->tags)) {
-			$IssueTags = array();
 			foreach($issue->tags()->order_by('tag', 'ASC')->get() as $tag) {
 			echo '<label class="label"' . ($tag->bgcolor ? ' style="background: ' . $tag->bgcolor . '"' : '') . '>' . $tag->tag . '</label>&nbsp;';
 			$IssueTags[] = $tag->tag;
