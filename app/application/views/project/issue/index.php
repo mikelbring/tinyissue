@@ -40,11 +40,9 @@
 		if ($DurRelat < 100) { echo '<div style="position: relative; top:-40px; left: '.(200 + ($DurRelat*$SizeX)).'px; margin-bottom: -30px; background-color: gray; color:white; width: '.($SizeXtot-($DurRelat*$SizeX)).'px; height: 20px; text-align: right; line-height:20px;" />'.$issue->duration.'</div>'; }
 		echo '<br clear="all" />';
 
-	?>
-	&nbsp;&nbsp;&nbsp;
-	<?php
+		echo '&nbsp;&nbsp;&nbsp;';
+		$IssueTags = array();
 		if(!empty($issue->tags)) {
-			$IssueTags = array();
 			foreach($issue->tags()->order_by('tag', 'ASC')->get() as $tag) {
 			echo '<label class="label"' . ($tag->bgcolor ? ' style="background: ' . $tag->bgcolor . '"' : '') . '>' . $tag->tag . '</label>&nbsp;';
 			$IssueTags[] = $tag->tag;
