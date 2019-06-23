@@ -1,11 +1,17 @@
+<?php 
+$config_app = require path('public') . 'config.app.php';  
+if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = array("black","Orchid","Cyan","Lime","orange","red"); }
+?>
 <h3>
 	<a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue"><?php echo __('tinyissue.new_issue'); ?></a>
 
+	<span style="color: <?php echo $config_app['PriorityColors'][$issue->status]; ?>; font-size: 200%;">&#9899;
 	<?php if(Auth::user()->permission('issue-modify')): ?>
-	<a href="<?php echo $issue->to('edit'); ?>" class="edit-issue"><?php echo $issue->title; ?></a>
+	<a href="<?php echo $issue->to('edit'); ?>" class="edit-issue" style="font-size: 80%; font-weight: bold;"><?php echo $issue->title; ?></a>
 	<?php else: ?>
-	<a href="<?php echo $issue->to(); ?>"><?php echo $issue->title; ?></a>
+	<a href="<?php echo $issue->to(); ?>" style="font-size: 80%; font-weight: bold;"><?php echo $issue->title; ?></a>
 	<?php endif; ?>
+	</span>	
 
 	<span><?php echo __('tinyissue.on_project'); ?> <a href="<?php echo $project->to(); ?>"><?php echo $project->name; ?></a></span>
 </h3>
@@ -40,9 +46,6 @@
 		if ($DurRelat < 100) { echo '<div style="position: relative; top:-40px; left: '.(200 + ($DurRelat*$SizeX)).'px; margin-bottom: -30px; background-color: gray; color:white; width: '.($SizeXtot-($DurRelat*$SizeX)).'px; height: 20px; text-align: right; line-height:20px;" />'.$issue->duration.'</div>'; }
 		echo '<br clear="all" />';
 
-	?>
-	&nbsp;&nbsp;&nbsp;
-	<?php
 		$IssueTags = array();
 		if(!empty($issue->tags)) {
 			foreach($issue->tags()->order_by('tag', 'ASC')->get() as $tag) {
@@ -68,11 +71,11 @@
 
 				<ul class="attachments">
 					<?php foreach($issue->attachments()->get() as $attachment): ?>
-					<li>Baboom
+					<li>
 						<?php if(in_array($attachment->fileextension, Config::get('application.image_extensions'))): ?>
-							<a href="<?php echo URL::base() . Config::get('application.attachment_path') . '/' . rawurlencode($attachment->filename); ?>" title="<?php echo $attachment->filename; ?>"><img src="<?php echo URL::base() . Config::get('application.attachment_path') . $project->id . '/' . $attachment->upload_token . '/' . $attachment->filename; ?>" style="max-width: 100px;"  alt="<?php echo $attachment->filename; ?>" /></a>
+							<a href="<?php echo \URL::home() . Config::get('application.attachment_path') . '/' . rawurlencode($attachment->filename); ?>" title="<?php echo $attachment->filename; ?>"><img src="<?php echo \URL::home() . Config::get('application.attachment_path') . $project->id . '/' . $attachment->upload_token . '/' . $attachment->filename; ?>" style="max-width: 100px;"  alt="<?php echo $attachment->filename; ?>" /></a>
 						<?php else: ?>
-							<a href="<?php echo URL::base() . Config::get('application.attachment_path') . '/' . rawurlencode($attachment->filename); ?>" title="<?php echo $attachment->filename; ?>"><?php echo $attachment->filename; ?></a>
+							<a href="<?php echo \URL::home() . Config::get('application.attachment_path') . '/' . rawurlencode($attachment->filename); ?>" title="<?php echo $attachment->filename; ?>"><?php echo \URL::home().$attachment->filename; ?></a>
 						<?php endif; ?>
 					</li>
 					<?php endforeach; ?>
@@ -102,13 +105,13 @@
 						<?php echo Project\Issue::current()->assigned->firstname; ?>
 						<?php echo Project\Issue::current()->assigned->lastname; ?>
 						&nbsp;&nbsp;
-						<img src="<?php echo URL::base();?>/app/assets/images/layout/dropdown-arrow.png" height="10" />
+						<img src="<?php echo \URL::home();?>/app/assets/images/layout/dropdown-arrow.png" height="10" />
 						</span>
 					<?php else: ?>
 						<span id="span_currentlyAssigned_name">
 						<?php echo __('tinyissue.no_one'); ?>
 						&nbsp;&nbsp;
-						<img src="<?php echo URL::base();?>/app/assets/images/layout/dropdown-arrow.png" height="10" />
+						<img src="<?php echo \URL::home();?>/app/assets/images/layout/dropdown-arrow.png" height="10" />
 						</span>
 					<?php endif; ?>
 
