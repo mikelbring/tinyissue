@@ -1,5 +1,6 @@
 <?php
 return array(
+	'choisis'=>'Veuillez choisir',
 	'issues_active' => array('Billets actifs', 'Projet', 'Billet', 'Responsable', 'Amorcé', 'À jour', 'C'),
 	'issues_inactive' => array('Billets fermés', 'Projet', 'Billet', 'Responsable', 'Amorcé', 'À jour', 'C'),
 	'issues_progress' => array('Progrès des travaux sur les billets actifs', 'Billet', 'Responsable', 'À jour', 'Durée', '% fait', 'Détails'),
@@ -17,6 +18,27 @@ return array(
 	'progress' => 'Progrès',
 	'tags' => 'Étiquettes',
 	'active' => 'Actifs',
-	'inactive' => 'Inactifs'
+	'inactive' => 'Inactifs',
+	'created_by' => 'Créateur',
+	'closed_by' => 'Fermeur',
+	'updated_by' => 'Dern. modificateur',
+	'assigned_to' => 'Responsable',
+	'project_id' => 'Projet',
+	'status' => 'État',
+	'weight' => 'Progression',
+	'title' => 'Titre',
+	'body' => 'Contenu',
+	'created_at' => 'Création',
+	'customized' => 'Vos options',
+	'duration' => 'Durée',
+	'updated_at' => 'Dern. mise à jour',
+	'updated_by' => 'Dern. commentateur',
+	'closed_at' => 'Fermeture',
+	'between' => 'Entre le',
+	'anddate' => ' et le ',
+	'btnSubmit' => 'Soumettre',
+	'triASC' => 'Croissant',
+	'triDESC' => 'Décroissant',
+	'trions' => 'Trier selon'
 );
 
