@@ -1,5 +1,6 @@
 <?php
 return array(
+	'choisis'=>'Please chose',
 	'issues_active' => array('Active tickets', 'Project', 'Issue', 'Responsible', 'Initialized', 'Updated', 'C'),
 	'issues_inactive' => array('Inactive or closed tickets', 'Project', 'Issue', 'Responsible', 'Initialized', 'Updated', 'C'),
 	'issues_progress' => array('Work progress on active tickets', 'Issue', 'Responsible', 'Updated', 'Delay', '% done', 'Comments'),
@@ -17,6 +18,27 @@ return array(
 	'progress' => 'Progress',
 	'tags' => 'Tags',
 	'active' => 'Active',
-	'inactive' => 'Inactive'
+	'inactive' => 'Inactive',
+	'created_by' => 'Creator',
+	'closed_by' => 'User who closed',
+	'updated_by' => 'Last user who updated',
+	'assigned_to' => 'Assigned to',
+	'project_id' => 'Project',
+	'status' => 'Status',
+	'weight' => 'Progression',
+	'title' => 'Title',
+	'body' => 'Content',
+	'created_at' => 'Creation date',
+	'customized' => 'Customized',
+	'duration' => 'Duration',
+	'updated_at' => 'Last update',
+	'updated_by' => 'Last updater',
+	'closed_at' => 'Closed date',
+	'between' => 'Between',
+	'anddate' => ' and ',
+	'btnSubmit' => 'Submit',
+	'triASC' => 'Ascending',
+	'triDESC' => 'Descending',
+	'trions' => 'Trier selon'
 );
 

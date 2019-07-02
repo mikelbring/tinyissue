@@ -432,6 +432,10 @@ div.stat {
 	margin-right: 10px;
 }
 
+.stat_custom {
+	background-color: #cf55c3;
+}
+
 .stat_users {
 	background-color: #ebca64;
 }
@@ -446,6 +450,10 @@ div.stat {
 
 .stat_tags {
 	background-color: #d15151;
+}
+
+.stat_custom_data {
+	background-color: #cf55c3;
 }
 
 .stat_users_data {

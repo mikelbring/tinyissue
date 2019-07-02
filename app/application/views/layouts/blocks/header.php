@@ -32,7 +32,10 @@
 		<?php echo Asset::styles(); ?>
 		<?php echo Asset::scripts(); ?>
 		<?php
-			if (date("Y-m-d", fileatime ("../install/get_updates_list")) != date("Y-m-d")) {
+//Patrick, il faudra retirer cette protection temporaire
+//Il faut pourtant trouver un moyen de connaître l'état « En ligne » ou « Hors ligne » de l'utilisateur.
+$EnLigne = false;
+			if (date("Y-m-d", fileatime ("../install/get_updates_list")) != date("Y-m-d") && $EnLigne) {
 				include "../app/application/libraries/checkVersion.php";
 				$Etat =  ($verActu == $verNum) ? '' :  $styleAdmin = 'class=".blink_me" style="color: yellow; text-decoration: underline wavy red; " ';
 				file_put_contents ("../install/get_updates_list", $Etat);

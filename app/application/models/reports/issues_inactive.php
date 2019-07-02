@@ -1,5 +1,5 @@
 <?php
-	$colonnes = array(30,70, 40, 20, 18,8);
+	$colonnes = array(30, 70, 40, 20, 18, 8);
 	$colorStatus[0] = array(170,170,170);
 	$colorStatus[1] = array(215,215,225);
 	$ChampDTE = "TIK.created_at";
