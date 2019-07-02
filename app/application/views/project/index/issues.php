@@ -1,3 +1,7 @@
+<?php 
+$config_app = require path('public') . 'config.app.php';  
+if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = array("black","Orchid","Cyan","Lime","orange","red"); }
+?>
 <div class="blue-box">
 	<div class="inside-pad">
 		<div class="filter-and-sorting">
@@ -21,7 +25,7 @@
 				<tr>
 					<th style="width: 10%"><?php echo __('tinyissue.sort_by'); ?></th>
 					<td style="width: 35%">
-						<?php echo Form::select('sort_by', $sort_options, Input::get('sort_by', '')); ?>
+						<?php echo Form::select('sort_by', $sort_options, Input::get('sort_by', (Input::get('tag_id','') == 1) ? 'projects_issues.status' : 'projects_issues.updated_at')); ?>
 						<?php echo Form::select('sort_order', array('asc' => __('tinyissue.sort_asc'), 'desc' => __('tinyissue.sort_desc')), $sort_order); ?>
 						<input name="tag_id" value="<?php echo Input::get('tag_id', '1'); ?>" type="hidden" />
 					</td>
@@ -29,7 +33,7 @@
 						<?php echo __('tinyissue.limits'); ?><br />
 					</th>
 					<td style="width: 45%; font-weight: bold;">
-						<?php echo Form::select('limit_contrib', array( 'assigned_to' => __('tinyissue.limits_contrib_assignedTo'),'created_by'  => __('tinyissue.limits_contrib_createdBy'),'closed_by'   => __('tinyissue.limits_contrib_closedBy'),'updated_by'  => __('tinyissue.limits_contrib_updatedBy')), Input::get('limit_contrib', '')); ?>
+						<?php echo Form::select('limit_contrib', array( 'assigned_to' => __('tinyissue.limits_contrib_assignedto'),'created_by'  => __('tinyissue.limits_contrib_createdBy'),'closed_by'   => __('tinyissue.limits_contrib_closedby'),'updated_by'  => __('tinyissue.limits_contrib_updatedby')), Input::get('limit_contrib', '')); ?>
 						<?php echo Form::select('assigned_to', $assigned_users, Input::get('assigned_to', '')); ?>
 					</td>
 				</tr>
@@ -40,7 +44,7 @@
 					</td>
 					<th style="width: 10%"></th>
 					<td style="width: 45%">
-						<?php echo Form::select('limit_event', array('created_at' => __('tinyissue.limits_event_createdAt'),'updated_at' => __('tinyissue.limits_event_updatedAt'),'closed_at'  => __('tinyissue.limits_event_closedAt')), Input::get('limit_event', '')); ?>
+						<?php echo Form::select('limit_event', array('created_at' => __('tinyissue.limits_event_createdat'),'updated_at' => __('tinyissue.limits_event_updatedAt'),'closed_at'  => __('tinyissue.limits_event_closedAt')), Input::get('limit_event', '')); ?>
 						<?php echo Form::select('limit_period',array('' => "", 'week' 	=> __('tinyissue.limits_period_week'),'month' 	=> __('tinyissue.limits_period_month'),'months' => __('tinyissue.limits_period_months')), Input::get('limit_period', ''),array("onchange"=>"CalculonsDates(this.value);" ) ); ?>
 					</td>
 				</tr>
@@ -79,7 +83,7 @@
 				</div>
 				<?php endif; ?>
 
-				<a href="" class="id">#<?php echo $row->id; ?></a>
+				<a href="" class="id">#<?php echo $row->id; ?><?php if(@$_GET["tag_id"] ==1 ) { ?><br /><br /><span style="color: <?php echo $config_app['PriorityColors'][$row->status]; ?>; font-size: 200%;">&#9899;</span><?php } ?></span></a>
 				<div class="data">
 					<a href="<?php echo $row->to(); ?>"><?php echo $row->title; ?></a>
 					<div class="info">
@@ -103,7 +107,6 @@
 					</div>
 					<?php
 					if (@$_GET["tag_id"] == 1) {
-						$config_app = require path('public') . 'config.app.php';
 						echo '<br /><br />';
 						//Percentage of work done
 						$SizeXtot = 500;

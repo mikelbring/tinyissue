@@ -32,7 +32,10 @@
 		<?php echo Asset::styles(); ?>
 		<?php echo Asset::scripts(); ?>
 		<?php
-			if (date("Y-m-d", fileatime ("../install/get_updates_list")) != date("Y-m-d")) {
+//Patrick, il faudra retirer cette protection temporaire
+//Il faut pourtant trouver un moyen de connaître l'état « En ligne » ou « Hors ligne » de l'utilisateur.
+$EnLigne = false;
+			if (date("Y-m-d", fileatime ("../install/get_updates_list")) != date("Y-m-d") && $EnLigne) {
 				include "../app/application/libraries/checkVersion.php";
 				$Etat =  ($verActu == $verNum) ? '' :  $styleAdmin = 'class=".blink_me" style="color: yellow; text-decoration: underline wavy red; " ';
 				file_put_contents ("../install/get_updates_list", $Etat);
@@ -46,9 +49,6 @@
 				if (substr($wysiwyg['BasePage'], -3) == 'php') { include $wysiwyg['BasePage']; }
 			}
 			$RepInstalled = false;
-			if (file_exists("vendor/Reports/config.php")) { 
-				include_once "vendor/Reports/config.php"; 
-			}
 		?>
 	</head>
 <body>
@@ -69,7 +69,10 @@
 				<li class="issues <?php echo $active == 'issues' ? 'active' : ''; ?>"><a href="<?php echo URL::to('user/issues'); ?>"><?php echo __('tinyissue.your_issues');?></a></li>
 				<li class="todo <?php echo $active == 'todo' ? 'active' : ''; ?>"><a href="<?php echo URL::to('todo'); ?>"><?php echo __('tinyissue.your_todos');?></a></li>
 				<li class="projects <?php echo $active == 'projects' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects'); ?>"><?php echo __('tinyissue.projects');?></a></li>
+<!-- 
 				<li><a href="<?php echo ($RepInstalled) ? $ReportsConfig[0] : URL::to('projects/reports'); ?>" target="<?php echo ($RepInstalled) ? '_blank' : ''; ?>"><?php echo __('tinyissue.report');?></a></li>
+ -->
+				<li class="reports <?php echo $active == 'repprts' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects/reports'); ?>" "><?php echo __('tinyissue.report');?></a></li>
  			</ul>
 
 			<ul class="nav-right">

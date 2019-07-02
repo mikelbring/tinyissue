@@ -1,0 +1,4 @@
+<?php
+$RepInstalled = true;
+$ReportsConfig = array('http://127.0.0.1/MesSites/Developpement/Bugs_Rapports/','fr');
+?>
