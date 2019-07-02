@@ -256,6 +256,17 @@ class Query {
 	}
 
     
+	public function whereNull($column, $connector = 'AND', $bindings = '') {
+		//$binding values = '' or 'NOT'
+		$this->wheres[] = array('type' => 'where_raw', 'connector' => $connector, 'sql' => $column.' IS '.$bindings.' NULL');
+		return $this;
+	}
+
+	public function whereNotNull($column, $connector = 'AND') {
+		$this->whereNull($column, $connector, 'NOT');
+		return $this;
+	}
+
 	/**
 	 * Add an or where condition to the query.
 	 *

@@ -25,7 +25,7 @@ if (($venant == $valableAdmin  || $venant == $valableUpadte) && isset($_POST["Et
 	$updateEN = require_once("../app/application/language/en/update.php");
 	if (file_exists("../app/application/language/".Auth::user()->language."/update.php")) { 
 		$updateFR = require_once("../app/application/language/".Auth::user()->language."/update.php");
-		$MyLng = array_merge($EnLng, $MyLng);
+		$MyLng = array_merge($updateEN, $updateFR);
 	} else { $MyLng = $updateEN; } 
 
 	//Si une mise à jour a été laissée incomplète, nous reprendrons là où nous étions rendus en imposant Etape = 2
@@ -34,7 +34,7 @@ if (($venant == $valableAdmin  || $venant == $valableUpadte) && isset($_POST["Et
 	$Etape = intval($Etape);
 	
 	//En-tête d'étape
-	echo '<h3>'.$MyLng["Etape"].' '.$Etape.'</h3>';
+	echo '<h3>'.$MyLng["Etape"].' '.$Etape.' - '.$MyLng['Description_'.$Etape].'</h3>';
 	
 	//Peu importe l'étape, nous aurons besoin du formulaire
 	echo '<form action="" method="POST" id="agissons">';
@@ -57,8 +57,9 @@ if (($venant == $valableAdmin  || $venant == $valableUpadte) && isset($_POST["Et
 		echo '<input type="submit" value="'.$MyLng["Intro_5"].'" class="button	primary"/>';
 		
 	} else if ($Etape == 2) {
+		//consignes contenues dans update_xyz ... mise à jour de la base de données
 		$CoulFond = array("FFFFFF", "CCCCCC");
-		$hist = file_get_contents('../install/historique.txt');
+		$hist = file_exists('../install/historique.txt') ?  file_get_contents('../install/historique.txt') : '';
 		$prevSQL = explode(";", $hist);
 		$prevSQL = versionsSQL($prevSQL);
 		$rendu = 0;
@@ -67,7 +68,8 @@ if (($venant == $valableAdmin  || $venant == $valableUpadte) && isset($_POST["Et
 		//S'il y a des fichier update_xyz, c'est que la nouvelle mise à jour exige des modifications à la base de données
 		//Par souci de sécurité, nous imposons à l'usager de confirmer les étapes à franchir.
 		if (count($prevSQL) == 0) {
-			echo '<h3>'.$MyLng["updateData_1"].'</h3>';
+			echo '<h3>'.$MyLng["updateData_4"].'</h3>';
+			$MyLng['updateData_3'] = $MyLng['Intro_5'];
 		} else {
 			echo '<h3>'.$MyLng["updateData_2"].'s : </h3>';
 			foreach ($prevSQL as $fichier) {
@@ -93,31 +95,92 @@ if (($venant == $valableAdmin  || $venant == $valableUpadte) && isset($_POST["Et
 			}
 			echo '<br /><br />';
 			echo '<input type="hidden" name="prevSQL" value="'.implode(";",$prevSQL).'" />';
-			echo '<input type="submit" value="'.$MyLng['updateData_3'].'" class="button	primary"/>';
 		}
-		unlink('../install/historique.txt');
-		unlink('../install/config-setup.php');
+		echo '<input type="submit" value="'.$MyLng['updateData_3'].'" class="button	primary"/>';
+		if (file_exists('../install/historique.txt')) { unlink('../install/historique.txt'); }
+		if (file_exists('../install/config-setup.php')) { unlink('../install/config-setup.php'); }
 	} else if ($Etape == 3) {
-		$CoulFond = array("CCFFCC", "99CC99");
-		$ErroFond = array("FFCCCC", "CC9999");
-		$rendu = 0;
-		$renduFichier = 0;
-		require "../install/install.php";
-		$install = new install();
-		if ($install->check_connect()) {
-			$prevSQL = explode(";", $_POST["prevSQL"]);
-			foreach ($_POST["Commandes"] as $ind => $val) {
-				foreach ($val as $UneCommande) {
-					$Coul = (mysqli_query($GLOBALS["___mysqli_ston"], $UneCommande)) ? $CoulFond[$rendu] : $ErroFond[$rendu] ;
-					echo '<p style="background-color: #'.$Coul.'">';
-					echo $UneCommande;
-					echo '</p>';
-					$rendu = abs($rendu -1);
+		//Application de modifications demandées sur la base de données
+		if (isset($_POST["Commandes"])) {
+			$CoulFond = array("CCFFCC", "99CC99");
+			$ErroFond = array("FFCCCC", "CC9999");
+			$rendu = 0;
+			$renduFichier = 0;
+			require "../install/install.php";
+			$install = new install();
+			if ($install->check_connect()) {
+				$prevSQL = explode(";", $_POST["prevSQL"]);
+				foreach ($_POST["Commandes"] as $ind => $val) {
+					foreach ($val as $UneCommande) {
+						$Coul = (mysqli_query($GLOBALS["___mysqli_ston"], $UneCommande)) ? $CoulFond[$rendu] : $ErroFond[$rendu] ;
+						echo '<p style="background-color: #'.$Coul.'">';
+						echo $UneCommande;
+						echo '</p>';
+						$rendu = abs($rendu -1);
+					}
 				}
 			}
 			echo '<br /><br />';
 			echo '<h3><a href="../">'.$MyLng['ResultData_1'].'</a></h3>';
+			echo '<br /><br />';
 		}
+		//Comparaison des fichiers de préférences, en admettant que la mise à jour a apporté un nouveau fichier config.app.example.php
+		$NomFichier = "../config.app.php";
+		$MesPref = require $NomFichier;
+		$DefPref = require "../config.app.example.php";
+		$NeoPref = array_diff_key($DefPref, $MesPref);
+		if (count($NeoPref) == 0) {
+			echo $MyLng['updateData_5'];
+		} else {
+			//Sauvegarde du fichier original
+			$SavFichier = "config.app.".date("Ymd").".php";
+			copy ("../config.app.php", "../".$SavFichier);
+			
+			//Colligeons le rang des clefs
+			////Clefs de préférences activées par l'usager
+			$MesKeys = array_keys($MesPref);
+			////Clefs du fichier de configurations par défaut
+			$DefKeys = array_keys($DefPref);
+
+			//Lisons les deux fichiers en parallèle
+			$NeoContenu = "";
+			////Fichier de préférences de l'usager
+			$MonFichier = fopen("../config.app.php","r");
+			////Fichier de préférences par défaut
+			$DefFichier = fopen("../config.app.example.php","r");
+			////Boucle de lecture
+			while (!feof($DefFichier)) {
+				$DefLigne = fgets($DefFichier);
+				$MonLigne = fgets($MonFichier);
+				if ($MonLigne == $DefLigne) {																						//Les lignes sont identiques
+					$NeoContenu .= $MonLigne;
+				} elseif ( in_array( trim(substr($MonLigne, 0, strpos($MonLigne, "=>")-2)), $MesKeys) ) {		//Nous faisons ici face à une personnalisation à conserver
+					$NeoContenu .= $MonLigne;
+				} else {																													//De nouvelles lignes à ajouter
+					$NeoContenu .= $DefLigne; 
+					while ($DefLigne != $MonLigne && !feof($DefFichier)) {
+						$DefLigne = fgets($DefFichier);
+						$NeoContenu .= $DefLigne; 
+					}
+				}
+			}
+			fclose($DefFichier);
+			fclose($MonFichier);
+			
+			//Conservons le nouveau fichier de préférences  
+			$NeoFichier = fopen($NomFichier, "w");
+			fwrite($NeoFichier, $NeoContenu);
+			fclose($NeoFichier);
+			
+			//Avisons l'usager des résultats
+			echo $MyLng['ResultData_3a'].'.<br />';
+			echo $MyLng['ResultData_3b'].' : <b>'.$SavFichier.'</b><br />';
+			
+		}
+		echo '<br /><br />';
+		echo '<input type="submit" value="'.$MyLng['Intro_5'].'" class="button	primary"/>';
+	} else if ($Etape == 4) {
+		echo '<script>document.location.href="../administration";</script>';
 	}
 	
 	echo '<input type="hidden" name="Etape" value="'.++$Etape.'" />';

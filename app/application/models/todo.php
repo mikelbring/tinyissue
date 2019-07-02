@@ -11,12 +11,9 @@ class Todo extends Eloquent {
 		if (!$user_id) $user_id = Auth::user()->id;
     
     $todo = Todo::where('issue_id', '=', $issue_id)->where('user_id', '=', $user_id)->first();
-    if(empty($todo)) 
-    {
+    if(empty($todo)) {
       return FALSE;
-    }
-    else 
-    {
+    } else {
       return $todo;
     }
   }
@@ -24,35 +21,18 @@ class Todo extends Eloquent {
 	/**
 	 * Load all a user's todos, deleting any for issues that have been reassigned.
 	 */
-	public static function load_user_todos($user_id = 0)
-	{
-		$return = array();
-		if (!$user_id) $user_id = Auth::user()->id;
-		
-		$todos = Todo::where('user_id', '=', $user_id)->order_by('updated_at', 'DESC')->get();
-		foreach ($todos as $todo)
-		{
-			Todo::load_todo_extras($todo);
-      
-      // Close the todo if the issue has been closed.
-      if ($todo->issue_status == 0 && $todo->status > 0) 
-      {
-        $todo->status = 0;
-        Todo::update_todo($todo->issue_id, 0);
-      }
-    
-      // Remove the todo if the issue has been reassigned.
-      if ($todo->attributes['assigned_to'] == $user_id) 
-      {
-        $return[$todo->attributes['id']] = $todo->attributes;
-      }
-      else 
-      {
-        Todo::remove_todo($todo->issue_id);
-      }
-		}
-		
-		return $return;
+	public static function load_user_todos($zero = ">", $bas = 0, $haut = 100) {
+		$result = \DB::table('projects_issues')
+									->join('users_todos', 'users_todos.issue_id', '=', 'projects_issues.id')
+									->join('projects', 'projects.id', '=', 'projects_issues.project_id')
+									->where('assigned_to', '=', Auth::user()->id)
+									->where('users_todos.weight', '>=', $bas)
+									->where('users_todos.weight', '<', $haut)
+									->where('projects_issues.status', $zero, 0)
+									->order_by('projects_issues.status', 'DESC')
+									->order_by('projects_issues.updated_at', 'DESC')
+									->get(['projects_issues.id','projects_issues.status','projects_issues.title','users_todos.weight','projects.name', 'projects_issues.project_id']);
+ 		return $result;
 	}
   
 	/**
@@ -61,30 +41,24 @@ class Todo extends Eloquent {
 	* @param int       $task_id
 	* @return array
 	*/
-	public static function load_todo_extras(&$todo)
-	{
+	public static function load_todo_extras(&$todo) {
 		// We need the issue and project names for display, status and 
-    // assigned_to for validity.
+   	// assigned_to for validity.
 		$issue = Project\Issue::find($todo->issue_id);
-    if (!empty($issue)) 
-    {    
-      $todo->assigned_to  = $issue->attributes['assigned_to'];
-      $todo->issue_name   = $issue->attributes['title'];
-      $todo->issue_status = $issue->attributes['status'];
-      $todo->issue_link   = $issue->to();
-      
-      $project = Project::find($issue->attributes['project_id']);
-      $todo->project_name = $project->attributes['name'];
-      $todo->project_link = $project->to();
-    }
-    
-    // If issue has been deleted, force deletion of todo.
-    else 
-    {
-      $todo->assigned_to  = 0;
-      $todo->issue_status = 0;
-    }
-  }
+		if (!empty($issue)) {
+	      $todo->assigned_to  = $issue->attributes['assigned_to'];
+	      $todo->issue_name   = $issue->attributes['title'];
+	      $todo->issue_status = $issue->attributes['status'];
+	      $todo->issue_link   = $issue->to();
+	      
+	      $project = Project::find($issue->attributes['project_id']);
+	      $todo->project_name = $project->attributes['name'];
+	      $todo->project_link = $project->to();
+		} else {		// If issue has been deleted, force deletion of todo.
+	      $todo->assigned_to  = 0;
+	      $todo->issue_status = 0;
+		}
+	}
   
 	/**
 	* Add a new todo
@@ -93,14 +67,12 @@ class Todo extends Eloquent {
 	* @param int       $issue_id
 	* @return array
 	*/
-	public static function add_todo($issue_id = 0, $status = 1, $weight = 0)
-	{
+	public static function add_todo($issue_id = 0, $status = 3, $weight = 0) {
 		$user_id = Auth::user()->id;
 		
 		// Ensure user is assigned to issue.
 	    	$issue = Project\Issue::load_issue($issue_id);
-	    	if(empty($issue) || $issue->assigned_to !== $user_id)
-	    	{
+	    	if(empty($issue) || $issue->assigned_to !== $user_id) {
 		     return array(
 		     'success' => FALSE,
 		     'errors' => __('tinyissue.todos_err_add'),
@@ -109,8 +81,7 @@ class Todo extends Eloquent {
 		
 		// Ensure issue is not already a task.
 		$count = Todo::where('issue_id', '=', $issue_id)->where('user_id', '=', $user_id)->count();
-		if ($count > 0)
-	    	{
+		if ($count > 0) {
 			return array(
 			'success' => FALSE,
 			'errors' => __('tinyissue.todos_err_already'),
@@ -120,10 +91,10 @@ class Todo extends Eloquent {
 		$todo = new Todo;
 		$todo->user_id  = $user_id;
 		$todo->issue_id = $issue_id;
-		$todo->status   = 1;
+		$todo->status   = 3;
 		$todo->weight   = $weight;
 		$todo->created_at = date("Y-m-d H:m:s");
-    		$todo->save();
+    	$todo->save();
 
     return array(
       'success' => TRUE,

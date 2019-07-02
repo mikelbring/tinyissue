@@ -40,7 +40,17 @@ Then, push you modification throw a new branch. NEVER push on master.
 
 # Changelog
 - v.1.6 : February 2019 
+	- correction file 2a: reports are now totally integrated to BUGS which produces pdf files
+								 3 avril 2019
+	- correction file 1i: update system now also updates the config file
+								 23 mars 2019
+	- correction file 1h: Priority ( 1 - 5 ) to every issue ( 0 = closed )
+								 ckeditor appears on every textarea ( for new issue, for edit issue, for new or edit project)
+								 20 mars 2019
+	- correction file 1g: Perfect install system, logo BUGS during install
+								 8 mars 2019
 	- all what planned in [Nice changes to come](https://github.com/pixeline/bugs/projects) is now running good.
+								 
 - v.1.5.2b : 23 septembre 2018
 	- Wysyg text editor  ( you can install the one you like )
 	- sorting project's issues

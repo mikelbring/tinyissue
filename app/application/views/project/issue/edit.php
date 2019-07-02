@@ -47,6 +47,13 @@
 			</tr>
 			<?php if(Auth::user()->permission('issue-modify')): ?>
 			<tr>
+				<th><?php echo __('tinyissue.priority'); ?></th>
+				<td>
+					<?php echo Form::select('status', array(1=>__('tinyissue.priority_desc_1'),2=>__('tinyissue.priority_desc_2'),3=>__('tinyissue.priority_desc_3'),4=>__('tinyissue.priority_desc_4'),5=>__('tinyissue.priority_desc_5')), $issue->status); ?>
+				</td>
+			</tr>
+
+			<tr>
 				<th><?php echo __('tinyissue.assigned_to'); ?></th>
 				<td>
 					<?php echo Form::select('assigned_to', array(0 => '') + Project\User::dropdown($project->users()->get()), Input::old('asigned_to', $issue->assigned_to)); ?>
@@ -65,11 +72,27 @@
 
 </div>
 <script type="text/javascript">
+var d = new Date();
+var t = d.getTime();
+var AllTags = "";
+
+
+function AddTag (Quel,d) {
+	return true;
+}
+
 <?php
 	$wysiwyg = Config::get('application.editor');
 	if (trim(@$wysiwyg['directory']) != '') {
 		if (file_exists($wysiwyg['directory']."/Bugs_code/showeditor.js")) {
-			include_once $wysiwyg['directory']."/Bugs_code/showeditor.js"; 
+			include_once $wysiwyg['directory']."/Bugs_code/showeditor.js";
+			if ($wysiwyg['name'] == 'ckeditor') {
+				echo "
+				setTimeout(function() {
+					showckeditor ('body');
+				} , 567);
+				";
+			}
 		} 
 	} 
 ?>
