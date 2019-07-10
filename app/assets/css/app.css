@@ -609,12 +609,11 @@ div.stat {
 	padding: 0 18px;
 }
 .pad2{
-	position: absolute; 
-	right: 0;
+	display:inline-block; 
 	text-align:left; 
-	top: 30%; 
-	vertical-align: baseline; 
-	width: 50%;
+	top: 20%; 
+	vertical-align: top; 
+	width: 40%;
 }
 #sidebar h2{
 	font-size: 18px;
@@ -1258,3 +1257,52 @@ background-image: linear-gradient(to bottom, #292929 6%, #737273 100%);
     opacity: 0;
   }
 }
+
+
+@media only screen and (min-width: 300px) {
+	/* Telephone et tablettes - portrait: */
+
+	.nav-right {
+		background-color: #373f4d;
+	}
+}
+
+
+@media only screen and (min-width: 600px) {
+	/* Telephone et tablettes - portrait: */
+
+	.nav-right {
+		background-color: navajowhite;
+	}
+}
+
+@media only screen and (min-width: 768px) {
+	/* Écrans normaux de portatif: */
+
+	.nav-right {
+		background-color: yellow;
+	}
+}
+
+@media only screen and (min-width: 992px) {
+	/* Ordinateurs de table: */
+	.nav-right {
+		background-color: blueviolet;
+	}
+}
+
+@media only screen and (min-width: 1200px) { 
+	/* Écrans larges: */
+
+	.nav-right {
+		background-color: #373f4d;
+	}
+}
+
+/*
+@media only screen and (orientation: landscape) {
+  body {
+    background-color: lightblue;
+  }
+}
+*/
