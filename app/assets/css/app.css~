@@ -486,7 +486,7 @@ div.stat {
 }
 
 #header .nav-right{
-	/* background-color: blueviolet; */ 
+	background-color: blueviolet;
 	display:inline-block;
 	position: relative; 
 	list-style: none;
