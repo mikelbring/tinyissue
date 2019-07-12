@@ -1286,8 +1286,37 @@ background-image: linear-gradient(to bottom, #292929 6%, #737273 100%);
 
 @media only screen and (min-width: 992px) {
 	/* Ordinateurs de table: */
+	.nav-right li{
+		width: 200px;
+	}
+	.nav-right li{
+		width: 400px;
+	}
 	.nav-right {
-		background-color: blueviolet;
+		background: url('../images/dropdown-arrow_48x48.png') no-repeat;
+		display: table;
+		overflow:hidden;
+		/* width: auto; */
+		width: 200px;
+		position: relative;
+		overflow: visible;
+		
+	}
+	.nav-right li{
+		position: absolute;
+		visibility: hidden;
+		left: -10px;
+		float: left;
+		z-index: 100;
+	}
+	.nav-right:hover li {
+		max-height: 1500px;
+		visibility: visible;
+		background-color: black;
+		left: 0;
+	}
+	.nav-right:hover li ul {
+		top: 14px;
 	}
 }
 
@@ -1295,7 +1324,18 @@ background-image: linear-gradient(to bottom, #292929 6%, #737273 100%);
 	/* Écrans larges: */
 
 	.nav-right {
-		background-color: #373f4d;
+		background: transparent;
+		display: inline-block;
+	}
+	.nav-right li{
+		position: relative;
+	}
+	.nav-right li ul {
+		visibility: visible;
+	}
+	.nav-right li:hover ul {
+		max-height: 500px;
+		visibility: visible;
 	}
 }
 
