@@ -98,7 +98,7 @@
 				echo Form::token();
 				echo '</form>';
 				if ($verNum < $verActu) {
-					echo '<br /><h4><b>Votre version est plus avancée que celle du serveur</b></h4>';
+					echo '<br /><h4><b>'.__('tinyissue.version_ahead').'</b></h4>';
 				}
 			}
 			echo '<br /><br />';
