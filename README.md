@@ -24,7 +24,7 @@ Enjoy!
 ## Requirements:
 
 - Tested on: Apache, IIS
-- PHP 5.3+  :  ready for PHP 7.0.18; works good under PHP 7.2 and over
+- PHP 7.0  :  CAUTION, since BUGS 1.5 PHP 5.3 does not work anymore
 - MySQL 5+
 - PDO Extension for PHP (MySQL)
 - MCrypt Extension for PHP : soon MCrypt will be removed from Bugs project
@@ -50,6 +50,7 @@ Then, push you modification throw a new branch. NEVER push on master.
 	- correction file 1g: Perfect install system, logo BUGS during install
 								 8 mars 2019
 	- all what planned in [Nice changes to come](https://github.com/pixeline/bugs/projects) is now running good.
+	- does not support PHP 5.x anymore
 								 
 - v.1.5.2b : 23 septembre 2018
 	- Wysyg text editor  ( you can install the one you like )
@@ -58,6 +59,7 @@ Then, push you modification throw a new branch. NEVER push on master.
 	- upload and attach file to an issue
 	- automatized installation (better than before)
 	- linked to report system (optionnal, report system from another git deposit)
+	- some problems appear under PHP 5.x
 - v.1.5.2 : 15 March 2017
 	- reassign issue
 	- email system based on PHPmail: work every time you change assignation
