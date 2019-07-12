@@ -232,6 +232,7 @@ return array(
 	'velocity_rate' => 'issues/per day',
 	'velocity_velocity' => 'Velocity',
 	'version' => 'Version',
+	'version_ahead' => 'Your version is ahead on the stable distributed version.',
 	'version_check' => 'Software`s status',
 	'version_commit' => 'Latest git commit code',
 	'version_details' => 'Go to github website and check the comment, files and changes',
