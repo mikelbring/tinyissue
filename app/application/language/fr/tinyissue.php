@@ -234,6 +234,7 @@ return array(
 	'velocity_rate' => 'billets quotidiens',
 	'velocity_velocity' => 'Productivité',
 	'version' => 'Version',
+	'version_ahead' => 'Votre version est plus avancée que celle du serveur',
 	'version_check' => 'État du logiciel',
 	'version_commit' => 'Code du plus récent « git commit »  disponible',
 	'version_details' => 'Voir les modifications sur le site github',
