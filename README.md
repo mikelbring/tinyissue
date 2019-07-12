@@ -24,7 +24,7 @@ Enjoy!
 ## Requirements:
 
 - Tested on: Apache, IIS
-- PHP 7.0  :  CAUTION, since BUGS 1.5 PHP 5.3 does not work anymore
+- PHP 7.0+    
 - MySQL 5+
 - PDO Extension for PHP (MySQL)
 - MCrypt Extension for PHP : soon MCrypt will be removed from Bugs project
@@ -50,7 +50,7 @@ Then, push you modification throw a new branch. NEVER push on master.
 	- correction file 1g: Perfect install system, logo BUGS during install
 								 8 mars 2019
 	- all what planned in [Nice changes to come](https://github.com/pixeline/bugs/projects) is now running good.
-	- does not support PHP 5.x anymore
+	- CAUTION : we don't support PHP 5.x since BUGS 1.5, under 1.6 many functions are unusable for that reason
 								 
 - v.1.5.2b : 23 septembre 2018
 	- Wysyg text editor  ( you can install the one you like )
