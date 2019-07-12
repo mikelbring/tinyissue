@@ -2,7 +2,7 @@
 $verActu = Config::get('tinyissue.version');
 $verNum = 0;
 $verCommit = "";
-if (file_exists("https://github.com/pixeline/bugs/releases")) {
+if (@fopen("https://github.com/pixeline/bugs/releases", 'r')) {
 	$verDisp = file_get_contents( "https://github.com/pixeline/bugs/releases");
 	$verDisp = substr($verDisp, strpos($verDisp, "Latest release"), 2600);
 	$verNum = substr($verDisp, strpos($verDisp, '<span class="css-truncate-target" style="max-width: 125px">') + 59, 70);

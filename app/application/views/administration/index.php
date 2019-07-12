@@ -73,11 +73,11 @@
 			echo __('tinyissue.version_actuelle');
 			echo ' : '.$verActu.'<br />'.__('tinyissue.version_release_numb').' : '.Config::get('tinyissue.release');
 			echo '<br /><br />';
-			echo __('tinyissue.version_offline');
 			if ($verActu == $verNum) {
 				echo __('tinyissue.version_good').'!';
 				echo '<br /></h4>';
 			} else if ($verNum == 0) {
+				echo __('tinyissue.version_offline');
 				echo '<br /></h4>';
 				echo '<a href="https://github.com/pixeline/bugs/" target="_blank">https://github.com/pixeline/bugs/</a>';
 			} else {
@@ -97,6 +97,9 @@
 				echo '<input type="submit" value="'.__('tinyissue.update').'" class="button	primary"/>';
 				echo Form::token();
 				echo '</form>';
+				if ($verNum < $verActu) {
+					echo '<br /><h4><b>Votre version est plus avancée que celle du serveur</b></h4>';
+				}
 			}
 			echo '<br /><br />';
 		?>
