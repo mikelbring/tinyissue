@@ -13,23 +13,18 @@
 		$rendu = "";
 		$SautPage = false;
 		$untel = "";
-		
+
 		function EnTeteCus ($pdf, $colonnes, $untel, $rappLng) {
 			global $_POST;
 			$pdf->AddPage();
-//			$pdf->SetFillColor(hexdec(substr($_POST["Couleur"], 0, 2)), hexdec(substr($_POST["Couleur"], 2, 2)), hexdec(substr($_POST["Couleur"], 4, 2)));
-			$pdf->SetFillColor(hexdec("CF"), hexdec("55"), hexdec("C3"));
-			$pdf->Image("../images/logo.png", 12,20,40,18,"png", "");
-				$pdf->SetFont("Times", "B", 15);
+			$pdf->SetFillColor(hexdec("DA"), hexdec("B4"), hexdec("35"));
+			$pdf->Image("assets/images/layout/logo.png", 12,20,40,18,"png", "");
+			$pdf->SetFont("Times", "B", 15);
 			$pdf->Text(86, 28,utf8_decode($_POST["TitreRapport"]));
 			$pdf->SetFont("Times", "", 10);
-//			if (trim(@$_POST["DteInit"]) != '' ) { $pdf->Text(86, 32, " Date >= ".$_POST["DteInit"]); }
-//			if (trim(@$_POST["DteEnds"]) != '' ) { $pdf->Text(86, 35, " Date <= ".$_POST["DteEnds"]); }
-//			if (trim(@$_POST["FilterUser"]) > 0 ) {$pdf->Text(86, 38, " ... ".$untel); }
-		
 			$pdf->SetXY(10, 40);
 			$pdf->SetFont("Times", "B", 12);
-			for ($x=1; $x<count($colonnes)+1; $x++) {
+			for ($x=1; $x<count($colonnes); $x++) {
 				$pdf->Cell($colonnes[$x], 15, utf8_decode($_POST["Titre"][$x]), 1, 0, "C", true, "");
 			}
 			$pdf->SetFont("Times", "", 10);
@@ -39,14 +34,15 @@
 		//Élaguage des données reçues, élimination des informations vides
 		for ($x=1; $x<6; $x++) {
 			if (trim($_POST["Titre"][$x]) == '' || trim($_POST["ChxColonnes"][$x]) == '&' || $_POST["LargColonne"][$x] == '0' ) {
-				unset($_POST["Titre"][$x], $_POST["ChxColonnes"][$x],$_POST["LargColonne"][$x]);
+				unset($_POST["Titre"][$x], $_POST["ChxColonnes"][$x], $_POST["LargColonne"][$x]);
 			}
 		}		
-		
 		//Définition des largeurs de colonne en termes de pixels
-		for ($x=1; $x<(count($_POST["LargColonne"])+1); $x++) {
-			$colonnes[$x] = 186 * ($_POST["LargColonne"][$x] / 100) * $Ajusteur;
+		$colonnes[0] = 0;
+		foreach($_POST["LargColonne"] as $ind => $val) {
+			$colonnes[] = 186 * ($val / 100) * $Ajusteur;
 		}
+		
 		$query  = "SELECT CONCAT(TIK.id, '. ', TIK.title) AS title, TIK.created_at, TIK.duration, TIK.updated_at, ";
 		$query .= "  TIK.closed_at, TIK.project_id AS projects_id, TIK.status, TIK.body, ";
 		$query .= "	 PRO.name AS projet, ";
@@ -82,7 +78,7 @@
 		$results = \DB::query($query);
 
 		//Production du rapport lui-même
-		EnTeteCus ($pdf, $colonnes, $untel,$rappLng);
+		EnTeteCus ($pdf, $colonnes, $untel, $rappLng);
 
 		foreach($results as $result) {
 			if ($SautPage && $rendu != $result->title && $rendu != '') { EnTeteCus ($pdf, $colonnes, $untel,$rappLng); $compte = 0;}
@@ -105,12 +101,10 @@
 			);
 			$pdf->SetTextColor($colorFont[$result->status]);
 			$pdf->SetFillColor($colorStatus[$result->status][0],$colorStatus[$result->status][1],$colorStatus[$result->status][2]);
-//			$pdf->SetFillColor($colorStatus[$result->status][0],$colorStatus[$result->status][1],$colorStatus[$result->status][2]);
-//			$pdf->Cell($colonnes[$x], 10, 	utf8_decode($contenu[$LaCol[0]]), 	1, (($x==count($colonnes)-0) ? 1 : 0), (($colonnes[$x]  > 23) ? "L" : "C"), true, "");
 			$pdf->SetFillColor(255);
-			for ($x=1; $x<count($colonnes)+1; $x++) {
+			for ($x=1; $x<count($colonnes); $x++) {
 				$LaCol = explode("&", $_POST["ChxColonnes"][$x]);
-				$pdf->Cell($colonnes[$x], 10, 	utf8_decode($contenu[$LaCol[0]]), 	1, (($x==count($colonnes)-0) ? 1 : 0), (($colonnes[$x]  > 23) ? "L" : "C"), true, "");
+				$pdf->Cell($colonnes[$x], 10, 	utf8_decode($contenu[$LaCol[0]]), 	1, (($x>=count($colonnes)-1) ? 1 : 0), (($colonnes[$x]  > 23) ? "L" : "C"), true, "");
 				if (isset($PosiX['special0']) && isset($result->special0)) { $pdf->Text($PosiX['special0'], ($pdf->GetY())-1,  $result->special0); }
 			}
 			if (++$compte >= $NbLignes) { EnTeteCus ($pdf, $colonnes, $untel,$rappLng); $compte = 0;}
