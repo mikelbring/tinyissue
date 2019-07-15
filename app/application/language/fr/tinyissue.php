@@ -230,7 +230,7 @@ return array(
 	'user_updated' => 'Utilisateur mis à jour',
 	'users_description' => 'Ajouter, modifier et supprimer les utilisateurs de l\'application',
 	'users' => 'Utilisateurs',
-	'velocity_etc' => 'ETC',
+	'velocity_etc' => 'Échéance la plus lointaine',
 	'velocity_rate' => 'billets quotidiens',
 	'velocity_velocity' => 'Productivité',
 	'version' => 'Version',

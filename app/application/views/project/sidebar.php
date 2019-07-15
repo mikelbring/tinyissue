@@ -32,7 +32,6 @@ if(count($active_projects)>1){
 <?php
 }
 ?>
-
 <h2>
 	<?php if(Auth::user()->permission('project-modify')): ?>
 	<a href="<?php echo Project::current()->to('edit'); ?>" class="edit"><?php echo __('tinyissue.edit');?></a>

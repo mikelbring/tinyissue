@@ -76,30 +76,24 @@ $EnLigne = false;
  			</nav>
 
 			<nav class="nav-right">
-				<li>
-					<ul>
-						<li><?php echo __('tinyissue.welcome');?>, <a href="<?php echo URL::to('user/settings'); ?>" class="user"><?php echo Auth::user()->firstname; ?></a></li>
-						<li class="reports <?php echo $active == 'repprts' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects/reports'); ?>" "><?php echo __('tinyissue.report');?></a></li>
-						<?php if(Auth::user()->permission('administration')): ?>
-						<li><a href="<?php echo URL::to('administration/users'); ?>"><?php echo __('tinyissue.users');?></a></li>
-						<li><a href="<?php echo URL::to('administration'); ?>" <?php echo $styleAdmin; ?>><?php echo __('tinyissue.administration');?></a></li>
-						<?php endif; ?>
-						<li class="logout"><a href="<?php echo URL::to('user/logout'); ?>"><?php echo __('tinyissue.logout');?></a></li>
-					</ul>
-				</li>
+				<ul>
+					<li><?php echo __('tinyissue.welcome');?>, <a href="<?php echo URL::to('user/settings'); ?>" class="user"><?php echo Auth::user()->firstname; ?></a></li>
+					<li class="reports <?php echo $active == 'repprts' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects/reports'); ?>" "><?php echo __('tinyissue.report');?></a></li>
+					<?php if(Auth::user()->permission('administration')): ?>
+					<li><a href="<?php echo URL::to('administration/users'); ?>"><?php echo __('tinyissue.users');?></a></li>
+					<li><a href="<?php echo URL::to('administration'); ?>" <?php echo $styleAdmin; ?>><?php echo __('tinyissue.administration');?></a></li>
+					<?php endif; ?>
+					<li class="logout"><a href="<?php echo URL::to('user/logout'); ?>"><?php echo __('tinyissue.logout');?></a></li>
+				</ul>
 			</nav>
 
 		</div>
-
+<div style="clear:both;"></div>
 		<div id="main">
-
 			<div id="sidebar">
 				<div class="inside">
-
 					<?php echo $sidebar; ?>
-
 				</div>
 			</div> <!-- end sidebar -->
-
 			<div id="content">
 				<div class="inside">
