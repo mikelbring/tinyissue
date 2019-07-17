@@ -259,7 +259,7 @@ return array(
 	'you_put_no_comment' => 'Vous ne pouvez pas commenter ce billet !',
 	'your_comment_added' => 'Votre commentaire a été ajouté !',
 	'your_issues_description' => 'Billets qui vous sont attribués',
-	'your_issue' => 'Votre illet',
+	'your_issue' => 'Votre billet',
 	'your_issues' => 'Vos billets',
 	'your_todos_description' => 'Billets mis dans votre <strong>Kanban</strong> (= organisateur de tâches personnel).',
 	'your_todos' => 'Tâches',

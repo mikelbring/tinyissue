@@ -2,6 +2,8 @@
 $active_projects =Project\User::active_projects();
 if(count($active_projects)>1){
 ?>
+<details class="detailsidebar">
+<summary class="summarysidebar"><?php echo __('tinyissue.select_a_project'); ?></summary>
 <form class="projects_selector">
 <fieldset><label for="projects_select"><?php echo __('tinyissue.select_a_project');?></label>
 <select name="projects_select" id="projects_select"  onchange="if (this.value) window.location.href=this.value">
@@ -29,9 +31,12 @@ if(count($active_projects)>1){
 </select>
 </fieldset>
 </form>
+</details>
 <?php
 }
 ?>
+<details class="detailsidebar">
+<summary class="summarysidebar"><?php echo __('tinyissue.issues'); ?></summary>
 <h2>
 	<?php if(Auth::user()->permission('project-modify')): ?>
 	<a href="<?php echo Project::current()->to('edit'); ?>" class="edit"><?php echo __('tinyissue.edit');?></a>
@@ -45,7 +50,10 @@ if(count($active_projects)>1){
 	<li><a href="<?php echo Project::current()->to('issues'); ?>?tag_id=1"><?php echo Project::current()->count_open_issues(); ?> <?php echo __('tinyissue.open_issues');?></a></li>
 	<li><a href="<?php echo Project::current()->to('issues'); ?>?tag_id=2"><?php echo Project::current()->count_closed_issues(); ?> <?php echo __('tinyissue.closed_issues');?></a></li>
 </ul>
+</details>
 
+<details class="detailsidebar">
+<summary class="summarysidebar"><?php echo __('tinyissue.assign_users'); ?></summary>
 <h2>
 	<?php echo __('tinyissue.assigned_users');?>
 	<span><?php echo __('tinyissue.assigned_users_description');?></span>
@@ -67,7 +75,10 @@ if(count($active_projects)>1){
 	<input type="text" id="add-user-project" placeholder="<?php echo __('tinyissue.assign_a_user');?>" onmouseover="init_sidebar_autocomplete(<?php echo Project::current()->id; ?>);" />
 
 <?php endif; ?>
+</details>
 
+<details class="detailsidebar">
+<summary class="summarysidebar"><?php echo __('tinyissue.website_title'); ?></summary>
 <?php
 	$project_WebLnks = \DB::table('projects_links')->where('id_project', '=', Project::current()->id)->order_by('category','ASC')->get();
 	$WebLnk = array();
@@ -88,3 +99,4 @@ if (count($WebLnk) > 0 ) {
 	echo '</ul>';
 }
 ?>
+</details>
