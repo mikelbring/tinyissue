@@ -2,10 +2,10 @@
 $active_projects =Project\User::active_projects();
 if(count($active_projects)>1){
 ?>
-<details class="detailsidebar">
-<summary class="summarysidebar"><?php echo __('tinyissue.select_a_project'); ?></summary>
+<div id="sidebar_Projects_title" class="sidebarTitles"><?php echo __('tinyissue.select_a_project'); ?></div>
+<div id="sidebar_Projects" class="sidebarItem">
 <form class="projects_selector">
-<fieldset><label for="projects_select"><?php echo __('tinyissue.select_a_project');?></label>
+<fieldset class="sidebar_Projects_label"><label for="projects_select"><?php echo __('tinyissue.select_a_project');?></label>
 <select name="projects_select" id="projects_select"  onchange="if (this.value) window.location.href=this.value">
 <?php
 	$NbIssues = array();
@@ -31,31 +31,34 @@ if(count($active_projects)>1){
 </select>
 </fieldset>
 </form>
-</details>
+</div>
+
 <?php
 }
 ?>
-<details class="detailsidebar">
-<summary class="summarysidebar"><?php echo __('tinyissue.issues'); ?></summary>
+<div id="sidebar_Issues_title" class="sidebarTitles"><?php echo Project::current()->name.': '.__('tinyissue.reports_allissues'); ?></div>
+<div id="sidebar_Issues" class="sidebarItem">
 <h2>
 	<?php if(Auth::user()->permission('project-modify')): ?>
 	<a href="<?php echo Project::current()->to('edit'); ?>" class="edit"><?php echo __('tinyissue.edit');?></a>
 	<?php endif; ?>
 
-	<?php echo HTML::link(Project::current()->to(), Project::current()->name); ?>
-	<span><?php echo __('tinyissue.assign_users_and_edit_the_project');?></span>
+	<span><?php echo HTML::link(Project::current()->to(), Project::current()->name); ?><br />
+	<?php echo __('tinyissue.assign_users_and_edit_the_project');?></span>
 </h2>
 
 <ul>
 	<li><a href="<?php echo Project::current()->to('issues'); ?>?tag_id=1"><?php echo Project::current()->count_open_issues(); ?> <?php echo __('tinyissue.open_issues');?></a></li>
 	<li><a href="<?php echo Project::current()->to('issues'); ?>?tag_id=2"><?php echo Project::current()->count_closed_issues(); ?> <?php echo __('tinyissue.closed_issues');?></a></li>
 </ul>
-</details>
+</div>
 
-<details class="detailsidebar">
-<summary class="summarysidebar"><?php echo __('tinyissue.assign_users'); ?></summary>
+<div id="sidebar_Users_title" class="sidebarTitles"><?php echo __('tinyissue.assigned_users'); ?></div>
+<div id="sidebar_Users" class="sidebarItem">
 <h2>
-	<?php echo __('tinyissue.assigned_users');?>
+	<?php 
+		//echo __('tinyissue.assigned_users');
+	?>
 	<span><?php echo __('tinyissue.assigned_users_description');?></span>
 </h2>
 
@@ -75,10 +78,10 @@ if(count($active_projects)>1){
 	<input type="text" id="add-user-project" placeholder="<?php echo __('tinyissue.assign_a_user');?>" onmouseover="init_sidebar_autocomplete(<?php echo Project::current()->id; ?>);" />
 
 <?php endif; ?>
-</details>
+</div>
 
-<details class="detailsidebar">
-<summary class="summarysidebar"><?php echo __('tinyissue.website_title'); ?></summary>
+<div id="sidebar_Website_title" class="sidebarTitles"><?php echo __('tinyissue.website_title'); ?></div>
+<div id="sidebar_Website" class="sidebarItem">
 <?php
 	$project_WebLnks = \DB::table('projects_links')->where('id_project', '=', Project::current()->id)->order_by('category','ASC')->get();
 	$WebLnk = array();
@@ -88,7 +91,9 @@ if(count($active_projects)>1){
 if (count($WebLnk) > 0 ) {
 ?>
 <h2>
-	<?php echo __('tinyissue.website_title');?>
+	<?php 
+		//echo __('tinyissue.website_title');
+	?>
 	<span><?php echo __('tinyissue.website_description');?></span>
 </h2>
 <?php
@@ -99,4 +104,20 @@ if (count($WebLnk) > 0 ) {
 	echo '</ul>';
 }
 ?>
-</details>
+</div>
+
+
+<script type="text/javascript" >
+	$('#sidebar_Website_title').click(function() {
+	    $('#sidebar_Website').toggle('slow');
+	});
+	$('#sidebar_Users_title').click(function() {
+	    $('#sidebar_Users').toggle('slow');
+	});
+	$('#sidebar_Issues_title').click(function() {
+	    $('#sidebar_Issues').toggle('slow');
+	});
+	$('#sidebar_Projects_title').click(function() {
+	    $('#sidebar_Projects').toggle('slow');
+	});
+</script>

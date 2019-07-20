@@ -1,10 +1,12 @@
-<details class="detailsidebar">
-<summary class="summarysidebar"><?php echo __('tinyissue.active_projects'); ?></summary>
+<div id="sidebar_MenuDefault_title" class="sidebarTitles"><?php echo __('tinyissue.active_projects'); ?></div>
+<div id="sidebar_MenuDefault" class="sidebarItem">
 <h2>
 	<?php if(Auth::user()->permission('project-create')): ?>
-	<a href="<?php echo URL::to('projects/new'); ?>" class="add" title="New Project"><?php __('tinyissue.new'); ?></a>
+	<a href="<?php echo URL::to('projects/new'); ?>" class="add" title="New Project" style="margin-top: -18px;"><?php __('tinyissue.new'); ?></a>
 	<?php endif; ?>
-	<?php echo __('tinyissue.active_projects');?>
+	<?php 
+		///echo __('tinyissue.active_projects');
+	?>
 	<span><?php echo __('tinyissue.active_projects_description');?></span>
 </h2>
 
@@ -34,4 +36,10 @@
 	<?php endforeach ?>
 
 </ul>
-</details>
+</div>
+
+<script type="text/javascript" >
+	$('#sidebar_MenuDefault_title').click(function() {
+	    $('#sidebar_MenuDefault').toggle('slow');
+	});
+</script>

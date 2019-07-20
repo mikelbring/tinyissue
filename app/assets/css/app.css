@@ -685,7 +685,17 @@ div.stat_form {
 	font-size: 13px;
 	padding-right: 10px;
 }
-
+.sidebarItem{
+	padding-bottom: 25px;
+}
+.sidebarTitles{
+	font-size: 175%;
+	font-weight: normal;
+}
+#sidebar h2 span,
+.sidebar_Projects_label{
+	margin-top: -15px;
+}
 .projects_selector{
 	margin:20px;
 	font-size: 14px;
@@ -1430,17 +1440,20 @@ background-image: linear-gradient(to bottom, #292929 6%, #737273 100%);
 		vertical-align: top;
 	}
 	.detailsidebar{
-		width: 100%;	
-		open: closed;
+		width: 100%;
+		/* open: closed; */
 	}
 	.summarysidebar {
 		height: auto;
 		font-size: 150%;
-		background-color: yellow;
-		list-style-type: arrow;
+		/* background-color: yellow; */
 	}
-	#sidebar ul li a.links{
-		background: url('../images/layout/icon-website.png') right center no-repeat;
+	#sidebar_Issues,
+	#sidebar_Projects,
+	#sidebar_Website,
+	#sidebar_Users,
+	#sidebar_MenuDefault {
+		display: none;
 	}
 }
 
@@ -1554,16 +1567,24 @@ background-image: linear-gradient(to bottom, #292929 6%, #737273 100%);
 		display: block; 
 		top: 150px; 
 	}
-	.detailsidebar{
-		open: open;
+	.detailsidebar[open]{
+		content: "open";
 	}
 	.summarysidebar {
 		background-color: transparent;
-		background-color: red;
+		/* background-color: red; */
 		color: transparent;
-		color: black;
+		/* color: black; */
+		height: 0;
 		list-style-type: none;
 		padding-left: 8%;
+	}
+	#sidebar_Projects,
+	#sidebar_Users,
+	#sidebar_Issues,
+	#sidebar_Website,
+	#sidebar_MenuDefault {
+		display: block;
 	}
 	#sidebar ul li a.links{
 		background: none;
