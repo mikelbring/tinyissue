@@ -20,17 +20,22 @@ if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = arra
 	<div id="issue-tags">
 	<?php
 		//Percentage of work done
+		////Calculations
 		$SizeXtot = 500;
 		$SizeX = $SizeXtot / 100;
 		echo __('tinyissue.issue_percent').' : ';
 		$Etat = Todo::load_todo($issue->id);
+		////Here we show the progress bar
 		if (is_object($Etat)) {
-		echo '<div style="position: relative; top:-20px; left: 200px; background-color: green; color:white; width: '.($Etat->weight*$SizeX).'px; height: 20px; text-align: center; line-height:20px;" />'.$Etat->weight.'%</div>';
-		echo '<div style="position: relative; top:-40px; left: '.(200 + ($Etat->weight*$SizeX)).'px; margin-bottom: -30px; background-color: gray; color:white; width: '.($SizeXtot-($Etat->weight*$SizeX)).'px; height: 20px; text-align: center; line-height:20px;" /></div>';
+			echo '<div class="Percent">';
+			echo '<div style="background-color: green; position: absolute; top: 0; left: 0; width: '.($Etat->weight).'%; height: 100%; text-align: center; line-height:20px;" />'.$Etat->weight.'%</div>';
+			echo '<div style="background-color: gray; position: absolute;  top: 0; left: '.$Etat->weight.'%; width: '.(100-$Etat->weight).'%; height: 100%; text-align: center; line-height:20px;" />'.(100-$Etat->weight).'%</div>';
+			echo '</div>';
 		}
 
 		//Time's going fast!
 		//Timing bar, according to the time planified (field projects_issues - duration) for this issue
+		////Calculations
 		$config_app = require path('public') . 'config.app.php';
 		$Deb = strtotime($issue->created_at);
 		$Dur = (time() - $Deb) / 86400;
@@ -41,9 +46,14 @@ if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = arra
 		if ($DurRelat >= 50 && @$Etat->weight <= 50 ) { $DurColor = 'yellow'; }
 		if ($DurRelat >= 75 && @$Etat->weight <= 50 ) { $DurColor = 'red'; }
 		$TxtColor = ($DurColor == 'green') ? 'white' : 'black' ;
+		////Here we show to progress bar
 		echo __('tinyissue.countdown').' ('.__('tinyissue.day').'s) : ';
-		echo '<div style="position: relative; top:-20px; left: 200px; background-color: '.$DurColor.'; color:'.$TxtColor.'; width: '.(($DurRelat  >= 100) ? $SizeXtot : ($DurRelat*$SizeX)).'px; height: 20px; text-align: left; line-height:20px;" />'.((($DurRelat  >= 100)) ? $Dur.' / '.@$issue->duration : $Dur).'</div>';
-		if ($DurRelat < 100) { echo '<div style="position: relative; top:-40px; left: '.(200 + ($DurRelat*$SizeX)).'px; margin-bottom: -30px; background-color: gray; color:white; width: '.($SizeXtot-($DurRelat*$SizeX)).'px; height: 20px; text-align: right; line-height:20px;" />'.$issue->duration.'</div>'; }
+		echo '<div class="Percent">';
+		echo '<div style="background-color: '.$DurColor.'; position: absolute; top: 0; left: 0; width: '.(($DurRelat <= 100) ? $DurRelat : 100).'%; height: 100%; text-align: center; line-height:20px;" />'.((($DurRelat  >= 100)) ? $Dur.' / '.@$issue->duration : $Dur).'</div>';
+		if ($DurRelat < 100) {  echo '<div style="background-color: gray; position: absolute;  top: 0; left: '.$DurRelat.'%; width: '.(100-$DurRelat).'%; height: 100%; text-align: center; line-height:20px;" />'.$issue->duration.'</div>'; }
+		echo '</div>';
+
+
 		echo '<br clear="all" />';
 
 		$IssueTags = array();
@@ -215,7 +225,9 @@ if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = arra
 	</div>
 	<?php else: ?>
 	<?php echo HTML::link(Project\Issue::current()->to('status?status=1'), __('tinyissue.reopen_issue')); ?>
+	<br /><br />
 	<?php endif; ?>
+	<br /><br />
 </div>
 
 

@@ -7,12 +7,13 @@
 body {
     font: normal 12px Helvetica, "Lucida Grande", Arial, sans-serif;
     color: #424242;
-    background: url('../images/layout/bg.jpg') repeat-y #fff;
+    /* background: url('../images/layout/bg.jpg') repeat-y #fff;  */
 	 height: 100%;
 }
 
 #container{
-	min-width: 1000px;
+	*/ min-width: 1000px; */
+	min-width: 100%;
 	height: 100%;
 }
 
@@ -313,6 +314,28 @@ p{
 
 }
 
+/* Pourcentage du travail accompli */
+div.Percent,
+div.Percent2 {
+	position: relative; 
+	color: white;
+	width: 50%; 
+}
+
+div.Percent {
+	top:-20px; 
+	left: 200px; 
+	color: white;
+	height: 20px;
+}
+
+div.Percent2 {
+	left: 20px; 
+	color: white;
+	height: 5px;
+	margin-bottom: 2px;
+}
+
 /* Header */
 #header{
 	width: 100%;
@@ -365,14 +388,6 @@ div.stat_form {
 	padding-top:5px; 
 	padding-bottom:5px; 
 	width: 100%;
-}
-
-div.stat {
-	color: #FFF;
-	display:inline-block;
-	width: 21%;
-	margin: 1%;
-	vertical-align: top;
 }
 
 .stat_element{
@@ -433,7 +448,7 @@ div.stat {
 }
 
 .stat_custom {
-	background-color: #cf55c3;
+	background-color: #da6824;
 }
 
 .stat_users {
@@ -453,7 +468,7 @@ div.stat {
 }
 
 .stat_custom_data {
-	background-color: #cf55c3;
+	background-color: #da6824;
 }
 
 .stat_users_data {
@@ -481,49 +496,6 @@ div.stat {
 	display:inline-block;
 }
 
-#header .nav-right{
-	float: right;
-	padding: 19px 15px 0 0;
-}
-#header .nav-right li{
-	float: left;
-	margin-left: 13px;
-	padding-right: 13px;
-	border-right: 1px solid #596174;
-	color: #fff;
-}
-#header .nav-right li a{
-	display: inline-block;
-	min-height: 16px;
-}
-#header .nav-right li .user{
-	color: #F8E71C;
-}
-#header .nav-right .logout{
-	border: 0;
-}
-#header .nav-right .logout a{
-	background: url('../images/layout/icon-logout.png') no-repeat;
-	padding-left: 21px;
-}
-#header .nav{
-	position: absolute; left: 259px; top: 19px;
-}
-#header .nav li{
-	float: left;
-	margin-left: 16px;
-	padding-right: 16px;
-	border-right: 1px solid #596174;
-}
-#header .nav li a{
-	display: block;
-	padding-left: 24px;
-	min-height: 17px;
-	padding-top: 1px;
-}
-#header .nav li a:hover{
-	color: #F8E71C;
-}
 #header .nav li.dashboard a{
 	background: url('../images/layout/icon-dashboard_inactive.png') no-repeat 0 1px;
 }
@@ -571,28 +543,82 @@ div.stat {
 #header .nav li.settings{
 	border: 0;
 }
+
+#header .nav {
+	background-color: purple;
+	left: 12%; 
+	width: 38%;
+}
+#header .nav ul{
+	background: url('../images/layout/header-bg.jpg') repeat;
+}
+
+#header .nav,
+#header .nav-right{
+	background: url('../images/layout/header-bg.jpg') repeat;
+	clear: both;
+	display:block;
+	height: 100%;
+	list-style: none;
+	position: absolute;
+	top: 0;
+}
+#header .nav-right{
+	text-align: right;
+}
+#header .nav-right ul{
+	background: url('../images/layout/header-bg.jpg') repeat;
+	height: 95%;
+	vertical-align: middle;
+	width: 100%;
+}
+#header .nav-right ul li{
+	height: 95%;
+	border-right: 1px solid #596174;
+	padding-left: 2%;
+	padding-right: 2%;
+}
+#header .nav-right .logout{
+	border-right: none;
+}
+#header .nav-right ul li:hover a{
+	color: yellow;
+}
+#header .nav-right a{
+	background: url('../images/layout/icon-empty.png') no-repeat;
+	padding-left: 21px;
+}
+#header .nav-right .logout a{
+	background: url('../images/layout/icon-logout.png') no-repeat;
+}
+#header .nav-right .logout a:hover{
+	background: url('../images/layout/icon-logout_active.png') no-repeat;
+}
+
+
+
+
 /* Sidebar */
-#sidebar{
-	width: 243px; height: 100%;
-	float: left;
-	background: #ededed;
-	border-right: 1px solid #cecece;
-	position: absolute; top: 0; left: 0;
-	z-index: 0;
+#main {
+	/* display: table; */
+}
+#sidebar {
+	display: table-column;
+	min-height: 1000px;
+	height: 100%;
 }
 #sidebar .inside{
-	padding-top: 53px;
+		 
 }
 #sidebar .pad{
 	padding: 0 18px;
 }
 .pad2{
-	position: absolute; 
-	right: 0;
+	display:inline-block; 
 	text-align:left; 
-	top: 30%; 
-	vertical-align: baseline; 
-	width: 50%;
+	top: 20%; 
+	vertical-align: top; 
+	width: 40%;
 }
 #sidebar h2{
 	font-size: 18px;
@@ -659,7 +685,17 @@ div.stat {
 	font-size: 13px;
 	padding-right: 10px;
 }
-
+.sidebarItem{
+	padding-bottom: 25px;
+}
+.sidebarTitles{
+	font-size: 175%;
+	font-weight: normal;
+}
+#sidebar h2 span,
+.sidebar_Projects_label{
+	margin-top: -15px;
+}
 .projects_selector{
 	margin:20px;
 	font-size: 14px;
@@ -687,11 +723,14 @@ div.stat {
 	z-index: 0;
 }
 
+/*
 #content .inside{
 	padding: 0 0 0 244px;
 }
+*/
+
 #content .pad{
-	padding: 0 20px;
+	padding: 0 2%;
 }
 .inside-tabs{
 	border: 1px solid #dcdcdc;
@@ -708,6 +747,7 @@ div.stat {
 	border-radius: 5px;
 	margin-bottom: 25px;
 	padding-bottom: 5px;
+	width: 98%;
 
 }
 .blue-box .inside-pad{
@@ -717,7 +757,20 @@ div.stat {
 .blue-box .filter-and-sorting{
 	background-color: white;
 	padding: 8px 17px;
+	width: 100%;
+	position: relative;
+	height: 170px;
 }
+.blue-box .filter-and-sorting_TAGS{
+	position: relative;
+	display: block;
+	clear: both;
+	padding-bottom: 35px;
+}
+.blue-box .filter-and-sorting_BAS{
+	position: relative;
+}
+
 .blue-box .filter-and-sorting #tags{
 	margin-left: 10px;
 }
@@ -963,6 +1016,9 @@ div.stat {
 }
 
 /* User list */
+#users-list {
+	width: 100%; 
+}
 #users-list > ul{
 	background: #dddddd;
 	padding: 3px 3px 1px;
@@ -1236,3 +1292,403 @@ background-image: linear-gradient(to bottom, #292929 6%, #737273 100%);
     opacity: 0;
   }
 }
+
+
+@media only screen and (min-width: 300px) {
+	/* Telephone et tablettes - portrait: */
+
+
+	.filterANDsort {
+		height: 350px;
+	}
+	.filter-and-sorting {
+		height: 150px;
+	}
+	.filter-and-sorting_FILTER {
+		position: absolute; 
+		left: 15%; 
+		width: 100%; 
+		display: block; 
+		top: 10px; 
+	}
+	.filter-and-sorting_SORT {
+		position: absolute; 
+		left: 0; 
+		left: 25%; 
+		width: 100%; 
+		display: block; 
+		top: 150px; 
+	}
+	#header a.logo {
+		width: 100px;
+	}
+	/* Le menu de gauche passe en mode « Déroulant » */
+	#header .nav{
+		background: url('../images/layout/dropdown-arrow_72x24.png') no-repeat;
+		display:inline-table;
+		height: 100%;
+		left:25%; 
+		overflow: visible;
+		position: absolute;
+		text-align: right;
+		top: 0;
+		width: 35%;
+	}
+	#header .nav li ul{
+		display: none;
+		margin-right: 0;
+		position: absolute;
+		padding: 0;
+		width: 100%;
+		top: 50%;
+	}
+	#header .nav:hover ul{
+		display: table;
+		left: 0;
+	}
+	#header .nav li ul li{
+		display: table-row;
+		border: none;
+		color: #fff;
+		height: 25px;
+		position: relative;
+		text-align: left;
+		vertical-align: middle;
+		width: 100%;
+	}
+	#header .nav li ul li a{
+		padding-left: 25px;
+	}
+	#header .nav li ul li:hover{
+		background-color: black;
+	}
+	#header .nav li ul li a:hover{
+		color: yellow;
+	}
+
+	/* Le menu de droite passe en mode « Déroulant » */
+	#header .nav-right{
+		left:75%; 
+	}
+
+	/* Le menu de droite passe en mode « Déroulant » */
+	#header .nav-right{
+		background: url('../images/layout/dropdown-arrow_72x24.png') no-repeat;
+		display:inline-table;
+		height: 100%;
+		left:50%; 
+		overflow: visible;
+		position: absolute;
+		text-align: right;
+		top: 0;
+		width: 35%;
+	}
+	#header .nav-right ul{
+		display: none;
+		margin-right: 0;
+		position: absolute;
+		padding: 0;
+		width: 100%;
+		top: 50%;
+	}
+	#header .nav-right:hover ul{
+		display: table;
+		left: 0;
+	}
+	#header .nav-right ul li{
+		display: table-row;
+		border: none;
+		color: #fff;
+		height: 25px;
+		position: relative;
+		text-align: left;
+		vertical-align: middle;
+		width: 100%;
+	}
+	#header .nav-right ul li:hover{
+		background-color: black;
+	}
+
+	#sidebar{
+		display: block;
+		width: 100%; 
+		background: #ededed;
+		border-right: 1px solid #cecece;
+		left: 0;
+		z-index: 0;
+		min-height: 0;
+	}
+
+	#sidebar ul li a {
+		background: url('../images/layout/dropdown-arrow.png') right center no-repeat;
+	}	
+	#sidebar .inside{
+		/* background-color: #FF66CC;  */
+	}
+	#content{
+		width: 100%; 
+	}
+	#content .inside{
+		display: block;
+		background-color: transparent;
+	}
+	div.stat {
+		color: #FFF;
+		display:block;
+		width: 100%;
+		margin: 1%;
+		vertical-align: top;
+	}
+	.detailsidebar{
+		width: 100%;
+		/* open: closed; */
+	}
+	.summarysidebar {
+		height: auto;
+		font-size: 150%;
+		/* background-color: yellow; */
+	}
+	#sidebar_Issues,
+	#sidebar_Projects,
+	#sidebar_Website,
+	#sidebar_Users,
+	#sidebar_MenuDefault {
+		display: none;
+	}
+}
+
+
+@media only screen and (min-width: 600px) {
+	/* Telephone et tablettes - portrait: */
+	div.stat {
+		color: #FFF;
+		display:inline-block;
+		width: 47%;
+		margin: 1%;
+		vertical-align: top;
+	}
+}
+
+@media only screen and (min-width: 768px) {
+	/* Écrans normaux de portatif: */
+	
+	#header a.logo {
+		width: 140px;
+	}
+	#header .nav-right{
+		left:75%;
+	} 
+
+	/* Le menu de gauche prend ses grandes tailles: */
+	#header .nav{
+		background: transparent;
+		display: inline-block;
+		position: absolute; 
+		left: 12%; 
+		height: 100%;
+		width: 38%;
+		clear: both;
+		list-style: none;
+		top: 13px;
+		width: 50%;
+	}
+	#header .nav li ul{
+		display: block;
+		position: relative;
+	}
+	#header .nav li ul li{
+		position: relative;
+		display: inline-block;
+		float: left;
+		margin-left: 16px;
+		top: 50%;
+		width: 20%;
+	}
+	#header .nav li ul li:hover{
+		background: transparent;s
+	}
+	#header .nav li li{
+		border-right: 1px solid #596174;
+	}
+	#header .nav li a{
+		display: block;
+		padding-left: 24px;
+		min-height: 17px;
+		padding-top: 1px;
+	}
+	#header .nav li a:hover{
+		color: #F8E71C;
+	}
+
+	#sidebar{
+		display: inline-block;
+		width: 15%; 
+		background: #ededed;
+		border-right: 1px solid #cecece;
+		left: 0;
+		z-index: 0;
+		min-height: 1000px;
+	}
+
+	#sidebar ul li a {
+		background: url('../images/layout/icon-li-arrow.png') right center no-repeat
+	}	
+	#sidebar .inside{
+		/* background-color: #FF66CC;  */
+	}
+	#content {
+		display: inline-block;
+		width: 84%;
+		vertical-align: top;
+	}
+	#content .inside{
+		background-color: transparent;
+		width: 100%; 
+	}
+	.filterANDsort {
+		max-height: 350px;
+		min-height: 180px; 
+	}
+	.filter-and-sorting {
+		height: 250px;
+	}
+	.filter-and-sorting_FILTER {
+		position: absolute; 
+		left: 15%; 
+		width: 100%; 
+		display: block; 
+		top: 10px; 
+	}
+	.filter-and-sorting_SORT {
+		position: absolute; 
+		left: 0; 
+		left: 25%; 
+		width: 100%; 
+		display: block; 
+		top: 150px; 
+	}
+	.detailsidebar[open]{
+		content: "open";
+	}
+	.summarysidebar {
+		background-color: transparent;
+		/* background-color: red; */
+		color: transparent;
+		/* color: black; */
+		height: 0;
+		list-style-type: none;
+		padding-left: 8%;
+	}
+	#sidebar_Projects,
+	#sidebar_Users,
+	#sidebar_Issues,
+	#sidebar_Website,
+	#sidebar_MenuDefault {
+		display: block;
+	}
+	#sidebar ul li a.links{
+		background: none;
+	}
+}
+
+@media only screen and (min-width: 992px) {
+	/* Ordinateurs de table: */
+	#header a.logo {
+		width: 155px;
+	}
+	#header .nav{
+		width: 45%;
+	}
+
+	/* Le menu de droite prend ses grandes */
+	#header .nav-right{
+		background-color: transparent;
+		display:block;
+		left:50%; 
+		position: absolute;
+		text-align: right;
+		top: -24px;
+		width: 50%;
+	}
+	#header .nav-right ul{
+		display: block;
+		position: relative;
+		margin-right: 0;
+		padding: 0;
+		width: 100%;
+	}
+	#header .nav-right ul:hover{
+		display: block;
+		position: relative;
+		margin-right: 0;
+		padding: 0;
+		width: 100%;
+	}
+	#header .nav-right ul li{
+		/* float: right; */
+		display: inline-block;
+		border-right: 1px solid #596174;
+		margin-top: 10px;
+		padding-left: 2%;
+		padding-right: 2%;
+		color: #fff;
+		position: relative;
+		min-width: 12%;
+		max-width: 20%;
+		vertical-align: middle;
+	}
+	#header .nav-right ul li:hover{
+		background-color: transparent;
+	}
+	.filterANDsort {
+		height: 165px;
+	}
+	.filter-and-sorting {
+		height: 150px;
+	}
+	.filter-and-sorting_FILTER {
+		position: absolute; 
+		left: 55%; 
+		width: 45%; 
+		display: inline-block; 
+		top: 10px; 
+	}
+	.filter-and-sorting_SORT {
+		position: absolute; 
+		left: 0; 
+		left: 12%; 
+		width: 40%; 
+		display: inline-block; 
+		top: 10px; 
+	}
+	div.stat {
+		color: #FFF;
+		display:inline-block;
+		width: 21%;
+		margin: 1%;
+		vertical-align: top;
+	}
+	#sidebar ul li a.links{
+		background: url('../images/layout/icon-website.png') right center no-repeat;
+	}
+}
+
+@media only screen and (min-width: 1200px) { 
+	/* Écrans larges: */
+
+	#header .nav-right{
+		left:58%; 
+		width: 40%;
+	}
+	#header .nav-right ul li{
+		width: 18%;
+	}
+}
+
+/*
+@media only screen and (orientation: landscape) {
+  body {
+    background-color: lightblue;
+  }
+}
+*/

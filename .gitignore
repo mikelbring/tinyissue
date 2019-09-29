@@ -4,7 +4,9 @@ config.app.php
 config.app.surete.php
 .DS_Store
 README.md
+*.css~
 *.js~
+*.css~
 *.php~
 .gitignore~
 install/mysql-structure.php

@@ -64,37 +64,36 @@ $EnLigne = false;
 			?>
 			</div>
 
-			<ul class="nav">
-				<li class="dashboard <?php echo $active == 'dashboard' ? 'active' : ''; ?>"><a href="<?php echo URL::to(); ?>"><?php echo __('tinyissue.dashboard');?></a></li>
-				<li class="issues <?php echo $active == 'issues' ? 'active' : ''; ?>"><a href="<?php echo URL::to('user/issues'); ?>"><?php echo __('tinyissue.your_issues');?></a></li>
-				<li class="todo <?php echo $active == 'todo' ? 'active' : ''; ?>"><a href="<?php echo URL::to('todo'); ?>"><?php echo __('tinyissue.your_todos');?></a></li>
-				<li class="projects <?php echo $active == 'projects' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects'); ?>"><?php echo __('tinyissue.projects');?></a></li>
-<!-- 
-				<li><a href="<?php echo ($RepInstalled) ? $ReportsConfig[0] : URL::to('projects/reports'); ?>" target="<?php echo ($RepInstalled) ? '_blank' : ''; ?>"><?php echo __('tinyissue.report');?></a></li>
- -->
-				<li class="reports <?php echo $active == 'repprts' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects/reports'); ?>" "><?php echo __('tinyissue.report');?></a></li>
- 			</ul>
+			<nav class="nav">
+				<li>
+					<ul>
+						<li class="dashboard <?php echo $active == 'dashboard' ? 'active' : ''; ?>"><a href="<?php echo URL::to(); ?>"><?php echo __('tinyissue.dashboard');?></a></li>
+						<li class="issues <?php echo $active == 'issues' ? 'active' : ''; ?>"><a href="<?php echo URL::to('user/issues'); ?>"><?php echo __('tinyissue.your_issues');?></a></li>
+						<li class="todo <?php echo $active == 'todo' ? 'active' : ''; ?>"><a href="<?php echo URL::to('todo'); ?>"><?php echo __('tinyissue.your_todos');?></a></li>
+						<li class="projects <?php echo $active == 'projects' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects'); ?>"><?php echo __('tinyissue.projects');?></a></li>
+					</ul>
+				</li>
+ 			</nav>
 
-			<ul class="nav-right">
-				<li><?php echo __('tinyissue.welcome');?>, <a href="<?php echo URL::to('user/settings'); ?>" class="user"><?php echo Auth::user()->firstname; ?></a></li>
-				<?php if(Auth::user()->permission('administration')): ?>
-				<li><a href="<?php echo URL::to('administration/users'); ?>"><?php echo __('tinyissue.users');?></a></li>
-				<li><a href="<?php echo URL::to('administration'); ?>" <?php echo $styleAdmin; ?>><?php echo __('tinyissue.administration');?></a></li>
-				<?php endif; ?>
-				<li class="logout"><a href="<?php echo URL::to('user/logout'); ?>"><?php echo __('tinyissue.logout');?></a></li>
-			</ul>
+			<nav class="nav-right">
+				<ul>
+					<li><?php echo __('tinyissue.welcome');?>, <a href="<?php echo URL::to('user/settings'); ?>" class="user"><?php echo Auth::user()->firstname; ?></a></li>
+					<li class="reports <?php echo $active == 'repprts' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects/reports'); ?>" "><?php echo __('tinyissue.report');?></a></li>
+					<?php if(Auth::user()->permission('administration')): ?>
+					<li><a href="<?php echo URL::to('administration/users'); ?>"><?php echo __('tinyissue.users');?></a></li>
+					<li><a href="<?php echo URL::to('administration'); ?>" <?php echo $styleAdmin; ?>><?php echo __('tinyissue.administration');?></a></li>
+					<?php endif; ?>
+					<li class="logout"><a href="<?php echo URL::to('user/logout'); ?>"><?php echo __('tinyissue.logout');?></a></li>
+				</ul>
+			</nav>
 
 		</div>
-
+<div style="clear:both;"></div>
 		<div id="main">
-
 			<div id="sidebar">
 				<div class="inside">
-
 					<?php echo $sidebar; ?>
-
 				</div>
 			</div> <!-- end sidebar -->
-
 			<div id="content">
 				<div class="inside">
