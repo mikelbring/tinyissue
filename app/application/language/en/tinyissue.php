@@ -140,6 +140,7 @@ return array(
 	'project' => 'Project',
 	'projects_description' => 'List of all your projects',
 	'projects' => 'Projects',
+	'projet_Ticket' => 'Project`s tickets',
 	'remove' => 'Remove',
 	'reopen_issue' => 'Reopen Issue',
 	'reopen' => 'Reopen',
@@ -262,7 +263,7 @@ return array(
 	'your_todos' => 'Your TODOs',
 	'website_title' => 'Associated sites',
 	'website_description' => 'Direct links to this project',
-	'website_development' => 'Developpement',
+	'website_dev' => 'Developpement',
 	'website_git' => 'Git repository',
-	'website_production' => 'Production'
+	'website_prod' => 'Production'
 );

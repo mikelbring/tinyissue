@@ -36,7 +36,7 @@ if(count($active_projects)>1){
 <?php
 }
 ?>
-<div id="sidebar_Issues_title" class="sidebarTitles"><?php echo Project::current()->name.': '.__('tinyissue.reports_allissues'); ?></div>
+<div id="sidebar_Issues_title" class="sidebarTitles"><?php echo __('tinyissue.projet_Ticket'); ?></div>
 <div id="sidebar_Issues" class="sidebarItem">
 <h2>
 	<?php if(Auth::user()->permission('project-modify')): ?>

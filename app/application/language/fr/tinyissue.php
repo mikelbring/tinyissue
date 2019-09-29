@@ -142,6 +142,7 @@ return array(
 	'project' => 'Projet',
 	'projects_description' => 'Liste de tous vos projets',
 	'projects' => 'Projets',
+	'projet_Ticket' => 'Billets du projet',
 	'remove' => 'Supprimer',
 	'reopen_issue' => 'Rouvrir le billet',
 	'reopen' => 'Réouvrir',
