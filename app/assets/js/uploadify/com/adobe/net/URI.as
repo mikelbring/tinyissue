@@ -770,6 +770,7 @@ package com.adobe.net
 		 * <listing>
 		 * path/to/my/file.htm
 		 * ../images/logo.gif
+		 * ../images/layout/logo.png
 		 * ../../reports/index.htm
 		 * </listing>
 		 * 

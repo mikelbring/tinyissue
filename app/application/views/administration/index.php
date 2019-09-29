@@ -4,70 +4,75 @@
 </h3>
 
 <div class="pad">
-
-	<table class="table">
-		<tr>
-			<th style="border-top: 1px solid #ddd;"><a href="administration/users"><?php echo __('tinyissue.total_users'); ?></a></th>
-			<td style="border-top: 1px solid #ddd;"><b><?php echo $users; ?></b></td>
-		</tr>
-		<tr>
-			<th><a href="<?php echo URL::to('roles'); ?>"><?php echo __('tinyissue.role'); ?>s</a></th>
-			<td><b><?php echo @$roles; ?></b></td>
-		</tr>
-		<tr>
-			<th><a href="projects"><?php echo __('tinyissue.projects'); ?></a>
-			<div class="adminListe">
-				<a href="projects"><?php echo ($active_projects < 2) ? __('tinyissue.active_project') : __('tinyissue.active_projects'); ?></a><br />
-				<a href="projects?status=0"><?php echo ($archived_projects < 2) ? __('tinyissue.archived_project') : __('tinyissue.archived_projects'); ?></a><br />
-			</div>			
-			</th>
-			<td>
-				<b><?php echo ($active_projects + $archived_projects); ?></b><br />
-				<?php echo ($active_projects == 0) ? __('tinyissue.no_one') : $active_projects; ?><br />
-				<?php echo ($archived_projects == 0) ? __('tinyissue.no_one') : $archived_projects; ?><br />
-			</td>
-		</tr>
-		<tr>
-		</tr>
-		
-		<tr>
-			<th><a href="<?php echo URL::to('tags'); ?>"><?php echo __('tinyissue.tags'); ?></a></th>
-			<td><b><?php echo $tags; ?></b></td>
-		</tr>
-		<tr>
-			<th><?php echo __('tinyissue.issues'); ?>
+	<div class="pad2">
+		<table class="table">
+			<tr>
+				<th style="border-top: 1px solid #ddd;"><a href="administration/users"><?php echo __('tinyissue.total_users'); ?></a></th>
+				<td style="border-top: 1px solid #ddd;"><b><?php echo $users; ?></b></td>
+			</tr>
+			<tr>
+				<th><a href="<?php echo URL::to('roles'); ?>"><?php echo __('tinyissue.role'); ?>s</a></th>
+				<td><b><?php echo @$roles; ?></b></td>
+			</tr>
+			<tr>
+				<th><a href="projects"><?php echo __('tinyissue.projects'); ?></a>
 				<div class="adminListe">
-					<?php echo __('tinyissue.open_issues'); ?><br />
-					<?php echo __('tinyissue.closed_issues'); ?><br />
-				</div>
-			</th>
-			<td><b><?php echo ($issues['open']+$issues['closed']); ?></b><br />
-			<?php echo $issues['open']; ?><br />
-			<?php echo $issues['closed']; ?><br />
-			</td>
-		</tr>
-		<tr>
-			<th><?php echo __('tinyissue.version'); ?>
-				<div class="adminListe">
-				<?php echo __('tinyissue.version'); ?><br />
-				<?php echo __('tinyissue.version_release_numb'); ?><br />
-				<?php echo __('tinyissue.version_release_date'); ?><br />
-				</div>
-			</th>
-			<td>
-				<b><?php echo Config::get('tinyissue.version').Config::get('tinyissue.release'); ?></b><br />
-				<?php echo Config::get('tinyissue.version'); ?><br />
-				<?php echo Config::get('tinyissue.release'); ?><br />
-				<?php echo $release_date = Config::get('tinyissue.release_date'); ?><br />
-			</td>
-		</tr>
-	</table>
-
-</div>
-<div class="pad2">
-	<?php
-		include "../app/application/libraries/checkVersion.php";
-		echo '<h4>'.__('tinyissue.version_check').' : ';
+					<a href="projects"><?php echo ($active_projects < 2) ? __('tinyissue.active_project') : __('tinyissue.active_projects'); ?></a><br />
+					<a href="projects?status=0"><?php echo ($archived_projects < 2) ? __('tinyissue.archived_project') : __('tinyissue.archived_projects'); ?></a><br />
+				</div>			
+				</th>
+				<td>
+					<b><?php echo ($active_projects + $archived_projects); ?></b><br />
+					<?php echo ($active_projects == 0) ? __('tinyissue.no_one') : $active_projects; ?><br />
+					<?php echo ($archived_projects == 0) ? __('tinyissue.no_one') : $archived_projects; ?><br />
+				</td>
+			</tr>
+			<tr>
+			</tr>
+			
+			<tr>
+				<th><a href="<?php echo URL::to('tags'); ?>"><?php echo __('tinyissue.tags'); ?></a></th>
+				<td><b><?php echo $tags; ?></b></td>
+			</tr>
+			<tr>
+				<th><?php echo __('tinyissue.issues'); ?>
+					<div class="adminListe">
+						<?php echo __('tinyissue.open_issues'); ?><br />
+						<?php echo __('tinyissue.closed_issues'); ?><br />
+					</div>
+				</th>
+				<td><b><?php echo ($issues['open']+$issues['closed']); ?></b><br />
+				<?php echo $issues['open']; ?><br />
+				<?php echo $issues['closed']; ?><br />
+				</td>
+			</tr>
+			<tr>
+				<th><?php echo __('tinyissue.version'); ?>
+					<div class="adminListe">
+					<?php echo __('tinyissue.version'); ?><br />
+					<?php echo __('tinyissue.version_release_numb'); ?><br />
+					<?php echo __('tinyissue.version_release_date'); ?><br />
+					</div>
+				</th>
+				<td>
+					<b><?php echo Config::get('tinyissue.version').Config::get('tinyissue.release'); ?></b><br />
+					<?php echo Config::get('tinyissue.version'); ?><br />
+					<?php echo Config::get('tinyissue.release'); ?><br />
+					<?php echo $release_date = Config::get('tinyissue.release_date'); ?><br />
+				</td>
+			</tr>
+		</table>
+	
+	</div>
+	<div class="pad2">
+		<br />
+		<?php
+			include "../app/application/libraries/checkVersion.php";
+			echo '<h4><b>'.__('tinyissue.version_check').'</b> : ';
+			echo '<br /><br />';
+			echo __('tinyissue.version_actuelle');
+			echo ' : '.$verActu.'<br />'.__('tinyissue.version_release_numb').' : '.Config::get('tinyissue.release');
+			echo '<br /><br />';
 			if ($verActu == $verNum) {
 				echo __('tinyissue.version_good').'!';
 				echo '<br /></h4>';
@@ -96,6 +101,7 @@
 					echo '<br /><h4><b>'.__('tinyissue.version_ahead').'</b></h4>';
 				}
 			}
-		echo '<br /><br />';
-	?>
+			echo '<br /><br />';
+		?>
+	</div>
 </div>

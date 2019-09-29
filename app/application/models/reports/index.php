@@ -5,6 +5,7 @@ if ( file_exists("application/language/".Auth::user()->language."/reports.php"))
 	$rappMaLng = require ("application/language/".Auth::user()->language."/reports.php");
 	$rappLng = array_merge($rappLng, $rappMaLng);
 }
+$colonnes = array();
 $config_app = require_once path('public') . 'config.app.php';
 $compte = 0;
 $colorFont = array(0,0,0,0,0,0);
@@ -36,7 +37,7 @@ function EnTete ($pdf, $colonnes, $untel, $rappLng) {
 	global $_POST;
 	$pdf->AddPage();
 	$pdf->SetFillColor(hexdec(substr($_POST["Couleur"], 0, 2)), hexdec(substr($_POST["Couleur"], 2, 2)), hexdec(substr($_POST["Couleur"], 4, 2)));
-	$pdf->Image("../images/logo.png", 12,20,40,18,"png", "");
+	$pdf->Image("assets/images/layout/logo.png", 12,20,40,18,"png", "");
 	$pdf->SetFont("Times", "B", 15);
 	$pdf->Text(86, 28,utf8_decode($rappLng[$_POST["RapType"]][0]));
 	$pdf->SetFont("Times", "", 10);
@@ -47,7 +48,17 @@ function EnTete ($pdf, $colonnes, $untel, $rappLng) {
 	$pdf->SetXY(10, 40);
 	$pdf->SetFont("Times", "B", 12);
 	foreach ($colonnes as $ind => $width) {
+		$Lignes = explode("&&", $rappLng[$_POST["RapType"]][$ind+1]);
+		if (count($Lignes) == 1) {
 			$pdf->Cell($width, 15, utf8_decode($rappLng[$_POST["RapType"]][$ind+1]), 1, 0, "C", true, "");
+		} else {
+			$CePosiX = 13;
+			$pdf->Cell($width, 15, utf8_decode($Lignes[0]), 0, 0, "C", true, "");
+			for($x=0; $x<$ind; $x++) {
+				$CePosiX += $colonnes[$x];
+			}
+			$pdf->Text($CePosiX, 53, utf8_decode($Lignes[1]), 1, 0, "C", true, "");
+		}
 	}
 	$pdf->SetFont("Times", "", 10);
 	$pdf->SetXY(10, 55);
@@ -86,8 +97,6 @@ if ($_POST["RapType"] != 'users_customized') {
 		$untel = strtoupper($Untel[0]->lastname).', '.$Untel[0]->firstname; 
 	}
 	$query .= "ORDER BY ".$OrdreTRI;
-	//echo $query;
-	//exit();
 	$results = \DB::query($query);
 	
 	

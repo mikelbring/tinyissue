@@ -6,6 +6,7 @@ config.app.surete.php
 README.md
 *.css~
 *.js~
+*.css~
 *.php~
 .gitignore~
 install/mysql-structure.php
