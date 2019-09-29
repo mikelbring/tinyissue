@@ -39,9 +39,11 @@ For any coding contribution, please use a git tool ( visit https://git-scm.com/b
 Then, push you modification throw a new branch. NEVER push on master. 
 
 # Changelog
+- v.1.8 : Responsive template.  Now matches the window size wherever you use BUG ( tablet, phone, computer ) 
+    - built during summer 2019, first release on Sept 29th
+- v.1.7 : July 2019 
+	- reports are now totally integrated to BUGS which produces pdf files
 - v.1.6 : February 2019 
-	- correction file 2a: reports are now totally integrated to BUGS which produces pdf files
-								 3 avril 2019
 	- correction file 1i: update system now also updates the config file
 								 23 mars 2019
 	- correction file 1h: Priority ( 1 - 5 ) to every issue ( 0 = closed )
@@ -71,7 +73,7 @@ Then, push you modification throw a new branch. NEVER push on master.
 	
 - v1.5 : 12 July 2015:
 	- fix: Time Display format now configurable, see config.example.php
-	- fix: SQL « tags » table now included during installation
+	- fix: SQL « tags » table not included during installation
 	- fix: Bugs assets now load correctly if inside a subfolder
 
 various layout tweaks.
