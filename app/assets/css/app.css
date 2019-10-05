@@ -1301,8 +1301,8 @@ div.ResuRech {
 }
 
 div.ResuRech, div.ResuRech a{
-	color: #f8e81c;
-	background-color: #38404f;
+	background: #d8d0cf; 
+	color: #660;
 	padding-left: 1%; 
 }
 
@@ -1317,15 +1317,26 @@ div.ResuRech a:hover {
 
 div.Projet {
 	background: url("../images/layout/icon-projects_inactive.png") no-repeat;
+	background-color: #d8d0cf; 
 	padding-left: 15px;
 }
 div.Projet:hover {
 	background: url("../images/layout/icon-projects.png") no-repeat;
+	background-color: black; 
 }
 div.Closed:hover, div.Closed:hover > a {
+	background-color: #333; 
 	color: gray;
 } 
 
+input.inputRech {
+	background-color: #dedfdc;
+	color: black;
+} 
+
+input.inputRech:focus {
+	background-color: white;
+}
 
 @media only screen and (min-width: 300px) {
 	/* Telephone et tablettes - portrait: */
