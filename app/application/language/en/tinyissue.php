@@ -182,6 +182,7 @@ return array(
 	'roles_modify' => 'Apply modifications',
 	'save' => 'Save',
 	'saving' => 'Saving',
+	'search' => 'Search',
 	'second' =>  'second',
 	'select_a_project' =>  'Projects',
 	'settings_updated' => 'Settings Updated',

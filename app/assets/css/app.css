@@ -1293,6 +1293,39 @@ background-image: linear-gradient(to bottom, #292929 6%, #737273 100%);
   }
 }
 
+div.ResuRech {
+	width: 100%;
+	margin: 0;
+	padding-top: 5px;
+	padding-bottom: 10px;
+}
+
+div.ResuRech, div.ResuRech a{
+	color: #f8e81c;
+	background-color: #38404f;
+	padding-left: 1%; 
+}
+
+div.ResuRech:hover, div.ResuRech:hover > a{
+	background-color: black; 
+	color: white;
+}
+
+div.ResuRech a:hover {
+	text-decoration: underline;
+}
+
+div.Projet {
+	background: url("../images/layout/icon-projects_inactive.png") no-repeat;
+	padding-left: 15px;
+}
+div.Projet:hover {
+	background: url("../images/layout/icon-projects.png") no-repeat;
+}
+div.Closed:hover, div.Closed:hover > a {
+	color: gray;
+} 
+
 
 @media only screen and (min-width: 300px) {
 	/* Telephone et tablettes - portrait: */
