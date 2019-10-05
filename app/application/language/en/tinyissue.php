@@ -140,7 +140,7 @@ return array(
 	'project' => 'Project',
 	'projects_description' => 'List of all your projects',
 	'projects' => 'Projects',
-	'projet_Ticket' => 'Project`s tickets',
+	'ptickets' => 'Project`s tickets',
 	'remove' => 'Remove',
 	'reopen_issue' => 'Reopen Issue',
 	'reopen' => 'Reopen',
