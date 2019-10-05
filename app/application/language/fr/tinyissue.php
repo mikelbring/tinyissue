@@ -183,6 +183,7 @@ return array(
 	'roles_modify' => 'Appliquer les modifications',
 	'save' => 'Enregistrer',
 	'saving' => 'Sauvegarde',
+	'search' => 'Recherche',
 	'second' =>  'seconde',
 	'select_a_project' =>  'Vos projets',
 	'settings_updated' => 'Paramètres mis à jour',
