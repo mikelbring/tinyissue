@@ -17,8 +17,8 @@
 			<tr>
 				<th><a href="projects"><?php echo __('tinyissue.projects'); ?></a>
 				<div class="adminListe">
-					<a href="projects"><?php echo ($active_projects < 2) ? __('tinyissue.active_project') : __('tinyissue.active_projects'); ?></a><br />
-					<a href="projects?status=0"><?php echo ($archived_projects < 2) ? __('tinyissue.archived_project') : __('tinyissue.archived_projects'); ?></a><br />
+					<?php echo ($active_projects < 2) ? __('tinyissue.active_project') : __('tinyissue.active_projects'); ?><br />
+					<?php echo ($archived_projects < 2) ? __('tinyissue.archived_project') : __('tinyissue.archived_projects'); ?><br />
 				</div>			
 				</th>
 				<td>
@@ -35,7 +35,7 @@
 				<td><b><?php echo $tags; ?></b></td>
 			</tr>
 			<tr>
-				<th><?php echo __('tinyissue.issues'); ?>
+				<th><a href="user/issues"><?php echo __('tinyissue.issues'); ?></a>
 					<div class="adminListe">
 						<?php echo __('tinyissue.open_issues'); ?><br />
 						<?php echo __('tinyissue.closed_issues'); ?><br />
@@ -47,7 +47,7 @@
 				</td>
 			</tr>
 			<tr>
-				<th><?php echo __('tinyissue.version'); ?>
+				<th><a href="https://github.com/pixeline/bugs/" target="_blank"><?php echo __('tinyissue.version'); ?></a>
 					<div class="adminListe">
 					<?php echo __('tinyissue.version'); ?><br />
 					<?php echo __('tinyissue.version_release_numb'); ?><br />
@@ -74,17 +74,20 @@
 			echo ' : '.$verActu.'<br />'.__('tinyissue.version_release_numb').' : '.Config::get('tinyissue.release');
 			echo '<br /><br />';
 			if ($verActu == $verNum) {
-				echo __('tinyissue.version_good').'!';
+				echo '<a name="Apprécions">'.__('tinyissue.version_good').'!</a>';
 				echo '<br /></h4>';
 			} else if ($verNum == 0) {
 				echo __('tinyissue.version_offline');
 				echo '<br /></h4>';
 				echo '<a href="https://github.com/pixeline/bugs/" target="_blank">https://github.com/pixeline/bugs/</a>';
-			} else {
-				echo '<a href="javascript: agissons.submit();">'.__('tinyissue.version_need').'.</a></h4>';
-				echo __('tinyissue.version_your').' : '.$verActu.'<br />';
-				echo __('tinyissue.version_release_numb').' : '.Config::get('tinyissue.release').'<br />';
+			} else if ($verNum < $verActu) {
+				echo '<h4><b>'.__('tinyissue.version_ahead').'</b></h4>';
+				echo __('tinyissue.version_disp').' : '.$verNum.'<br />';
+				echo __('tinyissue.version_commit').' : '.$verCommit.'<br />';
 				echo '<br />';
+				echo '<a href="https://github.com/pixeline/bugs/releases" target="_blank">'.__('tinyissue.version_details').'</a> <br />';
+			} else {
+				echo '<h4><a href="javascript: agissons.submit();">'.__('tinyissue.version_need').'.</a></h4>';
 				echo __('tinyissue.version_disp').' : '.$verNum.'<br />';
 				echo __('tinyissue.version_commit').' : '.$verCommit.'<br />';
 				echo '<a href="https://github.com/pixeline/bugs/releases" target="_blank">'.__('tinyissue.version_details').'</a> <br />';
@@ -97,9 +100,6 @@
 				echo '<input type="submit" value="'.__('tinyissue.update').'" class="button	primary"/>';
 				echo Form::token();
 				echo '</form>';
-				if ($verNum < $verActu) {
-					echo '<br /><h4><b>'.__('tinyissue.version_ahead').'</b></h4>';
-				}
 			}
 			echo '<br /><br />';
 		?>

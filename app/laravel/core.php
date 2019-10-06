@@ -129,14 +129,12 @@ Autoloader::namespaces(array(
 |
 */
 
-if (magic_quotes())
-{
-	$magics = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
-
-	foreach ($magics as &$magic)
-	{
-		$magic = array_strip_slashes($magic);
-	}
+if (magic_quotes()) {
+	return true;
+//	$magics = array(&$_GET, &$_POST, &$_COOKIE, &$_REQUEST);
+//	foreach ($magics as &$magic) {
+//		$magic = array_strip_slashes($magic);
+//	}
 }
 
 /*

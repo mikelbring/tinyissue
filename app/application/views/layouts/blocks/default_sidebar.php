@@ -36,6 +36,11 @@
 	<?php endforeach ?>
 
 </ul>
+<?php 
+	$ceci = array_keys($_GET);
+	$prefixe = (in_array(@$ceci[0], array("/administration/users","/projects/reports","/user/settings","/user/issues","/project/5"))) ? "../" : "";
+	include_once path('public').'app/vendor/searchEngine/index.php'; 
+?>
 </div>
 
 <script type="text/javascript" >

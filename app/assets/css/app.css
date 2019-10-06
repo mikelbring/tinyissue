@@ -311,7 +311,14 @@ p{
 }
 
 .adduser{
+}
 
+tr th a {
+	font-size: 120%;
+	color: black;
+}
+tr th a:hover {
+	color: #54a4e2;
 }
 
 /* Pourcentage du travail accompli */
@@ -1293,6 +1300,50 @@ background-image: linear-gradient(to bottom, #292929 6%, #737273 100%);
   }
 }
 
+div.ResuRech {
+	width: 100%;
+	margin: 0;
+	padding-top: 5px;
+	padding-bottom: 10px;
+}
+
+div.ResuRech, div.ResuRech a{
+	background: #d8d0cf; 
+	color: #660;
+	padding-left: 1%; 
+}
+
+div.ResuRech:hover, div.ResuRech:hover > a{
+	background-color: black; 
+	color: white;
+}
+
+div.ResuRech a:hover {
+	text-decoration: underline;
+}
+
+div.Projet {
+	background: url("../images/layout/icon-projects_inactive.png") no-repeat;
+	background-color: #d8d0cf; 
+	padding-left: 15px;
+}
+div.Projet:hover {
+	background: url("../images/layout/icon-projects.png") no-repeat;
+	background-color: black; 
+}
+div.Closed:hover, div.Closed:hover > a {
+	background-color: #333; 
+	color: gray;
+} 
+
+input.inputRech {
+	background-color: #dedfdc;
+	color: black;
+} 
+
+input.inputRech:focus {
+	background-color: white;
+}
 
 @media only screen and (min-width: 300px) {
 	/* Telephone et tablettes - portrait: */

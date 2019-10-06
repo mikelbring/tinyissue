@@ -31,12 +31,19 @@ if(count($active_projects)>1){
 </select>
 </fieldset>
 </form>
+<?php
+	$ceci = array_keys($_GET);
+	$prefixe = (substr($ceci[0], 0, 9) == '/project/' && strpos($ceci[0],'issue') == 0) ? '../' : '../../../';
+	$prefixe = (substr($ceci[0], -6) == 'issues') ? '../../' : $prefixe;
+	include_once path('public').'app/vendor/searchEngine/index.php'; 
+?>
+
 </div>
 
 <?php
 }
 ?>
-<div id="sidebar_Issues_title" class="sidebarTitles"><?php echo __('tinyissue.projet_Ticket'); ?></div>
+<div id="sidebar_Issues_title" class="sidebarTitles"><?php echo __('tinyissue.ptickets'); ?></div>
 <div id="sidebar_Issues" class="sidebarItem">
 <h2>
 	<?php if(Auth::user()->permission('project-modify')): ?>
