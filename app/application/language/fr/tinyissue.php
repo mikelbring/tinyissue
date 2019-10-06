@@ -219,7 +219,7 @@ return array(
 	'todos_err_loadfailed' => 'Ce billet n\'est pas une de vos tâches.',
 	'todos_err_update' => 'Un problème est survenu lors de la sauvegarde. Veuillez recharger la page puis réessayer.',
 	'todos_remove' => 'Effacer vos tâches.',
-	'total_users' => 'Nombres d\'utilisateurs',
+	'total_users' => 'Utilisateurs',
 	'update_issue' => 'Mettre à jour le billet',
 	'update_project_description' => 'Changer le nom, l\'état ou supprimer le projet',
 	'update_tag' => 'Mettre à jour cette étiquette',

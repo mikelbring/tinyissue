@@ -41,6 +41,7 @@ Then, push you modification throw a new branch. NEVER push on master.
 # Changelog
 - v.1.8 : Responsive template.  Now matches the window size wherever you use BUG ( tablet, phone, computer ) 
     - built during summer 2019, first release on Sept 29th
+    - includes the very first searching tools which scan all projects and all issues for regular expression
 - v.1.7 : July 2019 
 	- reports are now totally integrated to BUGS which produces pdf files
 - v.1.6 : February 2019 
