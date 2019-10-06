@@ -36,8 +36,6 @@
 	<?php endforeach ?>
 
 </ul>
-</div>
-<div id="sidebar_Search" class="sidebarItem">
 <?php 
 	$ceci = array_keys($_GET);
 	$prefixe = (in_array(@$ceci[0], array("/administration/users","/projects/reports","/user/settings","/user/issues","/project/5"))) ? "../" : "";
@@ -48,8 +46,5 @@
 <script type="text/javascript" >
 	$('#sidebar_MenuDefault_title').click(function() {
 	    $('#sidebar_MenuDefault').toggle('slow');
-	});
-	$('#sidebar_Search').click(function() {
-	    $('#sidebar_Website').toggle('slow');
 	});
 </script>
