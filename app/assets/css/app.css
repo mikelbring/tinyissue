@@ -311,7 +311,14 @@ p{
 }
 
 .adduser{
+}
 
+tr th a {
+	font-size: 120%;
+	color: black;
+}
+tr th a:hover {
+	color: #54a4e2;
 }
 
 /* Pourcentage du travail accompli */
