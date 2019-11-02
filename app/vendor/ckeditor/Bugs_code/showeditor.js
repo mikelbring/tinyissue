@@ -1,8 +1,11 @@
-function showckeditor (Quel) {
+var AllEditors = new Array();
+
+function showckeditor (Quel, id) {
 	CKEDITOR.config.entities = false;
 	CKEDITOR.config.entities_latin = false;
 	CKEDITOR.config.htmlEncodeOutput = false;
-	CKEDITOR.replace( Quel, {
+
+	AllEditors[id] = CKEDITOR.replace( Quel, {
 		language: '<?php echo \Auth::user()->language; ?>',
 		height: 175,
 		toolbar : [
@@ -22,6 +25,17 @@ function AffichonsEditor(id) {
 	var SousDiv = SesDiv[1].childNodes;
 	var SSousDiv = SousDiv[5].childNodes;
 	setTimeout(function() {
-		showckeditor (SSousDiv[1]);
+		showckeditor (SSousDiv[1], id);
 	} , 167);
+}
+
+function CachonsEditor(id) {
+//	var CeComment = document.getElementById(id);
+//	var SesDiv = CeComment.childNodes;
+//	var SousDiv = SesDiv[1].childNodes;
+//	var SSousDiv = SousDiv[5].childNodes;
+//	SSousDiv.value = AllEditors[id].getData();
+
+	return AllEditors[id].getData();
+
 }

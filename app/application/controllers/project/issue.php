@@ -150,11 +150,9 @@ class Project_Issue_Controller extends Base_Controller {
 	 */
 	public function post_edit_comment() {
 		if(Input::get('body')) {
-			$comment = Project\Issue\Comment::find(str_replace('comment', '', Input::get('id')))
-					->fill(array('comment' => str_replace("'", "`", Input::get('body'))))
-					->save();
-
-			return Project\Issue\Comment::format(Input::get('body'));
+			$comment = \Project\Issue\Comment::edit_comment(str_replace('comment', '', Input::get('id')), str_replace("'", "`", Input::get('body')));
+			return true;
+//			return Project\Issue\Comment::format(Input::get('body'));
 		}
 	}
 
