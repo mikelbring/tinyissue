@@ -1,4 +1,7 @@
-<?php $config_app = require path('public') . 'config.app.php'; ?>
+<?php 
+$config_app = require path('public') . 'config.app.php';
+$url =\URL::home();
+?>
 <h3>
 	<?php echo __('tinyissue.create_a_new_issue'); ?>
 	<span><?php echo __('tinyissue.create_a_new_issue_in'); ?> <a href="<?php echo $project->to(); ?>"><?php echo $project->name; ?></a></span>
@@ -6,7 +9,7 @@
 
 <div class="pad">
 
-	<form method="post" action="">
+	<form method="post" action="" enctype="multipart/form-data">
 
 		<table class="form" style="width: 100%;">
 			<tr>
@@ -118,25 +121,37 @@ function IMGupload(input) {
 	var IDcomment = 'comment' + new Date().getTime();
 	var fil = document.getElementById("file_upload").files[0];
 	var ext = fil['name'].substring(fil['name'].lastIndexOf('.') + 1).toLowerCase();
+	var img = "<?php echo $url; ?>app/assets/images/icons/file_01.png?"; 
+	var formdata = new FormData();
 	var formdata = new FormData();
 	formdata.append("Loading", fil);
+	if (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg") { 
+		img = "<?php echo $url; ?>uploads/" + fil['name'];
+	} else if (xhttpCHK.responseText == 'yes' ) {
+		img = "<?php echo $url; ?>app/assets/images/upload_type/" + ext + ".png";
+	}
 	var xhttpUPLD = new XMLHttpRequest();
-	var NextPage = '<?php echo substr($_SERVER['REQUEST_URI'], 0, strlen($_SERVER['REQUEST_URI'])-4); ?>/1/upload?Nom=' + fil['name'] + '&Who=' + <?php echo \Auth::user()->id; ?> + '&ext=' + ext;
+	//var NextPage = '<?php echo substr($_SERVER['REQUEST_URI'], 0, strlen($_SERVER['REQUEST_URI'])-4); ?>/1/upload?Nom=' + fil['name'] + '&Who=' + <?php echo \Auth::user()->id; ?> + '&ext=' + ext;
+	var NextPage = '<?php echo substr($_SERVER['REQUEST_URI'], 0, strlen($_SERVER['REQUEST_URI'])-3); ?>1/upload?Nom=' + fil['name'];
+	NextPage = NextPage + '&ext=' + ext;
+	NextPage = NextPage + '&fileName=' + fil['name'];
+	NextPage = NextPage + '&icone=' + img;
+
 	xhttpUPLD.onreadystatechange = function() {
 		if (this.readyState == 3 ) {
 			document.getElementById('div_barupload').style.display = "block";
 		}
 		if (this.readyState == 4 && this.status == 200) {
 			var adLi = document.createElement("LI");
-			var img = "../../../../app/assets/images/icons/file_01.png?"; 
+			var img = "<?php echo $url; ?>app/assets/images/icons/file_01.png?"; 
 			adLi.className = 'comment';
 			adLi.id = IDcomment;
 			document.getElementById('ul_IssueDiscussion').appendChild(adLi);
 			if (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg") { 
-				var img = "../../../../uploads/" + fil['name'];
+				var img = "<?php echo $url; ?>uploads/" + fil['name'];
 			}
 			var msg = '<div class="insides"><div class="topbar"><div class="data">';
-			msg = msg + '<a href="../../../../uploads/' + fil['name'] + "?" + new Date().getTime() + '" target="_blank" />';
+			msg = msg + '<a href="<?php echo $url; ?>uploads/' + fil['name'] + "?" + new Date().getTime() + '" target="_blank" />';
 			msg = msg + '<img src="' + img + '" height="30" align="right" border="0" />';
 			msg = msg + '</a>';
 			msg = msg + ((xhttpUPLD.responseText == 0) ? '<?php echo __('tinyissue.fileupload_succes'); ?>' : '<?php echo __('tinyissue.fileupload_failed'); ?>' );

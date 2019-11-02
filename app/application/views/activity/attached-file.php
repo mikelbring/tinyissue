@@ -6,7 +6,7 @@ $What = \DB::table('projects_issues_attachments')->where('id', '=', $activity->a
 ?>
 <li id="comment<?php echo $activity->id; ?>" class="comment">
 	<div class="tag">
-		<img src="<?php echo $url; ?>../app/assets/images/icons/attached.png" height="30" align="left" />
+		<img src="<?php echo $url; ?>app/assets/images/icons/attached.png" height="30" align="left" />
 	</div>
 
 	<div class="data">
@@ -18,7 +18,7 @@ $What = \DB::table('projects_issues_attachments')->where('id', '=', $activity->a
 						////Le nouveau mode d'enregistrement n'impose plus les caractères "../" à l'enregistrement de l'adresse
 						if (substr($What[0]->filename, 0, 3) == '../' ) { $What[0]->filename = substr($What[0]->filename, 3); }
 						echo '<a href="'.$url.$What[0]->filename.'" target="_blank" />';
-						echo '<img src="'.$url.(( in_array(strtolower($What[0]->fileextension), array('jpg','jpeg','gif','png'))) ? $What[0]->filename : ((( in_array(strtolower($What[0]->fileextension).'.png', $FileTypes)) ? '../../../../app/assets/images/upload_type/'.$What[0]->fileextension.'.png' : '../../../../app/assets/images/icons/file_01.png'))).'" height="30" align="right" border="0" />';
+						echo '<img src="'.$url.(( in_array(strtolower($What[0]->fileextension), array('jpg','jpeg','gif','png'))) ? $What[0]->filename : ((( in_array(strtolower($What[0]->fileextension).'.png', $FileTypes)) ? 'app/assets/images/upload_type/'.$What[0]->fileextension.'.png' : 'app/assets/images/icons/file_01.png'))).'" height="30" align="right" border="0" />';
 						echo '</a>';
 						echo '<span style="font-weight: bold; color: #090;">'.__('tinyissue.fileuploaded').'</span> ';
 						echo '&nbsp;( <a href="'.$url.$What[0]->filename.'" style="font-weight: bold; color: #009; text-decoration:underline;" target="_blank">';
