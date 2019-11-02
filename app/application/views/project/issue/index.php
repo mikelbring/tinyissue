@@ -1,6 +1,7 @@
 <?php 
 $config_app = require path('public') . 'config.app.php';  
 if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = array("black","Orchid","Cyan","Lime","orange","red"); }
+$url =\URL::home();
 ?>
 <h3>
 	<a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue"><?php echo __('tinyissue.new_issue'); ?></a>
@@ -262,7 +263,7 @@ function IMGupload(input) {
 	var IDcomment = 'comment' + new Date().getTime();
 	var fil = document.getElementById("file_upload").files[0];
 	var ext = fil['name'].substring(fil['name'].lastIndexOf('.') + 1).toLowerCase();
-	var img = "../../../../app/assets/images/icons/file_01.png?"; 
+	var img = "<?php echo $url; ?>app/assets/images/icons/file_01.png?"; 
 	var xhttpCHK = new XMLHttpRequest();
 	var CheckPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/checkExt?ext=' + ext;
 	xhttpCHK.onreadystatechange = function() {
@@ -270,9 +271,9 @@ function IMGupload(input) {
 			var formdata = new FormData();
 			formdata.append("Loading", fil);
 			if (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg") { 
-				img = "../../../../uploads/" + fil['name'];
+				img = "<?php echo $url; ?>uploads/" + fil['name'];
 			} else if (xhttpCHK.responseText == 'yes' ) {
-				img = "../../../../app/assets/images/upload_type/" + ext + ".png";
+				img = "<?php echo $url; ?>app/assets/images/upload_type/" + ext + ".png";
 			}
 			var xhttpUPLD = new XMLHttpRequest();
 			var NextPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/upload?Nom=' + fil['name'];

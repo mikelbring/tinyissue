@@ -370,6 +370,7 @@ class Project_Issue_Controller extends Base_Controller {
 			////We give it the next available issue number
 			$NxIssue = \DB::table('projects_issues')->order_by('id','DESC')->get();
 			$Issue = $NxIssue[0]->id + 1;
+//			$Issue = 'New/'.$Qui.'/'.date("Ymd");
 			////We give it the next available issue comment number
 			$Quel = \DB::table('projects_issues_comments')->order_by('id','DESC')->get();
 			$idComment = $Quel[0]->id + 1;
@@ -403,6 +404,7 @@ class Project_Issue_Controller extends Base_Controller {
 				break;
 		}
 
+		//Third process the file
 		if(move_uploaded_file($TheFile["tmp_name"], $rep.$fileName)) {
 			$msg = $msg + 1;
 			//Make sure the file will be openable to all users, not only the php engine
@@ -422,7 +424,10 @@ class Project_Issue_Controller extends Base_Controller {
 		} else {
 			return 0;
 		}
+		
+		//Forth: Show on user's desk
 		if (is_numeric($msg)) {
+			$rep = (substr($rep, 0, 3) == '../') ? substr($rep, 3) : $rep;
 			$msg .= ';';
 			$msg .= '<div class="insides"><div class="topbar"><div class="data">';
 			$msg .= '<span style="font-weight: bold; color: #090;">'.__('tinyissue.fileuploaded').'</span>';
