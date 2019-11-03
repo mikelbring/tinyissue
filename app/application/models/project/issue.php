@@ -13,32 +13,28 @@ class Issue extends \Eloquent {
 	/**
 	* @return User
 	*/
-	public function user()
-	{
+	public function user() {
 		return $this->belongs_to('\User', 'created_by');
 	}
 
 	/**
 	* @return User
 	*/
-	public function assigned()
-	{
+	public function assigned() {
 		return $this->belongs_to('\User', 'assigned_to');
 	}
 
 	/**
 	* @return User
 	*/
-	public function updated()
-	{
+	public function updated() {
 		return $this->belongs_to('\User', 'updated_by');
 	}
 
 	/**
 	* @return User
 	*/
-	public function closer()
-	{
+	public function closer() {
 		return $this->belongs_to('\User', 'closed_by');
 	}
 
@@ -46,13 +42,11 @@ class Issue extends \Eloquent {
 	* @return Collection
 	*/
 
-	public function tags()
-	{
+	public function tags() {
 		return $this->has_many_and_belongs_to('\Tag', 'projects_issues_tags', 'issue_id', 'tag_id');
 	}
 
-	public function activity($activity_limit = 5)
-	{
+	public function activity($activity_limit = 5) {
 
 		$users = $comments = $activity_type = array();
 
@@ -156,21 +150,16 @@ class Issue extends \Eloquent {
 
 	}
 
-
-
-	public function comments()
-	{
+	public function comments() {
 		return $this->has_many('Project\Issue\Comment', 'issue_id')
 			->order_by('created_at', 'ASC');
 	}
 
-	public function comment_count()
-	{
+	public function comment_count() {
 		return $this->has_many('Project\Issue\Comment', 'issue_id')->count();
 	}
 
-	public function attachments()
-	{
+	public function attachments() {
 		return $this->has_many('Project\Issue\Attachment', 'issue_id')->where('comment_id', '=', 0);
 	}
 
@@ -180,8 +169,7 @@ class Issue extends \Eloquent {
 	* @param  string  $url
 	* @return string
 	*/
-	public function to($url = '')
-	{
+	public function to($url = '') {
 		return \URL::to('project/' . $this->project_id . '/issue/' . $this->id . (($url) ? '/'. $url : ''));
 	}
 
@@ -191,8 +179,7 @@ class Issue extends \Eloquent {
 	* @param  int  $user_id
 	* @return void
 	*/
-	public function reassign($user_id)
-	{
+	public function reassign($user_id) {
 		$old_assignee = $this->assigned_to;
 
 		$this->assigned_to = $user_id;
@@ -438,8 +425,7 @@ class Issue extends \Eloquent {
 	*
 	* @return Issue
 	*/
-	public static function current()
-	{
+	public static function current() {
 		return static::$current;
 	}
 
@@ -449,8 +435,7 @@ class Issue extends \Eloquent {
 	* @param   int   $id
 	* @return  Issue
 	*/
-	public static function load_issue($id)
-	{
+	public static function load_issue($id) {
 		static::$current = static::find($id);
 
 		return static::$current;
@@ -478,7 +463,7 @@ class Issue extends \Eloquent {
 			);
 		}
 
-		//Modificated to include the feather « duration »
+		//Create the new issue into database
 		$input['duration'] = ((isset($input['duration'])) ? $input['duration'] : 30);
 		$fill = array(
 			'created_by' => \Auth::user()->id,
@@ -486,16 +471,17 @@ class Issue extends \Eloquent {
 			'title' => $input['title'],
 			'body' => $input['body'],
 			'duration' => $input['duration'],
-			'status' => $input['status']
+			'status' => $input['status'],
+			'assigned_to' => $input['assigned_to']
 		);
 
 		if(\Auth::user()->permission('issue-modify')) {
-			$fill['assigned_to'] = $input['assigned_to'];
+			$issue = new static;
+			$issue->fill($fill);
+			$issue->save();
+		} else {
+			return false;
 		}
-
-		$issue = new static;
-		$issue->fill($fill);
-		$issue->save();
 
 		/* Create tags */
 		$issue->set_tags('create');
@@ -504,7 +490,72 @@ class Issue extends \Eloquent {
 		\User\Activity::add(1, $project->id, $issue->id);
 
 		/* Add attachments to issue */
-		\DB::table('projects_issues_attachments')->where('upload_token', '=', $input['token'])->where('uploaded_by', '=', \Auth::user()->id)->update(array('issue_id' => $issue->id));
+			//Step 1 : Catch all files' names
+			$url =\URL::home();
+			$url ="../";
+			$chemin = $url."uploads/New/".\Auth::user()->id."/";
+
+			if (file_exists($chemin)) {
+				$attacheds = scandir($chemin);
+				$attached = array();
+				$content = "";
+				$rendu = 0;
+				if (count($attacheds) >2) {
+					foreach ($attacheds as $filename) {
+						if (!in_array($filename , array(".", ".."))) { 
+							$attached[$rendu] = $filename;
+							$filesize[$rendu] = filesize($chemin.$filename);
+							$fileextn[$rendu] = substr($filename, strrpos($filename, ".")+1);
+							$content .= '<a href="'.$url.$issue->id.'/'.$filename.'" target="_blank">'.$filename.'</a><br />';
+							$rendu = $rendu + 1; 
+						}
+					}
+				}
+
+				//Step 2: Create a first comment to this issue
+				$fill = array(
+					'created_by' => \Auth::user()->id,
+					'project_id' => $project->id,
+					'issue_id' => $issue->id,
+					'comment' => $content,
+					'created_at' => date("Y-m-d H:i:s"),
+					'updated_at' => date("Y-m-d H:i:s")
+				);
+				$comment_id = \DB::table('projects_issues_comments')->insert_get_id($fill);
+
+				$content = str_replace(date("Ymd"."_"), $comment_id."_", $content);
+				\DB::table('projects_issues_comments')->where('id', '=', $comment_id)->update(array('comment' => $content));
+	
+				//Step 3 : move files from /uploads/New/id_user/date_ to /uplaods/id_issue/id_comment_
+				////Prepare the sub-directory for files
+				$newDir = $url."uploads/".$issue->id;
+				mkdir($newDir);
+				////Moving files themselves
+				foreach ($attached as $ind => $filename) {
+					$nouvNom = str_replace(date("Ymd")."_", $comment_id."_", $filename);
+					copy($chemin.$filename, $url."uploads/".$issue->id."/".$nouvNom);
+					unlink($url."uploads/New/".\Auth::user()->id."/".$filename);
+
+					////Create info into project_issues_attachments table
+					$attached_id = \DB::table('projects_issues_attachments')->insert_get_id(array(
+						'issue_id'=>$issue->id,
+						'comment_id'=>$comment_id,
+						'uploaded_by'=>\Auth::user()->id,
+						'filesize'=>$filesize[$ind],
+						'filename'=>"uploads/".$issue->id."/".$nouvNom,
+						'fileextension'=>$fileextn[$ind],
+						'upload_token'=>time(),
+						'created_at'=>date("Y-m-d H:i:s"),
+						'updated_at'=>date("Y-m-d H:i:s")
+					));
+					\User\Activity::add(7, $project->id, $issue->id, $attached_id, $nouvNom);
+				}
+			}
+		/* End of Add attachments to issue */
+
+		//Avant le 2019-11-03, l'inscription du fichier s'était faite lors de la création avec un numéro de billet approximatif et un numéro de commentaire approximatif
+		//C'était la ligne suivante qui servait 
+//		\DB::table('projects_issues_attachments')->where('upload_token', '=', $input['token'])->where('uploaded_by', '=', \Auth::user()->id)->update(array('issue_id' => $issue->id));
 
 		/* Notify the person being assigned to. */
 		/* If no one is assigned, notify all users who are assigned to this project and who have permission to modify the issue. */

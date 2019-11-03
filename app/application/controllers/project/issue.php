@@ -364,16 +364,17 @@ class Project_Issue_Controller extends Base_Controller {
 		$now = date("Y-m-d H:i:s");
 		$Issue = Project\Issue::current()->id;
 		$Project = Project::current()->id;
+		$rep = (substr($pref["directory"], 0, 1) == '/') ? $pref["directory"] : "../".$pref["directory"];
+
 		//Common data for the insertion into database: file's type, date, ect
 		if ($Issue == 1) {		
-			//Attach a file to a new issue 
-			////We give it the next available issue number
-			$NxIssue = \DB::table('projects_issues')->order_by('id','DESC')->get();
-			$Issue = $NxIssue[0]->id + 1;
-//			$Issue = 'New/'.$Qui.'/'.date("Ymd");
-			////We give it the next available issue comment number
-			$Quel = \DB::table('projects_issues_comments')->order_by('id','DESC')->get();
-			$idComment = $Quel[0]->id + 1;
+			//Attach a file to a new issue
+			////We'll keep uploaded files in uploads/New/date directory until the issue will be created 
+			$Issue = 'New/'.$Qui;
+			$idComment = date("Ymd");
+			if (!file_exists($rep."New")) {
+				if (mkdir ($rep."New", 0775)) { $msg = $msg + 1; }
+			}
 		} else {
 			//Attach a file to an existing issue
 			$Quel = \DB::table('projects_issues_comments')->where('issue_id', '=', $Issue)->order_by('id','DESC')->get();
@@ -381,9 +382,8 @@ class Project_Issue_Controller extends Base_Controller {
 		}
 
 		//Preparing the name and directories' names according to user preferences
-		///First: preparing the directories
+		///First step: preparing the directories
 		$TheFile	= $_FILES["Loading"];
-		$rep = (substr($pref["directory"], 0, 1) == '/') ? $pref["directory"] : "../".$pref["directory"];
 		if($pref["method"] == 'i') {
 			if (!file_exists($rep."/".$Issue."/".$idComment)) {
 				if (!file_exists($rep.$Issue)) {
@@ -393,7 +393,7 @@ class Project_Issue_Controller extends Base_Controller {
 			$rep = $rep.$Issue."/";
 		}
 
-		////Second: setting the file's name
+		////Second step: setting the file's name
 		$fileName = (($pref["method"] == 'i') ? "" : $Issue."_").$idComment."_".$_GET["Nom"];	//Default value  ( 'ICN' )
 		switch ($pref["format"]) {
 			case "NCI":
@@ -404,7 +404,7 @@ class Project_Issue_Controller extends Base_Controller {
 				break;
 		}
 
-		//Third process the file
+		//Third step: process the file
 		if(move_uploaded_file($TheFile["tmp_name"], $rep.$fileName)) {
 			$msg = $msg + 1;
 			//Make sure the file will be openable to all users, not only the php engine
@@ -415,17 +415,18 @@ class Project_Issue_Controller extends Base_Controller {
 			////775 = Everything for owner and group, read and execute for strangers
 			////776 = Everything for owner and group, read and write for strangers
 			if (chmod($rep.$fileName, "0775")) { $msg = $msg + 1; }
-
-			//Keep track into the database
+		} else {
+			return 0;
+		}
+		//Forth step: Store it into database
+		if ($Issue != 'New/'.$Qui) {		
 			//Modifié le 23 juin 2019, retrait des  "../" imposés dans l'enregistrement de l'adresse
 			\DB::table('projects_issues_attachments')->insert(array('id'=>NULL,'issue_id'=>$Issue,'comment_id'=>$idComment,'uploaded_by'=>$Qui,'filesize'=>$TheFile["size"],'filename'=>str_replace("../", "", $rep).$fileName,'fileextension'=>$_GET["ext"],'upload_token'=>$TheFile["tmp_name"],'created_at'=>$now,'updated_at'=>$now) );
 			$Quel = \DB::table('projects_issues_attachments')->where('issue_id', '=', $Issue)->order_by('id','DESC')->get();
 			if (\User\Activity::add(7, $Project, $Issue, $Quel[0]->id, $fileName )) { $msg = $msg + 1; } else { $msg = $TheFile["error"]; }
-		} else {
-			return 0;
 		}
 		
-		//Forth: Show on user's desk
+		//Fifth: Show on user's desk
 		if (is_numeric($msg)) {
 			$rep = (substr($rep, 0, 3) == '../') ? substr($rep, 3) : $rep;
 			$msg .= ';';

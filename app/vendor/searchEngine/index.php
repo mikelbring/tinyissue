@@ -13,9 +13,7 @@ function Cherchons(Quoi) {
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
 	    if (this.readyState == 4 && this.status == 200) {
-//		   if (document.getElementById('sidebar_MenuDefault')) { document.getElementById('sidebar_MenuDefault').style.display = 'none'; }
 		   if (document.getElementById('sidebar_Issues')) { document.getElementById('sidebar_Issues').style.display = 'none'; }
-//		   if (document.getElementById('sidebar_Projects')) { document.getElementById('sidebar_Projects').style.display = 'none'; }
 		   if (document.getElementById('sidebar_Users')) { document.getElementById('sidebar_Users').style.display = 'none'; }
 			var valeur = this.responseText;
 	    	document.getElementById('div_ResultatsRech').innerHTML = valeur;
