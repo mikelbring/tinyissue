@@ -121,14 +121,14 @@ function IMGupload(input) {
 	var IDcomment = 'comment' + new Date().getTime();
 	var fil = document.getElementById("file_upload").files[0];
 	var ext = fil['name'].substring(fil['name'].lastIndexOf('.') + 1).toLowerCase();
-	var img = "<?php echo $url; ?>app/assets/images/icons/file_01.png?"; 
+	var img = "app/assets/images/icons/file_01.png?"; 
 	var formdata = new FormData();
 	var formdata = new FormData();
 	formdata.append("Loading", fil);
 	if (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg") { 
-		img = "<?php echo $url; ?>uploads/" + fil['name'];
+		img = "uploads/New/<?php echo \Auth::user()->id.'/'.date("Ymd").'_'; ?>" + fil['name'];
 	} else if (xhttpCHK.responseText == 'yes' ) {
-		img = "<?php echo $url; ?>app/assets/images/upload_type/" + ext + ".png";
+		img = "app/assets/images/upload_type/" + ext + ".png";
 	}
 	var xhttpUPLD = new XMLHttpRequest();
 	//var NextPage = '<?php echo substr($_SERVER['REQUEST_URI'], 0, strlen($_SERVER['REQUEST_URI'])-4); ?>/1/upload?Nom=' + fil['name'] + '&Who=' + <?php echo \Auth::user()->id; ?> + '&ext=' + ext;
@@ -143,21 +143,18 @@ function IMGupload(input) {
 		}
 		if (this.readyState == 4 && this.status == 200) {
 			var adLi = document.createElement("LI");
-			var img = "<?php echo $url; ?>app/assets/images/icons/file_01.png?"; 
 			adLi.className = 'comment';
 			adLi.id = IDcomment;
 			document.getElementById('ul_IssueDiscussion').appendChild(adLi);
-			if (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg") { 
-				var img = "<?php echo $url; ?>uploads/" + fil['name'];
-			}
 			var msg = '<div class="insides"><div class="topbar"><div class="data">';
-			msg = msg + '<a href="<?php echo $url; ?>uploads/' + fil['name'] + "?" + new Date().getTime() + '" target="_blank" />';
-			msg = msg + '<img src="' + img + '" height="30" align="right" border="0" />';
+			msg = msg + '<a href="<?php echo $url; ?>uploads/New/<?php echo \Auth::user()->id.'/'.date("Ymd").'_'; ?>' + fil['name'] + "?" + new Date().getTime() + '" target="_blank" />';
+			msg = msg + '<img src="<?php echo $url; ?>' + img + '" height="30" align="right" border="0" />';
 			msg = msg + '</a>';
-			msg = msg + ((xhttpUPLD.responseText == 0) ? '<?php echo __('tinyissue.fileupload_succes'); ?>' : '<?php echo __('tinyissue.fileupload_failed'); ?>' );
-			if (xhttpUPLD.responseText == 0) { msg = msg + '<a href="' + img + '" target="_blank">'; }
+			msg = msg + ((xhttpUPLD.responseText != 0) ? '<?php echo __('tinyissue.fileupload_succes'); ?>' : '<?php echo __('tinyissue.fileupload_failed'); ?>' );
+			if (xhttpUPLD.responseText != 0) { msg = msg + '<a href="<?php echo $url; ?>uploads/New/<?php echo \Auth::user()->id.'/'.date("Ymd").'_'; ?>' + fil['name'] + "?" + new Date().getTime() + '" tlank">'; }
 			msg = msg + '<b>' + fil['name'] + '</b>';
-			if (xhttpUPLD.responseText == 0) { msg = msg + '</a>'; }
+			if (xhttpUPLD.responseText != 0) { msg = msg + '</a>'; }
+			
 			msg = msg + '</div></div></div>';
 			document.getElementById(IDcomment).innerHTML = msg;
 			document.getElementById("file_upload").value = "";
