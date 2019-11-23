@@ -3,8 +3,9 @@ $config_app = require path('public') . 'config.app.php';
 $url =\URL::home();
 
 //Clean the sub-directory from previously uploaded files - if ever the previous ticket creation aborted
-$chemin = $url."uploads/New/".\Auth::user()->id."/";
-if (files_exists($url."New/".\DB::user->id();)) {
+$chemin = $url."uploads/New/".\Auth::user()->id;
+if (file_exists($chemin)) {
+	$chemin .= "/"; 
 	$attacheds = scandir($chemin);
 	foreach ($attacheds as $filename) {
 		if (!in_array($filename , array(".", ".."))) { unlink($chemin.$filename); } 
