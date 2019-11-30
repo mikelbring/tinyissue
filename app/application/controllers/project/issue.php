@@ -110,21 +110,36 @@ class Project_Issue_Controller extends Base_Controller {
 	 * @return View
 	 */
 	public function get_edit() {
-		Asset::add('tag-it-js', '/app/assets/js/tag-it.min.js', array('jquery', 'jquery-ui'));
-		Asset::add('tag-it-css-base', '/app/assets/css/jquery.tagit.css');
-		Asset::add('tag-it-css-zendesk', '/app/assets/css/tagit.ui-zendesk.css');
+		if (@$_GET["ticketAct"] == 'changeProject') {
+			//Change the asssociation between this issue and its related project
+			$msg = 0;
+			$NumNew = intval(substr(Input::get('projectNew'), strrpos(Input::get('projectNew'), "/")+1));
 
-		/* Get tags as string */
-		$issue_tags = '';
-		foreach(Project\Issue::current()->tags as $tag) {
-			$issue_tags .= (!empty($issue_tags) ? ',' : '') . $tag->tag;
+			$result  = __('tinyissue.edit_issue')." : ";
+			$Modif = \DB::table('projects_issues_comments')->where('project_id', '=', intval(Input::get('projetOld')))->where('issue_id', '=', intval(Input::get('ticketNum')), 'AND')->update(array('project_id' => $NumNew));
+			$result .= ($Modif) ? "Succès" : "Échec";
+			$Modif = Project\Issue::where('project_id', '=', intval(Input::get('projetOld')))->where('id', '=', intval(Input::get('ticketNum')))->update(array('project_id' => $NumNew, 'updated_by' => \Auth::user()->id));
+			$result .= ($Modif) ? "Succès" : "Échec";
+			if (\User\Activity::add(8, intval(Input::get('projetOld')), Input::get('ticketNum'), $NumNew, "From ".Input::get('projetOld')." to ".$NumNew )) { $msg = $msg + 1; } else { $msg = $TheFile["error"]; }
+
+			return Redirect::to("project/".$NumNew."/issues?tag_id=1");
+
+		} else {
+			Asset::add('tag-it-js', '/app/assets/js/tag-it.min.js', array('jquery', 'jquery-ui'));
+			Asset::add('tag-it-css-base', '/app/assets/css/jquery.tagit.css');
+			Asset::add('tag-it-css-zendesk', '/app/assets/css/tagit.ui-zendesk.css');
+	
+			/* Get tags as string */
+			$issue_tags = '';
+			foreach(Project\Issue::current()->tags as $tag) {
+				$issue_tags .= (!empty($issue_tags) ? ',' : '') . $tag->tag;
+			}
+			return $this->layout->nest('content', 'project.issue.edit', array(
+				'issue' => Project\Issue::current(),
+				'issue_tags' => $issue_tags,
+				'project' => Project::current()
+			));
 		}
-
-		return $this->layout->nest('content', 'project.issue.edit', array(
-			'issue' => Project\Issue::current(),
-			'issue_tags' => $issue_tags,
-			'project' => Project::current()
-		));
 	}
 
 	public function post_edit() {

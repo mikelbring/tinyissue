@@ -71,6 +71,55 @@
 	</form>
 
 </div>
+
+<?php
+$active_projects =Project\User::active_projects();
+if (count($active_projects)>1 && $issue->closed_by == 0 ) {
+?>
+<hr style="width: 80%; margin-top: 50px; margin-bottom: 40px;" />
+<div id="ChangeProjectthisIssue" style="text-align: left; margin-left: 10%; width: 100%;">
+<!-- 
+	<form class="projects_selector" name="projectChanger">
+ -->
+<form method="GET" action="" name="projectChanger">
+<fieldset class="sidebar_Projects_label"><label for="projects_select"><?php echo __('tinyissue.select_to_project');?> : </label>
+<select name="projectNew" id="project_newSelect" >
+<?php
+	$NbIssues = array();
+	$Proj = array();
+	$SansAccent = array();
+	foreach($active_projects as $row) {
+		$NbIssues[$row->to()] = $row->count_open_issues();
+		$Proj[$row->to()] = $row->name.' ('.$NbIssues[$row->to()].')';
+	}
+	foreach ($Proj as $ind => $val ){
+		$SansAccent[$ind] = htmlentities($val, ENT_NOQUOTES, 'utf-8');
+		$SansAccent[$ind] = preg_replace('#&([A-za-z])(?:uml|circ|tilde|acute|grave|cedil|ring);#', '\1', $SansAccent[$ind]);
+		$SansAccent[$ind] = preg_replace('#&([A-za-z]{2})(?:lig);#', '\1', $SansAccent[$ind]);
+		$SansAccent[$ind] = preg_replace('#&[^;]+;#', '', $SansAccent[$ind]);
+	}
+	asort($SansAccent);
+
+	foreach($SansAccent as $ind => $val) {
+		$selected = (substr($ind, strrpos($ind, "/")+1) == Project::current()->id) ? 'selected':'';
+		echo '<option value="'.(($selected) ? 0 : $ind).'" '.$selected.'>'.$Proj[$ind].'</option>';
+	 }
+?>
+</select>
+&nbsp;&nbsp;&nbsp;
+<input type="submit" value="<?php echo __('tinyissue.selected_to_project'); ?>" style="color: navy; padding: 3px 10px; border:none;" />
+<input type="hidden" name="projetOld" value="<?php echo Project::current()->id; ?>" />
+<input type="hidden" name="ticketNum" value="<?php echo $issue->id; ?>" />
+<input type="hidden" name="ticketAct" value="changeProject" />
+</fieldset>
+</form>
+
+</div>
+<hr style="width: 80%; margin-top: 25px; margin-bottom: 50px;" />
+<?php
+}
+?>
+
 <script type="text/javascript">
 var d = new Date();
 var t = d.getTime();

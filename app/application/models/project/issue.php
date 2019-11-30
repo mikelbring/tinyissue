@@ -97,6 +97,8 @@ class Issue extends \Eloquent {
 		foreach($activities as $row) {
 			switch($row->type_id) {
 				case 2:
+					//using project/issue/activity/comment.php
+					//according to db table activity, field activity's value for id = 2 
 					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issue,
 						'project' => $project,
@@ -107,6 +109,8 @@ class Issue extends \Eloquent {
 					break;
 
 				case 3:
+					//using project/issue/activity/close-issue.php
+					//according to db table activity, field activity's value for id = 3 
 					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issue,
 						'project' => $project,
@@ -116,6 +120,8 @@ class Issue extends \Eloquent {
 					break;
 
 				case 5:
+					//using project/issue/activity/reassing-issue.php
+					//according to db table activity, field activity's value for id = 5 
 					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issue,
 						'project' => $project,
@@ -126,13 +132,23 @@ class Issue extends \Eloquent {
 					break;
 
 				case 6:
+					//using project/issue/activity/update-issue-tags.php
+					//according to db table activity, field activity's value for id = 6 
 					$tag_diff = json_decode($row->data, true);
 					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issue,
 						'project' => $project,
 						'user' => $users[$row->user_id],
 						'tag_diff' => $tag_diff,
-//						'tag_counts' => array('added' => sizeof($tag_diff['added_tags']), 'removed' => sizeof($tag_diff['removed_tags'])),
+						'activity' => $row
+					));
+					break;
+				case 8:
+					//using project/issue/activity/create-issue.php
+					//NOT according to db table activity, field activity's value for id = 8, because this value return "not found file" 
+					$contenuChangeIssueProject = $row;
+					$return[] = \View::make('project/issue/activity/create-issue', array(
+						'user' => $users[$row->user_id],
 						'activity' => $row
 					));
 					break;
