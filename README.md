@@ -14,7 +14,10 @@
 Enjoy!
 
 # Upgrading from a previous installation
+For versions 1.7 and higher
+- just click on "Administration" and follow instructions
 
+If you version is older than september 2018
 - backup config.app.php and your uploads folder.
 - simply replace the codebase with the new version (via an ftp client such as Filezilla).
 - make sure your uploads folder and config.app.php are still there
@@ -42,6 +45,9 @@ Then, push you modification throw a new branch. NEVER push on master.
 - v.1.8 : Responsive template.  Now matches the window size wherever you use BUG ( tablet, phone, computer ) 
     - built during summer 2019, first release on Sept 29th
     - includes the very first searching tools which scan all projects and all issues for regular expression
+    - november 2019: attach files form the issue creating menu
+    - november 2019: wysiwyg editor problems fixed; it could work on every comment
+    - november 2019: you can move issue from project A to project B if you have access to both projects
 - v.1.7 : July 2019 
 	- reports are now totally integrated to BUGS which produces pdf files
 - v.1.6 : February 2019 
