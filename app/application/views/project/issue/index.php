@@ -96,9 +96,11 @@ $url =\URL::home();
 			</div>
 		</li>
 
-		<?php foreach($issue->activity() as $activity): ?>
-			<?php echo $activity; ?>
-		<?php endforeach; ?>
+		<?php 
+			foreach($issue->activity() as $activity) {
+				echo (strlen($activity) > 1) ? $activity : '';
+			}
+		?>
 	</ul>
 	<div id="div_currentlyAssigned_name" class="topbar"></div>
 
@@ -157,6 +159,7 @@ $url =\URL::home();
 			<p>
 				<textarea name="comment" id="textarea_comment_0" style="width: 98%; height: 90px;"></textarea>
 				<!-- New options in the form : percentage of work done after this ticket  -->
+				<br />
 				<span style="text-align: left; width: 50%;">
 				<?php 
 					$percent = ((is_object($Etat)) ? (($Etat->weight == 100) ? 91 : $Etat->weight+1) : 10 );

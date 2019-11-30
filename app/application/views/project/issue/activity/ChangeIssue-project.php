@@ -15,7 +15,6 @@ if (@$activity->attributes['type_id'] == 8) {
 					echo ' - '.date(Config::get('application.my_bugs_app.date_format'), strtotime($activity->attributes['created_at']));
 					echo '<br />';  
 			echo '</div>';
-			echo '<div class="data">';
 				echo __('tinyissue.hasReproject_Origin').' : '.$ProOrig[0]->name;
 				echo '<br />'; 
 				echo __('tinyissue.hasReproject_Destination').' : '.$ProDest[0]->name;
@@ -24,4 +23,4 @@ if (@$activity->attributes['type_id'] == 8) {
 		</div>
 		<div class="clr"></div>
 	</li>
-<?php } ?>
+<?php }  ?>
