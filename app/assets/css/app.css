@@ -801,8 +801,9 @@ div.stat_form {
 .blue-box .activity li .label{
 	float: left;
 	margin-top: 2px;
-	width: 68px;
+	min-width: 68px;
 	text-align: center;
+	margin-right: 5px;
 }
 .blue-box .activity li .tag-activity
 {

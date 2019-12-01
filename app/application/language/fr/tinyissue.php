@@ -94,6 +94,7 @@ return array(
 	'label_created' => 'Créé',
 	'label_reassigned' => 'Réassigné',
 	'label_reopened' => 'Réouvert',
+	'label_reprojected' => 'Déplacé',
 	'language' => 'Langue',
 	'last_name' => 'Nom',
 	'let_update_it' => 'Mettre BUGS à jour',

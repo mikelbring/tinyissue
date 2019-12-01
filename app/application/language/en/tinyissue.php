@@ -93,6 +93,7 @@ return array(
 	'label_created' => 'Created',
 	'label_reassigned' => 'Reassigned',
 	'label_reopened' => 'Reopened',
+	'label_reprojected' => 'Moved',
 	'language' => 'Language',
 	'last_name' => 'Last Name',
 	'let_update_it' => 'Let update Bugs',

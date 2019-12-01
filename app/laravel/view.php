@@ -122,10 +122,8 @@ class View implements ArrayAccess {
 	 * @param  boolean      $return_path
 	 * @return string|bool
 	 */
-	public static function exists($view, $return_path = false)
-	{
-		if (starts_with($view, 'name: ') and array_key_exists($name = substr($view, 6), static::$names))
-		{
+	public static function exists($view, $return_path = false) {
+		if (starts_with($view, 'name: ') and array_key_exists($name = substr($view, 6), static::$names)) {
 			$view = static::$names[$name];
 		}
 		
@@ -138,8 +136,7 @@ class View implements ArrayAccess {
 		// of views in any way they see fit for their application.
 		$path = Event::until(static::loader, array($bundle, $view));
 
-		if ( ! is_null($path))
-		{
+		if ( ! is_null($path)) {
 			return $return_path ? $path : true;
 		}
 
@@ -152,11 +149,12 @@ class View implements ArrayAccess {
 	 * @param  string  $view
 	 * @return string
 	 */
-	protected function path($view)
-	{
-		if ($path = $this->exists($view,true))
-		{
+	protected function path($view) {
+		if ($path = $this->exists($view,true)) {
 			return $path;
+		}
+		if (in_array($view, array("ChangeIssue-project","ChangeIssue-project_acti"))) {
+			return (substr($view, -5) == '_acti') ? "application/views/activity/".substr($view, 0, strlen($view)-5).".php" : "application/views/project/issue/activity/".$view.".php";
 		}
 
 		throw new \Exception("View [$view] doesn't exist.");
@@ -170,19 +168,15 @@ class View implements ArrayAccess {
 	 * @param  string  $directory
 	 * @return string
 	 */
-	public static function file($bundle, $view, $directory)
-	{
+	public static function file($bundle, $view, $directory) {
 		$directory = str_finish($directory, DS);
 
 		// Views may have either the default PHP file extension or the "Blade"
 		// extension, so we will need to check for both in the view path
 		// and return the first one we find for the given view.
-		if (file_exists($path = $directory.$view.EXT))
-		{
+		if (file_exists($path = $directory.$view.EXT)) {
 			return $path;
-		}
-		elseif (file_exists($path = $directory.$view.BLADE_EXT))
-		{
+		} elseif (file_exists($path = $directory.$view.BLADE_EXT)) {
 			return $path;
 		}
 	}
@@ -224,8 +218,7 @@ class View implements ArrayAccess {
 	 * @param  array   $data
 	 * @return View
 	 */
-	public static function of($name, $data = array())
-	{
+	public static function of($name, $data = array()) {
 		return new static(static::$names[$name], $data);
 	}
 
@@ -244,8 +237,7 @@ class View implements ArrayAccess {
 	 * @param  string  $name
 	 * @return void
 	 */
-	public static function name($view, $name)
-	{
+	public static function name($view, $name) {
 		static::$names[$name] = $view;
 	}
 
@@ -264,12 +256,10 @@ class View implements ArrayAccess {
 	 * @param  Closure       $composer
 	 * @return void
 	 */
-	public static function composer($views, $composer)
-	{
+	public static function composer($views, $composer) {
 		$views = (array) $views;
 
-		foreach ($views as $view)
-		{
+		foreach ($views as $view) {
 			Event::listen("laravel.composing: {$view}", $composer);
 		}
 	}
@@ -283,19 +273,15 @@ class View implements ArrayAccess {
 	 * @param  string  $empty
 	 * @return string
 	 */
-	public static function render_each($view, array $data, $iterator, $empty = 'raw|')
-	{
+	public static function render_each($view, array $data, $iterator, $empty = 'raw|') {
 		$result = '';
 
 		// If is actually data in the array, we will loop through the data and
 		// append an instance of the partial view to the final result HTML,
 		// passing in the iterated value of the data array.
-		if (count($data) > 0)
-		{
-			foreach ($data as $key => $value)
-			{
+		if (count($data) > 0) {
+			foreach ($data as $key => $value) {
 				$with = array('key' => $key, $iterator => $value);
-
 				$result .= render($view, $with);
 			}
 		}
@@ -303,14 +289,10 @@ class View implements ArrayAccess {
 		// If there is no data in the array, we will render the contents of
 		// the "empty" view. Alternatively, the "empty view" can be a raw
 		// string that is prefixed with "raw|" for convenience.
-		else
-		{
-			if (starts_with($empty, 'raw|'))
-			{
+		else {
+			if (starts_with($empty, 'raw|')) {
 				$result = substr($empty, 4);
-			}
-			else
-			{
+			} else {
 				$result = render($empty);
 			}
 		}
@@ -323,8 +305,7 @@ class View implements ArrayAccess {
 	 *
 	 * @return string
 	 */
-	public function render()
-	{
+	public function render() {
 		static::$render_count++;
 
 		Event::fire("laravel.composing: {$this->view}", array($this));
@@ -334,8 +315,7 @@ class View implements ArrayAccess {
 		// If there are listeners to the view engine event, we'll pass them
 		// the view so they can render it according to their needs, which
 		// allows easy attachment of other view parsers.
-		if (Event::listeners(static::engine))
-		{
+		if (Event::listeners(static::engine)) {
 			$result = Event::until(static::engine, array($this));
 
 			if ( ! is_null($result)) $contents = $result;
@@ -345,8 +325,7 @@ class View implements ArrayAccess {
 
 		static::$render_count--;
 
-		if (static::$render_count == 0)
-		{
+		if (static::$render_count == 0) {
 			Section::$sections = array();
 		}
 
@@ -358,8 +337,7 @@ class View implements ArrayAccess {
 	 *
 	 * @return string
 	 */
-	public function get()
-	{
+	public function get() {
 		$__data = $this->data();
 
 		// The contents of each view file is cached in an array for the
@@ -371,16 +349,14 @@ class View implements ArrayAccess {
 		// We'll include the view contents for parsing within a catcher
 		// so we can avoid any WSOD errors. If an exception occurs we
 		// will throw it out to the exception handler.
-		try
-		{
+		try {
 			eval('?>'.$__contents);
 		}
 
 		// If we caught an exception, we'll silently flush the output
 		// buffer so that no partially rendered views get thrown out
 		// to the client and confuse the user with junk.
-		catch (\Exception $e)
-		{
+		catch (\Exception $e) {
 			ob_get_clean(); 
 			throw $e;
 		}
@@ -390,8 +366,7 @@ class View implements ArrayAccess {
 		// The view filter event gives us a last chance to modify the
 		// evaluated contents of the view and return them. This lets
 		// us do something like run the contents through Jade, etc.
-		if (Event::listeners('view.filter'))
-		{
+		if (Event::listeners('view.filter')) {
 			return Event::first('view.filter', array($content, $this->path));
 		}
 
@@ -403,16 +378,12 @@ class View implements ArrayAccess {
 	 *
 	 * @return string
 	 */
-	protected function load()
-	{
+	protected function load() {
 		static::$last = array('name' => $this->view, 'path' => $this->path);
 
-		if (isset(static::$cache[$this->path]))
-		{
+		if (isset(static::$cache[$this->path])) {
 			return static::$cache[$this->path];
-		}
-		else
-		{
+		} else {
 			return static::$cache[$this->path] = file_get_contents($this->path);
 		}
 	}
@@ -424,17 +395,14 @@ class View implements ArrayAccess {
 	 *
 	 * @return array
 	 */
-	public function data()
-	{
+	public function data() {
 		$data = array_merge($this->data, static::$shared);
 
 		// All nested views and responses are evaluated before the main view.
 		// This allows the assets used by nested views to be added to the
 		// asset container before the main view is evaluated.
-		foreach ($data as $key => $value) 
-		{
-			if ($value instanceof View or $value instanceof Response)
-			{
+		foreach ($data as $key => $value) {
+			if ($value instanceof View or $value instanceof Response) {
 				$data[$key] = $value->render();
 			}
 		}
@@ -458,8 +426,7 @@ class View implements ArrayAccess {
 	 * @param  array   $data
 	 * @return View
 	 */
-	public function nest($key, $view, $data = array())
-	{
+	public function nest($key, $view, $data = array()) {
 		return $this->with($key, static::make($view, $data));
 	}
 
@@ -472,14 +439,10 @@ class View implements ArrayAccess {
 	 * @param  mixed   $value
 	 * @return View
 	 */
-	public function with($key, $value = null)
-	{
-		if (is_array($key))
-		{
+	public function with($key, $value = null) {
+		if (is_array($key)) {
 			$this->data = array_merge($this->data, $key);
-		}
-		else
-		{
+		} else {
 			$this->data[$key] = $value;
 		}
 
@@ -495,8 +458,7 @@ class View implements ArrayAccess {
 	 * @param  mixed   $value
 	 * @return View
 	 */
-	public function shares($key, $value)
-	{
+	public function shares($key, $value) {
 		static::share($key, $value);
 		return $this;
 	}
@@ -510,64 +472,56 @@ class View implements ArrayAccess {
 	 * @param  mixed   $value
 	 * @return void
 	 */
-	public static function share($key, $value)
-	{
+	public static function share($key, $value) {
 		static::$shared[$key] = $value;
 	}
 
 	/**
 	 * Implementation of the ArrayAccess offsetExists method.
 	 */
-	public function offsetExists($offset)
-	{
+	public function offsetExists($offset) {
 		return array_key_exists($offset, $this->data);
 	}
 
 	/**
 	 * Implementation of the ArrayAccess offsetGet method.
 	 */
-	public function offsetGet($offset)
-	{
+	public function offsetGet($offset) {
 		if (isset($this[$offset])) return $this->data[$offset];
 	}
 
 	/**
 	 * Implementation of the ArrayAccess offsetSet method.
 	 */
-	public function offsetSet($offset, $value)
-	{
+	public function offsetSet($offset, $value) {
 		$this->data[$offset] = $value;
 	}
 
 	/**
 	 * Implementation of the ArrayAccess offsetUnset method.
 	 */
-	public function offsetUnset($offset)
-	{
+	public function offsetUnset($offset) {
 		unset($this->data[$offset]);
 	}
 
 	/**
 	 * Magic Method for handling dynamic data access.
 	 */
-	public function __get($key)
-	{
+	public function __get($key) {
 		return $this->data[$key];
 	}
 
 	/**
 	 * Magic Method for handling the dynamic setting of data.
 	 */
-	public function __set($key, $value)
-	{
+	public function __set($key, $value) {
 		$this->data[$key] = $value;
 	}
 
 	/**
 	 * Magic Method for checking dynamically-set data.
 	 */
-	public function __isset($key)
-	{
+	public function __isset($key) {
 		return isset($this->data[$key]);
 	}
 
@@ -576,8 +530,7 @@ class View implements ArrayAccess {
 	 *
 	 * @return string
 	 */
-	public function __toString()
-	{
+	public function __toString() {
 		return $this->render();
 	}
 
@@ -586,10 +539,8 @@ class View implements ArrayAccess {
 	 *
 	 * This method handles calls to dynamic with helpers.
 	 */
-	public function __call($method, $parameters)
-	{
-		if (strpos($method, 'with_') === 0)
-		{
+	public function __call($method, $parameters) {
+		if (strpos($method, 'with_') === 0) {
 			$key = substr($method, 5);
 			return $this->with($key, $parameters[0]);
 		}

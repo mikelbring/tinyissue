@@ -144,10 +144,9 @@ class Issue extends \Eloquent {
 					));
 					break;
 				case 8:
-					//using project/issue/activity/create-issue.php
-					//NOT according to db table activity, field activity's value for id = 8, because this value return "not found file" 
+					//using project/issue/activity/ChangeIssue-project.php
 					$contenuChangeIssueProject = $row;
-					$return[] = \View::make('project/issue/activity/create-issue', array(
+					$return[] = \View::make('ChangeIssue-project', array(
 						'user' => $users[$row->user_id],
 						'activity' => $row
 					));

@@ -78,80 +78,55 @@ class User extends Eloquent {
 	* @param  int    $activity_limit
 	* @return array
 	*/
-	public function dashboard($activity_limit = 5)
-	{
+	public function dashboard($activity_limit = 5) {
 		$dashboard =  $users = $issues = $projects = $comments = $activity_type = array();
 
 		/* Load the activity types */
-		foreach(Activity::all() as $row)
-		{
+		foreach(Activity::all() as $row) {
 			$activity_type[$row->id] = $row;
 		}
 
 		/* Loop through all the active projects */
-		foreach(Project\User::active_projects() as $project)
-		{
+		foreach(Project\User::active_projects() as $project) {
 			$dashboard[$project->id] = array();
 			$projects[$project->id] = $project;
 
 			/* Loop through all the logic from the project and cache all the needed data so we don't load the same data twice */
-			foreach(User\Activity::where('parent_id', '=', $project->id)->order_by('created_at', 'DESC')->take($activity_limit)->get() as $activity)
-			{
+			foreach(User\Activity::where('parent_id', '=', $project->id)->order_by('created_at', 'DESC')->take($activity_limit)->get() as $activity) {
 				$dashboard[$project->id][] = $activity;
 
-				switch($activity->type_id)
-				{
+				switch($activity->type_id) {
 					case 2:
-
-						if(!isset($issues[$activity->item_id]))
-						{
+						if(!isset($issues[$activity->item_id])) {
 							$issues[$activity->item_id] = Project\Issue::find($activity->item_id);
 						}
-
-						if(!isset($users[$activity->user_id]))
-						{
+						if(!isset($users[$activity->user_id])) {
 							$users[$activity->user_id] = static::find($activity->user_id);
 						}
-
-						if(!isset($comments[$activity->action_id]))
-						{
+						if(!isset($comments[$activity->action_id])) {
 							$comments[$activity->action_id] = Project\Issue\Comment::find($activity->action_id);
 						}
-
 						break;
 
 					case 5:
-
-						if(!isset($issues[$activity->item_id]))
-						{
+						if(!isset($issues[$activity->item_id])) {
 							$issues[$activity->item_id] = Project\Issue::find($activity->item_id);
 						}
-
-						if(!isset($users[$activity->user_id]))
-						{
+						if(!isset($users[$activity->user_id])) {
 							$users[$activity->user_id] = static::find($activity->user_id);
 						}
-
-						if(!isset($users[$activity->action_id]))
-						{
+						if(!isset($users[$activity->action_id])) {
 							$users[$activity->action_id] = static::find($activity->action_id);
 						}
-
-
 						break;
 
 					default:
-
-						if(!isset($issues[$activity->item_id]))
-						{
+						if(!isset($issues[$activity->item_id])) {
 							$issues[$activity->item_id] = Project\Issue::find($activity->item_id);
 						}
-
-						if(!isset($users[$activity->user_id]))
-						{
+						if(!isset($users[$activity->user_id])) {
 							$users[$activity->user_id] = static::find($activity->user_id);
 						}
-
 						break;
 				}
 			}
@@ -160,19 +135,15 @@ class User extends Eloquent {
 		/* Loop through the projects and activity again, building the views for each activity */
 		$return = array();
 
-		foreach($dashboard as $project_id => $activity)
-		{
+		foreach($dashboard as $project_id => $activity) {
 			$return[$project_id] = array(
 				'project' => $projects[$project_id],
 				'activity' => array()
 			);
 
-			foreach($activity as $row)
-			{
-				switch($row->type_id)
-				{
-					case 2:
-
+			foreach($activity as $row) {
+				switch($row->type_id) {
+					case 2:	//Comment
 						$return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
 							'issue' => $issues[$row->item_id],
 							'project' => $projects[$project_id],
@@ -180,11 +151,9 @@ class User extends Eloquent {
 							'comment' => $comments[$row->action_id],
 							'activity' => $row
 						));
-
 					break;
 
-				case 5:
-
+				case 5:	//Re-assign ticket
 					$return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issues[$row->item_id],
 						'project' => $projects[$project_id],
@@ -192,11 +161,9 @@ class User extends Eloquent {
 						'assigned' => $users[$row->action_id],
 						'activity' => $row
 					));
-
 					break;
 					
-				case 6:
-
+				case 6:	//Updated tags
 					$tag_diff = json_decode($row->data, true);
 					$return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issues[$row->item_id],
@@ -206,18 +173,24 @@ class User extends Eloquent {
 						'tag_counts' => array('added' => sizeof($tag_diff['added_tags']), 'removed' => sizeof($tag_diff['removed_tags'])),
 						'activity' => $row
 					));
+					break;
 
+				case 8:	//Move ticket from project A to project B
+					$tag_diff = json_decode($row->data, true);
+					$return[$project_id]['activity'][] = View::make('ChangeIssue-project_acti', array(
+						'issue' => $issues[$row->item_id],
+						'user' => $users[$row->user_id],
+						'activity' => $row
+					));
 					break;
 
 				default:
-
 					$return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issues[$row->item_id],
 						'project' => $projects[$project_id],
 						'user' => $users[$row->user_id],
 						'activity' => $row
 					));
-
 					break;
 				}
 			}
