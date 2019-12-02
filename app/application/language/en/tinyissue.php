@@ -72,7 +72,7 @@ return array(
 	'fileuploaded' => 'Uploaded file ',
 	'first_name' => 'First Name',
 	'format_with_markdown' => 'Format with Markdown',
-	'hasReproject' =>  'has re-associated this issue to its project',
+	'has_been_reproject' =>  'has re-associated this issue to its project',
 	'hasReproject_Destination' =>  'Destionation project',
 	'hasReproject_Origin' =>  'Origin project',
 	'hour' =>  'hour',

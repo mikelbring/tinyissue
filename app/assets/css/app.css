@@ -137,7 +137,12 @@ code{
   background-color: #46a546;
 }
 .label.notice {
-  background-color: #62cffc;
+	color: blue;
+	background-color: #62cffc;
+}
+.label.reproject {
+	color: black;
+	background-color: #fcfd52;
 }
 .label.info {
   background-color: #5f6074;

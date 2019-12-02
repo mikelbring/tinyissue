@@ -6,15 +6,15 @@
 				$ProjDest =\DB::table('projects')->select(array('name'))->where('id','=',$activity->attributes['action_id'])->get();  
 					echo '<b>'.$user->attributes["firstname"].' '.$user->attributes["lastname"].'</b> : ';
 					echo '&nbsp;';
-					echo __('tinyissue.hasReproject');
+					echo __('tinyissue.hasreproject');
 					echo '&nbsp;';
 					echo ' - '.date(Config::get('application.my_bugs_app.date_format'), strtotime($activity->attributes['created_at']));
 					echo '<br />';  
 			echo '</div>';
 			echo '<div class="data" style="margin-left: 2%;">';
-				echo '(&nbsp;'.__('tinyissue.hasReproject_Origin').' ) <b>'.$ProjOrig[0]->name;
-				echo '<span style="font-size: larger; font-weight: bold; color: black;">&nbsp;&nbsp;&rarr;&nbsp;&nbsp;</span>'; 
-				echo $ProjDest[0]->name.'</b> (&nbsp;'.__('tinyissue.hasReproject_Destination').'&nbsp;)';
+				echo __('tinyissue.hasreproject_origin').' : <b>'.$ProjOrig[0]->name.'</b>';
+				echo '<br />'; 
+				echo __('tinyissue.hasreproject_destination').' : <b>'.$ProjDest[0]->name.'</b>';
 			?>
 		</div>
 		</div>
