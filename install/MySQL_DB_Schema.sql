@@ -264,7 +264,8 @@ VALUES
 	(4,'Reopened an issue','reopen-issue'),
 	(5,'Reassigned an issue','reassign-issue'),
 	(6,'Updated issue tags','update-issue-tags'),
-	(7,'Attached a file to issue','attached-file');
+	(7,'Attached a file to issue','attached-file'),
+	(8,'Move an issue from project A to project B',	'ChangeIssue-project');
 #--
 
 #--#Create default tags : id 9

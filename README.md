@@ -6,6 +6,7 @@
 
 # Installing Bugs
 
+- Download from here ( ZIP or git ) ... please prefer the "Stable" version
 - Create a MySQL Database  ( note name and password, you will need them during install process )
 - Make /uploads/ write-able ( CHMOD -R  770 )
 - set  www-data  ( CHOWN -R www-data:www-data )  as owner of the Bugs's main directory and sub-directories
@@ -17,7 +18,7 @@ Enjoy!
 For versions 1.7 and higher
 - just click on "Administration" and follow instructions
 
-If you version is older than september 2018
+If your version is older than september 2018
 - backup config.app.php and your uploads folder.
 - simply replace the codebase with the new version (via an ftp client such as Filezilla).
 - make sure your uploads folder and config.app.php are still there
