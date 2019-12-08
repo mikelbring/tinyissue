@@ -36,9 +36,12 @@ class tools {
 	}
 
 	public function fetche($resu) {
+		return mysqli_fetch_array($resu);
 	}
 
 	public function explose($query) {
+		$resultat = requis($query);
+		return (mysqli_num_rows($resultat) > 0) ? fetche ($resultat) : '';
 	}
 
 	private function check_db($connect) {
@@ -46,7 +49,6 @@ class tools {
 		if($database_connect) {
 			return $database_connect;
 		}
-
 		return false;
 	}
 }

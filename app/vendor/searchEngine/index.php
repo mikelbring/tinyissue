@@ -1,6 +1,6 @@
 <div id="div_Recherche" class="ResuRech" style="width: 100%; background: #D8D0Cf; color: #f8e81c;">
 <div style="text-align: center;">
-<input type="text" name="Chercher" id="inputChercher" placeholder="<?php echo __('tinyissue.search'); ?>" onkeyup="if(this.value.length > 3) { Cherchons(this.value); } else { document.getElementById('div_ResultatsRech').innerHTML = ''; }" class="inputRech" />
+<input type="text" name="Chercher" id="inputChercher" placeholder="<?php echo __('tinyissue.search'); ?>" onkeyup="if(this.value.length > 3 || this.value > 0) { Cherchons(this.value); } else { document.getElementById('div_ResultatsRech').innerHTML = ''; }" class="inputRech" />
 <span id="spanChercher" style="position: relative; left: -20px; color: black; visibility: hidden; font-size: 120%;"><a href="javascript: vider();" style="background-color: transparent;">X</a></span>
 </div>
 <div id="div_ResultatsRech">
