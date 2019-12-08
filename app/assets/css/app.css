@@ -234,6 +234,8 @@ input[type=submit]:focus{
 p{
 	margin-bottom: 10px;
 	line-height: 17px;
+	color: #434343;
+	font-size: 120%;
 }
 .form th{
 	font-weight: bold;

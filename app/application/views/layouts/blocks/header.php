@@ -77,13 +77,25 @@ $EnLigne = false;
 
 			<nav class="nav-right">
 				<ul>
-					<li><?php echo __('tinyissue.welcome');?>, <a href="<?php echo URL::to('user/settings'); ?>" class="user"><?php echo Auth::user()->firstname; ?></a></li>
-					<li class="reports <?php echo $active == 'repprts' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects/reports'); ?>" "><?php echo __('tinyissue.report');?></a></li>
-					<?php if(Auth::user()->permission('administration')): ?>
-					<li><a href="<?php echo URL::to('administration/users'); ?>"><?php echo __('tinyissue.users');?></a></li>
-					<li><a href="<?php echo URL::to('administration'); ?>" <?php echo $styleAdmin; ?>><?php echo __('tinyissue.administration');?></a></li>
-					<?php endif; ?>
-					<li class="logout"><a href="<?php echo URL::to('user/logout'); ?>"><?php echo __('tinyissue.logout');?></a></li>
+				<?php
+					echo __('tinyissue.welcome').', <a href="'.URL::to('user/settings').'" class="user">'.Auth::user()->firstname.'</a></li>';
+					if (\Role\Permission::inherits_permission(array('reports-view','reports-create','project-create'))) {
+						echo '<li class="reports '.(($active == 'repprts') ? 'active' : '').'">';
+						echo '<a href="'.URL::to('projects/reports').'" ">'.__('tinyissue.report').'</a>';
+						echo '</li>';
+					}
+					if (Auth::user()->permission('administration')) {
+						echo '<li>';
+						echo '<a href="'.URL::to('administration/users').'">'.__('tinyissue.users').'</a>';
+						echo '</li>';
+						echo '<li>';
+						echo '<a href="'.URL::to('administration').'" '.$styleAdmin.'>'. __('tinyissue.administration').'</a>';
+						echo '</li>';
+					}
+					echo '<li class="logout">';
+					echo '<a href="'.URL::to('user/logout').'">'. __('tinyissue.logout').'</a>';
+					echo '</li>';
+				 ?>
 				</ul>
 			</nav>
 

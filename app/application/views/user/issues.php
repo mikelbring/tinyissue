@@ -14,14 +14,11 @@ if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = arra
 	<div class="blue-box">
 		<div class="inside-pad">
 
-			<h4><a href="<?php echo $project['detail']->to(); ?>"><?php echo $project['detail']->name; ?></a></h4>
+			<h4><a href="<?php echo $project['detail']->to(); ?>/issues?tag_id=1"><?php echo $project['detail']->name; ?></a></h4>
 
 			<ul class="issues">
 				<?php foreach($project['issues'] as $row):  ?>
 				<li>
-<!-- 
-					<a href="#" class="todo-button add" id="issue-id-<?php echo $row->id; ?>" data-issue-id="<?php echo $row->id; ?>" title="<?php echo __('tinyissue.todos_add'); ?>">[+]</a>
- -->
 					<a href="<?php echo $row->to(); ?>" class="comments"><?php echo $row->comment_count(); ?></a>
 					
 					<?php if(!empty($row->tags)): ?>

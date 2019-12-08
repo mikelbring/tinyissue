@@ -380,12 +380,11 @@ function Reassignment (Project, Prev, Suiv, Issue) {
 	xhttpASGMT.send(); 
 }
 
-
 <?php
 	$wysiwyg = Config::get('application.editor');
 	if (trim(@$wysiwyg['directory']) != '') {
 		if (file_exists($wysiwyg['directory']."/Bugs_code/showeditor.js")) {
-			include_once $wysiwyg['directory']."/Bugs_code/showeditor.js"; 
+			include $wysiwyg['directory']."/Bugs_code/showeditor.js"; 
 			if ($wysiwyg['name'] == 'ckeditor') {
 				echo "
 				setTimeout(function() {
@@ -396,5 +395,4 @@ function Reassignment (Project, Prev, Suiv, Issue) {
 		} 
 	} 
 ?>
-	//setTimeout(function() { var debut = LitTags (); } , 497);
 </script>

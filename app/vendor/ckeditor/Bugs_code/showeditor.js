@@ -30,12 +30,5 @@ function AffichonsEditor(id) {
 }
 
 function CachonsEditor(id) {
-//	var CeComment = document.getElementById(id);
-//	var SesDiv = CeComment.childNodes;
-//	var SousDiv = SesDiv[1].childNodes;
-//	var SSousDiv = SousDiv[5].childNodes;
-//	SSousDiv.value = AllEditors[id].getData();
-
 	return AllEditors[id].getData();
-
 }

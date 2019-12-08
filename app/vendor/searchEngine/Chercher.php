@@ -41,7 +41,7 @@ if ($Config['database']['driver'] == 'mysql') {
 
 	//Afficher les liens vers les informations obtenues par la recheche
 	////Afficher les projets actifs parmi les ceux auxquels a accès le visiteur
-	$requPROJ = "SELECT id,name,status FROM projects WHERE name LIKE '%".$_GET["Quoi"]."%' AND status = 1 AND id IN (".$mesProjets.")";
+	$requPROJ = (is_numeric($_GET["Quoi"])) ? "SELECT id,name,status FROM projects WHERE id LIKE '%".$_GET["Quoi"]."%' AND id IN (".$mesProjets.")" : "SELECT id,name,status FROM projects WHERE name LIKE '%".$_GET["Quoi"]."%' AND status = 1 AND id IN (".$mesProjets.")";
 	$resuPROJ = Requis($requPROJ);
 	if (Nombre($resuPROJ) > 0) {
 		while ($QuelPROJ = Fetche($resuPROJ)) {
@@ -52,7 +52,7 @@ if ($Config['database']['driver'] == 'mysql') {
 	}
 
 	////Afficher les billets des différents projets actifs auxquels a accès le visiteur
-	$requISSU = "SELECT ISSU.id, IF(ISSU.closed_by IS NULL, 'Actif', 'Closed') AS etat,ISSU.status,ISSU.title, ISSU.project_id, PROJ.name FROM projects_issues AS ISSU LEFT JOIN projects AS PROJ ON PROJ.id = ISSU.project_id WHERE (title LIKE '%".$_GET["Quoi"]."%' OR body  LIKE '%".$_GET["Quoi"]."%') AND project_id IN (".$mesProjets.") ORDER BY etat ASC, ISSU.updated_at DESC";
+	$requISSU = (is_numeric($_GET["Quoi"])) ? "SELECT ISSU.id, IF(ISSU.closed_by IS NULL, 'Actif', 'Closed') AS etat,ISSU.status,ISSU.title, ISSU.project_id, PROJ.name FROM projects_issues AS ISSU LEFT JOIN projects AS PROJ ON PROJ.id = ISSU.project_id WHERE ISSU.id LIKE '%".$_GET["Quoi"]."%'AND project_id IN (".$mesProjets.") ORDER BY etat ASC, ISSU.updated_at DESC" : "SELECT ISSU.id, IF(ISSU.closed_by IS NULL, 'Actif', 'Closed') AS etat,ISSU.status,ISSU.title, ISSU.project_id, PROJ.name FROM projects_issues AS ISSU LEFT JOIN projects AS PROJ ON PROJ.id = ISSU.project_id WHERE (title LIKE '%".$_GET["Quoi"]."%' OR body  LIKE '%".$_GET["Quoi"]."%') AND project_id IN (".$mesProjets.") ORDER BY etat ASC, ISSU.updated_at DESC";
 	$resuISSU = Requis($requISSU );
 	if (Nombre($resuISSU) > 0) {
 		while ($QuelISSU = Fetche($resuISSU)) {

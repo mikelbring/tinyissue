@@ -12,14 +12,10 @@
 			echo '&nbsp;';
 			echo __('tinyissue.hasreproject');
 			echo '&nbsp;&nbsp;&nbsp; : &nbsp;&nbsp;&nbsp;';
-//			echo '<br />';  
-//		echo '(&nbsp;'.__('tinyissue.hasreproject_origin').' ) ';
-//		echo '<br />';
+
 		echo '<b>'.$ProjOrig[0]->name;
 		echo '<span style="font-size: larger; font-weight: bold; color: black;">&nbsp;&nbsp;&rarr;&nbsp;&nbsp;</span>'; 
 		echo '</b> <a href="project/'.$activity->attributes['action_id'].'/issues?tag_id=1" style="color: black; text-decoration: underline;"><b>'.$ProjDest[0]->name.'</a></b>';
-//		echo '<br />';
-//		echo ' (&nbsp;'.__('tinyissue.hasreproject_destination').'&nbsp;)';
 	?>
 		<span class="time">
 			<?php echo date(Config::get('application.my_bugs_app.date_format'), strtotime($activity->created_at)); ?>

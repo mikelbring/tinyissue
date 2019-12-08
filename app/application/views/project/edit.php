@@ -1,7 +1,7 @@
 <h3>
 	<a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue"><?php echo __('tinyissue.new_issue'); ?></a>
 
-	<?php echo __('tinyissue.update'); ?> <?php echo Project::current()->name; ?>
+	<?php echo __('tinyissue.update'); ?> <em><?php echo Project::current()->name; ?></em>
 	<span><?php echo __('tinyissue.update_project_description'); ?></span>
 </h3>
 <?php
