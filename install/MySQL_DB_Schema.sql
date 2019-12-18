@@ -297,4 +297,14 @@ VALUES ('6', 'Updated issue tags', 'update-issue-tags');
 ##--# email = myemail@email.com
 ##--# password = admin
 INSERT INTO `users` (`id`, `role_id`, `email`, `password`, `firstname`, `lastname`, `language`, `created_at`, `updated_at`, `deleted`) VALUES
-(NULL,	4,	'myemail@email.com',	'XhS.DHsB8wt1o',	'admin',	'admin',	'en',	NOW(),	NOW(),	0)
+(NULL,	4,	'myemail@email.com',	'XhS.DHsB8wt1o',	'admin',	'admin',	'en',	NOW(),	NOW(),	0);
+
+CREATE TABLE `update_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Footprint` varchar(25) DEFAULT NULL,
+  `Description` varchar(100) DEFAULT NULL,
+  `DteRelease` datetime DEFAULT NULL,
+  `DteInstall` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
