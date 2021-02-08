@@ -1,16 +1,19 @@
 <script type="text/javascript">
 function ChgLng(Lng = 'en') { document.location.href = 'index.php?Lng=' + Lng; }
+
 </script>
 
 <?php
 if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 	if(!file_exists('../config.app.example.php')) { die($NoConfigApp); }
 	$config_file = file_get_contents('../config.app.example.php');
+
 	/* Edit Database Information */
 	$config_file = str_replace('localhost', $_POST['database_host'], $config_file);
 	$config_file = str_replace('database_user', $_POST['database_username'], $config_file);
 	$config_file = str_replace('database_password', $_POST['database_password'], $config_file);
 	$config_file = str_replace('database_name', $_POST['database_name'], $config_file);
+
 	/* Edit E-mail Information */
 	$config_file = str_replace('Your E-Mail Name', $_POST['email_name'], $config_file);
 	$config_file = str_replace('name@domain.com', $_POST['email_address'], $config_file);
@@ -21,10 +24,13 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 	$config_file = str_replace("'encryption' => 'tls'", "'encryption' =>  '".$_POST['email_encryption']."'", $config_file);
 	$config_file = str_replace("'username' => 'xyzxyz'", "'username' =>  '".$_POST['email_username']."'", $config_file);
 	$config_file = str_replace("'password' => '******'", "'password' =>  '".$_POST['email_password']."'", $config_file);
+
 	/* Timezone */
 	$config_file = str_replace('Europe/Brussels', $_POST['timezone'], $config_file);
+
 	/* Key */
 	$config_file = str_replace('yourrandomkey', md5(serialize($_POST) . time() . $_SERVER['HTTP_HOST']), $config_file);
+
 	if(!is_writable(realpath('../'))){ ?>
 <!DOCTYPE html>
 <html>
@@ -51,7 +57,9 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 
 
 <?php } else {
+
 	file_put_contents('../config.app.php', $config_file);
+
 	//From the MySQL_DB_Schema.sql file, we create a usable php file for php install
 	if (!file_exists('mysql-structure.php') && file_exists('MySQL_DB_Schema.sql') ) {
 		$FILEsql = file('MySQL_DB_Schema.sql');
@@ -105,6 +113,7 @@ setInterval(function () {
 	document.getElementById('CountDown').innerHTML = CountDown;
 	if (--CountDown <= 0) { document.location.href = "index.php?Lng=<?php echo $_GET["Lng"]; ?>";}
 }, 1000);
+
 </script>
 
 <?php

@@ -9,37 +9,23 @@ $(function() {
     	return this.hostname != window.location.hostname;
 	}).attr('target', '_blank');
 
+	/*
+	//Patrick, 7 février 2021
+	//Nous devons nous débarasser de ces références à des outils désuets
+	
+	//Ceci a un impact sur l'affichage et la sélection des étiquettes rattachées à un billet
+	//Aussi sur les étiquettes du billet, en mode « Mofidication du billet »
+
 	/* Uploadify */
+	/*
 	var uploaded_attachments = $('#uploaded-attachments');
 	var upload_token = $('input[name=token]').val();
 	var session = $('input[name=session]').val();
 	var project = $('input[name=project_id]').val();
+	*/
 
 	$("#upload").uploadify({
-		'uploader' : baseurl + '/app/assets/js/uploadify/uploadify.swf',
-		'script' : siteurl + 'ajax/project/issue_upload_attachment',
-		'scriptData' : {
-			session : session,
-			project_id : project,
-			upload_token : upload_token
-		},
-		'hideButton': true,
-		'wmode'      : 'transparent',
-		'buttonText' : $('#uploadbuttontext').val(),
-		'width' : 200,
-		'height':30,
-		'cancelImg' : baseurl + '/app/assets/images/layout/icon-delete.png',
-		'auto' : true,
-		'multi' : true,
-		'queSizeLimit' : 10,
-		'onComplete' : function(event, id, file){
-			
-			var body = '<li id="' + id + '">' +
-					'<a href="javascript:void(0);" class="delete" rel="' + id + '">Remove</a><span>' +
-					file.name + '</span></li>';
-			
-			uploaded_attachments.append(body);
-		}
+		return true;
 	});
 
 	uploaded_attachments.find('.delete').live('click', function(){
