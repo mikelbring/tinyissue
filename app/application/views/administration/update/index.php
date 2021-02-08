@@ -192,11 +192,17 @@ if (($venant == $valableAdmin  || $venant == $valableUpadte) && isset($_POST["Et
 	
 	echo '<input type="hidden" name="Etape" value="'.++$Etape.'" />';
 	echo '</form>';
+
 	//Mise à jour de la liste des installations dans le fichier local
 	file_put_contents ("../install/get_updates_list", '');
-	//Mise à jour de l'historique des installations dans la base de données
-	$CetteVersion = include("../app/application/config/tinyissue.php","r");
-	(mysqli_query($GLOBALS["___mysqli_ston"], "INSERT INTO update_history (Description, DteRelease, DteInstall) VALUES ('".$CetteVersion['version']." ".$CetteVersion['release']."','".$CetteVersion['release_date']."', NOW())"));
+	$CetteVersion = include("../app/application/config/tinyissue.php");
+	$MaDate = explode("-", $CetteVersion["release_date"]);
+	$CetteVersion["release_date"] = (strlen($MaDate[0]) == 4) ? $CetteVersion["release_date"] : $MaDate[2].'-'.$MaDate[1].'-'.$MaDate[0];
+	\DB::table('update_history')->insert(array(
+		'Description'=>$CetteVersion['version'].$CetteVersion['release'], 
+		'DteRelease'=>$CetteVersion["release_date"], 
+		'DteInstall'=>date("Y-m-d H:i:s")
+	));
 } else {
 	echo 'Accès interdit';
 	echo '<script>document.location.href="../";</script>';
