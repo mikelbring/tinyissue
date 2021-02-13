@@ -190,6 +190,8 @@ return array(
 	'second' =>  'second',
 	'select_a_project' =>  'Projects',
 	'select_to_project' =>  'Transfer this ticket to ',
+	'select_to_projectResp' =>  ' and assign it to  ',
+	'select_to_projectRResp' =>  'project manager',
 	'selected_to_project' =>  'Transfer',
 	'settings_updated' => 'Settings Updated',
 	'settings' => 'Settings',

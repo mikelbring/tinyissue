@@ -24,9 +24,9 @@ $(function() {
 	var project = $('input[name=project_id]').val();
 	*/
 
-	$("#upload").uploadify({
-		return true;
-	});
+//	$("#upload").uploadify({
+//		return true;
+//	});
 
 	uploaded_attachments.find('.delete').live('click', function(){
 		var attachment = $(this);
@@ -110,6 +110,32 @@ $(function() {
 /* Autocomplete for sidebar adding user */
 var autocomplete_sidebar_init = false;
 
+function assign_issue_to_user(user_id, issue_id, callback){
+   $.post(siteurl + 'ajax/project/issue_assign', {
+      user_id : user_id,
+      issue_id : issue_id
+   }, function(){
+      callback();
+   });
+}
+
+function issue_assign_change(user_id, issue_id){
+   saving_toggle();
+
+   assign_issue_to_user(user_id, issue_id, function(){
+
+      var assigned_to = $('.assigned-to');
+      var assign_to = assigned_to.find('.user' + user_id);
+
+      assigned_to.find('.assigned').removeClass('assigned');
+      assign_to.addClass('assigned');
+      assigned_to.find('.currently_assigned').html(assign_to.html());
+
+      saving_toggle();
+   });
+
+}
+
 function init_sidebar_autocomplete(project){
 
 	if(!autocomplete_sidebar_init){
@@ -173,28 +199,3 @@ function remove_project_user(user_id, project_id){
 	return true;
 }
 
-function issue_assign_change(user_id, issue_id){
-   saving_toggle();
-
-   assign_issue_to_user(user_id, issue_id, function(){
-
-      var assigned_to = $('.assigned-to');
-      var assign_to = assigned_to.find('.user' + user_id);
-
-      assigned_to.find('.assigned').removeClass('assigned');
-      assign_to.addClass('assigned');
-      assigned_to.find('.currently_assigned').html(assign_to.html());
-
-      saving_toggle();
-   });
-
-}
-
-function assign_issue_to_user(user_id, issue_id, callback){
-   $.post(siteurl + 'ajax/project/issue_assign', {
-      user_id : user_id,
-      issue_id : issue_id
-   }, function(){
-      callback();
-   });
-}

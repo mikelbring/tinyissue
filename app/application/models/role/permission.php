@@ -29,7 +29,7 @@ class Permission extends \Eloquent {
 		$hopeSoNum = array();
 		$permis = false;
 		foreach ($hopeSo as $hope) {
-			$resu  =\DB::table('permissions')->select(array('id', 'auto_has'))->where('permission','=',$hope)->get();
+			$resu  = \DB::table('permissions')->select(array('id', 'auto_has'))->where('permission','=',$hope)->get();
 			if (isset($resu[0])) { 
 				$perm = \DB::table('roles_permissions')->select(array('id'))->where('role_id', '=', $myRole)->where('permission_id', "=", $resu[0]->id)->get();
 				if (count($perm) > 0 ) { $permis = true; break; } 

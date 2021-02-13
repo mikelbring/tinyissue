@@ -1,9 +1,8 @@
 <h3>
-	<?php echo __('tinyissue.edit_issue'); ?>
+	<?php echo __('tinyissue.edit_issue').'&nbsp;&nbsp;&nbsp<a href="index" style="color: #138dc1;">'.Input::old('title', $issue->title).'</a>'; ?>
 </h3>
 
 <div class="pad">
-
 	<form method="post" action="">
 
 		<table class="form" style="width: 100%;">
@@ -83,14 +82,16 @@ if (count($active_projects)>1 && $issue->closed_by == 0 ) {
  -->
 <form method="GET" action="" name="projectChanger">
 <fieldset class="sidebar_Projects_label"><label for="projects_select"><?php echo __('tinyissue.select_to_project');?> : </label>
-<select name="projectNew" id="project_newSelect" >
+<select name="projectNew" id="project_newSelect" onchange="Issue_ChgListMbre(this.value);" >
 <?php
 	$NbIssues = array();
 	$Proj = array();
 	$SansAccent = array();
 	foreach($active_projects as $row) {
-		$NbIssues[$row->to()] = $row->count_open_issues();
-		$Proj[$row->to()] = $row->name.' ('.$NbIssues[$row->to()].')';
+		$NbIssues[$row->id] = $row->count_open_issues();
+		//$NbIssues[$row->to()] = $row->count_open_issues();
+		//$Proj[$row->to()] = $row->name.' ('.$NbIssues[$row->to()].')';
+		$Proj[$row->id] = $row->name.' ('.$NbIssues[$row->id].')';
 	}
 	foreach ($Proj as $ind => $val ){
 		$SansAccent[$ind] = htmlentities($val, ENT_NOQUOTES, 'utf-8');
@@ -101,9 +102,20 @@ if (count($active_projects)>1 && $issue->closed_by == 0 ) {
 	asort($SansAccent);
 
 	foreach($SansAccent as $ind => $val) {
-		$selected = (substr($ind, strrpos($ind, "/")+1) == Project::current()->id) ? 'selected':'';
-		echo '<option value="'.(($selected) ? 0 : $ind).'" '.$selected.'>'.$Proj[$ind].'</option>';
+		$selected = ($ind == Project::current()->id) ? 'selected="selected"':'';
+		echo '<option value="'.$ind.'" '.$selected.'>'.$Proj[$ind].'</option>';
 	 }
+?>
+</select>
+&nbsp;&nbsp;&nbsp;
+<label for="projects_select_resp"><?php echo __('tinyissue.select_to_projectResp');?> : </label>
+<select name="projectNewResp" id="project_newSelectResp" >
+<?php 
+	foreach(Project::current()->users()->get() as $row) { 
+		echo '<option value="'.$row->id.'" ';
+		echo ($row->id == $issue->assigned_to ) ? 'selected="selected"' : '';
+		echo '>'.$row->firstname . ' ' . $row->lastname.'</option>';
+	}
 ?>
 </select>
 &nbsp;&nbsp;&nbsp;

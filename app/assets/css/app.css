@@ -1251,6 +1251,9 @@ ul.isssues li {
 .todo-state-hover {
   border: 2px solid orange;
 }
+/*
+//Patrick, 7 février 2021
+//Nous devons nous débarasser de ces références à des outils désuets
 /* UPLOADIFY CUSTOM BUTTON */
 .upload-wrap{
 	position: relative;

@@ -191,6 +191,8 @@ return array(
 	'second' =>  'seconde',
 	'select_a_project' =>  'Mes projets',
 	'select_to_project' =>  'Associer ce billet au projet suivant',
+	'select_to_projectResp' => 'et le confier à ',
+	'select_to_projectRResp' => 'Responsable du projet',
 	'selected_to_project' =>  'Ré-associer',
 	'settings_updated' => 'Paramètres mis à jour',
 	'settings' => 'Paramètres',

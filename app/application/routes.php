@@ -59,7 +59,7 @@ View::composer('layouts.project', function($view)
 	Asset::script('app', 'app/assets/js/app.js', 'jquery');
 	Asset::script('app2', 'app/assets/js/sortable-issues.js', 'jquery');
 
-	Asset::script('project', 	'/app/assets/js/project.js', 'uploadify');
+	//Asset::script('project', 	'/app/assets/js/project.js', 'uploadify');
 
 	if(!isset($view->sidebar))
 	{
