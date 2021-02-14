@@ -181,21 +181,3 @@ function init_sidebar_autocomplete(project){
 
 }
 
-function remove_project_user(user_id, project_id){
-	if(!confirm('Are you sure you want to remove this user from the project?')){
-		return false;
-	}
-
-	saving_toggle();
-
-	$.post(siteurl + 'ajax/project/remove_user', {
-		user_id : user_id,
-		project_id : project_id
-	}, function(data){
-		$('#project-user' + user_id).fadeOut();
-		saving_toggle();
-	});
-
-	return true;
-}
-

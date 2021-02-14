@@ -146,6 +146,7 @@ return array(
 	'project' => 'Projet',
 	'projects_description' => 'Liste de tous vos projets',
 	'projects' => 'Projets',
+	'ProjSuppMbre' => 'Vous êtes sur le point de retirer un participant au projet.  Est-ce bien ce que vous voulez?',
 	'ptickets' => 'Billets du projet',
 	'remove' => 'Supprimer',
 	'reopen_issue' => 'Rouvrir le billet',

@@ -144,6 +144,7 @@ return array(
 	'project' => 'Project',
 	'projects_description' => 'List of all your projects',
 	'projects' => 'Projects',
+	'ProjSuppMbre' => 'Are you sure you want to remove this user from the project?',
 	'ptickets' => 'Project`s tickets',
 	'remove' => 'Remove',
 	'reopen_issue' => 'Reopen Issue',
