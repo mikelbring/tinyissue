@@ -81,9 +81,7 @@ if(count($active_projects)>1){
 </ul>
 
 <?php if(Auth::user()->permission('project-modify')): ?>
-
 	<input type="text" id="add-user-project" placeholder="<?php echo __('tinyissue.assign_a_user');?>" onmouseover="init_sidebar_autocomplete(<?php echo Project::current()->id; ?>);" />
-
 <?php endif; ?>
 </div>
 

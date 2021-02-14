@@ -71,7 +71,7 @@ class Project_Issue_Controller extends Base_Controller {
 	}
 
 	/**
-	 * View a issue
+	 * View an issue
 	 * /project/(:num)/issue/(:num)
 	 *
 	 * @return View
@@ -90,7 +90,7 @@ class Project_Issue_Controller extends Base_Controller {
 	}
 
 	/**
-	 * Post a comment to a issue
+	 * Post a comment to an issue
 	 *
 	 * @return Redirect
 	 */
@@ -105,7 +105,7 @@ class Project_Issue_Controller extends Base_Controller {
 	}
 
 	/**
-	 * Edit a issue
+	 * Edit an issue
 	 *
 	 * @return View
 	 */
@@ -113,12 +113,17 @@ class Project_Issue_Controller extends Base_Controller {
 		if (@$_GET["ticketAct"] == 'changeProject') {
 			//Change the asssociation between this issue and its related project
 			$msg = 0;
-			$NumNew = intval(substr(Input::get('projectNew'), strrpos(Input::get('projectNew'), "/")+1));
+			$NumNew = intval(Input::get('projectNew'));
+			$NumNewResp = intval(Input::get('projectNewResp'));
+			if ($NumNewResp == 0) {
+				$resu  = \DB::table('projects')->select(array('default_assignee'))->where('id', '=', $NumNew)->get();
+				$NumResp = $resu[0]; 
+			}
 
 			$result  = __('tinyissue.edit_issue')." : ";
-			$Modif = \DB::table('projects_issues_comments')->where('project_id', '=', intval(Input::get('projetOld')))->where('issue_id', '=', intval(Input::get('ticketNum')), 'AND')->update(array('project_id' => $NumNew));
+			$Modif = \DB::table('projects_issues_comments')->where('project_id', '=', intval(Input::get('projetOld')))->where('issue_id', '=', intval(Input::get('ticketNum')), 'AND')->update(array('project_id' => $NumNew, 'comment' => 'Ce billet a été changé de projet, passant de '.Input::get('projetOld').' à '.$NumNew.' ( confié à '.$NumNewResp.') par l`action de '.\Auth::user()->id.'.','created_at' => date("Y-m-d H:i:s"),'updated_at' => date("Y-m-d H:i:s")));
 			$result .= ($Modif) ? "Succès" : "Échec";
-			$Modif = Project\Issue::where('project_id', '=', intval(Input::get('projetOld')))->where('id', '=', intval(Input::get('ticketNum')))->update(array('project_id' => $NumNew, 'updated_by' => \Auth::user()->id));
+			$Modif = Project\Issue::where('project_id', '=', intval(Input::get('projetOld')))->where('id', '=', intval(Input::get('ticketNum')))->update(array('project_id' => $NumNew, 'assigned_to' => $NumNewResp, 'updated_at' => date("Y-m-d H:i:s"), 'updated_by' => \Auth::user()->id));
 			$result .= ($Modif) ? "Succès" : "Échec";
 			if (\User\Activity::add(8, intval(Input::get('projetOld')), Input::get('ticketNum'), $NumNew, "From ".Input::get('projetOld')." to ".$NumNew )) { $msg = $msg + 1; } else { $msg = $TheFile["error"]; }
 
@@ -205,6 +210,9 @@ class Project_Issue_Controller extends Base_Controller {
 			->with('notice', $message);
 	}
 
+	/**
+		*Show the issue's tags
+	**/
 
 	private function show_tag ($Content) {
 		$result = "
