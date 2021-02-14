@@ -49,6 +49,8 @@ Then, push you modification throw a new branch. NEVER push on master.
     - november 2019: attach files form the issue creating menu
     - november 2019: wysiwyg editor problems fixed; it could work on every comment
     - november 2019: you can move issue from project A to project B if you have access to both projects
+    - January 2021 : no more reference to FlashPlayer 
+    - February 2021: One can move ticket from project A to project B and assigns the ticket to a B's member
 - v.1.7 : July 2019 
 	- reports are now totally integrated to BUGS which produces pdf files
 - v.1.6 : February 2019 
