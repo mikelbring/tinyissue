@@ -215,6 +215,8 @@ return array(
 	'tags_added' => 'étiquettes ajoutées',
 	'tags_removed' => 'étiquettes retirées',
 	'tags' => 'Étiquettes',
+	'thisproject_members' => 'Détails du projet',
+	'thisproject_members' => 'Les participants à ce projet',
 	'Tiny Issue' => 'Bugtracker',
 	'title' => 'Titre',
 	'to' => 'à',

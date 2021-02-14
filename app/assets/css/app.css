@@ -731,6 +731,21 @@ div.stat_form {
 	font: normal 12px Helvetica, "Lucida Grande", Arial, sans-serif;
 	box-shadow: 0 0 0;
 }
+th.project-user {
+	background-color: #EEEEEE;
+}
+td.project-user, th.project-user {
+	border-bottom-style: solid; 
+	border-bottom-width: 2px; 
+	border-bottom-color: #dfdfdf; 
+}
+	
+#projetProsedNamesPage {
+	width: 50%; 
+	text-align: left; 
+	margin-left: 0; 
+	padding: 1px 1px 15px 1px;
+}
 /* Content */
 #content{
 	width: 100%;

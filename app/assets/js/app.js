@@ -23,14 +23,16 @@ function addUserProject(project_id, user, cettepage) {
 	Exactement = Exactement + "&CettePage=" + cettepage;
 	var xhttp = new XMLHttpRequest();
 	xhttp.onreadystatechange = function() {
-	    if (this.readyState == 4 && this.status == 200) {
-			if (cettepage == 'sidebar') {
-				if ( this.responseText  != "") {
-					document.getElementById('projetProsedNamesList').innerHTML = "";
-					document.getElementById('sidebar-users').innerHTML = document.getElementById('sidebar-users').innerHTML + this.responseText;
+		if (this.readyState == 4 && this.status == 200) {
+			if ( this.responseText  != "") {
+				document.getElementById('projetProsedNamesList').innerHTML = "";
+				document.getElementById('sidebar-users').innerHTML = document.getElementById('sidebar-users').innerHTML + '<li id="project-user' + user + '">' + this.responseText + '</li>';
+				if (cettepage == 'page') {
+					document.getElementById('projetProsedNamesPage').innerHTML = "";
+					document.getElementById('page-users').innerHTML = '<td>' + this.responseText + '</td><td></td><td></td>';
 				}
 			}
-	    }
+		}
 	};
 	xhttp.open("GET", Exactement, true);
 	xhttp.send(); 
@@ -59,6 +61,8 @@ function propose_project_user(user, project_id, cettepage) {
 	    if (this.readyState == 4 && this.status == 200) {
 			if (cettepage == 'sidebar') {
 				document.getElementById('projetProsedNamesList').innerHTML = this.responseText;
+			} else if (cettepage == 'page') {
+				document.getElementById('projetProsedNamesPage').innerHTML = this.responseText;
 			}
 	    }
 	};
@@ -66,7 +70,7 @@ function propose_project_user(user, project_id, cettepage) {
 	xhttp.send(); 
 }
 
-function remove_project_user(user_id, project_id,ProjSuppMbre){
+function remove_project_user(user_id, project_id,ProjSuppMbre, cettepage) {
 	if(!confirm(ProjSuppMbre)){
 		return false;
 	}
@@ -79,6 +83,10 @@ function remove_project_user(user_id, project_id,ProjSuppMbre){
 	}, function(data){
 		$('#project-user' + user_id).fadeOut();
 		saving_toggle();
+		if (cettepage == 'page') {
+			document.getElementById('project-user_' + user_id).class = "";
+			document.getElementById('project-user_' + user_id).innerHTML = "";
+		}
 	});
 
 	return true;

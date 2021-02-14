@@ -214,6 +214,8 @@ return array(
 	'tags_added' => 'tags added',
 	'tags_removed' => 'tags removed',
 	'tags' => 'Tags',
+	'thisproject_details' => 'This project specs',
+	'thisproject_members' => 'This project members',
 	'title' => 'Title',
 	'to' => 'to',
 	'todo_status_0' => 'Closed',
