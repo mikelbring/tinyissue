@@ -69,11 +69,11 @@ if(count($active_projects)>1){
 	<span><?php echo __('tinyissue.assigned_users_description');?></span>
 </h2>
 
-<ul class="sidebar-users">
+<ul class="sidebar-users" id="sidebar-users">
 <?php foreach(Project::current()->users()->get() as $row): ?>
 	<li id="project-user<?php echo $row->id; ?>">
 		<?php if(Auth::user()->permission('project-modify') && count(Project::current()->users()->get())  > 1): ?>
-		<a href="javascript:void(0);" onclick="remove_project_user(<?php echo $row->id; ?>, <?php echo Project::current()->id; ?>);" class="delete"><?php echo __('tinyissue.remove');?></a>
+		<a href="javascript:void(0);" onclick="remove_project_user(<?php echo $row->id; ?>, <?php echo Project::current()->id; ?>, '<?php echo __('tinyissue.ProjSuppMbre'); ?>', 'sidebar');" class="delete"><?php echo __('tinyissue.remove');?></a>
 		<?php endif; ?>
 		<?php echo $row->firstname . ' ' . $row->lastname; ?>
 	</li>
@@ -81,7 +81,9 @@ if(count($active_projects)>1){
 </ul>
 
 <?php if(Auth::user()->permission('project-modify')): ?>
-	<input type="text" id="add-user-project" placeholder="<?php echo __('tinyissue.assign_a_user');?>" onmouseover="init_sidebar_autocomplete(<?php echo Project::current()->id; ?>);" />
+	<input type="text" id="add-user-project" placeholder="<?php echo __('tinyissue.assign_a_user');?>" onkeyup="if(this.value.length > 2) { propose_project_user(this.value, <?php echo Project::current()->id; ?>, 'sidebar'); }" />
+	<div id="projetProsedNamesList">
+	</div>
 <?php endif; ?>
 </div>
 
