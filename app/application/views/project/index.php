@@ -1,5 +1,7 @@
 <h3>
-   <a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue"><?php echo __('tinyissue.new_issue');?></a>
+	<?php if (Auth::user()->role_id != 1) { ?>
+   	<a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue"><?php echo __('tinyissue.new_issue');?>
+   <?php } ?> 
    <a href="<?php echo Project::current()->to(); ?>"><?php echo Project::current()->name; ?></a>
 	<span><?php echo __('tinyissue.project_overview');?></span>
 </h3>
