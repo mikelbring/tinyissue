@@ -1,4 +1,10 @@
 <?php 
+if (Auth::user()->role_id == 1) { 
+	echo '<script type="text/javascript" >document.location.href="../../../project/'.$project->id.'/issues";</script>';
+}
+?>
+
+<?php 
 $config_app = require path('public') . 'config.app.php';
 $url =\URL::home();
 
