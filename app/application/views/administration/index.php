@@ -88,8 +88,9 @@
 				echo '<a href="https://github.com/pixeline/bugs/releases" target="_blank">'.__('tinyissue.version_details').'</a> <br />';
 			} else {
 				echo '<h4><a href="javascript: agissons.submit();">'.__('tinyissue.version_need').'.</a></h4>';
-				echo __('tinyissue.version_disp').' : '.$verNum.'<br />';
-				echo __('tinyissue.version_commit').' : '.$verCommit.'<br />';
+				echo __('tinyissue.release_disp').' : '.$verNum.'<br />';
+				echo __('tinyissue.version_commit').' : '.$verCommit.'<br /><br />';
+				echo __('tinyissue.version_disp').' : '.$verCod.'<br />';
 				echo '<a href="https://github.com/pixeline/bugs/releases" target="_blank">'.__('tinyissue.version_details').'</a> <br />';
 				echo '<form action="'.URL::to('administration/update').'" method="post" id="agissons">';
 				echo '<input type="hidden" name="Etape" value="1" />';

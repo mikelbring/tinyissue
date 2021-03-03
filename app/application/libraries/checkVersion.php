@@ -11,4 +11,14 @@ if (@fopen("https://github.com/pixeline/bugs/releases", 'r')) {
 	$verCommit = substr($verCommit, strpos($verCommit,'<code>')+6);
 	$verCommit = substr($verCommit, 0, strpos($verCommit, '<'));
 }
+if (@fopen("https://github.com/pixeline/bugs/blob/master/app/application/config/tinyissue.php", 'r')) {
+	$Lisons = file_get_contents( "https://github.com/pixeline/bugs/blob/master/app/application/config/tinyissue.php");
+	$Lisons = substr($Lisons, strpos($Lisons, "js-file-line-container"), 2000);
+	$Lisons = substr($Lisons, strpos($Lisons, "LC4"), 400);
+	$verCod = substr($Lisons, 123,3).'_'.substr($Lisons, 386, 2);
+	$Lisons = substr($Lisons, 300);
+//	$f = fopen("BAboom.txt", "w");
+//	fputs($f, $Lisons);
+//	$verCod .= '_'.substr($Lisons, 86, 2);
+}
 ?>
