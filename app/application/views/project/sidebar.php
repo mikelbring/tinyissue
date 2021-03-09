@@ -1,6 +1,6 @@
 <?php
-$active_projects =Project\User::active_projects();
-if(count($active_projects)>1){
+$active_projects = Project\User::active_projects();
+if(count($active_projects)>1) {
 ?>
 <div id="sidebar_Projects_title" class="sidebarTitles"><?php echo __('tinyissue.select_a_project'); ?></div>
 <div id="sidebar_Projects" class="sidebarItem">

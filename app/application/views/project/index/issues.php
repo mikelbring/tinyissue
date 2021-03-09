@@ -1,6 +1,9 @@
 <?php 
 $config_app = require path('public') . 'config.app.php';  
 if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = array("black","Orchid","Cyan","Lime","orange","red"); }
+if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
+	echo '<script>document.location.href="'.URL::to().'";</script>';
+}
 ?>
 <div class="blue-box">
 	<div class="inside-pad filterANDsort">
@@ -98,7 +101,7 @@ if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = arra
 
 					</div>
 					<?php
-					if (@$_GET["tag_id"] == 1) {
+					if (@$_GET["tag_id"] == 1 && Auth::user()->role_id != 1) {
 						echo '<br /><br />';
 								//Percentage of work done
 								////Calculations
@@ -133,8 +136,8 @@ if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = arra
 								echo '<div style="background-color: '.$DurColor.'; position: absolute; top: 0; left: 0; width: '.(($DurRelat <= 100) ? $DurRelat : 100).'%; height: 100%; text-align: center; line-height:20px;" />'.((($DurRelat  >= 100)) ? $Dur.' / '.@$row->duration : $Dur).'</div>';
 								if ($DurRelat < 100) {  echo '<div style="background-color: gray; position: absolute;  top: 0; left: '.$DurRelat.'%; width: '.(100-$DurRelat).'%; height: 100%; text-align: center; line-height:20px;" />'.$row->duration.'</div>'; }
 								echo '</div>';
-						echo '<br clear="all" />';
 					}
+					echo '<br clear="all" />';
 
 					?>
 				</div>
@@ -142,7 +145,9 @@ if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = arra
 			<?php endforeach; ?>
 		</ul>
 		<?php endif; ?>
+		<?php if (Auth::user()->role_id != 1) { ?>
 		<div id="sortable-msg"><?php echo __('tinyissue.sortable_issue_howto'); ?></div>
+		<?php } ?>
 		<div id="sortable-save"><input id="sortable-save-button" class="button primary" type="submit" value="<?php echo __('tinyissue.save'); ?>" /></div>
 	</div>
 </div>
