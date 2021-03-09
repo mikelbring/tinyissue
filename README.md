@@ -6,11 +6,12 @@
 
 # Installing Bugs
 
-- Download from here ( ZIP or git ) ... please prefer the "Stable" version
+- Download from here ( ZIP or git ) ... please prefer a "Stable" version you`ll get from the "release" tab
 - Create a MySQL Database  ( note name and password, you will need them during install process )
-- Make /uploads/ write-able ( CHMOD -R  770 )
+- Make the /uploads/ sub-directory  `write-able´ ( CHMOD -R  770 )
 - set  www-data  ( CHOWN -R www-data:www-data )  as owner of the Bugs's main directory and sub-directories
 - Open index.php ... it should bring you to ./install/index.php page and open the installation forms
+	( ex.:   http://127.0.0.1/Bugs/index.php  ) 
 
 Enjoy!
 
@@ -27,20 +28,20 @@ If your version is older than september 2018
 
 ## Requirements:
 
-- Tested on: Apache, IIS
-- PHP 7.0+    
-- MySQL 5+
-- PDO Extension for PHP (MySQL)
-- MCrypt Extension for PHP : soon MCrypt will be removed from Bugs project
-- Javascript Enabled - Bugs also uses heavy Javascript to make it easier to use
+- Tested on: Apache, IIS;
+- PHP 7.0+;   
+- MySQL 5+;
+- PDO Extension for PHP (MySQL);
+- MCrypt Extension for PHP : soon MCrypt will be removed from Bugs project;
+- Javascript Enabled - Bugs also heavily uses Javascript.
 
 ### How to contribute
 
-We welcome and appreciate all contributions. The `develop` branch is the branch you should base all pull requests and development off of.
+We welcome and appreciate all contributions. The `develop` branch is the branch you should base all your pull requests and development on.
 The `master` branch is tagged releases only.
 
 For any coding contribution, please use a git tool ( visit https://git-scm.com/book/fr/v2/D%C3%A9marrage-rapide-Installation-de-Git to know more ).
-Then, push you modification throw a new branch. NEVER push on master. 
+Then, push your modifications through a new branch. NEVER push on master. 
 
 # Changelog
 - v.1.8 : Responsive template.  Now matches the window size wherever you use BUG ( tablet, phone, computer ) 
