@@ -4,7 +4,9 @@ if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = arra
 $url =\URL::home();
 ?>
 <h3>
+	<?php if (Auth::user()->role_id != 1) { ?>
 	<a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue"><?php echo __('tinyissue.new_issue'); ?></a>
+   <?php } ?> 
 
 	<span style="color: <?php echo $config_app['PriorityColors'][$issue->status]; ?>; font-size: 200%;">&#9899;
 	<?php if(Auth::user()->permission('issue-modify')): ?>
