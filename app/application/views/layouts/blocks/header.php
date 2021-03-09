@@ -32,9 +32,9 @@
 		<?php echo Asset::styles(); ?>
 		<?php echo Asset::scripts(); ?>
 		<?php
-//Patrick, il faudra retirer cette protection temporaire
-//Il faut pourtant trouver un moyen de connaître l'état « En ligne » ou « Hors ligne » de l'utilisateur.
-$EnLigne = false;
+			//Testons si l'usager en ligne en faisant ping 8.8.8.8
+			$pingresult = exec("/bin/ping -n 3 8.8.8.8", $outcome, $status);
+			$EnLigne = (0 == $status) ? true : false;
 			if (date("Y-m-d", fileatime ("../install/get_updates_list")) != date("Y-m-d") && $EnLigne) {
 				include "../app/application/libraries/checkVersion.php";
 				$Etat =  ($verActu == $verNum) ? '' :  $styleAdmin = 'class=".blink_me" style="color: yellow; text-decoration: underline wavy red; " ';
@@ -79,6 +79,8 @@ $EnLigne = false;
 				<ul>
 				<?php
 					echo __('tinyissue.welcome').', <a href="'.URL::to('user/settings').'" class="user">'.Auth::user()->firstname.'</a></li>';
+//					if (\Role\Permission::LstProj_permission())) {
+//					}
 					if (\Role\Permission::inherits_permission(array('reports-view','reports-create','project-create'))) {
 						echo '<li class="reports '.(($active == 'repprts') ? 'active' : '').'">';
 						echo '<a href="'.URL::to('projects/reports').'" ">'.__('tinyissue.report').'</a>';

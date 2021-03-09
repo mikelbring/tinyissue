@@ -4,6 +4,9 @@
 	foreach($Rol as $R) {
 		$roles[$R->id] = $R->name;
 	}
+//	if (!project_permission()) {
+//		echo '<script>document.location.href="index.php";</script>';
+//	}
 ?>
 <h3>
 	<?php if (Auth::user()->role_id != 1) { ?>
