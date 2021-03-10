@@ -1,13 +1,10 @@
 <?php 
-if (Auth::user()->role_id == 1) { 
-	echo '<script type="text/javascript" >document.location.href="../../../project/'.$project->id.'/issues";</script>';
-if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
-	echo '<script>document.location.href="'.URL::to().'";</script>';
-}
-?>
-?>
+	if (Auth::user()->role_id == 1) { 
+		echo '<script type="text/javascript" >document.location.href="../../../project/'.$project->id.'/issues";</script>';
+	if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
+		echo '<script>document.location.href="'.URL::to().'";</script>';
+	}
 
-<?php 
 $config_app = require path('public') . 'config.app.php';
 $url =\URL::home();
 

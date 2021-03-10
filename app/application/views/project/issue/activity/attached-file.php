@@ -1,4 +1,7 @@
 <?php
+	if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
+		echo '<script>document.location.href="'.URL::to().'";</script>';
+	}
 //if you change this file, don't forget to copy the new version to
 // /app/application/views/activity/attached-file.php  
 $FileTypes = (is_dir('../app/assets/images/upload_type')) ? $FileTypes= scandir('../app/assets/images/upload_type') : array();

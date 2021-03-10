@@ -1,3 +1,8 @@
+<?php 
+	if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
+		echo '<script>document.location.href="'.URL::to().'";</script>';
+	}
+?>
 <h3>
 	<?php if (Auth::user()->role_id != 1) { ?>
    	<a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue"><?php echo __('tinyissue.new_issue');?>

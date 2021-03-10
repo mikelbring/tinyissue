@@ -1,3 +1,8 @@
+<?php 
+	if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
+		echo '<script>document.location.href="'.URL::to().'";</script>';
+	}
+?>
 <li id="comment<?php echo $comment->id; ?>" class="comment">
 	<div class="insides">
 		<div class="topbar">
