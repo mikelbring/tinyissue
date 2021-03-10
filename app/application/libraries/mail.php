@@ -30,10 +30,12 @@ class Mail {
 			$body .= 'Content-Type: text/html; charset="'.$optMail['encoding'].'"'.$passage_ligne;
 			$body .= $passage_ligne; 	
 			$body .= $passage_ligne;
+			$body .= $passage_ligne;
 			$body .= $message;
 			$body .= $passage_ligne;
-			$body .= '--'.$boundary."n";
-	
+			$body .= $passage_ligne;
+			$body .= '--'.$boundary.''.$passage_ligne;
+//			$body .= '--'.$boundary."n";
 			$body .= $passage_ligne.'';
 			$result = mail($to, $subject, $body, $headers);
 		} else {
@@ -43,25 +45,19 @@ class Mail {
 			$mail = new PHPMailer();
 			$mail->Mailer = $optMail['transport'];
 			switch ($optMail['transport']) {
+					//Please submit your code
+					//On March 14th, 2017 I had no time to go further on these different types ( case 'PHP', 'sendmail', 'gmail', 'POP3' ) 
 				case 'PHP':
 					require_once path('app') . 'libraries/PHPmailer/class.phpmailer.php';
-					//Please submit your code
-					//On March 14th, 2017 I had no time to go further on this
 					break;
 				case 'sendmail':
 					require_once path('app') . 'libraries/PHPmailer/class.phpmaileroauth.php';
-					//Please submit your code
-					//On March 14th, 2017 I had no time to go further on this
 					break;
 				case 'gmail':
 					require_once path('app') . 'libraries/PHPmailer/class.phpmaileroauthgoogle.php';
-					//Please submit your code
-					//On March 14th, 2017 I had no time to go further on this
 					break;
 				case 'POP3':
 					require_once path('pop3') . 'libraries/PHPmailer/class.pop3.php';
-					//Please submit your code
-					//On March 14th, 2017 I had no time to go further on this
 					break;
 				default:																		//smtp is the second default value after "mail" which has its own code up
 					require_once path('app') . 'libraries/PHPmailer/class.smtp.php';
@@ -75,8 +71,6 @@ class Mail {
 						$mail->Username = $optMail['smtp']['username'];
 						$mail->Password = $optMail['smtp']['password'];
 					}
-					//Please submit your code
-					//On March 14th, 2017 I had no time to go further on this
 					break;
 			}
 	

@@ -261,8 +261,7 @@ class User extends Eloquent {
 	* @param  array  $info
 	* @return array
 	*/
-	public static function add_user($info)
-	{
+	public static function add_user($info) {
 		$rules = array(
 			'firstname' => array('required', 'max:50'),
 			'lastname' => array('required', 'max:50'),
@@ -271,8 +270,7 @@ class User extends Eloquent {
 
 		$validator = Validator::make($info, $rules);
 
-		if($validator->fails())
-		{
+		if($validator->fails()) {
 			return array(
 				'success' => false,
 				'errors' => $validator->errors
