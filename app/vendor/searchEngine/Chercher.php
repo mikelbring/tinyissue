@@ -31,10 +31,10 @@ if ($Config['database']['driver'] == 'mysql') {
 	}
 	
 	//Les projets auxquels a accès le visiteur
-	$resuPROJ = Requis("SELECT id FROM projects_users WHERE user_id = ".$_GET["Qui"]."");
+	$resuPROJ = Requis("SELECT id, project_id FROM projects_users WHERE user_id = ".$_GET["Qui"]."");
 	if (Nombre($resuPROJ) > 0) {
 		while ($QuelPROJ = Fetche($resuPROJ)) {
-			$lesProj[] = $QuelPROJ["id"];
+			$lesProj[] = $QuelPROJ["project_id"];
 		}
 	}
 	$mesProjets = implode(",", $lesProj);
