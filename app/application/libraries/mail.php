@@ -34,7 +34,7 @@ class Mail {
 			$body .= $message;
 			$body .= $passage_ligne;
 			$body .= $passage_ligne;
-			$body .= '--'.$boundary.''.$passage_ligne;
+//			$body .= '--'.$boundary.''.$passage_ligne;
 //			$body .= '--'.$boundary."n";
 			$body .= $passage_ligne.'';
 			$result = mail($to, $subject, $body, $headers);
