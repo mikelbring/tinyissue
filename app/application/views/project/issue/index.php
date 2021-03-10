@@ -1,10 +1,10 @@
 <?php 
-$config_app = require path('public') . 'config.app.php';  
-if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = array("black","Orchid","Cyan","Lime","orange","red"); }
-$url =\URL::home();
-if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
-	echo '<script>document.location.href="'.URL::to().'";</script>';
-}
+	$config_app = require path('public') . 'config.app.php';  
+	if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = array("black","Orchid","Cyan","Lime","orange","red"); }
+	$url =\URL::home();
+	if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
+		echo '<script>document.location.href="'.URL::to().'";</script>';
+	}
 ?>
 <h3>
 	<?php if (Auth::user()->role_id != 1) { ?>

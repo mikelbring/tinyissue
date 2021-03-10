@@ -1,7 +1,10 @@
 <?php 
-if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
-	echo '<script>document.location.href="'.URL::to().'";</script>';
-}
+	if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
+		echo '<script>document.location.href="'.URL::to().'";</script>';
+	}
+	if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
+		echo '<script>document.location.href="'.URL::to().'";</script>';
+	}
 ?>
 <h3>
 	<?php echo __('tinyissue.edit_issue').'&nbsp;&nbsp;&nbsp<a href="index" style="color: #138dc1;">'.Input::old('title', $issue->title).'</a>'; ?>

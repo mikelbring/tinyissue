@@ -1,12 +1,10 @@
 <?php
 	$Rol = \DB::table('roles')->order_by('id','ASC')->get();
 	$roles = array();
-	foreach($Rol as $R) {
-		$roles[$R->id] = $R->name;
+	foreach($Rol as $R) {  $roles[$R->id] = $R->name;  }
+	if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
+		echo '<script>document.location.href="'.URL::to().'";</script>';
 	}
-//	if (!project_permission()) {
-//		echo '<script>document.location.href="index.php";</script>';
-//	}
 ?>
 <h3>
 	<?php if (Auth::user()->role_id != 1) { ?>
