@@ -12,7 +12,7 @@
 					<a href="javascript:void(0);" class="edit">Edit</a>
 				</li>
 				<li class="delete-comment">
-				<a href="<?php echo $issue->to('delete_comment?comment=' . $issue->id); ?>" class="delete">Delete</a>
+				<a href="<?php echo $issue->to('delete_comment?comment=' . $comment->id); ?>" class="delete">Delete</a>
 				</li>
 			</ul>
 			<?php endif; ?>

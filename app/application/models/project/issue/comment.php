@@ -147,24 +147,19 @@ class Comment extends  \Eloquent {
 		\User\Activity::where('action_id', '=', $comment)->delete();
 
 		$comment = static::find($comment);
-
-		if(!$comment) {
-			return false;
-		}
+		if(!$comment) { return false; }
 
 		$issue = \Project\Issue::find($comment->issue_id);
 
 		/* Delete attachments and files */
 		$path = \Config::get('application.upload_path') . $issue->project_id;
-
-		foreach($comment->attachments()->get() as $row)
-		{
+		foreach($comment->attachments()->get() as $row) {
 			Attachment::delete_file($path . '/' . $row->upload_token, $row->filename);
-
 			$row->delete();
 		}
 
-		$comment->delete();
+		//$comment->delete();
+//		\DB::table('projects_issues_comments')->delete($IssueTagNum->id);
 
 		return true;
 	}

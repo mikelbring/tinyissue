@@ -69,7 +69,7 @@
 					<ul>
 						<li class="dashboard <?php echo $active == 'dashboard' ? 'active' : ''; ?>"><a href="<?php echo URL::to(); ?>"><?php echo __('tinyissue.dashboard');?></a></li>
 						<li class="issues <?php echo $active == 'issues' ? 'active' : ''; ?>"><a href="<?php echo URL::to('user/issues'); ?>"><?php echo __('tinyissue.your_issues');?></a></li>
-						<li class="todo <?php echo $active == 'todo' ? 'active' : ''; ?>"><a href="<?php echo URL::to('todo'); ?>"><?php echo __('tinyissue.your_todos');?></a></li>
+						<?php if (Auth::user()->role_id != 1) { ?><li class="todo <?php echo $active == 'todo' ? 'active' : ''; ?>"><a href="<?php echo URL::to('todo'); ?>"><?php echo __('tinyissue.your_todos');?></a></li><?php } ?>
 						<li class="projects <?php echo $active == 'projects' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects'); ?>"><?php echo __('tinyissue.projects');?></a></li>
 					</ul>
 				</li>
@@ -79,8 +79,6 @@
 				<ul>
 				<?php
 					echo __('tinyissue.welcome').', <a href="'.URL::to('user/settings').'" class="user">'.Auth::user()->firstname.'</a></li>';
-//					if (\Role\Permission::LstProj_permission())) {
-//					}
 					if (\Role\Permission::inherits_permission(array('reports-view','reports-create','project-create'))) {
 						echo '<li class="reports '.(($active == 'repprts') ? 'active' : '').'">';
 						echo '<a href="'.URL::to('projects/reports').'" ">'.__('tinyissue.report').'</a>';
