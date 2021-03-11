@@ -46,42 +46,45 @@ class Comment extends  \Eloquent {
 
 		/* Add to user's activity log */
 		\User\Activity::add(2, $project->id, $issue->id, $comment->id);
-		$vide = true;
-		$Val = ($input['Pourcentage'] > $config_app['Percent'][3]) ? 8: (($input['Pourcentage'] == 100 ) ? 2: 9);
-		if(!empty($issue->tags)):
-			foreach($issue->tags()->order_by('tag', 'ASC')->get() as $tag):
-				if ($Val == $tag->id) { $vide = false; }
-			endforeach;
-		endif;
-		if ($vide) { Tag::addNew_tags($issue->id, $Val); }
 
-		/* Add attachments to issue */
-		\DB::table('projects_issues_attachments')->where('upload_token', '=', $input['token'])->where('uploaded_by', '=', \Auth::user()->id)->update(array('issue_id' => $issue->id, 'comment_id' => $comment->id));
-
-		/* Update the Todo state for this issue  */
-		\DB::table('users_todos')->where('issue_id', '=', $issue->id)->update(array('status' => (($input['Pourcentage'] > $config_app['Percent'][3]) ? 3: 2), 'weight' => $input['Pourcentage'], 'updated_at'=>date("Y-m-d H:i:s")));
-
-		/* Update the status of this issue according to its percentage done;  */
-		\DB::table('projects_issues')->where('id', '=', $issue->id)->update(array('closed_by' => (($input['Pourcentage'] == 100 ) ? \Auth::user()->id : NULL), 'status' => (($input['Pourcentage'] == 100 )? 0 : $issue->status)));
-
-		/*Update tags attached to this issue */
-		$MesTags = explode(",", $input["MesTags"]);
-		$IDtags = array();
-		foreach($MesTags as $val) {
-			foreach(\Tag::where('tag', '=', $val)->get("id","tag") as $activity) {
-				$Idtags[] =  $activity->id;
+		if (\Auth::user()->role_id != 1) {
+			$vide = true;
+			$Val = ($input['Pourcentage'] > $config_app['Percent'][3]) ? 8: (($input['Pourcentage'] == 100 ) ? 2: 9);
+			if(!empty($issue->tags)):
+				foreach($issue->tags()->order_by('tag', 'ASC')->get() as $tag):
+					if ($Val == $tag->id) { $vide = false; }
+				endforeach;
+			endif;
+			if ($vide) { Tag::addNew_tags($issue->id, $Val); }
+	
+			/* Add attachments to issue */
+			\DB::table('projects_issues_attachments')->where('upload_token', '=', $input['token'])->where('uploaded_by', '=', \Auth::user()->id)->update(array('issue_id' => $issue->id, 'comment_id' => $comment->id));
+	
+			/* Update the Todo state for this issue  */
+			\DB::table('users_todos')->where('issue_id', '=', $issue->id)->update(array('status' => (($input['Pourcentage'] > $config_app['Percent'][3]) ? 3: 2), 'weight' => $input['Pourcentage'], 'updated_at'=>date("Y-m-d H:i:s")));
+	
+			/* Update the status of this issue according to its percentage done;  */
+			\DB::table('projects_issues')->where('id', '=', $issue->id)->update(array('closed_by' => (($input['Pourcentage'] == 100 ) ? \Auth::user()->id : NULL), 'status' => (($input['Pourcentage'] == 100 )? 0 : $issue->status)));
+	
+			/*Update tags attached to this issue */
+			$MesTags = explode(",", $input["MesTags"]);
+			$IDtags = array();
+			foreach($MesTags as $val) {
+				foreach(\Tag::where('tag', '=', $val)->get("id","tag") as $activity) {
+					$Idtags[] =  $activity->id;
+				}
 			}
-		}
-		if (isset($Idtags)) {
-		$issue->tags()->sync($Idtags);
-		$issue->save();
+			if (isset($Idtags)) {
+			$issue->tags()->sync($Idtags);
+			$issue->save();
+			}
 		}
 
 		/* Update the project */
 		$issue->updated_at = date('Y-m-d H:i:s');
 		$issue->updated_by = \Auth::user()->id;
 		$issue->save();
-		if ($input['Pourcentage'] == 100 ) {
+		if ($input['Pourcentage'] == 100 && \Auth::user()->role_id != 1) {
 			$tags = $issue->tags;
 			$tag_ids = array();
 			foreach($tags as $tag) { $tag_ids[$tag->id] = $tag->id; }
