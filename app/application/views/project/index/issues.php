@@ -36,7 +36,7 @@ if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 						<?php echo Form::select('assigned_to', $assigned_users, Input::get('assigned_to', '')); ?>
 						<br /><br />
 						<?php echo Form::select('limit_event', array('created_at' => __('tinyissue.limits_event_createdat'),'updated_at' => __('tinyissue.limits_event_updatedAt'),'closed_at'  => __('tinyissue.limits_event_closedAt')), Input::get('limit_event', '')); ?>
-						<?php echo Form::select('limit_period',array('' => "", 'week' 	=> __('tinyissue.limits_period_week'),'month' 	=> __('tinyissue.limits_period_month'),'months' => __('tinyissue.limits_period_months')), Input::get('limit_period', ''),array("onchange"=>"CalculonsDates(this.value);" ) ); ?>
+						<?php echo Form::select('limit_period',array('' => "", 'week' 	=> __('tinyissue.limits_period_week'),'month' 	=> __('tinyissue.limits_period_month'),'months' => __('tinyissue.limits_period_months'),'years' => __('tinyissue.limits_period_years')), Input::get('limit_period', ''),array("onchange"=>"CalculonsDates(this.value);" ) ); ?>
 						<br /><br />
 						<?php echo Form::date('DateInit', input::get('DateInit',(date("Y")-1).date("-m-d")), array('id' => 'input_DateInit')); ?>
 						<?php echo Form::date('DateFina', input::get('DateFina',date("Y-m-d")), array('id' => 'input_DateFina')); ?>
@@ -155,12 +155,24 @@ if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 function CalculonsDates(Quoi) {
 	var auj = new Date();
 	var dat = new Date();
+	var yyyy = auj.getFullYear();
+	var mm = auj.getMonth()+1; //January is 0!
+	var dd = auj.getDate();
+	mm = (mm < 10) ? '0'+ mm : mm;	
+	dd = (dd < 10) ? '0'+ dd : dd;	
+	document.getElementById('input_DateInit').value = yyyy + '-' + mm + '-' + dd;
 	var duree = 365;
 	if (Quoi == 'week') { duree = 7; }
 	if (Quoi == 'month') { duree = 31; }
 	if (Quoi == 'months') { duree = 62; }
-	dat.setDate(auj.getDate() - duree);
-	document.getElementById('input_DateInit').value = dat.getFullYear()+"-"+pad((dat.getMonth()+1),2)+"-"+pad(dat.getDate(),2);
+	if (Quoi == 'years') { duree = 365; }
+	dat.setDate(dat.getDate() - duree);
+	yyyy = dat.getFullYear();
+	mm = dat.getMonth()+1; //January is 0!
+	dd = dat.getDate();
+	mm = (mm < 10) ? '0'+ mm : mm;	
+	dd = (dd < 10) ? '0'+ dd : dd;	
+	document.getElementById('input_DateFina').value = yyyy + '-' + mm + '-' + dd;
 }
 function pad(n, width, z) {
   z = z || '0';

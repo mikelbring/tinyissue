@@ -156,21 +156,17 @@ class Query {
 	 */
 	public function join($table, $column1, $operator = null, $column2 = null, $type = 'INNER')
 	{
-		// If the "column" is really an instance of a Closure, the developer is
-		// trying to create a join with a complex "ON" clause. So, we will add
-		// the join, and then call the Closure with the join/
-		if ($column1 instanceof Closure)
-		{
+		if ($column1 instanceof Closure) {
+			// If the "column" is really an instance of a Closure, the developer is
+			// trying to create a join with a complex "ON" clause. So, we will add
+			// the join, and then call the Closure with the join/
 			$this->joins[] = new Query\Join($type, $table);
 
 			call_user_func($column1, end($this->joins));
-		}
-
-		// If the column is just a string, we can assume that the join just
-		// has a simple on clause, and we'll create the join instance and
-		// add the clause automatically for the develoepr.
-		else
-		{
+		} else {
+			// If the column is just a string, we can assume that the join just
+			// has a simple on clause, and we'll create the join instance and
+			// add the clause automatically for the develoepr.
 			$join = new Query\Join($type, $table);
 
 			$join->on($column1, $operator, $column2);
@@ -190,8 +186,7 @@ class Query {
 	 * @param  string  $column2
 	 * @return Query
 	 */
-	public function left_join($table, $column1, $operator = null, $column2 = null)
-	{
+	public function left_join($table, $column1, $operator = null, $column2 = null) {
 		return $this->join($table, $column1, $operator, $column2, 'LEFT');
 	}
 
@@ -200,8 +195,7 @@ class Query {
 	 *
 	 * @return void
 	 */
-	public function reset_where()
-	{
+	public function reset_where() {
 		list($this->wheres, $this->bindings) = array(array(), array());
 	}
 
@@ -213,8 +207,7 @@ class Query {
 	 * @param  string  $connector
 	 * @return Query
 	 */
-	public function raw_where($where, $bindings = array(), $connector = 'AND')
-	{
+	public function raw_where($where, $bindings = array(), $connector = 'AND') {
 		$this->wheres[] = array('type' => 'where_raw', 'connector' => $connector, 'sql' => $where);
 
 		$this->bindings = array_merge($this->bindings, $bindings);
