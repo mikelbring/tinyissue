@@ -108,6 +108,7 @@ return array(
 	'limits_period_week' => 'Last week',
 	'limits_period_month' => 'Last month',
 	'limits_period_months' => 'Last 3 months',
+	'limits_period_years' => 'Last year',
 	'limits_period_title' => 'For this period',
 	'logout' => 'Logout',
 	'minute' =>  'minute',

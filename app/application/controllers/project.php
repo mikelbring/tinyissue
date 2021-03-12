@@ -41,6 +41,7 @@ class Project_Controller extends Base_Controller {
 		Asset::add('tag-it-js', '/app/assets/js/tag-it.min.js', array('jquery', 'jquery-ui'));
 		Asset::add('tag-it-css-base', '/app/assets/css/jquery.tagit.css');
 		Asset::add('tag-it-css-zendesk', '/app/assets/css/tagit.ui-zendesk.css');
+
 		
 		//options de base pour le tri
 		$sort_options = array('projects_issues.id' => __('tinyissue.sort_option_id'), 'projects_issues.updated_at' => __('tinyissue.sort_option_updated'), 'projects_issues.status' => __('tinyissue.priority'));
@@ -78,8 +79,8 @@ class Project_Controller extends Base_Controller {
 		//if ($tags || $tag || $sort_by != 'updated') {
 		if ($tags || $tag || !in_array($sort_by, $sort_keys)) {
 			$issues = $issues
-				->join('projects_issues_tags', 'projects_issues_tags.issue_id', '=', 'projects_issues.id')
-				->join('tags', 'tags.id', '=', 'projects_issues_tags.tag_id');
+				->left_join('projects_issues_tags', 'projects_issues_tags.issue_id', '=', 'projects_issues.id')
+				->left_join('tags', 'tags.id', '=', 'projects_issues_tags.tag_id');
 		}
 
 		$issues = $issues->where('project_id', '=', Project::current()->id);
@@ -94,11 +95,11 @@ class Project_Controller extends Base_Controller {
 			$issues = $issues->where('projects_issues.'.Input::get('limit_event','created_at'), '<=', Input::get('DateFina',''));
 		}
 
-		if ($tag) {
-			$tag_collection = explode(",", $tag);
-			$tag_amount = count($tag_collection);
-			$issues = $issues->where_in('tags.id', $tag_collection);//->get();
-		}
+//		if ($tag) {
+//			$tag_collection = explode(",", $tag);
+//			$tag_amount = count($tag_collection);
+//			$issues = $issues->where_in('tags.id', $tag_collection);//->get();
+//		}
 		if ($tags) {
 			$tags_collection = explode(',', $tags);
 			$tags_amount = count($tags_collection);
