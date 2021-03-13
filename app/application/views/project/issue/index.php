@@ -222,15 +222,9 @@
 					</div>
 				</p>
 			</ul>
-			<ul class="issue-actions">
-				<?php if (Project\Issue::current()->assigned->id == \Auth::user()->id ) { ?>
-				<a href="<?php echo Project\Issue::current()->to('status?status=0'); ?>" onclick="if (confirm('<?php echo __('tinyissue.close_issue_confirm'); ?>')) { document.getElementById['input_actions'].value = '0'; document.getElementById['input_submitComment'].click();  }" class="close"><?php echo __('tinyissue.closeComment_issue'); ?></a>
-				<?php } else { echo '&nbsp;'; } ?>
-			</ul>
 			<?php  } ?>
 
 			<p style="margin-top: 10px;">
-				<input id="input_actions" type="actionsComment" type="hidden" value="<?php echo $issue->status; ?>" />
 				<input id="input_submitComment" type="submit" class="button primary" value="<?php echo __('tinyissue.comment'); ?>" />
 			</p>
 

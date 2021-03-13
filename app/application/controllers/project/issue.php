@@ -2,10 +2,9 @@
 
 class Project_Issue_Controller extends Base_Controller {
 
+	public $message = '';
 	public $layout = 'layouts.project';
 	
-	private $message = '';
-
 	public function __construct() {
 		parent::__construct();
 
