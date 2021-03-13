@@ -1379,7 +1379,11 @@ div.Projet:hover {
 }
 div.Closed:hover, div.Closed:hover > a {
 	background-color: #333; 
-	color: gray;
+	color: white;
+} 
+div.ResuRechComment:hover, div.ResuRechComment:hover > a {
+	background-color: #003; 
+	color: white;
 } 
 
 input.inputRech {
