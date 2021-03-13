@@ -60,6 +60,7 @@ if(count($active_projects)>1) {
 </ul>
 </div>
 
+<?php if (Auth::user()->role_id != 1) { ?>
 <div id="sidebar_Users_title" class="sidebarTitles"><?php echo __('tinyissue.assigned_users'); ?></div>
 <div id="sidebar_Users" class="sidebarItem">
 <h2>
@@ -68,6 +69,7 @@ if(count($active_projects)>1) {
 	?>
 	<span><?php echo __('tinyissue.assigned_users_description');?></span>
 </h2>
+
 
 <ul class="sidebar-users" id="sidebar-users">
 <?php foreach(Project::current()->users()->get() as $row): ?>
@@ -86,6 +88,7 @@ if(count($active_projects)>1) {
 	</div>
 <?php endif; ?>
 </div>
+<?php } ?>
 
 <div id="sidebar_Website_title" class="sidebarTitles"><?php echo __('tinyissue.website_title'); ?></div>
 <div id="sidebar_Website" class="sidebarItem">

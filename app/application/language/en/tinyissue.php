@@ -28,6 +28,7 @@ return array(
 	'cancel' => 'Cancel',
 	'close_issue_confirm' => 'Are you sure you want to close this issue?',
 	'close_issue' => 'Close Issue',
+	'closeComment_issue' => 'Comment & close Issue',
 	'closed_by' => 'Closed By',
 	'closed_issue' => 'Closed Issue',
 	'closed_issues' => 'Closed Issues',

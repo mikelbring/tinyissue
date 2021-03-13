@@ -12,7 +12,7 @@
    <?php } ?> 
 
 	<span style="color: <?php echo $config_app['PriorityColors'][$issue->status]; ?>; font-size: 200%;">&#9899;
-	<?php if(Auth::user()->permission('issue-modify')): ?>
+	<?php if(Auth::user()->permission('issue-modify') && $issue->status > 0 ): ?>
 	<a href="<?php echo $issue->to('edit'); ?>" class="edit-issue" style="font-size: 80%; font-weight: bold;"><?php echo $issue->title; ?></a>
 	<?php else: ?>
 	<a href="<?php echo $issue->to(); ?>" style="font-size: 80%; font-weight: bold;"><?php echo $issue->title; ?></a>
@@ -184,10 +184,7 @@
 					} 
 				?>
 				</span>
-				<div style="text-align: right; width: 98%; margin-top: -25px;">
-
- 				<br /><br />
- 				</div>
+				<div style="text-align: right; width: 98%; margin-top: -25px;"><br /><br /></div>
 			<?php  if (Auth::user()->role_id != 1) { ?>
 					<div style="width: 90%">
 						<!-- Tags modification  -->
@@ -224,10 +221,16 @@
 					</div>
 				</p>
 			</ul>
+			<ul class="issue-actions">
+				<?php if (Project\Issue::current()->assigned->id == \Auth::user()->id ) { ?>
+				<a href="<?php echo Project\Issue::current()->to('status?status=0'); ?>" onclick="if (confirm('<?php echo __('tinyissue.close_issue_confirm'); ?>')) { document.getElementById['input_actions'].value = '0'; document.getElementById['input_submitComment'].click();  }" class="close"><?php echo __('tinyissue.closeComment_issue'); ?></a>
+				<?php } else { echo '&nbsp;'; } ?>
+			</ul>
 			<?php  } ?>
 
 			<p style="margin-top: 10px;">
-				<input type="submit" class="button primary" value="<?php echo __('tinyissue.comment'); ?>" />
+				<input id="input_actions" type="actionsComment" type="hidden" value="<?php echo $issue->status; ?>" />
+				<input id="input_submitComment" type="submit" class="button primary" value="<?php echo __('tinyissue.comment'); ?>" />
 			</p>
 
 			<?php echo Form::hidden('session', Crypter::encrypt(Auth::user()->id)); ?>

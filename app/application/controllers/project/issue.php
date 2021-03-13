@@ -3,6 +3,8 @@
 class Project_Issue_Controller extends Base_Controller {
 
 	public $layout = 'layouts.project';
+	
+	private $message = '';
 
 	public function __construct() {
 		parent::__construct();
@@ -100,8 +102,16 @@ class Project_Issue_Controller extends Base_Controller {
 				->with('notice-error', __('tinyissue.you_put_no_comment'));
 		}
 		$comment = \Project\Issue\Comment::create_comment(Input::all(), Project::current(), Project\Issue::current());
-		return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
-			->with('notice', __('tinyissue.your_comment_added'));
+		$message = __('tinyissue.your_comment_added');
+		if (Input::get('actionsComment') == 1) {
+			Project\Issue::current()->change_status(0);
+			$message .= " --- ".__('tinyissue.issue_has_been_closed');
+			return Redirect::to(Project\Issues::current()->to())
+				->with('notice', $message);
+		} else {
+			return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
+				->with('notice', $message);
+		}
 	}
 
 	/**

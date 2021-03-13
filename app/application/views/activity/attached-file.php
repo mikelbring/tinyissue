@@ -1,8 +1,5 @@
 <?php
 //This is a copy of app/application/views/project/issue/activty/attached-file.php  
-	if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
-		echo '<script>document.location.href="'.URL::to().'";</script>';
-	}
 $url =\URL::home();
 $FileTypes = (is_dir($url.'app/assets/images/upload_type')) ? $FileTypes= scandir($url.'app/assets/images/upload_type') : array();
 $What = \DB::table('projects_issues_attachments')->where('id', '=', $activity->attributes['action_id'])->order_by('id','DESC')->get();
