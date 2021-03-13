@@ -6,14 +6,6 @@
 		echo '<script>document.location.href="'.URL::to().'";</script>';
 	}
 ?>
-<h3>
-	<?php if (Auth::user()->role_id != 1) { ?>
-   	<a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue"><?php echo __('tinyissue.new_issue');?>
-   <?php } ?> 
-
-	<?php echo __('tinyissue.update'); ?> <em><?php echo Project::current()->name; ?></em>
-	<span><?php echo __('tinyissue.update_project_description'); ?></span>
-</h3>
 
 
 <div class="pad">
@@ -25,7 +17,7 @@
 		<th class="project-user"><?php echo __('__tinyissue.role'); ?></th>
 		<th class="project-user">&nbsp;</th>
 		
-		<?php foreach(Project::current()->users()->get() as $row): ?>
+		<?php foreach(Project::current()->users()->get() as $row): $Deja[] = Auth::user()->id; ?>
 			<tr id="project-user_<?php echo $row->id; ?>">
 				<td width="70%" class="project-user"><?php echo $row->firstname . ' ' . $row->lastname; ?></td>
 				<td width="20%" class="project-user"><?php echo $roles[$row->role_id]; ?></td>
@@ -42,7 +34,7 @@
 
 <?php if(Auth::user()->permission('project-modify')): ?>
 	<div style="width: 50%;">
-	<input type="text" id="add-user-project" placeholder="<?php echo __('tinyissue.assign_a_user');?>" onkeyup="if(this.value.length > 2) { propose_project_user(this.value, <?php echo Project::current()->id; ?>, 'page'); }" style="margin-left: 0; border-color: grey; border-style: solid; border-width: 3px;" />
+	<input type="text" placeholder="" onkeyup="if(this.value.length > 2) { propose_project_user(this.value, <?php echo Project::current()->id; ?>, 'page'); }" style="margin-left: 0; border-color: grey; border-style: solid; border-width: 3px;" />
 	</div>
 	<div id="projetProsedNamesPage" class="projetProsedNamesPage">
 	</div>

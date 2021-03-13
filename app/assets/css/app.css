@@ -721,6 +721,25 @@ div.stat_form {
 	color: #535353;
 }
 
+.Appliquer{
+	margin: 7px;
+	width: 26px; height: 26px;
+	display: block;
+	float: left;
+}
+.Appliquer, .AppliquerB, .AppliquerT{
+	background: url('../images/layout/icon-ri-arrow.png') no-repeat;
+}
+
+.AppliquerB{
+	background: url('../images/layout/icon-bi-arrow.png') no-repeat;
+}
+
+.AppliquerT{
+	background: url('../images/layout/icon-ti-arrow.png') no-repeat;
+}
+
+
 #add-user-project{
 	margin: 0 auto;
 	display: block;
