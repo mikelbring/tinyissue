@@ -24,6 +24,15 @@ if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 								});
 							});
 							</script>
+							<a href="javascript: Appliquer();" class="Appliquer"></a>
+							<select id="select_ChxTag" name="ChxTag" style="margin-left: -10px; margin-top: 5px; float: left; background-color: #dee7f8; font-size: 130%;">
+							<?php
+								$tags = Tag::where('tag', 'LIKE', '%')->get();
+								foreach ($tags as $tag) {
+									echo '<option>'.$tag->tag.'</option>';
+ 								}
+							?>
+							</select>
 					</div>
 				</div>
 				<div class="filter-and-sorting_BAS">
@@ -152,6 +161,9 @@ if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 	</div>
 </div>
 <script type="text/javascript">
+function Appliquer() {
+	alert("Travaux en cours.  Patience svp.");
+}
 function CalculonsDates(Quoi) {
 	var auj = new Date();
 	var dat = new Date();

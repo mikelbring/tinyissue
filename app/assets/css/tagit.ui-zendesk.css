@@ -8,8 +8,10 @@ ul.tagit {
 	padding: 2px 7px;
 	font: normal 13px Helvetica, "Lucida Grande", Arial, sans-serif;
  	color: #424242;
-	box-shadow: 0 -1px 1px #b6b6b6;
-	width: 98%;
+ 	background-color: #eeeeee;
+	box-shadow: 0 -1px 1px #c6c6c6;
+	width: 74%;
+	float: left;
 }
 ul.tagit li.tagit-choice {
     -moz-border-radius: 6px;

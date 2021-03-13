@@ -49,6 +49,7 @@
 			if (@$issue->duration === 0 || @is_null($issue->duration)) { $issue->duration = 30; }
 			$DurRelat = round(($Dur / $issue->duration) * 100);
 			$Dur = round($Dur);
+			$DurColoF = ($DurRelat < 65) ? 'white' : (( $DurRelat > $config_app['Percent'][3]) ? 'white' : 'black') ;
 			$DurColor = ($DurRelat < 65) ? 'green' : (( $DurRelat > $config_app['Percent'][3]) ? 'red' : 'yellow') ;
 			if ($DurRelat >= 50 && @$EtatTodo->weight <= 50 ) { $DurColor = 'yellow'; }
 			if ($DurRelat >= 75 && @$EtatTodo->weight <= 50 ) { $DurColor = 'red'; }
@@ -56,7 +57,7 @@
 			////Here we show to progress bar
 			echo __('tinyissue.countdown').' ('.__('tinyissue.day').'s) : ';
 			echo '<div class="Percent">';
-			echo '<div style="background-color: '.$DurColor.'; position: absolute; top: 0; left: 0; width: '.(($DurRelat <= 100) ? $DurRelat : 100).'%; height: 100%; text-align: center; line-height:20px;" />'.((($DurRelat  >= 100)) ? $Dur.' / '.@$issue->duration : $Dur).'</div>';
+			echo '<div style="color: '.$DurColoF.'; background-color: '.$DurColor.'; position: absolute; top: 0; left: 0; width: '.(($DurRelat <= 100) ? $DurRelat : 100).'%; height: 100%; text-align: center; line-height:20px;" />'.((($DurRelat  >= 100)) ? $Dur.' / '.@$issue->duration : $Dur).'</div>';
 			if ($DurRelat < 100) {  echo '<div style="background-color: gray; position: absolute;  top: 0; left: '.$DurRelat.'%; width: '.(100-$DurRelat).'%; height: 100%; text-align: center; line-height:20px;" />'.$issue->duration.'</div>'; }
 			echo '</div>';
 	
