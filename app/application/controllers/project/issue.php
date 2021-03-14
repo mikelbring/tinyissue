@@ -55,7 +55,7 @@ class Project_Issue_Controller extends Base_Controller {
 		$project = \Project::find($project_id);
 		
 		//Email process
-			$header = """;
+			$header = "";
 			$subject  = sprintf(__('email.assignment'),$Issue_title,$project_nm);
 			$text  = sprintf(__('email.assignment'),$Issue_title,$project_nm);
 			$text .= "\n\n";
