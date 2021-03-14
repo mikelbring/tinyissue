@@ -138,7 +138,7 @@ if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 								$DurColor = ($DurRelat < 65) ? 'green' : (( $DurRelat > $config_app['Percent'][3]) ? 'red' : 'yellow') ;
 								if ($DurRelat >= 50 && @$Etat->weight <= 50 ) { $DurColor = 'yellow'; }
 								if ($DurRelat >= 75 && @$Etat->weight <= 50 ) { $DurColor = 'red'; }
-								$TxtColor = ($DurColor == 'green') ? 'white' : 'black' ;
+								$TxtColor = ($DurColor == 'yellow') ? 'black' : 'white' ;
 								////Here we show to progress bar
 //								echo __('tinyissue.countdown').' ('.__('tinyissue.day').'s) : ';
 								echo '<div class="Percent2">';
