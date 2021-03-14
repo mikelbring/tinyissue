@@ -55,6 +55,7 @@ class Project_Issue_Controller extends Base_Controller {
 		$project = \Project::find($project_id);
 		
 		//Email process
+			$header = """;
 			$subject  = sprintf(__('email.assignment'),$Issue_title,$project_nm);
 			$text  = sprintf(__('email.assignment'),$Issue_title,$project_nm);
 			$text .= "\n\n";
@@ -63,7 +64,7 @@ class Project_Issue_Controller extends Base_Controller {
 			$text .= sprintf(__('tinyissue.priority')." : ".__('tinyissue.priority_desc_'.$thisIssue[0]->attributes["status"]));
 			$text .= "\n\n";
 			$text .= __('email.more_url').Project::current()->to('issue')."/".$issue_num."";
-			mail($WhoAddr, $subject,$text);
+			mail($WhoAddr, $subject,$text,$header);
 		//End of email process
 
 		return Redirect::to($issue['issue']->to())
