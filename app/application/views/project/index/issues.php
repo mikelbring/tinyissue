@@ -27,9 +27,9 @@ if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 							<a href="javascript: Appliquer();" class="Appliquer"></a>
 							<select id="select_ChxTag" name="ChxTag" style="margin-left: -10px; margin-top: 5px; float: left; background-color: #dee7f8; font-size: 130%;">
 							<?php
-								$tags = Tag::where('tag', 'LIKE', '%')->get();
+								$tags = Tag::where('tag', 'LIKE', '%')->order_by('tag','ASC')->get();
 								foreach ($tags as $tag) {
-									echo '<option>'.$tag->tag.'</option>';
+									echo '<option value="'.$tag->id.'||'.$tag->tag.'">'.$tag->tag.'</option>';
  								}
 							?>
 							</select>
@@ -87,7 +87,7 @@ if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 				</div>
 				<?php endif; ?>
 
-				<a href="" class="id">#<?php echo $row->id; ?><?php if(@$_GET["tag_id"] ==1 ) { ?><br /><br /><span style="color: <?php echo $config_app['PriorityColors'][$row->status]; ?>; font-size: 200%;">&#9899;</span><?php } ?></span></a>
+				<a href="" class="id">#<?php echo $row->id; ?><br /><br /><span style="color: <?php echo $config_app['PriorityColors'][$row->status]; ?>; font-size: 200%;">&#9899;</span></span></a>
 				<div class="data">
 					<a href="<?php echo $row->to(); ?>"><?php echo $row->title; ?></a>
 					<div class="info">
@@ -162,6 +162,17 @@ if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 </div>
 <script type="text/javascript">
 function Appliquer() {
+	var e = document.getElementById("select_ChxTag");
+	var strTag = e.options[e.selectedIndex].value;
+	var valTag = strTag.split("||")
+	//Les suivants doivent être emboîtés et, au bout du compte ajoutés à id="TagItAll"
+	//https://www.w3schools.com/jsref/met_node_appendchild.asp
+	//li class="tagit-choice ui-widget-content ui-state-default ui-corner-all tagit-choice-editable"
+	//span class="tagit-label"
+	//a class="tagit-close"  onclick="function(a){f.removeTag(e);}
+	//span class="text-icon"
+	//span class="ui-icon ui-icon-close"
+	//document.getElementById("TagItall").appendChild(IDli);
 	alert("Travaux en cours.  Patience svp.");
 }
 function CalculonsDates(Quoi) {
