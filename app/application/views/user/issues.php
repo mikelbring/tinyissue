@@ -1,10 +1,6 @@
 <?php 
 $config_app = require path('public') . 'config.app.php';  
 if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = array("black","Orchid","Cyan","Lime","orange","red"); }
-if (!in_array(Project::current()->id, Project\User::active_projects()) {
-	echo '<br /><br />Bonjour les petits babooms chéris<br /><br />';
-	var_dump(Project\User::active_projects());
-}
 ?>
 <h3>
 	<?php echo __('tinyissue.your_issues'); ?>
