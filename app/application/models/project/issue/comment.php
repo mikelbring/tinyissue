@@ -66,6 +66,11 @@ class Comment extends  \Eloquent {
 			/* Update the status of this issue according to its percentage done;  */
 			\DB::table('projects_issues')->where('id', '=', $issue->id)->update(array('closed_by' => (($input['Pourcentage'] == 100 ) ? \Auth::user()->id : NULL), 'status' => (($input['Pourcentage'] == 100 )? 0 : $input['status'])));
 	
+			/*Update tags attached to this issue if we closed the issue */
+			if ($input['Pourcentage'] == 100 || $input['status'] == 0 ) { 
+				\Project\Issue::current()->change_status(0);
+			}
+
 			/*Update tags attached to this issue */
 			$MesTags = explode(",", $input["MesTags"]);
 			$IDtags = array();
