@@ -101,18 +101,6 @@ class Project_Issue_Controller extends Base_Controller {
 				->with('notice-error', __('tinyissue.you_put_no_comment'));
 		}
 		$comment = \Project\Issue\Comment::create_comment(Input::all(), Project::current(), Project\Issue::current());
-//		$Modif = \DB::table('projects_issues')
-//			->where('id', '=', Project\Issue::current()->to())
-//			->update(array(
-//				'status' => intval(Input::get('status')), 
-//				'updated_by' => intval(\Auth::user()->id), 
-//				'updated_at' => date("Y-m-d H:i:s")
-//			));
-//		if (Input::get('status') == 0) {
-//			$Modif = \DB::table('projects_issues')
-//				->where('id', '=', Project\Issue::current())
-//				->update(array('closed_by' => \Auth::user()->id, 'closed_at' => date("Y-m-d H:i:s")));
-//		}
 		return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
 			->with('notice', __('tinyissue.your_comment_added'.((Input::get('status') == 0) ? ' --- '.__('tinyissue.issue_has_been_closed') : '')));
 	}
