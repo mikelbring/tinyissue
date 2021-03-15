@@ -52,6 +52,9 @@ Then, push your modifications through a new branch. NEVER push on master.
     - november 2019: you can move issue from project A to project B if you have access to both projects
     - January 2021 : no more reference to FlashPlayer 
     - February 2021: One can move ticket from project A to project B and assigns the ticket to a B's member
+    - March 2021: Owner can change the Ticket's status when he comments it
+    - March 2021: Reader can no longer edit ticket, nor watch stats
+    - March 2021: Search field now will search also into comments' content ( not only title or projects' name )
 - v.1.7 : July 2019 
 	- reports are now totally integrated to BUGS which produces pdf files
 - v.1.6 : February 2019 
