@@ -168,29 +168,34 @@
 				<textarea name="comment" id="textarea_comment_0" style="width: 98%; height: 90px;"></textarea>
 				<!-- New options in the form : percentage of work done after this ticket  -->
 				<br />
-				<span style="text-align: left; width: 50%;">
+				<span style="text-align: left;">
 				<?php 
 					$percent = ((is_object($EtatTodo)) ? (($EtatTodo->weight == 100) ? 91 : $EtatTodo->weight+1) : 10 );
 					if (Project\Issue::current()->assigned->id == \Auth::user()->id ) { 
-						echo __('tinyissue.percentage_of_work_done').':';
+						echo '<b>'.__('tinyissue.percentage_of_work_done').'</b> : ';
 						echo '<input type="number" name="Pourcentage" value="'.$percent.'" min="'.$percent.'" max="100" /> %';
+						echo '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;';
+						echo '<b>'.__('tinyissue.priority').'</b> : ';
+						echo '&nbsp;&nbsp;&nbsp;';
+						echo Form::select('status', array(0=>__('tinyissue.priority_desc_0'),1=>__('tinyissue.priority_desc_1'),2=>__('tinyissue.priority_desc_2'),3=>__('tinyissue.priority_desc_3'),4=>__('tinyissue.priority_desc_4'),5=>__('tinyissue.priority_desc_5')), $issue->status); 
 					} else {
 						if (Auth::user()->role_id != 1 ) { 
 							echo '<br />'; 
-							echo __('tinyissue.percentage_of_work_done').':&nbsp;&nbsp;';
-							echo $percent;
+							echo '<b>'.__('tinyissue.percentage_of_work_done').'</b> : ';
+							echo '<input type="hidden" name="Pourcentage" value="'.$percent.'"  /> '.$percent.' %';
+							echo '<b>'.__('tinyissue.priority').'</b> : ';
+							echo '<input type="hidden" name="status" value="'.$issue->status.'"  /> '.__('tinyissue.priority_desc_'.$issue->status);
 						}
-						echo '<input type="hidden" name="Pourcentage" value="'.$percent.'"  /> '.((Auth::user()->role_id != 1 ) ? '%' : '');
-						echo '<br />'; 
-					} 
-				?>
+					}	
+					echo '<br />'; 
+				?>					
 				</span>
 				<div style="text-align: right; width: 98%; margin-top: -25px;"><br /><br /></div>
 			<?php  if (Auth::user()->role_id != 1) { ?>
-					<div style="width: 90%">
-						<!-- Tags modification  -->
+					<!-- Tags modification  -->
+					<span style="float:left; font-weight: bold; margin: 7px;"><?php echo  __('tinyissue.tags'); ?></span>
+					<div style="width: 73%; float: left">
 						<?php
-							echo __('tinyissue.tags');
 							$TAGS = new Project_Issue_Controller();
 							$Tomates = $TAGS->get_edit($issue->id);
 							$Retagage = $TAGS->get_retag($issue->id);
@@ -207,6 +212,7 @@
 						</script>
 					</div>
 			</p>
+			<br /><br />
 
 			<ul id="uploaded-attachments">
 				<p>
