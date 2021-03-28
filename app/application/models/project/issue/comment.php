@@ -37,7 +37,7 @@ class Comment extends  \Eloquent {
 			'created_by' => \Auth::user()->id,
 			'project_id' => $project->id,
 			'issue_id' => $issue->id,
-			'comment' => $input['comment'],
+			'comment' => $input['comment']
 		);
 
 		$comment = new static;
@@ -66,11 +66,6 @@ class Comment extends  \Eloquent {
 			/* Update the status of this issue according to its percentage done;  */
 			\DB::table('projects_issues')->where('id', '=', $issue->id)->update(array('closed_by' => (($input['Pourcentage'] == 100 ) ? \Auth::user()->id : NULL), 'status' => (($input['Pourcentage'] == 100 )? 0 : $input['status'])));
 	
-			/*Update tags attached to this issue if we closed the issue */
-			if ($input['Pourcentage'] == 100 || $input['status'] == 0 ) { 
-				\Project\Issue::current()->change_status(0);
-			}
-
 			/*Update tags attached to this issue */
 			$MesTags = explode(",", $input["MesTags"]);
 			$IDtags = array();
@@ -80,8 +75,13 @@ class Comment extends  \Eloquent {
 				}
 			}
 			if (isset($Idtags)) {
-			$issue->tags()->sync($Idtags);
-			$issue->save();
+				$issue->tags()->sync($Idtags);
+				$issue->save();
+			}
+
+			/*Update tags attached to this issue if the has been closed */
+			if ($input['Pourcentage'] == 100 || $input['status'] == 0 || $input['Fermons'] == 0 ) { 
+				\Project\Issue::current()->change_status(0);
 			}
 		}
 

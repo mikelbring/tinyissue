@@ -28,7 +28,7 @@ return array(
 	'cancel' => 'Annuler',
 	'close_issue_confirm' => 'Êtes-vous sûr de vouloir fermer ce billet ?',
 	'close_issue' => 'Fermer le billet',
-	'closeComment_issue' => 'Commenter puis fermer ce billet',
+	'closecomment_issue' => 'Commenter puis fermer ce billet',
 	'closed_by' => 'Fermé par',
 	'closed_issue' => 'Billet fermé',
 	'closed_issues' => 'Billets fermés',

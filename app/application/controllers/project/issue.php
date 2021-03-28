@@ -102,7 +102,7 @@ class Project_Issue_Controller extends Base_Controller {
 		}
 		$comment = \Project\Issue\Comment::create_comment(Input::all(), Project::current(), Project\Issue::current());
 		return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
-			->with('notice', __('tinyissue.your_comment_added'.((Input::get('status') == 0) ? ' --- '.__('tinyissue.issue_has_been_closed') : '')));
+			->with('notice', __('tinyissue.your_comment_added'.((Input::get('status') == 0 || Input::get('Fermons') == 0) ? ' --- '.__('tinyissue.issue_has_been_closed') : '')));
 	}
 
 	/**
@@ -173,7 +173,6 @@ class Project_Issue_Controller extends Base_Controller {
 		if(Input::get('body')) {
 			$comment = \Project\Issue\Comment::edit_comment(str_replace('comment', '', Input::get('id')), str_replace("'", "`", Input::get('body')));
 			return true;
-//			return Project\Issue\Comment::format(Input::get('body'));
 		}
 	}
 
