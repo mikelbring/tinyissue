@@ -234,7 +234,7 @@
 				<p>
 					<input id="input_submitComment" type="submit" class="button primary" value="<?php echo __('tinyissue.comment'); ?>" />
 				<?php if (Project\Issue::current()->assigned->id == \Auth::user()->id ) { ?>
-					<input id="input_CloseComment" type="button"  class="button primary button2" style="position: relative; margin-left: 35px;" value="<?php echo __('tinyissue.closecomment_issue'); ?>"  onclick="if (fctFermons());" />
+					<input id="input_CloseComment" type="button"  class="button primary button2" style="position: relative; margin-left: 35px;" value="<?php echo __('tinyissue.closecomment_issue'); ?>"  onclick="if (confirm('<?php echo __('tinyissue.close_issue_confirm'); ?>')) { document.getElementById('input_Fermons').value = '0'; document.getElementById('NewComment').submit();}" />
 				<?php } ?>
 				</p>
 			<input name="Fermons" id="input_Fermons" type="hidden" value="<?php echo $issue->status; ?>" />
@@ -283,14 +283,6 @@ function AddTag (Quel,d) {
 	};
 	xhttpTAG.open("GET", NextPage, true);
 	xhttpTAG.send(); 
-}
-
-function fctFermons() {
-	if (confirm('<?php echo __('tinyissue.close_issue_confirm'); ?>')) {
-		document.getElementById('input_Fermons').value = "0"; 
-		document.getElementById('NewComment').submit();
-		return true;
-	} else { return false; }
 }
 
 function IMGupload(input) {
