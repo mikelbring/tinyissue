@@ -213,7 +213,7 @@ textarea, input[type=text], input[type=password]{
 	box-shadow: 0 -1px 1px #b6b6b6;
 }
 .action,
-input[type=submit]{
+input[type=submit], input.button2 {
 	font: bold 13px Helvetica, "Lucida Grande", Arial, sans-serif;
 	color: #fff;
 	padding: 10px 13px;
@@ -221,14 +221,22 @@ input[type=submit]{
 	border-radius: 6px;
 	background: #138dc1;
 }
+input[type=submit]{
+	background: #138dc1;
+}
 .action:hover,
 .action:focus,
 input[type=submit]:hover,
-input[type=submit]:focus{
+input.button2:hover,
+input[type=submit]:focus,
+input.button2:focus{
 	cursor: pointer;
 	background: #424242;
 	border: 1px solid #262626;
 	color: white;
+}
+input.button2{
+	background: #034d91;
 }
 
 p{

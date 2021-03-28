@@ -7,10 +7,18 @@
 	}
 ?>
 
+			<h3>
+				<?php echo __('tinyissue.update'); ?> <em><?php echo Project::current()->name; ?></em>
+				<?php
+				if (Auth::user()->role_id != 1) { ?>
+			   	<a href="<?php echo Project::current()->to('issue/new'); ?>" class="newissue"><?php echo __('tinyissue.new_issue');?></a>
+			   <?php } ?> 
+				<span><?php echo __('tinyissue.update_project_description'); ?></span>
+			</h3>
 
 <div class="pad">
 			<h3>
-			<?php echo __('tinyissue.thisproject_members'); ?>
+				<?php echo __('tinyissue.thisproject_members'); ?> 
 			</h3>
 	<table class="form" style="width: 50%;">
 		<th class="project-user"><?php echo __('__tinyissue.name'); ?></th>

@@ -163,7 +163,7 @@
 			<?php echo __('tinyissue.comment_on_this_issue'); ?>
 		</h4>
 
-		<form method="post" action="" enctype="multipart/form-data">
+		<form method="post" id="NewComment" action="" enctype="multipart/form-data">
 			<p>
 				<textarea name="comment" id="textarea_comment_0" style="width: 98%; height: 90px;"></textarea>
 				<!-- New options in the form : percentage of work done after this ticket  -->
@@ -230,10 +230,17 @@
 			</ul>
 			<?php  } ?>
 
-			<p style="margin-top: 10px;">
-				<input id="input_submitComment" type="submit" class="button primary" value="<?php echo __('tinyissue.comment'); ?>" />
-			</p>
 
+				<p>
+					<input id="input_submitComment" type="submit" class="button primary" value="<?php echo __('tinyissue.comment'); ?>" />
+				<?php if (Project\Issue::current()->assigned->id == \Auth::user()->id ) { ?>
+					<input id="input_CloseComment" type="button"  class="button primary button2" style="position: relative; margin-left: 35px;" value="<?php echo __('tinyissue.closecomment_issue'); ?>"  onclick="if (fctFermons());" />
+				<?php } ?>
+				</p>
+			<input name="Fermons" id="input_Fermons" type="hidden" value="<?php echo $issue->status; ?>" />
+			<?php 
+			//echo Form::hidden('Fermons', $issue->status); 
+			?>
 			<?php echo Form::hidden('session', Crypter::encrypt(Auth::user()->id)); ?>
 			<?php echo Form::hidden('project_id', $project->id); ?>
 			<?php echo Form::hidden('token', md5($project->id . time() . \Auth::user()->id . rand(1, 100))); ?>
@@ -276,6 +283,14 @@ function AddTag (Quel,d) {
 	};
 	xhttpTAG.open("GET", NextPage, true);
 	xhttpTAG.send(); 
+}
+
+function fctFermons() {
+	if (confirm('<?php echo __('tinyissue.close_issue_confirm'); ?>')) {
+		document.getElementById('input_Fermons').value = "0"; 
+		document.getElementById('NewComment').submit();
+		return true;
+	} else { return false; }
 }
 
 function IMGupload(input) {

@@ -24,15 +24,6 @@ if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 								});
 							});
 							</script>
-							<a href="javascript: Appliquer();" class="Appliquer"></a>
-							<select id="select_ChxTag" name="ChxTag" style="margin-left: -10px; margin-top: 5px; float: left; background-color: #dee7f8; font-size: 130%;">
-							<?php
-								$tags = Tag::where('tag', 'LIKE', '%')->order_by('tag','ASC')->get();
-								foreach ($tags as $tag) {
-									echo '<option value="'.$tag->id.'||'.$tag->tag.'">'.$tag->tag.'</option>';
- 								}
-							?>
-							</select>
 					</div>
 				</div>
 				<div class="filter-and-sorting_BAS">
@@ -161,20 +152,6 @@ if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 	</div>
 </div>
 <script type="text/javascript">
-function Appliquer() {
-	var e = document.getElementById("select_ChxTag");
-	var strTag = e.options[e.selectedIndex].value;
-	var valTag = strTag.split("||")
-	//Les suivants doivent être emboîtés et, au bout du compte ajoutés à id="TagItAll"
-	//https://www.w3schools.com/jsref/met_node_appendchild.asp
-	//li class="tagit-choice ui-widget-content ui-state-default ui-corner-all tagit-choice-editable"
-	//span class="tagit-label"
-	//a class="tagit-close"  onclick="function(a){f.removeTag(e);}
-	//span class="text-icon"
-	//span class="ui-icon ui-icon-close"
-	//document.getElementById("TagItall").appendChild(IDli);
-	alert("Travaux en cours.  Patience svp.");
-}
 function CalculonsDates(Quoi) {
 	var auj = new Date();
 	var dat = new Date();
