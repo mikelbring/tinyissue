@@ -2,7 +2,6 @@
 
 [Visit the project](http://bugs.rcmission.net/)
 
-![Printscreen](http://bugs.rcmission.net/)
 
 # Installing Bugs
 
@@ -14,6 +13,21 @@
 	( ex.:   http://127.0.0.1/Bugs/index.php  ) 
 
 Enjoy!
+
+# Sreenshots
+
+#BUGS project dashboard
+![HomePage](http://bugs.rcmission.net/images/bugs-index.png)
+
+#BUGS Creating an issue
+![IssuePage](http://bugs.rcmission.net/images/bugs-new-issue.png)
+
+#Create and manage tags
+![TagsPage](http://bugs.rcmission.net/images/bugs-create-tags.png)
+
+#Adding user
+![UserPage](http://bugs.rcmission.net/images/bugs-add-user.png)
+
 
 # Upgrading from a previous installation
 For versions 1.7 and higher
