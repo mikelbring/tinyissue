@@ -14,6 +14,8 @@
 
 Enjoy!
 
+# Sreenshots
+
 #BUGS project dashboard
 ![HomePage](http://bugs.rcmission.net/images/bugs-index.png)
 
