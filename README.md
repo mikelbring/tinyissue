@@ -2,7 +2,6 @@
 
 [Visit the project](http://bugs.rcmission.net/)
 
-![Printscreen](http://bugs.rcmission.net/)
 
 # Installing Bugs
 
@@ -14,6 +13,10 @@
 	( ex.:   http://127.0.0.1/Bugs/index.php  ) 
 
 Enjoy!
+
+[http://bugs.rcmission.net/images/bugs-index.png](http://bugs.rcmission.net/)
+
+
 
 # Upgrading from a previous installation
 For versions 1.7 and higher
