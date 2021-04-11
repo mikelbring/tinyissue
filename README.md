@@ -14,7 +14,19 @@
 
 Enjoy!
 
-[http://bugs.rcmission.net/images/bugs-index.png](http://bugs.rcmission.net/)
+# Sreenshots
+
+#BUGS project dashboard
+![HomePage](http://bugs.rcmission.net/images/bugs-index.png)
+
+#BUGS Creating an issue
+![IssuePage](http://bugs.rcmission.net/images/bugs-new-issue.png)
+
+#Create and manage tags
+![TagsPage](http://bugs.rcmission.net/images/bugs-create-tags.png)
+
+#Adding user
+![UserPage](http://bugs.rcmission.net/images/bugs-add-user.png)
 
 
 

@@ -78,6 +78,8 @@ class Project_Controller extends Base_Controller {
 
 		$issues = $issues->where('project_id', '=', Project::current()->id);
 		$issues = (Input::get('tag_id', '') == '2') ? $issues->where_null('closed_at', 'and', true) : $issues->where_null('closed_at', 'and', false); 
+////		$issues = $issues->left_join('following', 'following.issue', '=', 'projects_issues.id')->where('following.user', '=', Auth::user()->id);
+//		$issues = $issues->left_join('following', 'following.issue', '=', 'projects_issues.id');
 
 		if ($assigned_to) {
 			$issues = $issues->where(Input::get('limit_contrib','assigned_to'), '=', $assigned_to);
@@ -137,7 +139,7 @@ class Project_Controller extends Base_Controller {
 		foreach(Project::current()->users as $user) {
 			$assigned_users[$user->id] = $user->firstname . ' ' . $user->lastname;
 		}
-
+		
 		/* Build layout */
 		return $this->layout->nest('content', 'project.index', array(
 			'page' => View::make('project/index/issues', array(

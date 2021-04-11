@@ -53,7 +53,6 @@ if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 						<br /><br />
 						<input type="submit" value="<?php echo __('tinyissue.show_results'); ?>" class="button primary" />
 					</div>
-
 				</div>
 			</form>
 		</div>
@@ -62,45 +61,44 @@ if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 
 <div class="blue-box">
 	<div class="inside-pad">
-		<?php if(!$issues): ?>
-		<p><?php echo __('tinyissue.no_issues'); ?></p>
-		<?php else: ?>
-		<ul class="issues" id="sortable">
-			<?php foreach($issues as $row):  ?>
-			<li class="sortable-li" data-issue-id="<?php echo $row->id; ?>">
-				<a href="" class="comments"><?php echo $row->comment_count(); ?></a>
+		<?php 
+			if(!$issues) {
+				echo '<p>'.__('tinyissue.no_issues').'</p>';
+		} else {
+			echo '<ul class="issues" id="sortable">';
+			foreach($issues as $row) {
+				$follower = \DB::table('following')->where('project','=',0)->where('issue_id','=',$row->id)->where('user_id','=',\Auth::user()->id)->count();
+				$follower = ($follower > 0) ? 1 : 0;
+				
+				echo '<li class="sortable-li" data-issue-id="'.$row->id.'">';
+				echo '<a href="javascript: Following('.$row->id.', '.$row->project_id.', '.\Auth::user()->id.');" class="commentstate_'.$follower.'" id="a_following_'.$row->id.'"  style="min-height: '.$follower.'; " >'.$row->comment_count().'</a>';
 
-				<?php if(!empty($row->tags)): ?>
-				<div class="tags">
-				<?php foreach($row->tags()->order_by('tag', 'ASC')->get() as $tag): ?>
-						<?php echo '<label class="label"' . ($tag->bgcolor ? ' style="background: ' . $tag->bgcolor . '"' : '') . '>' . $tag->tag . '</label>'; ?>
-					<?php endforeach; ?>
-				</div>
-				<?php endif; ?>
+				if(!empty($row->tags)) {
+					echo '<div class="tags">';
+					foreach($row->tags()->order_by('tag', 'ASC')->get() as $tag) {
+						echo '<label class="label"' . ($tag->bgcolor ? ' style="background: ' . $tag->bgcolor . '"' : '') . '>' . $tag->tag . '</label>';
+					}
+					echo '</div>';
+				} 
 
-				<a href="" class="id">#<?php echo $row->id; ?><br /><br /><span style="color: <?php echo $config_app['PriorityColors'][$row->status]; ?>; font-size: 200%;">&#9899;</span></span></a>
-				<div class="data">
-					<a href="<?php echo $row->to(); ?>"><?php echo $row->title; ?></a>
-					<div class="info">
-						<?php echo __('tinyissue.created_by'); ?>
-						<strong><?php echo $row->user->firstname . ' ' . $row->user->lastname; ?></strong>
-						<?php if(is_null($row->updated_by)): ?>
-							<?php echo Time::age(strtotime($row->created_at)); ?>
-						<?php endif; ?>
+				echo '<a href="" class="id">#'.$row->id.'<br /><br /><span style="color: '.$config_app['PriorityColors'][$row->status].'; font-size: 200%;">&#9899;</span></span></a>';
+				echo '<div class="data">';
+					echo '<a href="'.$row->to().'">'.$row->title.'</a>';
+					echo '<div class="info">';
+					echo __('tinyissue.created_by'); 
+					echo '<strong>'.$row->user->firstname . ' ' . $row->user->lastname.'</strong>';
+					if(is_null($row->updated_by)) { echo Time::age(strtotime($row->created_at)); }
+					if(!is_null($row->updated_by)) {  
+						echo ' - '.__('tinyissue.updated_by');
+						echo '<strong>'.$row->updated->firstname . ' ' . $row->updated->lastname.'</strong>';
+						echo Time::age(strtotime($row->updated_at));
+					} 
+					if($row->assigned_to != 0) {
+						echo ' - '.__('tinyissue.assigned_to'); 
+						echo '<strong>'.$row->assigned->firstname . ' ' . $row->assigned->lastname.'</strong>';
+					} 
+					echo '</div>';
 
-						<?php if(!is_null($row->updated_by)): ?>
-							- <?php echo __('tinyissue.updated_by'); ?>
-							<strong><?php echo $row->updated->firstname . ' ' . $row->updated->lastname; ?></strong>
-							<?php echo Time::age(strtotime($row->updated_at)); ?>
-						<?php endif; ?>
-
-						<?php if($row->assigned_to != 0): ?>
-							- <?php echo __('tinyissue.assigned_to'); ?>
-							<strong><?php echo $row->assigned->firstname . ' ' . $row->assigned->lastname; ?></strong>
-						<?php endif; ?>
-
-					</div>
-					<?php
 					if (@$_GET["tag_id"] == 1 && Auth::user()->role_id != 1) {
 						echo '<br /><br />';
 								//Percentage of work done
@@ -138,16 +136,16 @@ if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 								echo '</div>';
 					}
 					echo '<br clear="all" />';
-
-					?>
-				</div>
-			</li>
-			<?php endforeach; ?>
-		</ul>
-		<?php endif; ?>
-		<?php if (Auth::user()->role_id != 1) { ?>
-		<div id="sortable-msg"><?php echo __('tinyissue.sortable_issue_howto'); ?></div>
-		<?php } ?>
+					echo '</div>';
+					echo '</li>';
+	
+				}
+				echo '</ul>';
+			 }
+			 if (Auth::user()->role_id != 1) { 
+				echo '<div id="sortable-msg">'.__('tinyissue.sortable_issue_howto').'</div>';
+			}
+		 ?>
 		<div id="sortable-save"><input id="sortable-save-button" class="button primary" type="submit" value="<?php echo __('tinyissue.save'); ?>" /></div>
 	</div>
 </div>
@@ -173,6 +171,24 @@ function CalculonsDates(Quoi) {
 	mm = (mm < 10) ? '0'+ mm : mm;	
 	dd = (dd < 10) ? '0'+ dd : dd;	
 	document.getElementById('input_DateFina').value = yyyy + '-' + mm + '-' + dd;
+}
+function Following(Quel, Project, Qui) {
+	<?php if ($_GET["tag_id"] != 2) { ?> 
+	var etat = (document.getElementById('a_following_' + Quel).style.minHeight.substr(0,1) == '0') ? 0 : 1;
+	var xhttp = new XMLHttpRequest();
+	var NextPage = '../../app/vendor/searchEngine/Following.php?User=' + Qui + '&Project=' + Project + '&Quel=' + Quel + '&Etat=' + etat;
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			if (xhttp.responseText != '' ) {
+				etat = Math.abs(etat-1);
+				document.getElementById('a_following_' + Quel).className = "commentstate_" + etat;
+				document.getElementById('a_following_' + Quel).style.minHeight = etat+"px";
+			}
+		}
+	};
+	xhttp.open("GET", NextPage, true);
+	xhttp.send(); 
+	<?php } ?>
 }
 function pad(n, width, z) {
   z = z || '0';

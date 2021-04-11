@@ -31,7 +31,7 @@
 				<td width="20%" class="project-user"><?php echo $roles[$row->role_id]; ?></td>
 				<td width="10%" class="project-user">
 					<?php if(Auth::user()->permission('project-modify') && count(Project::current()->users()->get())  > 1): ?>
-					<a href="javascript:void(0);" onclick="remove_project_user(<?php echo $row->id; ?>, <?php echo Project::current()->id; ?>, '<?php echo __('tinyissue.ProjSuppMbre'); ?>', 'page');" class="delete"><?php echo __('tinyissue.remove');?></a>
+					<a href="javascript:void(0);" onclick="remove_project_user(<?php echo $row->id; ?>, <?php echo Project::current()->id; ?>, '<?php echo __('tinyissue.projsuppmbre'); ?>', 'page');" class="delete"><?php echo __('tinyissue.remove');?></a>
 					<?php endif; ?>
 				</td>
 			</tr>
