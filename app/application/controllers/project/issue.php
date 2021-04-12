@@ -54,7 +54,7 @@ class Project_Issue_Controller extends Base_Controller {
 		$project_nm = $Project[0]->attributes["name"];
 		$project = \Project::find($project_id);
 		
-		//Email process
+		//Email process for assignee
 			$header = "";
 			$subject  = sprintf(__('email.assignment'),$Issue_title,$project_nm);
 			$text  = sprintf(__('email.assignment'),$Issue_title,$project_nm);
@@ -65,8 +65,8 @@ class Project_Issue_Controller extends Base_Controller {
 			$text .= "\n\n";
 			$text .= __('email.more_url').Project::current()->to('issue')."/".$issue_num."";
 			mail($WhoAddr, $subject,$text,$header);
-		//End of email process
-
+		//End of email process for assignee
+		
 		return Redirect::to($issue['issue']->to())
 			->with('notice', __('tinyissue.issue_has_been_created'));
 	}
@@ -101,8 +101,16 @@ class Project_Issue_Controller extends Base_Controller {
 				->with('notice-error', __('tinyissue.you_put_no_comment'));
 		}
 		$comment = \Project\Issue\Comment::create_comment(Input::all(), Project::current(), Project\Issue::current());
+
+		//Send an email to all users who follow this issue
+		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues TIK ON TIK.id = FAL.issue_id WHERE FAL.project_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.issue_id = ".Project\Issue::current()->id." ");
+			foreach ($followers as $ind => $follower) { 
+				mail($follower->email, __('tinyissue.following_email_comment_tit'), __('tinyissue.following_email_comment')." « ".$follower->title." ».");
+			} 
+					
 		return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
 			->with('notice', __('tinyissue.your_comment_added'.((Input::get('status') == 0 || Input::get('Fermons') == 0) ? ' --- '.__('tinyissue.issue_has_been_closed') : '')));
+
 	}
 
 	/**
