@@ -75,7 +75,7 @@ if(count($active_projects)>1) {
 <?php foreach(Project::current()->users()->get() as $row): ?>
 	<li id="project-user<?php echo $row->id; ?>">
 		<?php if(Auth::user()->permission('project-modify') && count(Project::current()->users()->get())  > 1): ?>
-		<a href="javascript:void(0);" onclick="remove_project_user(<?php echo $row->id; ?>, <?php echo Project::current()->id; ?>, '<?php echo __('tinyissue.ProjSuppMbre'); ?>', 'sidebar');" class="delete"><?php echo __('tinyissue.remove');?></a>
+		<a href="javascript:void(0);" onclick="remove_project_user(<?php echo $row->id; ?>, <?php echo Project::current()->id; ?>, '<?php echo __('tinyissue.projsuppmbre'); ?>', 'sidebar');" class="delete"><?php echo __('tinyissue.remove');?></a>
 		<?php endif; ?>
 		<?php echo $row->firstname . ' ' . $row->lastname; ?>
 	</li>
