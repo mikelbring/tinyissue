@@ -67,6 +67,13 @@ class Project_Issue_Controller extends Base_Controller {
 			mail($WhoAddr, $subject,$text,$header);
 		//End of email process for assignee
 		
+		//Email to all of this project's followers
+		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects PRO ON PRO.id = FAL.project_id WHERE FAL.project_id = ".Project::current()->id." AND FAL.project = 1 AND FAL.user_id NOT IN (".$thisIssue[0]->attributes["assigned_to"].",".\Auth::user()->id.") ");
+		foreach ($followers as $ind => $follower) { 
+			mail($follower->email, __('tinyissue.following_email_project_tit'), __('tinyissue.following_email_project')." « ".$follower->title." ».");
+		} 
+		
+		
 		return Redirect::to($issue['issue']->to())
 			->with('notice', __('tinyissue.issue_has_been_created'));
 	}
@@ -104,9 +111,9 @@ class Project_Issue_Controller extends Base_Controller {
 
 		//Send an email to all users who follow this issue
 		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues TIK ON TIK.id = FAL.issue_id WHERE FAL.project_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.issue_id = ".Project\Issue::current()->id." ");
-			foreach ($followers as $ind => $follower) { 
-				mail($follower->email, __('tinyissue.following_email_comment_tit'), __('tinyissue.following_email_comment')." « ".$follower->title." ».");
-			} 
+		foreach ($followers as $ind => $follower) { 
+			mail($follower->email, __('tinyissue.following_email_comment_tit'), __('tinyissue.following_email_comment')." « ".$follower->title." ».");
+		} 
 					
 		return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
 			->with('notice', __('tinyissue.your_comment_added'.((Input::get('status') == 0 || Input::get('Fermons') == 0) ? ' --- '.__('tinyissue.issue_has_been_closed') : '')));
@@ -154,6 +161,11 @@ class Project_Issue_Controller extends Base_Controller {
 				'project' => Project::current()
 			));
 		}
+		//Email to all of this ticket's followers
+		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON PRO.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
+		foreach ($followers as $ind => $follower) { 
+			mail($follower->email, __('tinyissue.following_email_issue_tit'), __('tinyissue.following_email_issue')." « ".$follower->title." ».");
+		} 
 	}
 
 	public function post_edit() {
@@ -355,11 +367,17 @@ class Project_Issue_Controller extends Base_Controller {
 				$Msg = '<span style="color:#F00;">'.__('tinyissue.tag_removed').'</span>';
 				$Show = true;
 			}
+
 			
 			/**
 			 * Update database
 			 */
 			if ($Show) { \User\Activity::add(6, $Action, $Issue, $TagNum->attributes['id'] ); }
+			//Email to all of this ticket's followers
+			$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON PRO.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
+			foreach ($followers as $ind => $follower) { 
+				mail($follower->email, __('tinyissue.following_email_issue_tit'), __('tinyissue.following_email_issue')." « ".$follower->title." ».");
+			} 
 
 			/**
 			 * Show on screen what just happened
