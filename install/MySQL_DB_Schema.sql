@@ -210,6 +210,30 @@ CREATE TABLE IF NOT EXISTS `users_activity` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 #--
 
+#--Create the update history system table
+CREATE TABLE `update_history` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `Footprint` varchar(25) DEFAULT NULL,
+  `Description` varchar(100) DEFAULT NULL,
+  `DteRelease` datetime DEFAULT NULL,
+  `DteInstall` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+#--
+
+#--Create following table - this permits to user to receive email on ticket's activity
+CREATE TABLE `following` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `project_id` int(11) NOT NULL,
+  `issue_id` int(11) NOT NULL,
+  `project` tinyint(2) NOT NULL DEFAULT 0,
+  `attached` tinyint(2) NOT NULL DEFAULT 1,
+  `tags` tinyint(2) NOT NULL DEFAULT 1,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+#--
+
 #--#Insert Permisions Data
 INSERT IGNORE INTO `permissions` (`id`, `permission`, `description`, `auto_has`) VALUES
 	(1, 'issue-view', 'View issues in project assigned to', NULL),
@@ -265,7 +289,8 @@ VALUES
 	(5,'Reassigned an issue','reassign-issue'),
 	(6,'Updated issue tags','update-issue-tags'),
 	(7,'Attached a file to issue','attached-file'),
-	(8,'Move an issue from project A to project B',	'ChangeIssue-project');
+	(8,'Move an issue from project A to project B',	'ChangeIssue-project'),
+	(9,'User starts or stop following issue or project', 'Follow');
 #--
 
 #--#Create default tags : id 9
@@ -298,13 +323,4 @@ VALUES ('6', 'Updated issue tags', 'update-issue-tags');
 ##--# password = admin
 INSERT INTO `users` (`id`, `role_id`, `email`, `password`, `firstname`, `lastname`, `language`, `created_at`, `updated_at`, `deleted`) VALUES
 (NULL,	4,	'myemail@email.com',	'XhS.DHsB8wt1o',	'admin',	'admin',	'en',	NOW(),	NOW(),	0);
-
-CREATE TABLE `update_history` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `Footprint` varchar(25) DEFAULT NULL,
-  `Description` varchar(100) DEFAULT NULL,
-  `DteRelease` datetime DEFAULT NULL,
-  `DteInstall` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

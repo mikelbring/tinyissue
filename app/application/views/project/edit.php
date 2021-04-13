@@ -17,25 +17,32 @@
 			</h3>
 
 <div class="pad">
-			<h3>
-				<?php echo __('tinyissue.thisproject_members'); ?> 
-			</h3>
+	<h3>
+		<?php echo __('tinyissue.thisproject_members'); ?> 
+	</h3>
 	<table class="form" style="width: 50%;">
-		<th class="project-user"><?php echo __('__tinyissue.name'); ?></th>
-		<th class="project-user"><?php echo __('__tinyissue.role'); ?></th>
+		<th class="project-user"><?php echo __('tinyissue.name'); ?></th>
+		<th class="project-user"><?php echo __('tinyissue.role'); ?></th>
+		<th class="project-user"><?php echo __('tinyissue.following'); ?></th>
 		<th class="project-user">&nbsp;</th>
 		
-		<?php foreach(Project::current()->users()->get() as $row): $Deja[] = Auth::user()->id; ?>
-			<tr id="project-user_<?php echo $row->id; ?>">
-				<td width="70%" class="project-user"><?php echo $row->firstname . ' ' . $row->lastname; ?></td>
-				<td width="20%" class="project-user"><?php echo $roles[$row->role_id]; ?></td>
-				<td width="10%" class="project-user">
-					<?php if(Auth::user()->permission('project-modify') && count(Project::current()->users()->get())  > 1): ?>
-					<a href="javascript:void(0);" onclick="remove_project_user(<?php echo $row->id; ?>, <?php echo Project::current()->id; ?>, '<?php echo __('tinyissue.ProjSuppMbre'); ?>', 'page');" class="delete"><?php echo __('tinyissue.remove');?></a>
-					<?php endif; ?>
-				</td>
-			</tr>
-		<?php endforeach; ?>
+		<?php 
+		foreach(Project::current()->users()->get() as $row) { 
+			$Deja[] = Auth::user()->id;
+			$follower = \DB::table('following')->where('project','=',1)->where('project_id','=',Project::current()->id)->where('user_id','=',$row->id)->count();
+			$follower = ($follower > 0) ? 1 : 0;
+			echo '<tr id="project-user_'.$row->id.'">';
+			echo '	<td width="60%" class="project-user">'.$row->firstname . ' ' . $row->lastname.'</td>';
+			echo '	<td width="20%" class="project-user">'.$roles[$row->role_id].'</td>';
+			echo '	<td width="10%" class="project-user"><input type="checkbox" value="1" id="input_user_'.$row->id.'" '.(($follower) ? 'checked' : '' ).' onclick="Following(this.checked, '.Project::current()->id.', '.$row->id.');" /></td>';
+			echo '	<td width="10%" class="project-user">';
+			if(Auth::user()->permission('project-modify') && count(Project::current()->users()->get())  > 1) {
+				echo '<a href="javascript:void(0);" onclick="remove_project_user('.$row->id.', '.Project::current()->id.', \''.__('tinyissue.projsuppmbre').'\', \'page\');" class="delete">'.__('tinyissue.remove').'</a>';
+			}
+			echo '	</td>';
+			echo '</tr>';
+		}
+		?>
 		<tr id="page-users"></tr>
 	</table>
 	<br />
@@ -121,3 +128,14 @@
 	</form>
 
 </div>
+<script type="text/javascript" >
+function Following(etat, Project, Qui) {
+	var xhttp = new XMLHttpRequest();
+	etat = (etat) ? 0 : 1;
+	var NextPage = '../../app/vendor/searchEngine/Following.php?Quoi=2&Qui=' + Qui + '&Project=' + Project + '&Etat=' + etat;
+	xhttp.onreadystatechange = function() {
+	};
+	xhttp.open("GET", NextPage, true);
+	xhttp.send(); 
+}
+</script>

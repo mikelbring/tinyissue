@@ -901,9 +901,29 @@ td.project-user, th.project-user {
 	border-bottom: 1px solid #dddddd
 }
 .blue-box .issues li .comments{
+}
+.commentstate_0{
+	background: url('../images/layout/icon-comments_0.png')  0 1px no-repeat;
 	min-height: 14px;
 	float: right;
+	padding-left: 21px;
+	color: #949393;
+	margin: 9px 8px 0 0;
+	display: block;
+}
+.commentstate_1{
+	background: url('../images/layout/icon-comments_1.png')  0 1px no-repeat;
+	min-height: 14px;
+	float: right;
+	padding-left: 21px;
+	color: #949393;
+	margin: 9px 8px 0 0;
+	display: block;
+}
+.blue-box .issues li .comments{
 	background: url('../images/layout/icon-comments.png')  0 1px no-repeat;
+	min-height: 14px;
+	float: right;
 	padding-left: 21px;
 	color: #949393;
 	margin: 9px 8px 0 0;

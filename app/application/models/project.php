@@ -25,9 +25,7 @@ class Project extends Eloquent {
 	*
 	* @return mixed
 	*/
-	public function issues()
-	{
-		//return $this->has_many('Project\Issue', 'project_id');
+	public function issues() {
 		return $this->has_many('Project\Issue', 'project_id')->order_by('status', 'DESC')->order_by('weight', 'ASC');
 	}
 

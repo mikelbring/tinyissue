@@ -78,6 +78,8 @@ class Project_Controller extends Base_Controller {
 
 		$issues = $issues->where('project_id', '=', Project::current()->id);
 		$issues = (Input::get('tag_id', '') == '2') ? $issues->where_null('closed_at', 'and', true) : $issues->where_null('closed_at', 'and', false); 
+////		$issues = $issues->left_join('following', 'following.issue', '=', 'projects_issues.id')->where('following.user', '=', Auth::user()->id);
+//		$issues = $issues->left_join('following', 'following.issue', '=', 'projects_issues.id');
 
 		if ($assigned_to) {
 			$issues = $issues->where(Input::get('limit_contrib','assigned_to'), '=', $assigned_to);
@@ -137,7 +139,7 @@ class Project_Controller extends Base_Controller {
 		foreach(Project::current()->users as $user) {
 			$assigned_users[$user->id] = $user->firstname . ' ' . $user->lastname;
 		}
-
+		
 		/* Build layout */
 		return $this->layout->nest('content', 'project.index', array(
 			'page' => View::make('project/index/issues', array(
@@ -168,6 +170,11 @@ class Project_Controller extends Base_Controller {
 	public function post_edit() {
 		/* Delete the project */
 		if(Input::get('delete')) {
+			//Email to all of this project's followers
+			$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects AS PRO ON PRO.id = FAL.project_id WHERE FAL.project_id = ".Project::current()->id." AND FAL.project = 1 AND FAL.user_id NOT IN (".$thisIssue[0]->attributes["assigned_to"].",".\Auth::user()->id.") ");
+			foreach ($followers as $ind => $follower) { 
+				mail($follower->email, __('tinyissue.following_email_projectmod_tit'), __('tinyissue.following_email_projectmod')." « ".$follower->title." ».");
+			} 
 			Project::delete_project(Project::current());
 			return Redirect::to('projects')
 				->with('notice', __('tinyissue.project_has_been_deleted'));
@@ -178,6 +185,11 @@ class Project_Controller extends Base_Controller {
 		$weblnk = Project::update_weblnks(Input::all(), Project::current());
 
 		if($update['success']) {
+			//Email to all of this project's followers
+			$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects PRO ON PRO.id = FAL.project_id WHERE FAL.project_id = ".Project::current()->id." AND FAL.project = 1 AND FAL.user_id NOT IN (".$thisIssue[0]->attributes["assigned_to"].",".\Auth::user()->id.") ");
+			foreach ($followers as $ind => $follower) { 
+				mail($follower->email, __('tinyissue.following_email_projectmod_tit'), __('tinyissue.following_email_projectmod')." « ".$follower->title." ».");
+			} 
 			return Redirect::to(Project::current()->to('edit'))
 				->with('notice', __('tinyissue.project_has_been_updated'));
 		}

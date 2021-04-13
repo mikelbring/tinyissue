@@ -5,6 +5,17 @@
 	if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 		echo '<script>document.location.href="'.URL::to().'";</script>';
 	}
+	$following = \DB::table('following')->where('project','=',0)->where('issue_id','=',Project\Issue::current()->id)->where('user_id','=',\Auth::user()->id)->count();
+	if ($following == 0) {
+		$follower["attached"] = 0;
+		$follower["tags"] = 0;
+		$follower["comment"] = 0;
+	} else {
+		$following =\DB::query("SELECT 1 as 'comment', attached, tags FROM following WHERE project_id = ".Project::current()->id." AND project = 0 AND issue_id = ".Project\Issue::current()->id." AND user_id = ".\Auth::user()->id);
+		$follower["attached"] = $following[0]->attached;
+		$follower["tags"] = $following[0]->tags;
+		$follower["comment"] = $following[0]->comment;
+	}
 ?>
 <h3>
 	<?php if (Auth::user()->role_id != 1) { ?>
@@ -23,6 +34,24 @@
 </h3>
 <div class="pad">
 
+	<div style="background-color: #ededed; width: 20%; float: right; ">
+		<div style="width:25%; float:left;">
+			<span style="font-weight: bold; font-size: 125%;"><?php echo __('tinyissue.following'); ?></span>
+			<br />
+			&nbsp;&nbsp;&nbsp;
+			<img src="<?php echo \URL::home();?>app/assets/images/layout/icon-comments_<?php echo $follower["comment"]; ?>.png" id="img_following" />
+		</div>
+		<div style="width:75%; float:right;">
+			<input id="input_following_comments" type="checkbox" value="1" <?php echo ($follower["comment"]) ? 'checked' : ''; ?> onclick="Following('comments', this.checked);" />
+			<?php echo __('tinyissue.following_email_comment_tit'); ?>
+			<br />
+			<input id="input_following_attached" type="checkbox" value="1" <?php echo ($follower["attached"]) ? 'checked' : ''; ?> onclick="Following('attached', this.checked);" />
+			<?php echo __('tinyissue.following_email_attached_tit'); ?>
+			&nbsp;&nbsp;&nbsp;
+			<input id="input_following_tags" type="checkbox" value="1" <?php echo ($follower["tags"]) ? 'checked' : ''; ?> onclick="Following('tags', this.checked);" />
+			<?php echo __('tinyissue.following_email_tags_tit'); ?>
+		</div>
+	</div>
 	<div id="issue-tags">
 	<?php
 			//Percentage of work done
@@ -126,13 +155,13 @@
 						<?php echo Project\Issue::current()->assigned->firstname; ?>
 						<?php echo Project\Issue::current()->assigned->lastname; ?>
 						&nbsp;&nbsp;
-						<img src="<?php echo \URL::home();?>/app/assets/images/layout/dropdown-arrow.png" height="10" />
+						<img src="<?php echo \URL::home();?>app/assets/images/layout/dropdown-arrow.png" height="10" />
 						</span>
 					<?php else: ?>
 						<span id="span_currentlyAssigned_name">
 						<?php echo __('tinyissue.no_one'); ?>
 						&nbsp;&nbsp;
-						<img src="<?php echo \URL::home();?>/app/assets/images/layout/dropdown-arrow.png" height="10" />
+						<img src="<?php echo \URL::home();?>app/assets/images/layout/dropdown-arrow.png" height="10" />
 						</span>
 					<?php endif; ?>
 
@@ -234,7 +263,7 @@
 				<p>
 					<input id="input_submitComment" type="submit" class="button primary" value="<?php echo __('tinyissue.comment'); ?>" />
 				<?php if (Project\Issue::current()->assigned->id == \Auth::user()->id ) { ?>
-					<input id="input_CloseComment" type="button"  class="button primary button2" style="position: relative; margin-left: 35px;" value="<?php echo __('tinyissue.closecomment_issue'); ?>"  onclick="if (fctFermons());" />
+					<input id="input_CloseComment" type="button"  class="button primary button2" style="position: relative; margin-left: 35px;" value="<?php echo __('tinyissue.closecomment_issue'); ?>"  onclick="if (confirm('<?php echo __('tinyissue.close_issue_confirm'); ?>')) { document.getElementById('input_Fermons').value = '0'; document.getElementById('NewComment').submit();}" />
 				<?php } ?>
 				</p>
 			<input name="Fermons" id="input_Fermons" type="hidden" value="<?php echo $issue->status; ?>" />
@@ -285,12 +314,26 @@ function AddTag (Quel,d) {
 	xhttpTAG.send(); 
 }
 
-function fctFermons() {
-	if (confirm('<?php echo __('tinyissue.close_issue_confirm'); ?>')) {
-		document.getElementById('input_Fermons').value = "0"; 
-		document.getElementById('NewComment').submit();
-		return true;
-	} else { return false; }
+function Following(Quoi, etat) {
+	if (Quoi == 'comments' ) {
+		document.getElementById('input_following_attached').checked = etat; 
+		document.getElementById('input_following_tags').checked = etat;
+		document.getElementById('img_following').src = "<?php echo \URL::home();?>app/assets/images/layout/icon-comments_" + ((etat) ? 1 : 0) + ".png";
+	} else if (Quoi != 'comments' && etat  && !document.getElementById('input_following_comments').checked) {
+		document.getElementById('input_following_comments').checked = true;
+		document.getElementById('img_following').src = "<?php echo \URL::home();?>app/assets/images/layout/icon-comments_1.png";
+	}
+	var xhttp = new XMLHttpRequest();
+	var NextPage = '../../../app/vendor/searchEngine/Following.php?Quoi=1&Qui=<?php echo \Auth::user()->id; ?>&Quel=<?php echo Project\Issue::current()->id; ?>&Project=<?php echo Project::current()->id; ?>&Etat=' + ((etat) ? 0 : 1);
+	xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			if (xhttp.responseText != '' ) {
+				alert(xhttp.responseText);
+			}
+		}
+	};
+	xhttp.open("GET", NextPage, true);
+	xhttp.send(); 
 }
 
 function IMGupload(input) {
