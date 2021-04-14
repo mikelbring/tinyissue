@@ -23,7 +23,7 @@ $valableUpadte = $_SERVER ["SERVER_NAME"].substr($_SERVER["PHP_SELF"], 0, strlen
 if (($venant == $valableAdmin  || $venant == $valableUpadte) && isset($_POST["Etape"])) {
 	//Fichier linguistique spécifique aux fonctions de mise à jour
 	$updateEN = require_once("../app/application/language/en/update.php");
-	if (file_exists("../app/application/language/".Auth::user()->language."/update.php")) { 
+	if (file_exists("../app/application/language/".Auth::user()->language."/update.php") && Auth::user()->language != 'en') { 
 		$updateFR = require_once("../app/application/language/".Auth::user()->language."/update.php");
 		$MyLng = array_merge($updateEN, $updateFR);
 	} else { $MyLng = $updateEN; } 
