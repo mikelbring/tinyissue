@@ -28,7 +28,6 @@ Enjoy!
 #Adding user
 ![UserPage](http://bugs.rcmission.net/images/bugs-add-user.png)
 
-
 # Upgrading from a previous installation
 For versions 1.7 and higher
 - just click on "Administration" and follow instructions
