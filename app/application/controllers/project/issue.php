@@ -162,7 +162,7 @@ class Project_Issue_Controller extends Base_Controller {
 			));
 		}
 		//Email to all of this ticket's followers
-		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON PRO.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
+		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
 		foreach ($followers as $ind => $follower) { 
 			mail($follower->email, __('tinyissue.following_email_issue_tit'), __('tinyissue.following_email_issue')." « ".$follower->title." ».");
 		} 
@@ -374,7 +374,7 @@ class Project_Issue_Controller extends Base_Controller {
 			 */
 			if ($Show) { \User\Activity::add(6, $Action, $Issue, $TagNum->attributes['id'] ); }
 			//Email to all of this ticket's followers
-			$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON PRO.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
+			$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
 			foreach ($followers as $ind => $follower) { 
 				mail($follower->email, __('tinyissue.following_email_issue_tit'), __('tinyissue.following_email_issue')." « ".$follower->title." ».");
 			} 
