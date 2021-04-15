@@ -198,11 +198,14 @@ if (($venant == $valableAdmin  || $venant == $valableUpadte) && isset($_POST["Et
 	$CetteVersion = include("../app/application/config/tinyissue.php");
 	$MaDate = explode("-", $CetteVersion["release_date"]);
 	$CetteVersion["release_date"] = (strlen($MaDate[0]) == 4) ? $CetteVersion["release_date"] : $MaDate[2].'-'.$MaDate[1].'-'.$MaDate[0];
-	\DB::table('update_history')->insert(array(
-		'Description'=>$CetteVersion['version'].$CetteVersion['release'], 
-		'DteRelease'=>$CetteVersion["release_date"], 
-		'DteInstall'=>date("Y-m-d H:i:s")
-	));
+	$val = \DB::query("SHOW tables");
+	if (in_array('update_history', $val)) {
+		\DB::table('update_history')->insert(array(
+			'Description'=>$CetteVersion['version'].$CetteVersion['release'], 
+			'DteRelease'=>$CetteVersion["release_date"], 
+			'DteInstall'=>date("Y-m-d H:i:s")
+		));
+	}
 } else {
 	echo 'Accès interdit';
 	echo '<script>document.location.href="../";</script>';
