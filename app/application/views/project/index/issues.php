@@ -71,7 +71,7 @@ if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
 				$follower = ($follower > 0) ? 1 : 0;
 				
 				echo '<li class="sortable-li" data-issue-id="'.$row->id.'">';
-				echo '<a href="javascript: Following('.$row->id.', '.$row->project_id.', '.\Auth::user()->id.');" class="commentstate_'.$follower.'" id="a_following_'.$row->id.'"  style="min-height: '.$follower.'; " >'.$row->comment_count().'</a>';
+				echo '<a href="javascript: Following('.$row->id.', '.$row->project_id.', '.\Auth::user()->id.');" class="commentstate_'.$follower.'" id="a_following_'.$row->id.'"  style="min-height: '.$follower.'; "  title="'.$row->comment_count().' '.__('tinyissue.following_stand').' / '.(($follower == 0) ? __('tinyissue.following_start') : __('tinyissue.following_stop')).'" >'.$row->comment_count().'</a>';
 
 				if(!empty($row->tags)) {
 					echo '<div class="tags">';
