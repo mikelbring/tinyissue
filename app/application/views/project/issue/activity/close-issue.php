@@ -13,7 +13,7 @@
 					<?php echo date(Config::get('application.my_bugs_app.date_format'), strtotime($activity->created_at)); ?>
 				</span>
 				<?php if(Project\Issue::current()->status == 0 && Auth::user()->permission('issue-modify')): ?>
-				<a href="<?php echo Project\Issue::current()->to('status?status=1'); ?>" class="button success"><?php echo __('tinyissue.reopen'); ?></a>				
+				<a href="<?php echo Project\Issue::current()->to('status?status=3'); ?>" class="button success"><?php echo __('tinyissue.reopen'); ?></a>				
 				<?php endif;?>
 		</div>
 	</div>
