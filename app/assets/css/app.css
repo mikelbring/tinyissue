@@ -158,18 +158,19 @@ footer{
 
 /* Notices */
 .global-notice{
-	width: 100%;
+	min-width: 30%;
 	position: absolute;
-	top: 0; left: 0;
+	top: 55%; left: 30%;
 	background: #222727;
 	font-size: 15px;
-	color: #fff;
+	color: #f8e81c;
 	text-decoration: none;
 	text-align: center;
-	opacity: .95;
-	padding:  11px 0;
+	opacity: .85;
+	padding:  20px 0;
 	display: none;
 	z-index: 1000;
+	border-radius: 15px;
 }
 .global-notice.global-error{
 	background: #de2e2e!important;

@@ -251,6 +251,8 @@ class Issue extends \Eloquent {
 			/* Add to activity log */
 			\User\Activity::add(3, $this->project_id, $this->id);
 		} else {
+			$this->closed_by = NULL;
+			$this->closed_at = NULL;
 
 			/* Update tags */
 			$tag_ids[1] = 1;
@@ -266,8 +268,8 @@ class Issue extends \Eloquent {
 		$this->save();
 
 		/* Notify the person to whom the issue is currently assigned, unless that person is the one changing the status */
+		$project = \Project::current();
 		if($this->assigned_to && $this->assigned_to != \Auth::user()->id) {
-			$project = \Project::current();
 			$verb = ($this->status == 0 ? __('email.closed') : __('email.reopened'));
 			$subject = sprintf(__('email.issue_changed'),$this->title,$project->name,$verb);
 			$text = \View::make('email.change_status_issue', array(
@@ -277,8 +279,18 @@ class Issue extends \Eloquent {
 				'verb' => $verb
 			));
 
-			\Mail::send_email($text, $this->assigned->email, $subject);
+			// \Mail::send_email($text, $this->assigned->email, $subject);
+			mail($this->assigned->email, $subject, $text);
 		}
+		
+		//Notify all followers about the new status
+		//Send an email to all users who follow this issue
+		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues TIK ON TIK.id = FAL.issue_id WHERE FAL.project_id = ".$project->id." AND FAL.project = 0 AND FAL.issue_id = ".$this->id." ");
+		foreach ($followers as $ind => $follower) { 
+			//\Mail::send_mail(__('tinyissue.following_email_comment')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_comment_tit'));
+			mail($follower->email, __('tinyissue.following_email_comment_tit'), __('tinyissue.following_email_comment')." « ".$follower->title." ».");
+		} 
+					
 	}
 
 	/**
@@ -332,7 +344,8 @@ class Issue extends \Eloquent {
 				'issue' => $this
 			));
 
-			\Mail::send_email($text, $this->assigned->email, $subject);
+			// \Mail::send_email($text, $this->assigned->email, $subject);
+			mail($this->assigned->email, $subject, $text);
 		}
 
 		return array(
@@ -627,7 +640,7 @@ class Issue extends \Eloquent {
 		$count = \DB::table('projects_issues')
 								->join('projects', 'projects.id', '=', 'projects_issues.project_id')
 								->where('projects.status', '=', 1)
-								->where('projects_issues.status', '=', 0)
+								->where('projects_issues.status', '<', 2)
 								->count();
 		$closed_issues_open_project = !$count ? 0 : $count;
 
