@@ -165,6 +165,7 @@ class User extends Eloquent {
 					
 				case 6:	//Updated tags
 					$tag_diff = json_decode($row->data, true);
+					if ($tag_diff === NULL) { $tag_diff['added_tags'] = array(); $tag_diff['removed_tags'] = array(); }
 					$return[$project_id]['activity'][] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issues[$row->item_id],
 						'project' => $projects[$project_id],
