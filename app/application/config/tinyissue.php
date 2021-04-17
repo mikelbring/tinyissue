@@ -1,6 +1,7 @@
 <?php
-
 return array(
-	'release_date' => '25-02-2019',
-	'version' => '1.6 - release 1.0'
+	'release_date' => '15-04-2021',
+	'version' => '1.8',
+	'release' => '4b'
 );
+

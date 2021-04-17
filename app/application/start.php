@@ -16,10 +16,8 @@ ini_set('display_errors', 'On');
 
 $config_app = require_once path('public') . 'config.app.php';
 
-Laravel\Event::listen(Laravel\Config::loader, function($bundle, $file) use ($config_app)
-{
-	if($bundle !== 'application')
-	{
+Laravel\Event::listen(Laravel\Config::loader, function($bundle, $file) use ($config_app) {
+	if($bundle !== 'application') {
 		return Laravel\Config::file($bundle, $file);
 	}
 
@@ -112,8 +110,7 @@ Autoloader::directories(array(
 |
 */
 
-Event::listen(View::loader, function($bundle, $view)
-{
+Event::listen(View::loader, function($bundle, $view) {
 	return View::file($bundle, $view, Bundle::path($bundle).'views');
 });
 
@@ -129,8 +126,7 @@ Event::listen(View::loader, function($bundle, $view)
 |
 */
 
-Event::listen(Lang::loader, function($bundle, $language, $file)
-{
+Event::listen(Lang::loader, function($bundle, $language, $file) {
 	$user = Auth::user() ;
 	if( ! is_null($user) && $user->language != '')
 		$language = $user->language ;

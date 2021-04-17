@@ -32,7 +32,10 @@
 		<?php echo Asset::styles(); ?>
 		<?php echo Asset::scripts(); ?>
 		<?php
-			if (date("Y-m-d", fileatime ("../install/get_updates_list")) != date("Y-m-d")) {
+			//Testons si l'usager en ligne en faisant ping 8.8.8.8
+			$pingresult = exec("/bin/ping -n 3 8.8.8.8", $outcome, $status);
+			$EnLigne = (0 == $status) ? true : false;
+			if (date("Y-m-d", fileatime ("../install/get_updates_list")) != date("Y-m-d") && $EnLigne) {
 				include "../app/application/libraries/checkVersion.php";
 				$Etat =  ($verActu == $verNum) ? '' :  $styleAdmin = 'class=".blink_me" style="color: yellow; text-decoration: underline wavy red; " ';
 				file_put_contents ("../install/get_updates_list", $Etat);
@@ -46,51 +49,63 @@
 				if (substr($wysiwyg['BasePage'], -3) == 'php') { include $wysiwyg['BasePage']; }
 			}
 			$RepInstalled = false;
-			if (file_exists("vendor/Reports/config.php")) { 
-				$RepInstalled = true; 
-				$Configurations = file("vendor/Reports/config.php"); 
-				$ReportsConfig = explode(",",$Configurations[0]);
-				foreach($ReportsConfig as $ind => $val ) { $ReportsConfig[$ind] = substr($val, 1, strlen($val)-2); }
-			}
 		?>
 	</head>
 <body>
 
-	<iframe name="ContenuVariable" id="ContenuVariable" style="display:none; height:250px; width: 80%; left: 200px; position:absolute; background-color: #FFF; z-index:100;"></iframe>
 	<div id="container">
-
 		<div id="header">
+			<a href="<?php echo URL::to(); ?>" class="logo" title="<?php echo  Config::get('application.my_bugs_app.name') ?>" ></a>
+			<div class="logoVersion" id="logo_version" >version: 
+			<?php 
+				if ($styleAdmin != '') { echo '<a href="administration" id="aLogoVersion"> '; } 
+				echo  Config::get('tinyissue.version').Config::get('tinyissue.release'); 
+				if ($styleAdmin != '') { echo '</a>'; } 
+			?>
+			</div>
 
-			<ul class="nav-right">
-				<li><?php echo __('tinyissue.welcome');?>, <a href="<?php echo URL::to('user/settings'); ?>" class="user"><?php echo Auth::user()->firstname; ?></a></li>
-				<?php if(Auth::user()->permission('administration')): ?>
-				<li><a href="<?php echo URL::to('administration/users'); ?>"><?php echo __('tinyissue.users');?></a></li>
-				<li><a href="<?php echo URL::to('administration'); ?>" <?php echo $styleAdmin; ?>><?php echo __('tinyissue.administration');?></a></li>
-				<?php endif; ?>
-				<li class="logout"><a href="<?php echo URL::to('user/logout'); ?>"><?php echo __('tinyissue.logout');?></a></li>
-			</ul>
+			<nav class="nav">
+				<li>
+					<ul>
+						<li class="dashboard <?php echo $active == 'dashboard' ? 'active' : ''; ?>"><a href="<?php echo URL::to(); ?>"><?php echo __('tinyissue.dashboard');?></a></li>
+						<li class="issues <?php echo $active == 'issues' ? 'active' : ''; ?>"><a href="<?php echo URL::to('user/issues'); ?>"><?php echo __('tinyissue.your_issues');?></a></li>
+						<?php if (Auth::user()->role_id != 1) { ?><li class="todo <?php echo $active == 'todo' ? 'active' : ''; ?>"><a href="<?php echo URL::to('todo'); ?>"><?php echo __('tinyissue.your_todos');?></a></li><?php } ?>
+						<li class="projects <?php echo $active == 'projects' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects'); ?>"><?php echo __('tinyissue.projects');?></a></li>
+					</ul>
+				</li>
+ 			</nav>
 
-			<a href="<?php echo URL::to(); ?>" class="logo" title="<?php echo  Config::get('application.my_bugs_app.name') ?>"><?php echo Config::get('application.my_bugs_app.name') ?></a>
-
-			<ul class="nav">
-				<li class="dashboard <?php echo $active == 'dashboard' ? 'active' : ''; ?>"><a href="<?php echo URL::to(); ?>"><?php echo __('tinyissue.dashboard');?></a></li>
-				<li class="issues <?php echo $active == 'issues' ? 'active' : ''; ?>"><a href="<?php echo URL::to('user/issues'); ?>"><?php echo __('tinyissue.your_issues');?></a></li>
-				<li class="todo <?php echo $active == 'todo' ? 'active' : ''; ?>"><a href="<?php echo URL::to('todo'); ?>"><?php echo __('tinyissue.your_todos');?></a></li>
-				<li class="projects <?php echo $active == 'projects' ? 'active' : ''; ?>"><a href="<?php echo URL::to('projects'); ?>"><?php echo __('tinyissue.projects');?></a></li>
-				<li><a href="<?php echo ($RepInstalled) ? 'http://127.0.0.1/'.$ReportsConfig[0].'/'.$ReportsConfig[1] : URL::to('projects/reports'); ?>" target="<?php echo ($RepInstalled) ? '_blank' : ''; ?>"><?php echo __('tinyissue.report');?></a></li>
- 			</ul>
+			<nav class="nav-right">
+				<ul>
+				<?php
+					echo __('tinyissue.welcome').', <a href="'.URL::to('user/settings').'" class="user">'.Auth::user()->firstname.'</a></li>';
+					if (\Role\Permission::inherits_permission(array('reports-view','reports-create','project-create'))) {
+						echo '<li class="reports '.(($active == 'repprts') ? 'active' : '').'">';
+						echo '<a href="'.URL::to('projects/reports').'" ">'.__('tinyissue.report').'</a>';
+						echo '</li>';
+					}
+					if (Auth::user()->permission('administration')) {
+						echo '<li>';
+						echo '<a href="'.URL::to('administration/users').'">'.__('tinyissue.users').'</a>';
+						echo '</li>';
+						echo '<li>';
+						echo '<a href="'.URL::to('administration').'" '.$styleAdmin.'>'. __('tinyissue.administration').'</a>';
+						echo '</li>';
+					}
+					echo '<li class="logout">';
+					echo '<a href="'.URL::to('user/logout').'">'. __('tinyissue.logout').'</a>';
+					echo '</li>';
+				 ?>
+				</ul>
+			</nav>
 
 		</div>
-
+<div style="clear:both;"></div>
 		<div id="main">
-
 			<div id="sidebar">
 				<div class="inside">
-
 					<?php echo $sidebar; ?>
-
 				</div>
 			</div> <!-- end sidebar -->
-
 			<div id="content">
 				<div class="inside">

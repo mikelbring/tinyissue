@@ -1,3 +1,7 @@
+<?php 
+$config_app = require path('public') . 'config.app.php';  
+if(!isset($config_app['PriorityColors'])) { $config_app['PriorityColors'] = array("black","Orchid","Cyan","Lime","orange","red"); }
+?>
 <h3>
 	<?php echo __('tinyissue.your_issues'); ?>
 	<span><?php echo __('tinyissue.your_issues_description'); ?></span>
@@ -10,12 +14,11 @@
 	<div class="blue-box">
 		<div class="inside-pad">
 
-			<h4><a href="<?php echo $project['detail']->to(); ?>"><?php echo $project['detail']->name; ?></a></h4>
+			<h4><a href="<?php echo $project['detail']->to(); ?>/issues?tag_id=1"><?php echo $project['detail']->name; ?></a></h4>
 
 			<ul class="issues">
 				<?php foreach($project['issues'] as $row):  ?>
 				<li>
-					<a href="#" class="todo-button add" id="issue-id-<?php echo $row->id; ?>" data-issue-id="<?php echo $row->id; ?>" title="<?php echo __('tinyissue.todos_add'); ?>">[+]</a>
 					<a href="<?php echo $row->to(); ?>" class="comments"><?php echo $row->comment_count(); ?></a>
 					
 					<?php if(!empty($row->tags)): ?>
@@ -26,7 +29,7 @@
 					</div>
 					<?php endif; ?>
 
-					<a href="<?php echo $row->to(); ?>" class="id">#<?php echo $row->id; ?></a>
+					<a href="<?php echo $row->to(); ?>" class="id">#<?php echo $row->id; ?><br /><span style="color: <?php echo $config_app['PriorityColors'][$row->status]; ?>; font-size: 200%;">&#9899;</span></span></a>
 					<div class="data">
 						<a href="<?php echo $row->to(); ?>"><?php echo $row->title; ?></a>
 						<div class="info">

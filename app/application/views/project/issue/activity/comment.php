@@ -1,3 +1,8 @@
+<?php 
+	if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) {
+		echo '<script>document.location.href="'.URL::to().'";</script>';
+	}
+?>
 <li id="comment<?php echo $comment->id; ?>" class="comment">
 	<div class="insides">
 		<div class="topbar">
@@ -7,7 +12,7 @@
 					<a href="javascript:void(0);" class="edit">Edit</a>
 				</li>
 				<li class="delete-comment">
-				<a href="<?php echo $issue->to('delete_comment?comment=' . $issue->id); ?>" class="delete">Delete</a>
+				<a href="<?php echo $issue->to('delete_comment?comment=' . $comment->id); ?>" class="delete">Delete</a>
 				</li>
 			</ul>
 			<?php endif; ?>
@@ -49,6 +54,13 @@
 	if (trim(@$wysiwyg['directory']) != '') {
 		if (file_exists($wysiwyg['directory']."/Bugs_code/showeditor.js")) {
 			include_once $wysiwyg['directory']."/Bugs_code/showeditor.js"; 
+			if ($wysiwyg['name'] == 'ckeditor') {
+				echo "
+				setTimeout(function() {
+					showckeditor ('body');
+				} , 567);
+				";
+			}
 		} 
 	} 
 ?>

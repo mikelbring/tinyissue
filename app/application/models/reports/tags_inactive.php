@@ -1,0 +1,32 @@
+<?php
+	$colonnes = array(50, 70, 30, 40, 0.1, 0.1);
+	$colorStatus[0] = array(170,170,170);
+	$colorStatus[1] = array(215,215,225);
+	$ChampDTE = "TIK.created_at";
+	$ChampUSR = "TIK.assigned_to";
+	$OrdreTRI = "TAG.tag ASC, TIK.status DESC, PRO.name ASC";
+	$PosiX = array('special0' => 20,'special1' => 121.25,'special2' => 146);
+	$etOU = " AND ";
+	$query  = "SELECT ";
+	$query .= "TAG.tag AS zero, ";
+	$query .= "CONCAT(TIK.id, '. ', TIK.title) AS prem, ";
+	$query .= "PRO.name AS deux, ";
+	$query .= "CASE TIK.status ";
+	$query .= "WHEN 1 THEN '".__('tinyissue.priority_desc_1')."' ";
+	$query .= "WHEN 2 THEN '".__('tinyissue.priority_desc_2')."' ";
+	$query .= "WHEN 3 THEN '".__('tinyissue.priority_desc_3')."' ";
+	$query .= "WHEN 4 THEN '".__('tinyissue.priority_desc_4')."' ";
+	$query .= "WHEN 5 THEN '".__('tinyissue.priority_desc_5')."' ";
+	$query .= "ELSE '".__('tinyissue.priority_desc_0')."'";
+	$query .= "END AS troi, ";
+	$query .= "'' AS quat, ";
+	$query .= "'' AS cinq, ";
+	$query .= "TIK.status AS status ";
+	$query .= "FROM projects_issues_tags AS IAG ";
+	$query .= "LEFT JOIN tags AS TAG ON TAG.id = IAG.tag_id ";
+	$query .= "LEFT JOIN projects_issues AS TIK ON TIK.id = IAG.issue_id ";
+	$query .= "LEFT JOIN projects AS PRO ON PRO.id = TIK.project_id ";
+	//$query .= "WHERE TIK.status IS NOT NULL ";
+	$query .= "WHERE TIK.status = 0 AND TIK.status IS NOT NULL ";
+
+	$SautPage = true;

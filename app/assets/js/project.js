@@ -9,38 +9,24 @@ $(function() {
     	return this.hostname != window.location.hostname;
 	}).attr('target', '_blank');
 
+	/*
+	//Patrick, 7 février 2021
+	//Nous devons nous débarasser de ces références à des outils désuets
+	
+	//Ceci a un impact sur l'affichage et la sélection des étiquettes rattachées à un billet
+	//Aussi sur les étiquettes du billet, en mode « Mofidication du billet »
+
 	/* Uploadify */
+	/*
 	var uploaded_attachments = $('#uploaded-attachments');
 	var upload_token = $('input[name=token]').val();
 	var session = $('input[name=session]').val();
 	var project = $('input[name=project_id]').val();
+	*/
 
-	$("#upload").uploadify({
-		'uploader' : baseurl + '/app/assets/js/uploadify/uploadify.swf',
-		'script' : siteurl + 'ajax/project/issue_upload_attachment',
-		'scriptData' : {
-			session : session,
-			project_id : project,
-			upload_token : upload_token
-		},
-		'hideButton': true,
-		'wmode'      : 'transparent',
-		'buttonText' : $('#uploadbuttontext').val(),
-		'width' : 200,
-		'height':30,
-		'cancelImg' : baseurl + '/app/assets/images/layout/icon-delete.png',
-		'auto' : true,
-		'multi' : true,
-		'queSizeLimit' : 10,
-		'onComplete' : function(event, id, file){
-			
-			var body = '<li id="' + id + '">' +
-					'<a href="javascript:void(0);" class="delete" rel="' + id + '">Remove</a><span>' +
-					file.name + '</span></li>';
-			
-			uploaded_attachments.append(body);
-		}
-	});
+//	$("#upload").uploadify({
+//		return true;
+//	});
 
 	uploaded_attachments.find('.delete').live('click', function(){
 		var attachment = $(this);
@@ -63,6 +49,7 @@ $(function() {
 		var id = $(this).closest('.comment').attr('id');
 		$('#' + id + ' .issue').hide();
 		$('#' + id + ' .comment-edit').show();
+		AffichonsEditor(id);
 		return false;
 	});
 
@@ -92,18 +79,20 @@ $(function() {
 	discussion.find('li .save').live('click', function(){
 		var id = $(this).closest('.comment').attr('id');
 
+		var contenu = CachonsEditor(id);
+		if (contenu == false) { contenu = discussion.find('#' + id + ' textarea').val(); }
 		$('#' + id + ' textarea').attr('disabled', 'disabled');
-
 		saving_toggle();
 
 		$.post(current_url + '/edit_comment', {
-			body: discussion.find('#' + id + ' textarea').val(),
+			body: contenu,
 			id: id,
 			csrf_token: $('input[name=csrf_token]').val()
 		}, function(data){
 			$('#' + id + ' textarea').removeAttr('disabled');
 			$('#' + id + ' .comment-edit').hide();
-			$('#' + id + ' .issue').html(data).show();
+//			$('#' + id + ' .issue').html(data).show();
+			$('#' + id + ' .issue').html(contenu).show();
 			saving_toggle();
 		});
 
@@ -120,6 +109,32 @@ $(function() {
 
 /* Autocomplete for sidebar adding user */
 var autocomplete_sidebar_init = false;
+
+function assign_issue_to_user(user_id, issue_id, callback){
+   $.post(siteurl + 'ajax/project/issue_assign', {
+      user_id : user_id,
+      issue_id : issue_id
+   }, function(){
+      callback();
+   });
+}
+
+function issue_assign_change(user_id, issue_id){
+   saving_toggle();
+
+   assign_issue_to_user(user_id, issue_id, function(){
+
+      var assigned_to = $('.assigned-to');
+      var assign_to = assigned_to.find('.user' + user_id);
+
+      assigned_to.find('.assigned').removeClass('assigned');
+      assign_to.addClass('assigned');
+      assigned_to.find('.currently_assigned').html(assign_to.html());
+
+      saving_toggle();
+   });
+
+}
 
 function init_sidebar_autocomplete(project){
 
@@ -166,46 +181,3 @@ function init_sidebar_autocomplete(project){
 
 }
 
-function remove_project_user(user_id, project_id){
-	if(!confirm('Are you sure you want to remove this user from the project?')){
-		return false;
-	}
-
-	saving_toggle();
-
-	$.post(siteurl + 'ajax/project/remove_user', {
-		user_id : user_id,
-		project_id : project_id
-	}, function(data){
-		$('#project-user' + user_id).fadeOut();
-		saving_toggle();
-	});
-
-	return true;
-}
-
-function issue_assign_change(user_id, issue_id){
-   saving_toggle();
-
-   assign_issue_to_user(user_id, issue_id, function(){
-
-      var assigned_to = $('.assigned-to');
-      var assign_to = assigned_to.find('.user' + user_id);
-
-      assigned_to.find('.assigned').removeClass('assigned');
-      assign_to.addClass('assigned');
-      assigned_to.find('.currently_assigned').html(assign_to.html());
-
-      saving_toggle();
-   });
-
-}
-
-function assign_issue_to_user(user_id, issue_id, callback){
-   $.post(siteurl + 'ajax/project/issue_assign', {
-      user_id : user_id,
-      issue_id : issue_id
-   }, function(){
-      callback();
-   });
-}

@@ -1,14 +1,28 @@
 <?php
 return array(
+	'choix_0' => 'Trois modes de mise à jour sont offertes.  Veuillez choisir.',
+	'choix_1' => 'Installer automatiquement la dernière version stable',
+	'choix_2' => 'Installer automatiquement la version la plus avancée, mais potentiellement instable ou comportant des erreurs',
+	'choix_3' => 'Installer manuellement - en 4 étapes - les dernières mises à jour.',
+	'choix_4' => 'Des modes d`installation automatisés seront disponibles lorsque vous aurez installé le <a href="https://www.php.net/manual/fr/zip.requirements.php" target="_blank">greffon libzip</a> de PHP.<br />Les usagers Debian ou Linux peuvent installer le paquet php7-3-zip ou php8.0-zip',
+	'Description_1' => 'Mise à jour du code de programmation',
+	'Description_2' => 'Mise à jour de la base de données',
+	'Description_3' => 'Mise à jour des préférences',
+	'Description_4' => 'Le processus de mise à jour est terminé.',
 	'Intro_0' => 'Vous devez d`abord télécharger les mises à jour',
 	'Intro_1' => ' Vous pouvez',
 	'Intro_2' => 'Décompresser et installer le fichier ZIP',
 	'Intro_3' => 'En console, taper la commande suivante',
 	'Intro_4' => 'Cliquez ici lorsque ce sera fait',
 	'Intro_5' => 'Étape suivante',
+	'echec_2' => 'Le fichier de codes n`a pu être décompressé. \n\n Vous devrez passer par le mode manuel.',
 	'Etape' => 'Étape',
 	'updateData_1' => 'La nouvelle version est prête à l`utilisation',
 	'updateData_2' => 'Vous devez approuver chacune des modifications suivante',
 	'updateData_3' => 'Appliquer les correctifs',
-	'ResultData_1' => 'La mise à jour est complétée.'
+	'updateData_4' => 'Aucune modification à la base de données n`est nécessaire.',
+	'updateData_5' => 'Aucune modification au fichier des préférences.',
+	'ResultData_1' => 'La mise à jour des données est compétée.',
+	'ResultData_3a' => 'La mise à jour de votre fichier de configurations est faite',
+	'ResultData_3b' => 'Une sauvegarde de votre précédent fichier a été faite sous le nom de'
 );

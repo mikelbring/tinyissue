@@ -1,15 +1,19 @@
 <?php
-$active_projects =Project\User::active_projects();
-if(count($active_projects)>1){
+$active_projects = Project\User::active_projects();
+if(count($active_projects)>1) {
 ?>
+<div id="sidebar_Projects_title" class="sidebarTitles"><?php echo __('tinyissue.select_a_project'); ?></div>
+<div id="sidebar_Projects" class="sidebarItem">
 <form class="projects_selector">
-<fieldset><label for="projects_select"><?php echo __('tinyissue.select_a_project');?></label>
+<fieldset class="sidebar_Projects_label"><label for="projects_select"><?php echo __('tinyissue.select_a_project');?></label>
 <select name="projects_select" id="projects_select"  onchange="if (this.value) window.location.href=this.value">
 <?php
+	$NbIssues = array();
 	$Proj = array();
 	$SansAccent = array();
 	foreach($active_projects as $row) {
-		$Proj[$row->to()] = $row->name;
+		$NbIssues[$row->to()] = $row->count_open_issues();
+		$Proj[$row->to()] = $row->name.' ('.$NbIssues[$row->to()].')';
 	}
 	foreach ($Proj as $ind => $val ){
 		$SansAccent[$ind] = htmlentities($val, ENT_NOQUOTES, 'utf-8');
@@ -21,41 +25,57 @@ if(count($active_projects)>1){
 
 	foreach($SansAccent as $ind => $val) {
 		$selected = (substr($ind, strrpos($ind, "/")+1) == Project::current()->id) ? 'selected':'';
-		echo '<option value="'.$ind.'" '.$selected.'>'.$Proj[$ind].'</option>';
+		echo '<option value="'.$ind.(($NbIssues[$ind] == 0) ? '' : '/issues?tag_id=1').'" '.$selected.'>'.$Proj[$ind].'</option>';
 	 }
 ?>
 </select>
 </fieldset>
 </form>
 <?php
-}
+	$ceci = array_keys($_GET);
+	$prefixe = (substr($ceci[0], 0, 9) == '/project/' && strpos($ceci[0],'issue') == 0) ? '../' : '../../../';
+	$prefixe = (substr($ceci[0], -6) == 'issues') ? '../../' : $prefixe;
+	include_once path('public').'app/vendor/searchEngine/index.php'; 
 ?>
 
+</div>
+
+<?php
+}
+?>
+<div id="sidebar_Issues_title" class="sidebarTitles"><?php echo __('tinyissue.ptickets'); ?></div>
+<div id="sidebar_Issues" class="sidebarItem">
 <h2>
 	<?php if(Auth::user()->permission('project-modify')): ?>
 	<a href="<?php echo Project::current()->to('edit'); ?>" class="edit"><?php echo __('tinyissue.edit');?></a>
 	<?php endif; ?>
 
-	<?php echo HTML::link(Project::current()->to(), Project::current()->name); ?>
-	<span><?php echo __('tinyissue.assign_users_and_edit_the_project');?></span>
+	<span><?php echo HTML::link(Project::current()->to(), Project::current()->name); ?><br />
+	<?php echo __('tinyissue.assign_users_and_edit_the_project');?></span>
 </h2>
 
 <ul>
 	<li><a href="<?php echo Project::current()->to('issues'); ?>?tag_id=1"><?php echo Project::current()->count_open_issues(); ?> <?php echo __('tinyissue.open_issues');?></a></li>
 	<li><a href="<?php echo Project::current()->to('issues'); ?>?tag_id=2"><?php echo Project::current()->count_closed_issues(); ?> <?php echo __('tinyissue.closed_issues');?></a></li>
 </ul>
+</div>
 
+<?php if (Auth::user()->role_id != 1) { ?>
+<div id="sidebar_Users_title" class="sidebarTitles"><?php echo __('tinyissue.assigned_users'); ?></div>
+<div id="sidebar_Users" class="sidebarItem">
 <h2>
-	<?php echo __('tinyissue.assigned_users');?>
+	<?php 
+		//echo __('tinyissue.assigned_users');
+	?>
 	<span><?php echo __('tinyissue.assigned_users_description');?></span>
 </h2>
 
-<ul class="sidebar-users">
-<?php foreach(Project::current()->users()->get() as $row): ?>
 
+<ul class="sidebar-users" id="sidebar-users">
+<?php foreach(Project::current()->users()->get() as $row): ?>
 	<li id="project-user<?php echo $row->id; ?>">
-		<?php if(Auth::user()->permission('project-modify')): ?>
-		<a href="javascript:void(0);" onclick="remove_project_user(<?php echo $row->id; ?>, <?php echo Project::current()->id; ?>);" class="delete"><?php echo __('tinyissue.remove');?></a>
+		<?php if(Auth::user()->permission('project-modify') && count(Project::current()->users()->get())  > 1): ?>
+		<a href="javascript:void(0);" onclick="remove_project_user(<?php echo $row->id; ?>, <?php echo Project::current()->id; ?>, '<?php echo __('tinyissue.projsuppmbre'); ?>', 'sidebar');" class="delete"><?php echo __('tinyissue.remove');?></a>
 		<?php endif; ?>
 		<?php echo $row->firstname . ' ' . $row->lastname; ?>
 	</li>
@@ -63,11 +83,15 @@ if(count($active_projects)>1){
 </ul>
 
 <?php if(Auth::user()->permission('project-modify')): ?>
-
-	<input type="text" id="add-user-project" placeholder="<?php echo __('tinyissue.assign_a_user');?>" onmouseover="init_sidebar_autocomplete(<?php echo Project::current()->id; ?>);" />
-
+	<input type="text" id="add-user-project" placeholder="<?php echo __('tinyissue.assign_a_user');?>" onkeyup="if(this.value.length > 2) { propose_project_user(this.value, <?php echo Project::current()->id; ?>, 'sidebar'); }" />
+	<div id="projetProsedNamesList">
+	</div>
 <?php endif; ?>
+</div>
+<?php } ?>
 
+<div id="sidebar_Website_title" class="sidebarTitles"><?php echo __('tinyissue.website_title'); ?></div>
+<div id="sidebar_Website" class="sidebarItem">
 <?php
 	$project_WebLnks = \DB::table('projects_links')->where('id_project', '=', Project::current()->id)->order_by('category','ASC')->get();
 	$WebLnk = array();
@@ -77,7 +101,9 @@ if(count($active_projects)>1){
 if (count($WebLnk) > 0 ) {
 ?>
 <h2>
-	<?php echo __('tinyissue.website_title');?>
+	<?php 
+		//echo __('tinyissue.website_title');
+	?>
 	<span><?php echo __('tinyissue.website_description');?></span>
 </h2>
 <?php
@@ -88,3 +114,20 @@ if (count($WebLnk) > 0 ) {
 	echo '</ul>';
 }
 ?>
+</div>
+
+
+<script type="text/javascript" >
+	$('#sidebar_Website_title').click(function() {
+	    $('#sidebar_Website').toggle('slow');
+	});
+	$('#sidebar_Users_title').click(function() {
+	    $('#sidebar_Users').toggle('slow');
+	});
+	$('#sidebar_Issues_title').click(function() {
+	    $('#sidebar_Issues').toggle('slow');
+	});
+	$('#sidebar_Projects_title').click(function() {
+	    $('#sidebar_Projects').toggle('slow');
+	});
+</script>

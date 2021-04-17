@@ -8,8 +8,7 @@
  * @param  string  $value
  * @return string
  */
-function e($value)
-{
+function e($value) {
 	return HTML::entities($value);
 }
 
@@ -21,8 +20,7 @@ function e($value)
  * @param  string  $language
  * @return string
  */
-function __($key, $replacements = array(), $language = null)
-{
+function __($key, $replacements = array(), $language = null) {
 	return Lang::line($key, $replacements, $language);
 }
 
@@ -56,16 +54,14 @@ function dd($value) {
  * @param  mixed   $default
  * @return mixed
  */
-function array_get($array, $key, $default = null)
-{
+function array_get($array, $key, $default = null) {
 	if (is_null($key)) return $array;
 
 	// To retrieve the array item using dot syntax, we'll iterate through
 	// each segment in the key and look for that value. If it exists, we
 	// will return it, otherwise we will set the depth of the array and
 	// look for the next segment.
-	foreach (explode('.', $key) as $segment)
-	{
+	foreach (explode('.', $key) as $segment) {
 		if ( ! is_array($array) or ! array_key_exists($segment, $array))
 		{
 			return value($default);
@@ -95,8 +91,7 @@ function array_get($array, $key, $default = null)
  * @param  mixed   $value
  * @return void
  */
-function array_set(&$array, $key, $value)
-{
+function array_set(&$array, $key, $value) {
 	if (is_null($key)) return $array = $value;
 
 	$keys = explode('.', $key);
@@ -105,8 +100,7 @@ function array_set(&$array, $key, $value)
 	// setting the array value for each level that we dig into. Once there
 	// is one key left, we can fall out of the loop and set the value as
 	// we should be at the proper depth.
-	while (count($keys) > 1)
-	{
+	while (count($keys) > 1) {
 		$key = array_shift($keys);
 
 		// If the key doesn't exist at this depth, we will just create an
@@ -138,16 +132,14 @@ function array_set(&$array, $key, $value)
  * @param  string  $key
  * @return void
  */
-function array_forget(&$array, $key)
-{
+function array_forget(&$array, $key) {
 	$keys = explode('.', $key);
 
 	// This loop functions very similarly to the loop in the "set" method.
 	// We will iterate over the keys, setting the array value to the new
 	// depth at each iteration. Once there is only one key left, we will
 	// be at the proper depth in the array.
-	while (count($keys) > 1)
-	{
+	while (count($keys) > 1) {
 		$key = array_shift($keys);
 
 		// Since this method is supposed to remove a value from the array,
@@ -220,8 +212,7 @@ function array_strip_slashes($array) {
  * @param  array  $array
  * @return array
  */
-function array_divide($array)
-{
+function array_divide($array) {
 	return array(array_keys($array), array_values($array));
 }
 
@@ -232,10 +223,8 @@ function array_divide($array)
  * @param  string  $key
  * @return array
  */
-function array_pluck($array, $key)
-{
-	return array_map(function($v) use ($key)
-	{
+function array_pluck($array, $key) {
+	return array_map(function($v) use ($key) {
 		return is_object($v) ? $v->$key : $v[$key];
 
 	}, $array);
@@ -248,8 +237,7 @@ function array_pluck($array, $key)
  * @param  array  $keys
  * @return array
  */
-function array_only($array, $keys)
-{
+function array_only($array, $keys) {
 	return array_intersect_key( $array, array_flip((array) $keys) );
 }
 
@@ -260,8 +248,7 @@ function array_only($array, $keys)
  * @param  array  $keys
  * @return array
  */
-function array_except($array, $keys)
-{
+function array_except($array, $keys) {
 	return array_diff_key( $array, array_flip((array) $keys) );
 }
 
@@ -271,10 +258,8 @@ function array_except($array, $keys)
  * @param  Eloquent|array  $models
  * @return object
  */
-function eloquent_to_json($models)
-{
-	if ($models instanceof Laravel\Database\Eloquent\Model)
-	{
+function eloquent_to_json($models) {
+	if ($models instanceof Laravel\Database\Eloquent\Model) {
 		return json_encode($models->to_array());
 	}
 
@@ -286,9 +271,10 @@ function eloquent_to_json($models)
  *
  * @return bool
  */
-function magic_quotes()
-{
-	return function_exists('get_magic_quotes_gpc') and get_magic_quotes_gpc();
+function magic_quotes() {
+	return false;
+	//The following line is disabled because magic_quotes is deprecated since PHP 7.0 and causes bug since PHP 7.4
+	//return function_exists('get_magic_quotes_gpc') and get_magic_quotes_gpc();
 }
 
 /**
@@ -299,8 +285,7 @@ function magic_quotes()
  * @param  array  $array
  * @return mixed
  */
-function head($array)
-{
+function head($array) {
 	return reset($array);
 }
 
@@ -319,8 +304,7 @@ function head($array)
  * @param  bool    $https
  * @return string
  */
-function url($url = '', $https = null)
-{
+function url($url = '', $https = null) {
 	return Laravel\URL::to($url, $https);
 }
 
@@ -331,8 +315,7 @@ function url($url = '', $https = null)
  * @param  bool    $https
  * @return string
  */
-function asset($url, $https = null)
-{
+function asset($url, $https = null) {
 	return Laravel\URL::to_asset($url, $https);
 }
 
@@ -351,8 +334,7 @@ function asset($url, $https = null)
  * @param  array   $parameters
  * @return string
  */
-function action($action, $parameters = array())
-{
+function action($action, $parameters = array()) {
 	return Laravel\URL::to_action($action, $parameters);
 }
 
@@ -371,8 +353,7 @@ function action($action, $parameters = array())
  * @param  array   $parameters
  * @return string
  */
-function route($name, $parameters = array())
-{
+function route($name, $parameters = array()) {
 	return Laravel\URL::to_route($name, $parameters);
 }
 
@@ -383,8 +364,7 @@ function route($name, $parameters = array())
  * @param  string  $needle
  * @return bool
  */
-function starts_with($haystack, $needle)
-{
+function starts_with($haystack, $needle) {
 	return strpos($haystack, $needle) === 0;
 }
 
@@ -395,8 +375,7 @@ function starts_with($haystack, $needle)
  * @param  string  $needle
  * @return bool
  */
-function ends_with($haystack, $needle)
-{
+function ends_with($haystack, $needle) {
 	return $needle == substr($haystack, strlen($haystack) - strlen($needle));
 }
 
@@ -407,10 +386,8 @@ function ends_with($haystack, $needle)
  * @param  string|array  $needle
  * @return bool
  */
-function str_contains($haystack, $needle)
-{
-	foreach ((array) $needle as $n)
-	{
+function str_contains($haystack, $needle) {
+	foreach ((array) $needle as $n) {
 		if (strpos($haystack, $n) !== false) return true;
 	}
 
@@ -424,8 +401,7 @@ function str_contains($haystack, $needle)
  * @param  string  $cap
  * @return string
  */
-function str_finish($value, $cap)
-{
+function str_finish($value, $cap) {
 	return rtrim($value, $cap).$cap;
 }
 
@@ -435,8 +411,7 @@ function str_finish($value, $cap)
  * @param  object  $value
  * @return bool
  */
-function str_object($value)
-{
+function str_object($value) {
 	return is_object($value) and method_exists($value, '__toString');
 }
 
@@ -447,10 +422,8 @@ function str_object($value)
  * @param  string  $separator
  * @return string
  */
-function root_namespace($class, $separator = '\\')
-{
-	if (str_contains($class, $separator))
-	{
+function root_namespace($class, $separator = '\\') {
+	if (str_contains($class, $separator)) {
 		return head(explode($separator, $class));
 	}
 }
@@ -463,8 +436,7 @@ function root_namespace($class, $separator = '\\')
  * @param  object|string  $class
  * @return string
  */
-function class_basename($class)
-{
+function class_basename($class) {
 	if (is_object($class)) $class = get_class($class);
 
 	return basename(str_replace('\\', '/', $class));
@@ -478,8 +450,7 @@ function class_basename($class)
  * @param  mixed  $value
  * @return mixed
  */
-function value($value)
-{
+function value($value) {
 	return (is_callable($value) and ! is_string($value)) ? call_user_func($value) : $value;
 }
 
@@ -489,8 +460,7 @@ function value($value)
  * @param  mixed  $object
  * @return mixed
  */
-function with($object)
-{
+function with($object) {
 	return $object;
 }
 
@@ -500,8 +470,7 @@ function with($object)
  * @param  string  $version
  * @return bool
  */
-function has_php($version)
-{
+function has_php($version) {
 	return version_compare(PHP_VERSION, $version) >= 0;
 }
 
@@ -512,8 +481,7 @@ function has_php($version)
  * @param  array   $data
  * @return View
  */
-function view($view, $data = array())
-{
+function view($view, $data = array()) {
 	if (is_null($view)) return '';
 
 	return Laravel\View::make($view, $data);
@@ -526,8 +494,7 @@ function view($view, $data = array())
  * @param  array   $data
  * @return string
  */
-function render($view, $data = array())
-{
+function render($view, $data = array()) {
 	if (is_null($view)) return '';
 
 	return Laravel\View::make($view, $data)->render();
@@ -542,8 +509,7 @@ function render($view, $data = array())
  * @param  string  $empty
  * @return string
  */
-function render_each($partial, array $data, $iterator, $empty = 'raw|')
-{
+function render_each($partial, array $data, $iterator, $empty = 'raw|') {
 	return Laravel\View::render_each($partial, $data, $iterator, $empty);
 }
 
@@ -553,8 +519,7 @@ function render_each($partial, array $data, $iterator, $empty = 'raw|')
  * @param  string  $section
  * @return string
  */
-function yieldContent($section)
-{
+function yieldContent($section) {
 	return Laravel\Section::yieldContent($section);
 }
 
@@ -565,10 +530,8 @@ function yieldContent($section)
  * @param  mixed   $default
  * @return string
  */
-function get_cli_option($option, $default = null)
-{
-	foreach (Laravel\Request::foundation()->server->get('argv') as $argument)
-	{
+function get_cli_option($option, $default = null) {
+	foreach (Laravel\Request::foundation()->server->get('argv') as $argument) {
 		if (starts_with($argument, "--{$option}="))
 		{
 			return substr($argument, strlen($option) + 3);
@@ -584,8 +547,7 @@ function get_cli_option($option, $default = null)
  * @param  int     $size
  * @return string
  */
-function get_file_size($size)
-{
+function get_file_size($size) {
 	$units = array('Bytes', 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB');
 	return @round($size / pow(1024, ($i = floor(log($size, 1024)))), 2).' '.$units[$i];
 }

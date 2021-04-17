@@ -4,11 +4,17 @@ config.app.php
 config.app.surete.php
 .DS_Store
 README.md
+*.css~
 *.js~
+*.css~
 *.php~
 .gitignore~
 install/mysql-structure.php
+install/surete_config-setup.php
 app/vendor/Trumbowyg/
+app/vendor/Reports/BugsRepConfig.php
+app/storage/reports/*.pdf
 images/
+temp/
 version
 

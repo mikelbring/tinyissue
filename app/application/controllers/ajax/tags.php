@@ -11,10 +11,10 @@ class Ajax_Tags_Controller extends Base_Controller {
 			foreach ($tags as $tag) {
 				if ($type == 'filter' && strpos($tag->tag, ':') !== false) {
 					$tag_prefix = substr($tag->tag, 0, strpos($tag->tag, ':'));
-					$tag_asterisk = $tag_prefix . ':*';
-					if (!in_array($tag_asterisk, $retval)) {
-						$retval[] = $tag_asterisk;
-					}
+//					$tag_asterisk = $tag_prefix . ':*';
+//					if (!in_array($tag_asterisk, $retval)) {
+//						$retval[] = $tag_asterisk;
+//					}
 				}
 				$retval[] = $tag->tag;
 			}

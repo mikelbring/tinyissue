@@ -2,7 +2,7 @@
 
 /* Redirect if we have not installed */
 if(!file_exists(__DIR__ . '/config.app.php')) {
-	header("Location: ./install");
+	echo '<script>document.location.href="./install/";</script>';
 	exit;
 }
 

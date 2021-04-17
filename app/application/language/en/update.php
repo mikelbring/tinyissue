@@ -1,14 +1,27 @@
 <?php
 return array(
+	'choix_1' => 'Installer automatiquement la dernière version stable',
+	'choix_2' => 'Installer manuellement la version la plus avancée, mais potentiellement instable ou comportant des erreurs',
+	'choix_3' => '',
+	'choix_4' => '',
+	'Description_1' => 'Program`s files update',
+	'Description_2' => 'Database update',
+	'Description_3' => 'Preferences update',
+	'Description_4' => 'Your application has been updated',
 	'Intro_0' => 'Some updates are available.  Please proceed update',
 	'Intro_1' => 'Two ways to update your « Bugs »',
 	'Intro_2' => 'Download and unzip the following file : ',
 	'Intro_3' => 'In terminal, enter the following command ( in « bugs » sub-directory )',
 	'Intro_4' => 'Click here when the previous work is done',
 	'Intro_5' => 'Go to the next step',
+	'echec_2' => 'The source-code zip file could not be unzipped.  You must install manually.',
 	'Etape' => 'Step',
 	'updateData_1' => 'The updated programm is ready to use.',
 	'updateData_2' => 'You must approve every change among the following ones (security concern)',
 	'updateData_3' => 'Apply',
-	'ResultData_1' => 'Update is completed.'
+	'updateData_4' => 'There no update to apply on your database.',
+	'updateData_5' => 'There`s no new preferences definition in the new version.',
+	'ResultData_1' => 'Your database is updated.',
+	'ResultData_3a' => 'Your preferences file is updated.',
+	'ResultData_3b' => 'For your conveniance, a copy of your original file has been saved under '
 );

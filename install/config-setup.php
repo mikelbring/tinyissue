@@ -1,7 +1,6 @@
 <script type="text/javascript">
-function ChgLng(Lng = 'en') {
-	document.location.href = 'index.php?Lng=' + Lng;
-}
+function ChgLng(Lng = 'en') { document.location.href = 'index.php?Lng=' + Lng; }
+
 </script>
 
 <?php
@@ -39,6 +38,7 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 	<link href="../app/assets/css/install.css" media="all" type="text/css" rel="stylesheet">
 </head>
 <body>
+<div class="InstallLogo"></div>
 
 <div id="container">
 	<table class="form">
@@ -91,6 +91,7 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 
 </head>
 <body>
+<div class="InstallLogo"></div>
 
 <div id="container">
 	<table class="form">
@@ -101,7 +102,7 @@ if(isset($_POST['create_config']) && isset($_POST['database_host'])) {
 				</p>
 
 				<p><a href="index.php?Lng=<?php echo $_GET["Lng"]; ?>" class="button primary"><?php echo $MyLng['RunInstall']; ?></a></p>
-				<div id="CountDown" style="width: 100%; text-align: center; padding-top:10px;">6</div>
+				<div id="CountDown" style="width: 100%; text-align: center; padding-top:10px;">600</div>
 		  </td>
 	  </tr>
 	</table>
@@ -127,6 +128,7 @@ if(!file_exists('../config.app.php')){ ?>
 
 </head>
 <body>
+<div class="InstallLogo"></div>
 
 <div id="container">
 	<p style="text-align:center;">

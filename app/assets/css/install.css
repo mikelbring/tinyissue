@@ -21,6 +21,22 @@ h2{
 	margin-bottom: 15px;
 }
 strong{font-weight: bold;}
+
+div.InstallLogo {
+	background-color: #000;
+	background-image: url('../images/layout/logo.png');
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: 80%; 
+	border-radius: 15px;
+	height: 97px;
+	left:2.5%; 
+	padding: 20px; 
+	position: fixed; 
+	top:10%; 
+	width: 240px;
+}
+
 input[type=text],input[type=password],select{
     padding:3px;
     color:#000;

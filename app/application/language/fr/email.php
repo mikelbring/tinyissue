@@ -27,6 +27,6 @@ return array(
 	'by' => 'par',
 
 	/** general **/
-	'more_url' => 'Plus d\'information: ',
+	'more_url' => 'Plus d`information: ',
 
 );

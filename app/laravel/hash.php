@@ -17,19 +17,15 @@ class Hash {
 	 * @param  int     $rounds
 	 * @return string
 	 */
-	public static function make($value, $rounds = 8)
-	{
+	public static function make($value, $rounds = 8) {
 		$work = str_pad($rounds, 2, '0', STR_PAD_LEFT);
 
 		// Bcrypt expects the salt to be 22 base64 encoded characters including
 		// dots and slashes. We will get rid of the plus signs included in the
 		// base64 data and replace them with dots.
-		if (function_exists('openssl_random_pseudo_bytes'))
-		{
+		if (function_exists('openssl_random_pseudo_bytes')) {
 			$salt = openssl_random_pseudo_bytes(16);
-		}
-		else
-		{
+		} else {
 			$salt = Str::random(40);
 		}
 

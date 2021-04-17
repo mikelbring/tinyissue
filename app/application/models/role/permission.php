@@ -12,10 +12,8 @@ class Permission extends \Eloquent {
 	* @param  int     $role_id
 	* @return bool
 	*/
-	public static function has_permission($key, $role_id)
-	{
-		if(!isset(static::$permission[$key]))
-		{
+	public static function has_permission($key, $role_id) {
+		if(!isset(static::$permission[$key])) {
 			static::$permission[$key] = \Permission::where('permission', '=', $key)->first(array('id'));
 		}
 
@@ -26,4 +24,30 @@ class Permission extends \Eloquent {
 		return $relation;
 	}
 
+	public static function inherits_permission($hopeSo) {
+		$myRole = \Auth::user()->role_id;
+		$hopeSoNum = array();
+		$permis = false;
+		foreach ($hopeSo as $hope) {
+			$resu  = \DB::table('permissions')->select(array('id', 'auto_has'))->where('permission','=',$hope)->get();
+			if (isset($resu[0])) { 
+				$perm = \DB::table('roles_permissions')->select(array('id'))->where('role_id', '=', $myRole)->where('permission_id', "=", $resu[0]->id)->get();
+				if (count($perm) > 0 ) { $permis = true; break; } 
+				if (!in_array($resu[0]->id, $hopeSoNum)) { $hopeSoNum[] = $resu[0]->id; }
+				$resuA = $resu[0]->id;
+				while ($resuA != 0 ) {
+					$resuB =\DB::query("SELECT id FROM permissions WHERE auto_has LIKE '%".$resuA."%' ");
+					foreach ($resuB as $ind => $val) { 
+						if (!in_array($val->id, $hopeSoNum)) { $hopeSoNum[] = $val->id; }
+						$resuA = $val->id;
+					} 
+					$resuA = 0; 
+				}
+			} 
+		}
+		return $permis;
+	}
+//	public static function LstProj_permission($hopeSo) {
+//			$resu  = \DB::table('projects_users')->select(array('id'))->where('user_id','=',\Auth::user()->role_id)->where('project_id','=', \Project::)->get();
+//	}
 }

@@ -1,9 +1,6 @@
 <?php
-
-class install
-{
+class install {
 	public $config;
-
 	function __construct() {
 		$this->config = require '../config.app.php';
 		if (file_exists('./mysql-structure.php')) { $this->mysql_structure = require './mysql-structure.php'; 
@@ -94,12 +91,9 @@ class install
 		return true;
 	}
 
-	private function check_db($connect)
-	{
+	private function check_db($connect) {
 		@$database_connect = ((bool)mysqli_query( $connect, "USE " . $this->config['database']['database']));
-
-		if($database_connect)
-		{
+		if($database_connect) {
 			return $database_connect;
 		}
 

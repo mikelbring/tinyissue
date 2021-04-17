@@ -25,10 +25,8 @@ class Project extends Eloquent {
 	*
 	* @return mixed
 	*/
-	public function issues()
-	{
-		//return $this->has_many('Project\Issue', 'project_id');
-		return $this->has_many('Project\Issue', 'project_id')->order_by('weight', 'ASC');
+	public function issues() {
+		return $this->has_many('Project\Issue', 'project_id')->order_by('status', 'DESC')->order_by('weight', 'ASC');
 	}
 
 	/**
@@ -173,11 +171,9 @@ class Project extends Eloquent {
 						'comment' => $comments[$row->action_id],
 						'activity' => $row
 					));
-
 					break;
 
 				case 5:
-
 					$return[] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issues[$row->item_id],
 						'project' => $this,
@@ -185,11 +181,9 @@ class Project extends Eloquent {
 						'assigned' => $users[$row->action_id],
 						'activity' => $row
 					));
-
 					break;
 
 				case 6:
-
 					$tag_diff = json_decode($row->data, true);
 					$return[] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issues[$row->item_id],
@@ -199,11 +193,18 @@ class Project extends Eloquent {
 						'tag_counts' => array('added' => sizeof($tag_diff['added_tags']), 'removed' => sizeof($tag_diff['removed_tags'])),
 						'activity' => $row
 					));
+					break;
 
+				case 8:	//Move ticket from project A to project B
+					$tag_diff = json_decode($row->data, true);
+					$return[] = View::make('ChangeIssue-project_acti', array(
+						'issue' => $issues[$row->item_id],
+						'user' => $users[$row->user_id],
+						'activity' => $row
+					));
 					break;
 
 				default:
-
 					$return[] = View::make('activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issues[$row->item_id],
 						'project' => $this,
