@@ -572,9 +572,11 @@ class Issue extends \Eloquent {
 		//C'était la ligne suivante qui servait 
 //		\DB::table('projects_issues_attachments')->where('upload_token', '=', $input['token'])->where('uploaded_by', '=', \Auth::user()->id)->update(array('issue_id' => $issue->id));
 
+		///////////   Notifications by Email //////////////////////
 		/* Notify the person being assigned to. */
 		/* If no one is assigned, notify all users who are assigned to this project and who have permission to modify the issue. */
 		/* Do not notify the person creating the issue. */
+		$deja = \Auth::user()->id;
 		if($issue->assigned_to) {
 			if($issue->assigned_to != \Auth::user()->id) {
 				$project = \Project::current();
@@ -584,6 +586,7 @@ class Issue extends \Eloquent {
 				$text = \View::make('email.new_assigned_issue', array( 'project' => $project, 'issue' => $issue, ));
 				\Mail::send_email($text, $issue->assigned->email, $subject);
 			}
+			$deja .= ",".$issue->assigned_to;
 		} else {
 			$project = \Project::current();
 			foreach($project->users()->get() as $row) {
@@ -592,9 +595,17 @@ class Issue extends \Eloquent {
 					$subject = sprintf(__('email.new_issue'),$issue->title,$project->name);
 					$text = \View::make('email.new_issue', array('project' => $project, 'issue' => $issue, ));
 					\Mail::send_email($text, $row->email, $subject);
+					$deja .= ",".$row->id;
 				}
 			}
 		}
+
+		/*Notify all interested users*/
+		//Email to all of this project's followers
+		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects PRO ON PRO.id = FAL.project_id WHERE FAL.project_id = ".Project::current()->id." AND FAL.project = 1 AND FAL.user_id NOT IN (".$deja.") ");
+		foreach ($followers as $ind => $follower) {
+			\Mail::send_email(__('tinyissue.following_email_project')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_project_tit')); 
+		} 
 
 		/* Return success and issue object */
 		return array(
