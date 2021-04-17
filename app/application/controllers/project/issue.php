@@ -64,13 +64,13 @@ class Project_Issue_Controller extends Base_Controller {
 			$text .= sprintf(__('tinyissue.priority')." : ".__('tinyissue.priority_desc_'.$thisIssue[0]->attributes["status"]));
 			$text .= "\n\n";
 			$text .= __('email.more_url').Project::current()->to('issue')."/".$issue_num."";
-			mail($WhoAddr, $subject,$text,$header);
+			send_mail($text, $WhoAddr, $subject);
 		//End of email process for assignee
 		
 		//Email to all of this project's followers
-		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects PRO ON PRO.id = FAL.project_id WHERE FAL.project_id = ".Project::current()->id." AND FAL.project = 1 AND FAL.user_id NOT IN (".$thisIssue[0]->attributes["assigned_to"].",".\Auth::user()->id.") ");
+		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects PRO ON PRO.id = FAL.project_id WHERE FAL.project_id = ".Project::current()->id." AND FAL.project = 1 AND FAL.user_id NOT IN (".$thisIssue[0]->attributes["assigned_to"].",".\Auth::user()->id.") ");
 		foreach ($followers as $ind => $follower) { 
-			mail($follower->email, __('tinyissue.following_email_project_tit'), __('tinyissue.following_email_project')." « ".$follower->title." ».");
+			send_email(__('tinyissue.following_email_project')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_project_tit'));
 		} 
 		
 		
@@ -112,7 +112,7 @@ class Project_Issue_Controller extends Base_Controller {
 		//Send an email to all users who follow this issue
 		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues TIK ON TIK.id = FAL.issue_id WHERE FAL.project_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.issue_id = ".Project\Issue::current()->id." ");
 		foreach ($followers as $ind => $follower) { 
-			mail($follower->email, __('tinyissue.following_email_comment_tit'), __('tinyissue.following_email_comment')." « ".$follower->title." ».");
+			send_mail(__('tinyissue.following_email_comment')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_comment_tit'));
 		} 
 					
 		return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
@@ -164,7 +164,7 @@ class Project_Issue_Controller extends Base_Controller {
 		//Email to all of this ticket's followers
 		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
 		foreach ($followers as $ind => $follower) { 
-			mail($follower->email, __('tinyissue.following_email_issue_tit'), __('tinyissue.following_email_issue')." « ".$follower->title." ».");
+			send_mail(__('tinyissue.following_email_issue')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_issue_tit'));
 		} 
 	}
 
@@ -301,7 +301,7 @@ class Project_Issue_Controller extends Base_Controller {
 				$text .= sprintf(__('email.reassigned_by'),\Auth::user()->firstname." ".\Auth::user()->lastname);
 				$text .= "\n\n";
 				$text .= __('email.more_url').Project::current()->to('issue')."/".Input::get('Issue')."";
-				mail($WhoAddr, $subject,$text);
+				send_mail($text, $WhoAddr, $subject);
 			}
 
 			//Show on screen what did just happened
@@ -376,7 +376,7 @@ class Project_Issue_Controller extends Base_Controller {
 			//Email to all of this ticket's followers
 			$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
 			foreach ($followers as $ind => $follower) { 
-				mail($follower->email, __('tinyissue.following_email_issue_tit'), __('tinyissue.following_email_issue')." « ".$follower->title." ».");
+				send_mail(__('tinyissue.following_email_issue')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_issue_tit'));
 			} 
 
 			/**
