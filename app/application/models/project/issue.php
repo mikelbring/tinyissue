@@ -1,5 +1,6 @@
 <?php namespace Project;
 
+use Application\librairies\mail;
 
 class Issue extends \Eloquent {
 
@@ -98,7 +99,7 @@ class Issue extends \Eloquent {
 			switch($row->type_id) {
 				case 2:
 					//using project/issue/activity/comment.php
-					//according to db table activity, field activity's value for id = 2 
+						//according to db table activity, field activity's value for id = 2
 					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issue,
 						'project' => $project,
@@ -151,6 +152,28 @@ class Issue extends \Eloquent {
 						'activity' => $row
 					));
 					break;
+				case 9:
+					//using project/issue/activity/following
+					//according to db table activity, field activity's value for id = 9 
+					$tag_diff = json_decode($row->data, true);
+					$return[] = \View::make('Follow', array(
+						'issue' => $issue,
+						'project' => $project,
+						'user' => $users[$row->user_id],
+						'activity' => $row
+					));
+					break;
+				case 10:
+					//using project/issue/activity/IssueEdit.php
+					//according to db table activity, field activity's value for id = 10 
+					$tag_diff = json_decode($row->data, true);
+					$return[] = \View::make('IssueEdit', array(
+						'issue' => $issue,
+						'project' => $project,
+						'user' => $users[$row->user_id],
+						'activity' => $row
+					));
+					break;
 				default:
 					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issue,
@@ -190,7 +213,7 @@ class Issue extends \Eloquent {
 
 	/**
 	* Reassign the issue to a new user
-	*
+	*	
 	* @param  int  $user_id
 	* @return void
 	*/
@@ -201,8 +224,7 @@ class Issue extends \Eloquent {
 		$this->save();
 
 		/* Notify the person being assigned to unless that person is doing the actual assignment */
-		if($this->assigned_to && $this->assigned_to != \Auth::user()->id)
-		{
+		if($this->assigned_to && $this->assigned_to != \Auth::user()->id) {
 			$project_id = $this->project_id;
 			$project = \Project::find($project_id);
 
@@ -214,7 +236,15 @@ class Issue extends \Eloquent {
 			));
 
 			\Mail::send_email($text, $this->assigned->email, $subject);
-			}
+		}
+
+		//Notify all followers about the change of assignation
+		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues TIK ON TIK.id = FAL.issue_id WHERE FAL.project_id = ".$project->id." AND FAL.project = 0 AND FAL.issue_id = ".$this->id." ");
+		foreach ($followers as $ind => $follower) { 
+			\Mail::send_mail(__('tinyissue.following_email_comment')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_comment_tit'));
+			//mail($follower->email, __('tinyissue.following_email_assigned_tit'), __('tinyissue.following_email_assigned')." « ".$follower->title." ».");
+		} 
+
 		add($type_id, $parent_id, $item_id = null, $action_id = null, $data = null);
 		\User\Activity::add(5, $this->project_id, $this->id, $user_id, null);
 	}
@@ -307,8 +337,7 @@ class Issue extends \Eloquent {
 
 		$validator = \Validator::make($input, $rules);
 
-		if($validator->fails())
-		{
+		if($validator->fails()) 	{
 			return array(
 				'success' => false,
 				'errors' => $validator->errors
@@ -322,10 +351,12 @@ class Issue extends \Eloquent {
 			'duration' => $input['duration'],
 			'status' => $input['status']
 		);
+		\DB::query("INSERT INTO users_activity VALUES (NULL, ".\Auth::user()->id.", NULL, ".$this->id.", NULL, 10, NULL, NOW(), NOW()) ");
 
 		/* Add to activity log for assignment if changed */
 		if($input['assigned_to'] != $this->assigned_to) {
-			\User\Activity::add(5, $this->project_id, $this->id, \Auth::user()->id);
+			//\User\Activity::add(5, $this->project_id, $this->id, \Auth::user()->id,$input['assigned_to']);
+			\DB::query("INSERT INTO users_activity VALUES (NULL, ".\Auth::user()->id.", NULL, ".$this->id.", ".$input['assigned_to'].", 5, NULL, NOW(), NOW()) ");
 		}
 
 		$this->fill($fill);
