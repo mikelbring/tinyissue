@@ -145,33 +145,34 @@
 
 	<div class="new-comment" id="new-comment">
 		<?php if(Auth::user()->permission('issue-modify')): ?>
-
 			<ul class="issue-actions">
 				<li class="assigned-to">
 					<?php echo __('tinyissue.assigned_to'); ?>
 
-					<?php if(Project\Issue::current()->assigned): ?>
+					<?php if(Project\Issue::current()->assigned) { ?>
 						<span id="span_currentlyAssigned_name">
 						<?php echo Project\Issue::current()->assigned->firstname; ?>
 						<?php echo Project\Issue::current()->assigned->lastname; ?>
 						&nbsp;&nbsp;
 						<img src="<?php echo \URL::home();?>app/assets/images/layout/dropdown-arrow.png" height="10" />
 						</span>
-					<?php else: ?>
+					<?php } else { ?>
 						<span id="span_currentlyAssigned_name">
 						<?php echo __('tinyissue.no_one'); ?>
 						&nbsp;&nbsp;
 						<img src="<?php echo \URL::home();?>app/assets/images/layout/dropdown-arrow.png" height="10" />
 						</span>
-					<?php endif; ?>
+					<?php } ?>
 
 					<div class="dropdown">
 						<ul id="dropdown_ul">
-							<li class="unassigned" id="dropdown_li_0"><a href="javascript: Reassignment(<?php echo $project->id.','.((Project\Issue::current()->assigned_to == '') ? 0 : Project\Issue::current()->assigned_id).',0,'.Project\Issue::current()->id; ?>);" class="user0<?php echo !Project\Issue::current()->assigned_id ? ' assigned' : ''; ?>" ><?php echo __('tinyissue.no_one'); ?></a></li>
+							<li class="unassigned" id="dropdown_li_0">
+								<a href="javascript: Reassignment(<?php echo $project->id.','.((Project\Issue::current()->assigned->id == '') ? 0 : Project\Issue::current()->assigned_id).',0,'.Project\Issue::current()->id; ?>);" class="user0<?php echo !Project\Issue::current()->assigned->id ? ' assigned' : ''; ?>" ><?php echo __('tinyissue.no_one'); ?></a>
+							</li>
 							<?php 
 								foreach(Project::current()->users()->get() as $row) {
 									echo '<li id="dropdown_li_'.$row->id.'">';
-									echo ( $row->id == Project\Issue::current()->assigned->id) ? '<span style="color: #FFF; margin-left: 10px; font-weight: bold;">' : '<a href="javascript: Reassignment('.$project->id.','.((Project\Issue::current()->assigned_id == '') ? 0 : Project\Issue::current()->assigned_id).','.$row->id.','.Project\Issue::current()->id.');" class="user0'.((!Project\Issue::current()->assigned) ? ' assigned' : '').'" >';
+									echo ( $row->id == Project\Issue::current()->assigned->id) ? '<span style="color: #FFF; margin-left: 10px; font-weight: bold;">' : '<a href="javascript: Reassignment('.$project->id.','.((Project\Issue::current()->assigned->id == '') ? 0 : Project\Issue::current()->assigned->id).','.$row->id.','.Project\Issue::current()->id.');" class="user0'.((!Project\Issue::current()->assigned) ? ' assigned' : '').'" >';
 									echo $row->firstname . ' ' . $row->lastname; 
 									echo ( $row->id == Project\Issue::current()->assigned->id) ? '</span>' : '</a>'; 
 									echo '</li>';
@@ -280,7 +281,7 @@
 
 	</div>
 	<?php else: ?>
-	<?php if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) { echo HTML::link(Project\Issue::current()->to('status?status=1'), __('tinyissue.reopen_issue')); } ?>
+	<?php if (!Project\User::MbrProj(\Auth::user()->id, Project::current()->id)) { echo HTML::link(Project\Issue::current()->to('status?status=3'), __('tinyissue.reopen_issue')); } ?>
 	<br /><br />
 	<?php endif; ?>
 	<br /><br />
@@ -324,7 +325,7 @@ function Following(Quoi, etat) {
 		document.getElementById('img_following').src = "<?php echo \URL::home();?>app/assets/images/layout/icon-comments_1.png";
 	}
 	var xhttp = new XMLHttpRequest();
-	var NextPage = '../../../app/vendor/searchEngine/Following.php?Quoi=1&Qui=<?php echo \Auth::user()->id; ?>&Quel=<?php echo Project\Issue::current()->id; ?>&Project=<?php echo Project::current()->id; ?>&Etat=' + ((etat) ? 0 : 1);
+	var NextPage = '<?php echo $url; ?>app/vendor/searchEngine/Following.php?Quoi=1&Qui=<?php echo \Auth::user()->id; ?>&Quel=<?php echo Project\Issue::current()->id; ?>&Project=<?php echo Project::current()->id; ?>&Etat=' + ((etat) ? 0 : 1);
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			if (xhttp.responseText != '' ) {
@@ -341,7 +342,7 @@ function IMGupload(input) {
 	var ext = fil['name'].substring(fil['name'].lastIndexOf('.') + 1).toLowerCase();
 	var img = "<?php echo $url; ?>app/assets/images/icons/file_01.png?"; 
 	var xhttpCHK = new XMLHttpRequest();
-	var CheckPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/checkExt?ext=' + ext;
+	var CheckPage = '<?php echo $url; ?>/checkExt?ext=' + ext;
 	xhttpCHK.onreadystatechange = function() {
 	   if (this.readyState == 4 && this.status == 200) {
 			var formdata = new FormData();
@@ -399,22 +400,27 @@ function IMGupload_progressHandler(event){
 
 function OteTag(Quel) {
 	Modif = "eraseTag";
-	var xhttpDAG = new XMLHttpRequest();
+	var IDcomment = 'comment' + new Date().getTime();
+	var xhttpTAG = new XMLHttpRequest();
 	var NextPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/retag?Modif=' + Modif + '&Quel=' + Quel;
-	xhttpDAG.onreadystatechange = function() {
-	    if (this.readyState == 4 && this.status == 200) {
-			var adLi = document.createElement("LI");
-			adLi.className = 'comment';
-			adLi.id = IDcomment;
-			document.getElementById('ul_IssueDiscussion').appendChild(adLi);
-			document.getElementById(IDcomment).innerHTML = xhttpDAG.responseText;
-	    }
+	xhttpTAG.onreadystatechange = function() {
+	alert (this.readyState + " et " +  this.status);
+	if (this.readyState == 4 && this.status == 200) {
+		if (xhttpTAG.responseText != '' ) {
+				var adLi = document.createElement("LI");
+				adLi.className = 'comment';
+				adLi.id = IDcomment;
+				document.getElementById('ul_IssueDiscussion').appendChild(adLi);
+				document.getElementById(IDcomment).innerHTML = xhttpTAG.responseText;
+			}
+		}
 	};
-	xhttpDAG.open("GET", NextPage, true);
-	xhttpDAG.send(); 
+	xhttpTAG.open("GET", NextPage, true);
+	xhttpTAG.send(); 
 }
 
 function Reassignment (Project, Prev, Suiv, Issue) {
+	Modif = "reassign";
 	var n = new Date();
 	var Modif = "false";
 	if (n-d > 3000 ) { Modif = "AddOneTag"; }

@@ -1,5 +1,6 @@
 <?php namespace Project;
 
+use Application\librairies\mail;
 
 class Issue extends \Eloquent {
 
@@ -98,7 +99,7 @@ class Issue extends \Eloquent {
 			switch($row->type_id) {
 				case 2:
 					//using project/issue/activity/comment.php
-					//according to db table activity, field activity's value for id = 2 
+						//according to db table activity, field activity's value for id = 2
 					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issue,
 						'project' => $project,
@@ -151,6 +152,28 @@ class Issue extends \Eloquent {
 						'activity' => $row
 					));
 					break;
+				case 9:
+					//using project/issue/activity/following
+					//according to db table activity, field activity's value for id = 9 
+					$tag_diff = json_decode($row->data, true);
+					$return[] = \View::make('Follow', array(
+						'issue' => $issue,
+						'project' => $project,
+						'user' => $users[$row->user_id],
+						'activity' => $row
+					));
+					break;
+				case 10:
+					//using project/issue/activity/IssueEdit.php
+					//according to db table activity, field activity's value for id = 10 
+					$tag_diff = json_decode($row->data, true);
+					$return[] = \View::make('IssueEdit', array(
+						'issue' => $issue,
+						'project' => $project,
+						'user' => $users[$row->user_id],
+						'activity' => $row
+					));
+					break;
 				default:
 					$return[] = \View::make('project/issue/activity/' . $activity_type[$row->type_id]->activity, array(
 						'issue' => $issue,
@@ -190,7 +213,7 @@ class Issue extends \Eloquent {
 
 	/**
 	* Reassign the issue to a new user
-	*
+	*	
 	* @param  int  $user_id
 	* @return void
 	*/
@@ -201,8 +224,7 @@ class Issue extends \Eloquent {
 		$this->save();
 
 		/* Notify the person being assigned to unless that person is doing the actual assignment */
-		if($this->assigned_to && $this->assigned_to != \Auth::user()->id)
-		{
+		if($this->assigned_to && $this->assigned_to != \Auth::user()->id) {
 			$project_id = $this->project_id;
 			$project = \Project::find($project_id);
 
@@ -214,7 +236,15 @@ class Issue extends \Eloquent {
 			));
 
 			\Mail::send_email($text, $this->assigned->email, $subject);
-			}
+		}
+
+		//Notify all followers about the change of assignation
+		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues TIK ON TIK.id = FAL.issue_id WHERE FAL.project_id = ".$project->id." AND FAL.project = 0 AND FAL.issue_id = ".$this->id." ");
+		foreach ($followers as $ind => $follower) { 
+			\Mail::send_mail(__('tinyissue.following_email_comment')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_comment_tit'));
+			//mail($follower->email, __('tinyissue.following_email_assigned_tit'), __('tinyissue.following_email_assigned')." « ".$follower->title." ».");
+		} 
+
 		add($type_id, $parent_id, $item_id = null, $action_id = null, $data = null);
 		\User\Activity::add(5, $this->project_id, $this->id, $user_id, null);
 	}
@@ -251,6 +281,8 @@ class Issue extends \Eloquent {
 			/* Add to activity log */
 			\User\Activity::add(3, $this->project_id, $this->id);
 		} else {
+			$this->closed_by = NULL;
+			$this->closed_at = NULL;
 
 			/* Update tags */
 			$tag_ids[1] = 1;
@@ -266,8 +298,8 @@ class Issue extends \Eloquent {
 		$this->save();
 
 		/* Notify the person to whom the issue is currently assigned, unless that person is the one changing the status */
+		$project = \Project::current();
 		if($this->assigned_to && $this->assigned_to != \Auth::user()->id) {
-			$project = \Project::current();
 			$verb = ($this->status == 0 ? __('email.closed') : __('email.reopened'));
 			$subject = sprintf(__('email.issue_changed'),$this->title,$project->name,$verb);
 			$text = \View::make('email.change_status_issue', array(
@@ -277,8 +309,18 @@ class Issue extends \Eloquent {
 				'verb' => $verb
 			));
 
-			\Mail::send_email($text, $this->assigned->email, $subject);
+			// \Mail::send_email($text, $this->assigned->email, $subject);
+			mail($this->assigned->email, $subject, $text);
 		}
+		
+		//Notify all followers about the new status
+		//Send an email to all users who follow this issue
+		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues TIK ON TIK.id = FAL.issue_id WHERE FAL.project_id = ".$project->id." AND FAL.project = 0 AND FAL.issue_id = ".$this->id." ");
+		foreach ($followers as $ind => $follower) { 
+			//\Mail::send_mail(__('tinyissue.following_email_comment')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_comment_tit'));
+			mail($follower->email, __('tinyissue.following_email_comment_tit'), __('tinyissue.following_email_comment')." « ".$follower->title." ».");
+		} 
+					
 	}
 
 	/**
@@ -295,8 +337,7 @@ class Issue extends \Eloquent {
 
 		$validator = \Validator::make($input, $rules);
 
-		if($validator->fails())
-		{
+		if($validator->fails()) 	{
 			return array(
 				'success' => false,
 				'errors' => $validator->errors
@@ -310,10 +351,12 @@ class Issue extends \Eloquent {
 			'duration' => $input['duration'],
 			'status' => $input['status']
 		);
+		\DB::query("INSERT INTO users_activity VALUES (NULL, ".\Auth::user()->id.", NULL, ".$this->id.", NULL, 10, NULL, NOW(), NOW()) ");
 
 		/* Add to activity log for assignment if changed */
 		if($input['assigned_to'] != $this->assigned_to) {
-			\User\Activity::add(5, $this->project_id, $this->id, \Auth::user()->id);
+			//\User\Activity::add(5, $this->project_id, $this->id, \Auth::user()->id,$input['assigned_to']);
+			\DB::query("INSERT INTO users_activity VALUES (NULL, ".\Auth::user()->id.", NULL, ".$this->id.", ".$input['assigned_to'].", 5, NULL, NOW(), NOW()) ");
 		}
 
 		$this->fill($fill);
@@ -332,7 +375,8 @@ class Issue extends \Eloquent {
 				'issue' => $this
 			));
 
-			\Mail::send_email($text, $this->assigned->email, $subject);
+			// \Mail::send_email($text, $this->assigned->email, $subject);
+			mail($this->assigned->email, $subject, $text);
 		}
 
 		return array(
@@ -572,9 +616,11 @@ class Issue extends \Eloquent {
 		//C'était la ligne suivante qui servait 
 //		\DB::table('projects_issues_attachments')->where('upload_token', '=', $input['token'])->where('uploaded_by', '=', \Auth::user()->id)->update(array('issue_id' => $issue->id));
 
+		///////////   Notifications by Email //////////////////////
 		/* Notify the person being assigned to. */
 		/* If no one is assigned, notify all users who are assigned to this project and who have permission to modify the issue. */
 		/* Do not notify the person creating the issue. */
+		$deja = \Auth::user()->id;
 		if($issue->assigned_to) {
 			if($issue->assigned_to != \Auth::user()->id) {
 				$project = \Project::current();
@@ -584,6 +630,7 @@ class Issue extends \Eloquent {
 				$text = \View::make('email.new_assigned_issue', array( 'project' => $project, 'issue' => $issue, ));
 				\Mail::send_email($text, $issue->assigned->email, $subject);
 			}
+			$deja .= ",".$issue->assigned_to;
 		} else {
 			$project = \Project::current();
 			foreach($project->users()->get() as $row) {
@@ -592,9 +639,17 @@ class Issue extends \Eloquent {
 					$subject = sprintf(__('email.new_issue'),$issue->title,$project->name);
 					$text = \View::make('email.new_issue', array('project' => $project, 'issue' => $issue, ));
 					\Mail::send_email($text, $row->email, $subject);
+					$deja .= ",".$row->id;
 				}
 			}
 		}
+
+		/*Notify all interested users*/
+		//Email to all of this project's followers
+		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects PRO ON PRO.id = FAL.project_id WHERE FAL.project_id = ".\Project::current()->id." AND FAL.project = 1 AND FAL.user_id NOT IN (".$deja.") ");
+		foreach ($followers as $ind => $follower) {
+			\Mail::send_email(__('tinyissue.following_email_project')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_project_tit')); 
+		} 
 
 		/* Return success and issue object */
 		return array(
@@ -616,7 +671,7 @@ class Issue extends \Eloquent {
 		$count = \DB::table('projects_issues')
 								->join('projects', 'projects.id', '=', 'projects_issues.project_id')
 								->where('projects.status', '=', 1)
-								->where('projects_issues.status', '=', 0)
+								->where('projects_issues.status', '<', 2)
 								->count();
 		$closed_issues_open_project = !$count ? 0 : $count;
 
