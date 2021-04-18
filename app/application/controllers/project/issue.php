@@ -4,7 +4,7 @@
 class Project_Issue_Controller extends Base_Controller {
 
 	public $layout = 'layouts.project';
-	
+
 	public function __construct() {
 		parent::__construct();
 
@@ -24,7 +24,7 @@ class Project_Issue_Controller extends Base_Controller {
 		Asset::add('tag-it-js', '/app/assets/js/tag-it.min.js', array('jquery', 'jquery-ui'));
 		Asset::add('tag-it-css-base', '/app/assets/css/jquery.tagit.css');
 		Asset::add('tag-it-css-zendesk', '/app/assets/css/tagit.ui-zendesk.css');
-		
+
 		return $this->layout->nest('content', 'project.issue.new', array(
 			'project' => Project::current()
 		));
@@ -44,7 +44,6 @@ class Project_Issue_Controller extends Base_Controller {
 		//Automatically enrole assignee AND creator into following this issue
 		$followers =\DB::query("INSERT INTO following VALUES (NULL, ".Auth::user()->id.", ".Project::current()->id.", ".$issue['issue']->id.", 0, 1, 1)");
 
-		
 		return Redirect::to($issue['issue']->to())
 			->with('notice', __('tinyissue.issue_has_been_created'));
 	}
@@ -80,6 +79,15 @@ class Project_Issue_Controller extends Base_Controller {
 		}
 		$comment = \Project\Issue\Comment::create_comment(Input::all(), Project::current(), Project\Issue::current());
 
+<<<<<<< HEAD
+=======
+		//Send an email to all users who follow this issue
+		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues TIK ON TIK.id = FAL.issue_id WHERE FAL.project_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.issue_id = ".Project\Issue::current()->id." ");
+		foreach ($followers as $ind => $follower) { 
+			send_mail(__('tinyissue.following_email_comment')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_comment_tit'));
+		} 
+					
+>>>>>>> autoMAJ
 		return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
 			->with('notice', __('tinyissue.your_comment_added'.((Input::get('status') == 0 || Input::get('Fermons') == 0) ? ' --- '.__('tinyissue.issue_has_been_closed') : '')));
 
@@ -140,6 +148,14 @@ class Project_Issue_Controller extends Base_Controller {
 				send_mail("Petite patate tant pis pour toi ".__('tinyissue.following_email_issue')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_issue_tit'));
 			} 
 		}
+<<<<<<< HEAD
+=======
+		//Email to all of this ticket's followers
+		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
+		foreach ($followers as $ind => $follower) { 
+			send_mail(__('tinyissue.following_email_issue')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_issue_tit'));
+		} 
+>>>>>>> autoMAJ
 	}
 
 	public function post_edit() {
@@ -275,6 +291,10 @@ class Project_Issue_Controller extends Base_Controller {
 				$text .= sprintf(__('email.reassigned_by'),\Auth::user()->firstname." ".\Auth::user()->lastname);
 				$text .= "\n\n";
 				$text .= __('email.more_url').Project::current()->to('issue')."/".Input::get('Issue')."";
+<<<<<<< HEAD
+=======
+				send_mail($text, $WhoAddr, $subject);
+>>>>>>> autoMAJ
 			}
 				//Mail::send_mail($text, $WhoAddr, $subject);
 				mail($WhoAddr, $subject, $text);
