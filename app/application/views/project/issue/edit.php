@@ -4,7 +4,7 @@
 	}
 ?>
 <h3>
-	<?php echo __('tinyissue.edit_issue').'&nbsp;&nbsp;&nbsp<a href="index" style="color: #138dc1;">'.Input::old('title', $issue->title).'</a>'; ?>
+	<?php echo __('tinyissue.edit_issue').'&nbsp;&nbsp;&nbsp<a href="'.URL::to().'/project/'. Project::current()->id.'/issue/'.$issue->id.'" style="color: #138dc1;">'.Input::old('title', $issue->title).'</a>'; ?>
 </h3>
 
 <div class="pad">

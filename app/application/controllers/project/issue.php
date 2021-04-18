@@ -1,5 +1,6 @@
 <?php
 
+
 class Project_Issue_Controller extends Base_Controller {
 
 	public $layout = 'layouts.project';
@@ -107,6 +108,13 @@ class Project_Issue_Controller extends Base_Controller {
 			$result .= ($Modif) ? "Succès" : "Échec";
 			if (\User\Activity::add(8, intval(Input::get('projetOld')), Input::get('ticketNum'), $NumNew, "From ".Input::get('projetOld')." to ".$NumNew )) { $msg = $msg + 1; } else { $msg = $TheFile["error"]; }
 
+			//Email to all of this ticket's followers
+			$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
+			foreach ($followers as $ind => $follower) { 
+				//send_mail(__('tinyissue.following_email_assigned')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_assigned_tit'));
+				mail($follower->email, __('tinyissue.following_email_issueproject_tit'), __('tinyissue.following_email_issueproject')." « ".$follower->title." ».");
+			} 
+
 			return Redirect::to("project/".$NumNew."/issues?tag_id=1");
 
 		} else {
@@ -124,12 +132,14 @@ class Project_Issue_Controller extends Base_Controller {
 				'issue_tags' => $issue_tags,
 				'project' => Project::current()
 			));
+
+			//Email to all of this ticket's followers
+			$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
+			foreach ($followers as $ind => $follower) { 
+				mail($follower->email, __('tinyissue.following_email_assigned_tit'), __('tinyissue.following_email_assigned')." « ".$follower->title." ».");
+				send_mail("Petite patate tant pis pour toi ".__('tinyissue.following_email_issue')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_issue_tit'));
+			} 
 		}
-		//Email to all of this ticket's followers
-		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
-		foreach ($followers as $ind => $follower) { 
-			send_mail(__('tinyissue.following_email_issue')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_issue_tit'));
-		} 
 	}
 
 	public function post_edit() {
@@ -265,8 +275,9 @@ class Project_Issue_Controller extends Base_Controller {
 				$text .= sprintf(__('email.reassigned_by'),\Auth::user()->firstname." ".\Auth::user()->lastname);
 				$text .= "\n\n";
 				$text .= __('email.more_url').Project::current()->to('issue')."/".Input::get('Issue')."";
-				send_mail($text, $WhoAddr, $subject);
 			}
+				//Mail::send_mail($text, $WhoAddr, $subject);
+				mail($WhoAddr, $subject, $text);
 
 			//Show on screen what did just happened
 			$t = time();
