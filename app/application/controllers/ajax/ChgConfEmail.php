@@ -66,9 +66,9 @@ echo 'Voici la ligne 23';
 			fclose($MonFichier);
 
 			//Conservons le nouveau fichier de préférences  
-//			$NeoFichier = fopen($NomFichier, "w");
-//			fwrite($NeoFichier, $NeoContenu);
-//			fclose($NeoFichier);
+			$NeoFichier = fopen($NomFichier, "w");
+			fwrite($NeoFichier, $NeoContenu);
+			fclose($NeoFichier);
 			echo 'Voici le nouveau fichier';
 			echo $NeoContenu;
 ?>
