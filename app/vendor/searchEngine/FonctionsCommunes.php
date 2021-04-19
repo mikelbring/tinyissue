@@ -6,7 +6,7 @@ $prefixe = "";
 while (!file_exists($prefixe."config.app.php")) {
 	$prefixe .= "../";
 }
-$Config = require_once $prefixe."config.app.php";
+$Config = require $prefixe."config.app.php";
 
 //Vérification de sécurité vraiment minimale
 if ($Config['database']['driver'] == 'mysql') {
@@ -23,8 +23,7 @@ if ($Config['database']['driver'] == 'mysql') {
 		return mysqli_num_rows($base);
 	}
 	////Obtention des résultats cherchés.
-	function Requis($requete) {
-		global $db;
+	function Requis($requete, $db) {
 		$result = mysqli_query ($db, $requete);
 		return $result;
 	}
