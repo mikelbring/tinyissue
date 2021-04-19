@@ -30,6 +30,7 @@ class Comment extends  \Eloquent {
 	 */
 	public static function create_comment($input, $project, $issue)
 	{
+		if (trim($input['comment']) == '') { return true; }
 		$config_app = require path('public') . 'config.app.php';
 		if (!isset($config_app['Percent'])) { $config_app['Percent'] = array (100,0,10,80,100); }
 		require "tag.php";

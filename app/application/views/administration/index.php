@@ -62,12 +62,11 @@
 				</td>
 			</tr>
 		</table>
-	
 	</div>
 	<div class="pad2">
 		<br />
 		<?php
-			include "../app/application/libraries/checkVersion.php";
+			include "application/libraries/checkVersion.php";
 			echo '<h4><b>'.__('tinyissue.version_check').'</b> : ';
 			echo '<br /><br />';
 			echo __('tinyissue.version_actuelle');
@@ -98,11 +97,87 @@
 				echo '<input type="hidden" name="versionDisp" value="'.$verNum.'" />';
 				echo '<input type="hidden" name="versionComm" value="'.$verCommit.'" />';
 				echo '<br /><br />';
-				echo '<input type="submit" value="'.__('tinyissue.update').'" class="button	primary"/>';
+				echo '<input type="submit" value="'.__('tinyissue.updating').'" class="button	primary"/>';
 				echo Form::token();
 				echo '</form>';
 			}
-			echo '<br /><br />';
 		?>
 	</div>
+	<br /><br />
+	<br /><br />
+	<div class="pad" style="border-top-style: solid; border-bottom-style: solid; border-color: grey; border-width: 2px;">
+		<?php $Conf = Config::get('application.mail'); ?>
+		<br /><br />
+			<h4><b><?php echo __('tinyissue.email_head'); ?></b></h4>
+			<br /><br />
+		<div class="pad2">
+			<?php echo __('tinyissue.email_from'); ?> : <?php echo __('tinyissue.email_from_name'); ?> : <input name="email_from_name" id="input_email_from_name" value="<?php echo $Conf["from"]["name"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+			<?php echo __('tinyissue.email_from'); ?> : <?php echo __('tinyissue.email_from_email'); ?> : <input name="email_from_email" id="input_email_from_email" value="<?php echo $Conf["from"]["email"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
+			<?php echo __('tinyissue.email_intro'); ?> : <input name="email_from" id="input_email_intro" value="<?php echo $Conf["intro"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
+			<?php echo __('tinyissue.email_bye'); ?> : <input name="email_from" id="input_email_bye" value="<?php echo $Conf["bye"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
+		</div>
+		<div class="pad2">
+			<?php echo __('tinyissue.email_replyto'); ?> : <?php echo __('tinyissue.email_from_name'); ?> : <input name="input_email_replyto_name" id="input_email_replyto_name" value="<?php echo $Conf["replyTo"]["name"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+			<?php echo __('tinyissue.email_replyto'); ?> : <?php echo __('tinyissue.email_from_email'); ?> : <input name="input_email_replyto_email" id="input_email_replyto_email" value="<?php echo $Conf["replyTo"]["email"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
+			<br />
+			<?php echo __('tinyissue.first_name'); ?> : <b>{first}</b> ex.: <?php echo Auth::user()->firstname; ?><br /><br />
+			<?php echo __('tinyissue.last_name'); ?> : <b>{last}</b> ex.: <?php echo Auth::user()->lastname; ?><br /><br />
+			<?php echo __('tinyissue.name').' ( '.__('tinyissue.first_name'). ' '.__('tinyissue.last_name').' ) '; ?> : <b>{full}</b> ex.: <?php echo Auth::user()->firstname; ?>  <?php echo Auth::user()->lastname; ?><br />
+		</div>
+		<br />
+		<div style="text-align: center;"><input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: AppliquerCourriel();" class="button2"/></div>
+		<br />
+		
+	</div>
 </div>
+<script type="text/javascript" >
+	function AppliquerCourriel() {
+		var compte = 0;
+		if (document.getElementById('input_email_from_name').style.backgroundColor == 'red' ) { return false; }
+		if (document.getElementById('input_email_from_email').style.backgroundColor == 'red' ) { return false; }
+		if (document.getElementById('input_email_replyto_name').style.backgroundColor == 'red' ) { return false; }
+		if (document.getElementById('input_email_replyto_email').style.backgroundColor == 'red' ) { return false; }
+		if (document.getElementById('input_email_intro').style.backgroundColor == 'red' ) { return false; }
+		if (document.getElementById('input_email_bye').style.backgroundColor == 'red' ) { return false; }
+		if (document.getElementById('input_email_from_name').style.backgroundColor == 'yellow' ) { compte = compte + 1; }
+		if (document.getElementById('input_email_from_email').style.backgroundColor == 'yellow' ) { compte = compte + 1; }
+		if (document.getElementById('input_email_replyto_name').style.backgroundColor == 'yellow' ) { compte = compte + 1; }
+		if (document.getElementById('input_email_replyto_email').style.backgroundColor == 'yellow' ) { compte = compte + 1; }
+		if (document.getElementById('input_email_intro').style.backgroundColor == 'yellow' ) { compte = compte + 1; }
+		if (document.getElementById('input_email_bye').style.backgroundColor == 'yellow' ) { compte = compte + 1; }
+		if (compte == 0) { return false; }
+		document.getElementById('input_email_from_name').style.backgroundColor = 'red';
+		document.getElementById('input_email_from_email').style.backgroundColor = 'red';
+		document.getElementById('input_email_replyto_name').style.backgroundColor = 'red';
+		document.getElementById('input_email_replyto_email').style.backgroundColor = 'red';
+		document.getElementById('input_email_intro').style.backgroundColor = 'red';
+		document.getElementById('input_email_bye').style.backgroundColor = 'red';
+		var xhttp = new XMLHttpRequest();
+		var NextPage = 'app/application/controllers/ajax/ChgConfEmail.php?fName=' + document.getElementById('input_email_from_name').value + '&fMail=' + document.getElementById('input_email_from_email').value + '&rName=' + document.getElementById('input_email_replyto_name').value + '&rMail=' + document.getElementById('input_email_replyto_email').value + '&intro=' + document.getElementById('input_email_intro').value + '&bye='+document.getElementById('input_email_bye').value;
+		xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			if (xhttp.responseText != '' ) {
+				alert(xhttp.responseText);
+				document.getElementById('input_email_from_name').style.backgroundColor = 'green';
+				document.getElementById('input_email_from_email').style.backgroundColor = 'green';
+				document.getElementById('input_email_replyto_name').style.backgroundColor = 'green';
+				document.getElementById('input_email_replyto_email').style.backgroundColor = 'green';
+				document.getElementById('input_email_intro').style.backgroundColor = 'green';
+				document.getElementById('input_email_bye').style.backgroundColor = 'green';
+				var blanc = setTimeout(Blanchit, 5000);
+				}
+			}
+		};
+		xhttp.open("GET", NextPage, true);
+		xhttp.send(); 
+	}
+	
+	function Blanchit() {
+		document.getElementById('input_email_from_name').style.backgroundColor = 'white';
+		document.getElementById('input_email_from_email').style.backgroundColor = 'white';
+		document.getElementById('input_email_replyto_name').style.backgroundColor = 'white';
+		document.getElementById('input_email_replyto_email').style.backgroundColor = 'white';
+		document.getElementById('input_email_intro').style.backgroundColor = 'white';
+		document.getElementById('input_email_bye').style.backgroundColor = 'white';
+	}
+</script>

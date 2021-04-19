@@ -325,7 +325,7 @@ function Following(Quoi, etat) {
 		document.getElementById('img_following').src = "<?php echo \URL::home();?>app/assets/images/layout/icon-comments_1.png";
 	}
 	var xhttp = new XMLHttpRequest();
-	var NextPage = '<?php echo $url; ?>app/vendor/searchEngine/Following.php?Quoi=1&Qui=<?php echo \Auth::user()->id; ?>&Quel=<?php echo Project\Issue::current()->id; ?>&Project=<?php echo Project::current()->id; ?>&Etat=' + ((etat) ? 0 : 1);
+	var NextPage = '<?php echo $url; ?>app/application/controllers/ajax/Following.php?Quoi=1&Qui=<?php echo \Auth::user()->id; ?>&Quel=<?php echo Project\Issue::current()->id; ?>&Project=<?php echo Project::current()->id; ?>&Etat=' + ((etat) ? 0 : 1);
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			if (xhttp.responseText != '' ) {
@@ -342,15 +342,15 @@ function IMGupload(input) {
 	var ext = fil['name'].substring(fil['name'].lastIndexOf('.') + 1).toLowerCase();
 	var img = "<?php echo $url; ?>app/assets/images/icons/file_01.png?"; 
 	var xhttpCHK = new XMLHttpRequest();
-	var CheckPage = '<?php echo $url; ?>/checkExt?ext=' + ext;
+	var CheckPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/checkExt?ext=' + ext;
 	xhttpCHK.onreadystatechange = function() {
 	   if (this.readyState == 4 && this.status == 200) {
 			var formdata = new FormData();
 			formdata.append("Loading", fil);
 			if (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg") { 
-				img = "<?php echo $url; ?>uploads/" + fil['name'];
+				img = "<?php echo $_SERVER['REQUEST_URI']; ?>uploads/" + fil['name'];
 			} else if (xhttpCHK.responseText == 'yes' ) {
-				img = "<?php echo $url; ?>app/assets/images/upload_type/" + ext + ".png";
+				img = "<?php echo $_SERVER['REQUEST_URI']; ?>app/assets/images/upload_type/" + ext + ".png";
 			}
 			var xhttpUPLD = new XMLHttpRequest();
 			var NextPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/upload?Nom=' + fil['name'];
@@ -404,7 +404,6 @@ function OteTag(Quel) {
 	var xhttpTAG = new XMLHttpRequest();
 	var NextPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/retag?Modif=' + Modif + '&Quel=' + Quel;
 	xhttpTAG.onreadystatechange = function() {
-	alert (this.readyState + " et " +  this.status);
 	if (this.readyState == 4 && this.status == 200) {
 		if (xhttpTAG.responseText != '' ) {
 				var adLi = document.createElement("LI");

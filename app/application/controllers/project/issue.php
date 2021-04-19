@@ -42,10 +42,8 @@ class Project_Issue_Controller extends Base_Controller {
 		//Automatically enrole assignee AND creator into following this issue
 		$followers =\DB::query("INSERT INTO following VALUES (NULL, ".Auth::user()->id.", ".Project::current()->id.", ".$issue['issue']->id.", 0, 1, 1)");
 
-		$followers =\DB::query("SELECT DISTINCT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects AS PRO ON PRO.id = FAL.project_id WHERE FAL.project = 1");
-		foreach ($followers as $ind => $follower) { 
-			mail($follower->email, __('tinyissue.following_email_project_tit'), __('tinyissue.following_email_project')." « ".$follower->name." ».");
-		} 
+		//Email to followers
+		$this->Courriel ('Project', true, Project::current()->id, 0, Auth::user()->id, __('tinyissue.following_email_project'), __('tinyissue.following_email_project_tit'));
 		
 		return Redirect::to($issue['issue']->to())
 			->with('notice', __('tinyissue.issue_has_been_created'));
@@ -63,6 +61,8 @@ class Project_Issue_Controller extends Base_Controller {
 			Project\Issue\Comment::delete_comment(str_replace('comment', '', Input::get('delete')));
 			return true;
 		}
+		//Email to followers
+		//$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, __('tinyissue.following_email_issue'), __('tinyissue.following_email_issue_tit'));
 
 		return $this->layout->nest('content', 'project.issue.index', array(
 			'issue' => Project\Issue::current(),
@@ -82,14 +82,11 @@ class Project_Issue_Controller extends Base_Controller {
 		}
 		$comment = \Project\Issue\Comment::create_comment(Input::all(), Project::current(), Project\Issue::current());
 
-		$followers =\DB::query("SELECT DISTINCT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.project_id WHERE FAL.project_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
-		foreach ($followers as $ind => $follower) { 
-			//send_mail(__('tinyissue.following_email_assigned')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_assigned_tit'));
-			mail($follower->email, __('tinyissue.following_email_comment_tit'), __('tinyissue.following_email_comment')." « ".$follower->title." ».");
-		} 
+		//Email to followers
+		$this->Courriel ("Issue", true, Project::current()->id, Project\Issue::current()->id, \Auth::user()->id, __('tinyissue.following_email_comment'), 'Voici ligne 86'.__('tinyissue.following_email_comment_tit'));
 
 		return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
-			->with('notice', __('tinyissue.your_comment_added'.((Input::get('status') == 0 || Input::get('Fermons') == 0) ? ' --- '.__('tinyissue.issue_has_been_closed') : '')));
+			->with('notice', __('tinyissue.your_comment_added').((Input::get('status') == 0 || Input::get('Fermons') == 0) ? ' --- '.__('tinyissue.issue_has_been_closed') : ''));
 	}
 
 	/**
@@ -115,12 +112,8 @@ class Project_Issue_Controller extends Base_Controller {
 			$result .= ($Modif) ? "Succès" : "Échec";
 			if (\User\Activity::add(8, intval(Input::get('projetOld')), Input::get('ticketNum'), $NumNew, "From ".Input::get('projetOld')." to ".$NumNew )) { $msg = $msg + 1; } else { $msg = $TheFile["error"]; }
 
-			//Email to all of this ticket's followers
-			$followers =\DB::query("SELECT DISTINCT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
-			foreach ($followers as $ind => $follower) { 
-				//send_mail(__('tinyissue.following_email_assigned')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_assigned_tit'));
-				mail($follower->email, __('tinyissue.following_email_issueproject_tit'), __('tinyissue.following_email_issueproject')." « ".$follower->title." ».");
-			} 
+			//Email to followers
+			$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, __('tinyissue.following_email_issueproject'), __('tinyissue.following_email_issueproject_tit'));
 
 			return Redirect::to("project/".$NumNew."/issues?tag_id=1");
 
@@ -140,12 +133,8 @@ class Project_Issue_Controller extends Base_Controller {
 				'project' => Project::current()
 			));
 
-			//Email to all of this ticket's followers
-			$followers =\DB::query("SELECT DISTINCT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
-			foreach ($followers as $ind => $follower) { 
-				mail($follower->email, __('tinyissue.following_email_assigned_tit'), __('tinyissue.following_email_assigned')." « ".$follower->title." ».");
-				//send_mail("Petite patate tant pis pour toi ".__('tinyissue.following_email_issue')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_issue_tit'));
-			} 
+			//Email to followers
+			$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, __('tinyissue.following_email_assigned'), __('tinyissue.following_email_assigned_tit'));
 		}
 	}
 
@@ -199,13 +188,17 @@ class Project_Issue_Controller extends Base_Controller {
 	public function get_status() {
 		$status = Input::get('status', 0);
 
+		$message = __('tinyissue.issue_has_been_reopened');
+		$messagetit = __('tinyissue.issue_has_been_reopened');
 		if($status == 0) {
 			$message = __('tinyissue.issue_has_been_closed');
-		} else {
-			$message = __('tinyissue.issue_has_been_reopened');
+			$messagetit = __('tinyissue.issue_has_been_closed_tit');
 		}
 
 		Project\Issue::current()->change_status($status);
+
+		//Email to followers
+		//$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, $message, $messagetit);
 
 		return Redirect::to(Project\Issue::current()->to())
 			->with('notice', $message);
@@ -282,9 +275,8 @@ class Project_Issue_Controller extends Base_Controller {
 				$text .= sprintf(__('email.reassigned_by'),\Auth::user()->firstname." ".\Auth::user()->lastname);
 				$text .= "\n\n";
 				$text .= __('email.more_url').Project::current()->to('issue')."/".Input::get('Issue')."";
+				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, $text, $subject);
 			}
-				//Mail::send_mail($text, $WhoAddr, $subject);
-				mail($WhoAddr, $subject, $text);
 
 			//Show on screen what did just happened
 			$t = time();
@@ -355,11 +347,9 @@ class Project_Issue_Controller extends Base_Controller {
 			 * Update database
 			 */
 			if ($Show) { \User\Activity::add(6, $Action, $Issue, $TagNum->attributes['id'] ); }
-			//Email to all of this ticket's followers
-			$followers =\DB::query("SELECT DISTINCT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.project_id WHERE FAL.issue_id = ".Project::current()->id." AND FAL.project = 0 AND FAL.user_id NOT IN (".\Auth::user()->id.") ");
-			foreach ($followers as $ind => $follower) { 
-				mail($follower->email, __('tinyissue.following_email_issue_tit'), __('tinyissue.following_email_issue')." « ".$follower->title." ».");
-			} 
+
+			//Email to followers
+			$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, __('tinyissue.following_email_tags'), __('tinyissue.following_email_tags_tit'));
 
 			/**
 			 * Show on screen what just happened
@@ -471,5 +461,9 @@ class Project_Issue_Controller extends Base_Controller {
 			$msg .= '</div></div></div>';
 		}
 		return $msg;
+	}
+	
+	private function Courriel ($Type, $SkipUser, $ProjectID, $IssueID, $User, $contenu, $subject) {
+		include_once "../app/application/controllers/ajax/SendMail.php";
 	}
 }

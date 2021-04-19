@@ -28,5 +28,4 @@ return array(
 	
 	/** general **/
 	'more_url' => 'Find more information at: ',
-	
 );
