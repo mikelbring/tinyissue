@@ -87,6 +87,7 @@ return array(
 	'following_email_issueproject'  => 'Le billet suivant a été affecté à un autre projet : ',
 	'following_email_issueproject_tit'  => 'Billet déplacé',
 	'following_email_status'  => 'Le statut du billet suivant a été changé : ',
+	'following_email_status_bis'  => 'Le billet a été ',
 	'following_email_status_tit'  => 'Statut d`un billet',
 	'following_email_project'  => 'Un nouveau billet a été inscrit au projet  ',
 	'following_email_project_tit'  => 'Nouveau billet',
