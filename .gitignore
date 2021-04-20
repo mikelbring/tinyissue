@@ -15,5 +15,6 @@ app/vendor/Trumbowyg/
 app/vendor/Reports/BugsRepConfig.php
 app/storage/reports/*.pdf
 images/
+temp/
 version
 

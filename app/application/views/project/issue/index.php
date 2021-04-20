@@ -11,10 +11,12 @@
 		$follower["tags"] = 0;
 		$follower["comment"] = 0;
 	} else {
-		$following =\DB::query("SELECT 1 as 'comment', attached, tags FROM following WHERE project_id = ".Project::current()->id." AND project = 0 AND issue_id = ".Project\Issue::current()->id." AND user_id = ".\Auth::user()->id);
-		$follower["attached"] = $following[0]->attached;
-		$follower["tags"] = $following[0]->tags;
-		$follower["comment"] = $following[0]->comment;
+		//Patrick, 20 avril 2021, correction temporaire à faire fonctionner
+		//Lorsque le billet a été changé de projet, les suiveux n'ont pas suivi.
+//		$following =\DB::query("SELECT 1 as 'comment', attached, tags FROM following WHERE project_id = ".Project::current()->id." AND project = 0 AND issue_id = ".Project\Issue::current()->id." AND user_id = ".\Auth::user()->id);
+//		$follower["attached"] = $following[0]->attached;
+//		$follower["tags"] = $following[0]->tags;
+//		$follower["comment"] = $following[0]->comment;
 	}
 ?>
 <h3>
@@ -35,6 +37,7 @@
 <div class="pad">
 
 	<div style="background-color: #ededed; width: 20%; float: right; ">
+		<?php if (isset($follower)) { ?>
 		<div style="width:25%; float:left;">
 			<span style="font-weight: bold; font-size: 125%;"><?php echo __('tinyissue.following'); ?></span>
 			<br />
@@ -51,6 +54,7 @@
 			<input id="input_following_tags" type="checkbox" value="1" <?php echo ($follower["tags"]) ? 'checked' : ''; ?> onclick="Following('tags', this.checked);" />
 			<?php echo __('tinyissue.following_email_tags_tit'); ?>
 		</div>
+		<?php } ?>
 	</div>
 	<div id="issue-tags">
 	<?php
