@@ -24,7 +24,7 @@
 	$query .= "WHERE FAL.project_id = ".$ProjectID." ";
 	if ($Type == 'Issue') {
 		$query .= "AND FAL.project = 0 AND issue_id = ".$IssueID." ";
-		$query .= ($SkipUser) ? "AND FAL.user_id NOT IN (".$User.") " : "";
+//		$query .= ($SkipUser) ? "AND FAL.user_id NOT IN (".$User.") " : "";
 		$query .= "AND FAL.project = 0 ";
 	} else if ($Type == 'Project') {
 		$query .= "AND FAL.project = 1 ";
@@ -61,13 +61,15 @@
 				$body .= '--'.$boundary.''.$passage_ligne;
 				$body .= 'Content-Type: text/html; charset="'.$optMail['encoding'].'"'.$passage_ligne;
 				$body .= $passage_ligne; 	
-				$body .= $passage_ligne;
+				$body .= $intro;
 				$body .= $passage_ligne;
 				$body .= $message;
 				$body .= $passage_ligne;
 				$body .= $passage_ligne;
+				$body .= $bye;
+				$body .= $passage_ligne;
 				$body .= $passage_ligne.'';
-				mail($follower["email"], $subject, $intro.$body.$bye, $headers);
+				mail($follower["email"], $subject, $body, $headers);
 			} else {
 				$mail = new PHPMailer();
 				$mail->Mailer = $optMail['transport'];

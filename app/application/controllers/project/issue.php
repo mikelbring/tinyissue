@@ -83,7 +83,7 @@ class Project_Issue_Controller extends Base_Controller {
 		$comment = \Project\Issue\Comment::create_comment(Input::all(), Project::current(), Project\Issue::current());
 
 		//Email to followers
-		$this->Courriel ("Issue", true, Project::current()->id, Project\Issue::current()->id, \Auth::user()->id, __('tinyissue.following_email_comment'), 'Voici ligne 86'.__('tinyissue.following_email_comment_tit'));
+		$this->Courriel ("Issue", true, Project::current()->id, Project\Issue::current()->id, \Auth::user()->id, __('tinyissue.following_email_comment'), __('tinyissue.following_email_comment_tit'));
 
 		return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
 			->with('notice', __('tinyissue.your_comment_added').((Input::get('status') == 0 || Input::get('Fermons') == 0) ? ' --- '.__('tinyissue.issue_has_been_closed') : ''));
@@ -264,18 +264,16 @@ class Project_Issue_Controller extends Base_Controller {
 			$thisIssue = \Project\Issue::where('id', '=', Input::get('Issue'))->get('*');
 			$Issue_title = $thisIssue[0]->attributes["title"];
 			$Project = \Project::where('id', '=', $thisIssue[0]->attributes["project_id"])->get(array('id', 'name'));
-			$project_id = $Project[0]->attributes["id"];
-			$project_nm = $Project[0]->attributes["name"];
-			$project = \Project::find($project_id);
+			$project = \Project::find($Project[0]->attributes["id"]);
 
 			if ($Modif) {  //Send mail to the new assignee
-				$subject  = sprintf(__('email.reassignment'),$Issue_title,$project_nm);
-				$text  = sprintf(__('email.reassignment'),$Issue_title,$project_nm);
-				$text .= "\n\n";
-				$text .= sprintf(__('email.reassigned_by'),\Auth::user()->firstname." ".\Auth::user()->lastname);
-				$text .= "\n\n";
-				$text .= __('email.more_url').Project::current()->to('issue')."/".Input::get('Issue')."";
-				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, $text, $subject);
+				$text  = __('tinyissue.following_email_assigned').' « '.$thisIssue[0]->attributes["title"].' » ( '.__('tinyissue.on_project').' « '.$Project[0]->attributes["name"].' » )';
+				$text .= "<br /><br />";
+				$text .= __('email.reassigned_by').' '.\Auth::user()->firstname.' '.\Auth::user()->lastname.'.';
+				$text .= "<br />";
+				$text .= __('tinyissue.assigned_to').' '.$WhoName.'.';
+				$text .= "<br /><br />";
+				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, $text, __('tinyissue.following_email_assigned_tit'));
 			}
 
 			//Show on screen what did just happened
@@ -327,6 +325,8 @@ class Project_Issue_Controller extends Base_Controller {
 				$Action = NULL;
 				$Msg = __('tinyissue.tag_added');
 				$Show = true;
+				//Email to followers --- tags have changed
+				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, __('tinyissue.following_email_tags'), __('tinyissue.following_email_tags_tit'));
 			}
 
 			/**
@@ -340,6 +340,8 @@ class Project_Issue_Controller extends Base_Controller {
 				$Modif = true;
 				$Msg = '<span style="color:#F00;">'.__('tinyissue.tag_removed').'</span>';
 				$Show = true;
+				//Email to followers --- tags have changed
+				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, __('tinyissue.following_email_tags'), __('tinyissue.following_email_tags_tit'));
 			}
 
 			
@@ -348,8 +350,6 @@ class Project_Issue_Controller extends Base_Controller {
 			 */
 			if ($Show) { \User\Activity::add(6, $Action, $Issue, $TagNum->attributes['id'] ); }
 
-			//Email to followers
-			$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, __('tinyissue.following_email_tags'), __('tinyissue.following_email_tags_tit'));
 
 			/**
 			 * Show on screen what just happened
@@ -447,7 +447,10 @@ class Project_Issue_Controller extends Base_Controller {
 			if (\User\Activity::add(7, $Project, $Issue, $Quel[0]->id, $fileName )) { $msg = $msg + 1; } else { $msg = $TheFile["error"]; }
 		}
 		
-		//Fifth: Show on user's desk
+		//Fifth step: Notice the followers
+		$this->Courriel ('Issue', true, Project::current()->id, $Issue, Auth::user()->id, __('tinyissue.following_email_attached'), __('tinyissue.following_email_attached_tit'));
+		
+		//Sixth: Show on user's desk
 		if (is_numeric($msg)) {
 			$rep = (substr($rep, 0, 3) == '../') ? substr($rep, 3) : $rep;
 			$msg .= ';';

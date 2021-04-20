@@ -218,13 +218,16 @@ class Issue extends \Eloquent {
 	* @return void
 	*/
 	public function reassign($user_id) {
+//		$text  = __('tinyissue.following_email_assigned_a');
+//		$text .= __('tinyissue.following_email_assigned_b');
+//		$text .= __('tinyissue.following_email_assigned_c');
 		$old_assignee = $this->assigned_to;
 
 		$this->assigned_to = $user_id;
 		$this->save();
 
 		/* Notify the person being assigned to unless that person is doing the actual assignment */
-		if($this->assigned_to && $this->assigned_to != \Auth::user()->id) {
+/*		if($this->assigned_to && $this->assigned_to != \Auth::user()->id) {
 			$project_id = $this->project_id;
 			$project = \Project::find($project_id);
 
@@ -244,6 +247,10 @@ class Issue extends \Eloquent {
 			\Mail::send_mail(__('tinyissue.following_email_comment')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_comment_tit'));
 			//mail($follower->email, __('tinyissue.following_email_assigned_tit'), __('tinyissue.following_email_assigned')." « ".$follower->title." ».");
 		} 
+*/
+		//Notify all followers about the new status
+		$text .= __('tinyissue.following_email_assigned');
+		$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, $text, __('tinyissue.following_email_assigned_tit'));
 
 		add($type_id, $parent_id, $item_id = null, $action_id = null, $data = null);
 		\User\Activity::add(5, $this->project_id, $this->id, $user_id, null);
@@ -256,7 +263,7 @@ class Issue extends \Eloquent {
 	* @return void
 	*/
 	public function change_status($status) {
-
+		$text = __('tinyissue.following_email_status');
 		/* Retrieve all tags */
 		$tags = $this->tags;
 		$tag_ids = array();
@@ -280,6 +287,7 @@ class Issue extends \Eloquent {
 
 			/* Add to activity log */
 			\User\Activity::add(3, $this->project_id, $this->id);
+			$text = __('tinyissue.following_email_status_bis').__('email.closed').'.<br /><br />'.$text;
 		} else {
 			$this->closed_by = NULL;
 			$this->closed_at = NULL;
@@ -292,34 +300,14 @@ class Issue extends \Eloquent {
 
 			/* Add to activity Log */
 			\User\Activity::add(4, $this->project_id, $this->id);
+			$text = __('tinyissue.following_email_status_bis').__('email.reopened').'.<br /><br />'.$text;
 		}
 		$this->tags()->sync($tag_ids);
 		$this->status = $status;
 		$this->save();
 
-		/* Notify the person to whom the issue is currently assigned, unless that person is the one changing the status */
-		$project = \Project::current();
-		if($this->assigned_to && $this->assigned_to != \Auth::user()->id) {
-			$verb = ($this->status == 0 ? __('email.closed') : __('email.reopened'));
-			$subject = sprintf(__('email.issue_changed'),$this->title,$project->name,$verb);
-			$text = \View::make('email.change_status_issue', array(
-				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
-				'project' => $project,
-				'issue' => $this,
-				'verb' => $verb
-			));
-
-			// \Mail::send_email($text, $this->assigned->email, $subject);
-			mail($this->assigned->email, $subject, $text);
-		}
-		
 		//Notify all followers about the new status
-		//Send an email to all users who follow this issue
-		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues TIK ON TIK.id = FAL.issue_id WHERE FAL.project_id = ".$project->id." AND FAL.project = 0 AND FAL.issue_id = ".$this->id." ");
-		foreach ($followers as $ind => $follower) { 
-			//\Mail::send_mail(__('tinyissue.following_email_comment')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_comment_tit'));
-			mail($follower->email, __('tinyissue.following_email_comment_tit'), __('tinyissue.following_email_comment')." « ".$follower->title." ».");
-		} 
+		$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, $text, __('tinyissue.following_email_status_tit'));
 					
 	}
 
@@ -355,8 +343,8 @@ class Issue extends \Eloquent {
 
 		/* Add to activity log for assignment if changed */
 		if($input['assigned_to'] != $this->assigned_to) {
-			//\User\Activity::add(5, $this->project_id, $this->id, \Auth::user()->id,$input['assigned_to']);
 			\DB::query("INSERT INTO users_activity VALUES (NULL, ".\Auth::user()->id.", NULL, ".$this->id.", ".$input['assigned_to'].", 5, NULL, NOW(), NOW()) ");
+			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, $text, __('tinyissue.following_email_assigned_tit'));
 		}
 
 		$this->fill($fill);
@@ -365,26 +353,10 @@ class Issue extends \Eloquent {
 		/* Update tags */
 		$this->set_tags('update');
 
-		/* Notify the person to whom the issue is currently assigned, unless that person is the one making the update */
-		if($this->assigned_to && $this->assigned_to != \Auth::user()->id) {
-			$project = \Project::current();
-			$subject = sprintf(__('email.update'),$this->title,$project->name);
-			$text = \View::make('email.update_issue', array(
-				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
-				'project' => $project,
-				'issue' => $this
-			));
-
-			// \Mail::send_email($text, $this->assigned->email, $subject);
-			mail($this->assigned->email, $subject, $text);
-		}
-
 		return array(
 			'success' => true
 		);
 	}
-
-
 
 	/**
 	* Sets tags on an issue
@@ -464,10 +436,10 @@ class Issue extends \Eloquent {
 			}
 
 			\User\Activity::add(6, $this->project_id, $this->id, null, json_encode(array('added_tags' => $added_tags, 'removed_tags' => $removed_tags, 'tag_data' => $tag_data)));
-			$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects PRO ON PRO.id = FAL.project_id WHERE FAL.project_id = ".\Project::current()->id." AND FAL.project = 1 AND FAL.user_id NOT IN (".$deja.") ");
-			foreach ($followers as $ind => $follower) {
-				\Mail::send_email(__('tinyissue.following_email_tags')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_tags_tit')); 
-			} 
+//			$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects PRO ON PRO.id = FAL.project_id WHERE FAL.project_id = ".\Project::current()->id." AND FAL.project = 1 AND FAL.user_id NOT IN (".$deja.") ");
+//			foreach ($followers as $ind => $follower) {
+//				\Mail::send_email(__('tinyissue.following_email_tags')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_tags_tit')); 
+//			} 
 		}
 	}
 
@@ -616,44 +588,6 @@ class Issue extends \Eloquent {
 			}
 		/* End of Add attachments to issue */
 
-		//Avant le 2019-11-03, l'inscription du fichier s'était faite lors de la création avec un numéro de billet approximatif et un numéro de commentaire approximatif
-		//C'était la ligne suivante qui servait 
-//		\DB::table('projects_issues_attachments')->where('upload_token', '=', $input['token'])->where('uploaded_by', '=', \Auth::user()->id)->update(array('issue_id' => $issue->id));
-
-		///////////   Notifications by Email //////////////////////
-		/* Notify the person being assigned to. */
-		/* If no one is assigned, notify all users who are assigned to this project and who have permission to modify the issue. */
-		/* Do not notify the person creating the issue. */
-		$deja = \Auth::user()->id;
-		if($issue->assigned_to) {
-			if($issue->assigned_to != \Auth::user()->id) {
-				$project = \Project::current();
-
-				//$subject = 'New issue "' . $issue->title . '" was submitted to "' . $project->name . '" project and assigned to you';
-				$subject = sprintf(__('email.assignment'),$issue->title,$project->name);
-				$text = \View::make('email.new_assigned_issue', array( 'project' => $project, 'issue' => $issue, ));
-				\Mail::send_email($text, $issue->assigned->email, $subject);
-			}
-			$deja .= ",".$issue->assigned_to;
-		} else {
-			$project = \Project::current();
-			foreach($project->users()->get() as $row) {
-				if($row->id != \Auth::user()->id && $row->permission('project-modify')) {
-					//$subject = 'New issue "' . $issue->title . '" was submitted to "' . $project->name . '" project';
-					$subject = sprintf(__('email.new_issue'),$issue->title,$project->name);
-					$text = \View::make('email.new_issue', array('project' => $project, 'issue' => $issue, ));
-					\Mail::send_email($text, $row->email, $subject);
-					$deja .= ",".$row->id;
-				}
-			}
-		}
-
-		/*Notify all interested users*/
-		//Email to all of this project's followers
-		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects PRO ON PRO.id = FAL.project_id WHERE FAL.project_id = ".\Project::current()->id." AND FAL.project = 1 AND FAL.user_id NOT IN (".$deja.") ");
-		foreach ($followers as $ind => $follower) {
-			\Mail::send_email(__('tinyissue.following_email_project')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_project_tit')); 
-		} 
 
 		/* Return success and issue object */
 		return array(
@@ -692,6 +626,10 @@ class Issue extends \Eloquent {
 			'open' => $open_issues,
 			'closed' => $closed_issues
 		);
+	}
+
+	private function Courriel ($Type, $SkipUser, $ProjectID, $IssueID, $User, $contenu, $subject) {
+		include_once "application/controllers/ajax/SendMail.php";
 	}
 
 }

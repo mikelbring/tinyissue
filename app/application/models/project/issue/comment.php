@@ -121,14 +121,14 @@ class Comment extends  \Eloquent {
 			));
 
 		/* Notify the person to whom the issue is currently assigned, unless that person is the one making the comment */
-		if($issue->assigned_to && $issue->assigned_to != \Auth::user()->id && (!empty($issue->assigned->email))) {
- 			\Mail::send_email($text, $issue->assigned->email, $subject);
-		}
-
-		/* Notify the person who created the issue, unless that person is the one making the comment */
-		if($issue->created_by && $issue->created_by != \Auth::user()->id  && (!empty($issue->user->email))) {
-			\Mail::send_email($text, $issue->user->email, $subject);
-		}
+		$Type = 'Issue';
+		$SkipUser = true;
+		$ProjectID = $project->id;
+		$IssueID = $issue->id;
+		$User = \Auth::user()->id;
+		$contenu = __('tinyissue.following_email_comment');
+		$subject = __('tinyissue.following_email_comment_tit');
+		include "application/controllers/ajax/SendMail.php";
 
 		return $comment;
 	}
@@ -185,6 +185,10 @@ class Comment extends  \Eloquent {
 		$body = \Sparkdown\Markdown($body);
 		// convert issue numbers into issue url
 		return preg_replace('/((?:' . __('tinyissue.issue') . ')?)(\s*)#(\d+)/i', '<a href="' . \URL::to('/project/0/issue/$3') . '" title="$1 #$3" class="issue-link">$1 #$3</a>', $body);
+	}
+
+	private function Courriel ($Type, $SkipUser, $ProjectID, $IssueID, $User, $contenu, $subject) {
+		include_once "application/controllers/ajax/SendMail.php";
 	}
 
 

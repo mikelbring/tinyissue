@@ -11,13 +11,13 @@ return array(
 	'new_issue' => 'Un nouveau billet "%s" a été créé pour le projet "%s"',
 	'new_comment' => 'Le billet "%s" du projet "%s" a un nouveau commentaire',
 	'assignment' => 'Un nouveau billet "%s" a été créé pour le projet "%s" et a été assigné.',
-	'assigned_by' => 'Assigné par: %s',
+	'assigned_by' => 'Assigné par: ',
 	'reassignment' => 'Le billet "%s" du projet "%s" a été réassigné',
 	'update' => 'Le billet "%s" du projet "%s" a été mis à jour',
 
 	'submitted_by' => 'Soumis par: %s',
 	'created_by' => 'Créé par: %s',
-	'reassigned_by' => 'Réassigné par: %s',
+	'reassigned_by' => 'Réassigné par: ',
 	'updated_by' => 'Mis à jour par: %s',
 
 	'issue_changed' => 'Le billet "%s" du projet "%s" a été %s',
@@ -27,7 +27,7 @@ return array(
 	'by' => 'par',
 
 	/** general **/
-	'more_url' => 'Plus d`information: ',
+	'more_url' => 'Plus d`informations: ',
 
 
 );

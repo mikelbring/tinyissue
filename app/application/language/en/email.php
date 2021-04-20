@@ -11,13 +11,13 @@ return array(
 	'new_issue' => 'New issue "%s" was submitted to "%s" project',
 	'new_comment' => 'Issue "%s" in "%s" project has a new comment',
 	'assignment' => 'New issue "%s" was submitted to "%s" project and assigned to you',
-	'assigned_by' => 'Assigned by: %s',
+	'assigned_by' => 'Assigned by: ',
 	'reassignment' => 'Issue "%s" in "%s" project was reassigned to you',
 	'update' => 'Issue "%s" in "%s" project was updated',
 	
 	'submitted_by' => 'Submitted by: %s',
 	'created_by' => 'Created by: %s',
-	'reassigned_by' => 'Reassigned by: %s',
+	'reassigned_by' => 'Reassigned by: ',
 	'updated_by' => 'Updated by: %s',
 
 	'issue_changed' => 'Issue "%s" in "%s" project was %s',
