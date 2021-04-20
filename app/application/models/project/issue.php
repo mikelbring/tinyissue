@@ -344,7 +344,7 @@ class Issue extends \Eloquent {
 		/* Add to activity log for assignment if changed */
 		if($input['assigned_to'] != $this->assigned_to) {
 			\DB::query("INSERT INTO users_activity VALUES (NULL, ".\Auth::user()->id.", NULL, ".$this->id.", ".$input['assigned_to'].", 5, NULL, NOW(), NOW()) ");
-			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, $text, __('tinyissue.following_email_assigned_tit'));
+			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, __('tinyissue.following_email_assigned'), __('tinyissue.following_email_assigned_tit'));
 		}
 
 		$this->fill($fill);

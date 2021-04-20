@@ -7,7 +7,7 @@
 	$requUSER .= "WHERE (LOWER(USR.firstname) LIKE '%".$_GET["User"]."%' OR LOWER(USR.lastname) LIKE '%".$_GET["User"]."%' OR LOWER(CONCAT(USR.firstname, ' ', USR.lastname)) LIKE '%".$_GET["User"]."%') ";
 	$requUSER .= "AND USR.id NOT IN (SELECT user_id FROM projects_users WHERE project_id = ".$_GET["Projet"]." )";
 	$requUSER .= "ORDER BY NM ASC";
-	$resuUSER = Requis($requUSER, $db);
+	$resuUSER = Requis($requUSER);
 	
 	while ($QuelUSER = Fetche($resuUSER)) {
 		$membres .= '<a href="javascript:addUserProject('.$_GET["Projet"].','.$QuelUSER["id"].', \''.$_GET["CettePage"].'\');" style="margin-left: 10%;">+ '.$QuelUSER["NM"].'</a><br />';

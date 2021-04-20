@@ -7,7 +7,7 @@
 	$requRESP .= "LEFT JOIN projects AS PRO ON PRO.id = PRSR.project_id ";
 	$requRESP .= "WHERE project_id = ".$_GET["Projet"]." ";
 	$requRESP .= "ORDER BY NM ASC";
-	$resuRESP = Requis($requRESP, $db);
+	$resuRESP = Requis($requRESP);
 	
 	while ($QuelRESP = Fetche($resuRESP)) {
 		$membres .= '<option value="'.$QuelRESP["id"].'">'.$QuelRESP["NM"].'</option>';
