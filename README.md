@@ -69,6 +69,7 @@ Then, push your modifications through a new branch. NEVER push on master.
     - March 2021: Reader can no longer edit ticket, nor watch stats
     - March 2021: Search field now will search also into comments' content ( not only title or projects' name )
     - March 2021: Comment and close at once - new button added.
+    - Arpil 2021: User can follow project / ticket and receive email when something appends.
 - v.1.7 : July 2019 
 	- reports are now totally integrated to BUGS which produces pdf files
 - v.1.6 : February 2019 

@@ -11,12 +11,10 @@
 		$follower["tags"] = 0;
 		$follower["comment"] = 0;
 	} else {
-		//Patrick, 20 avril 2021, correction temporaire à faire fonctionner
-		//Lorsque le billet a été changé de projet, les suiveux n'ont pas suivi.
-//		$following =\DB::query("SELECT 1 as 'comment', attached, tags FROM following WHERE project_id = ".Project::current()->id." AND project = 0 AND issue_id = ".Project\Issue::current()->id." AND user_id = ".\Auth::user()->id);
-//		$follower["attached"] = $following[0]->attached;
-//		$follower["tags"] = $following[0]->tags;
-//		$follower["comment"] = $following[0]->comment;
+		$following =\DB::query("SELECT 1 as 'comment', attached, tags FROM following WHERE project_id = ".Project::current()->id." AND project = 0 AND issue_id = ".Project\Issue::current()->id." AND user_id = ".\Auth::user()->id);
+		$follower["attached"] = $following[0]->attached ?? 0;
+		$follower["tags"] = $following[0]->tags ?? 0;
+		$follower["comment"] = $following[0]->comment ?? 0;
 	}
 ?>
 <h3>
