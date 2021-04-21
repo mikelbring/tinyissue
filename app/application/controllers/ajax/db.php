@@ -1,15 +1,19 @@
 <?php
-	$config = require_once ("../../../../config.app.php");
-	$db = mysqli_connect($config['database']['host'], $config['database']['username'], $config['database']['password'], $config['database']['database']);
+$prefixe = "";
+while (!file_exists($prefixe."config.app.php")) {
+	$prefixe .= "../";
+}
+$config = require $prefixe."config.app.php";
+$dataSrc = mysqli_connect($config['database']['host'], $config['database']['username'], $config['database']['password'], $config['database']['database']);
 	
 function Explose ($requ) {
-	$resu = Requis($requ);
+	Global $dataSrc;
+	$resu = Requis($requ, $dataSrc);
 	return (Nombre($resu) > 0) ? Fetche ($resu) : '';
 }
 
 function Fetche ($resultat) {
 	return mysqli_fetch_assoc ($resultat);
-//	return (is_bool($resultat) || is_null($resultat)) ? NULL : mysqli_fetch_assoc ($resultat);
 }
 
 
@@ -18,17 +22,14 @@ function Nombre ($base) {
 }
 
 function NumID () {
-	global $db;
-	return mysqli_insert_id($db);
+	global $dataSrc;
+	return mysqli_insert_id($dataSrc);
 }
 
-function Requis ($requete) {
-	global $db;
-	$result = mysqli_query ($db, $requete);
-//	if (!$result ) {
-//		return NULL;
-//	} else {
-		return $result;
-//	}
+function Requis($requete) {
+	global $dataSrc;
+	$result = mysqli_query ($dataSrc, $requete);
+	return $result;
 }
+
 ?>

@@ -132,7 +132,7 @@
 function Following(etat, Project, Qui) {
 	var xhttp = new XMLHttpRequest();
 	etat = (etat) ? 0 : 1;
-	var NextPage = '../../app/vendor/searchEngine/Following.php?Quoi=2&Qui=' + Qui + '&Project=' + Project + '&Etat=' + etat;
+	var NextPage = '../../app/application/controllers/ajax/Following.php?Quoi=2&Qui=' + Qui + '&Project=' + Project + '&Etat=' + etat;
 	xhttp.onreadystatechange = function() {
 	};
 	xhttp.open("GET", NextPage, true);

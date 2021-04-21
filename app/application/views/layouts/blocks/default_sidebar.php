@@ -33,7 +33,7 @@
 			$id = $idProj[$ind];
 			$follower = \DB::table('following')->where('project','=',1)->where('project_id','=',$id)->where('user_id','=',\Auth::user()->id)->count();
 			$follower = ($follower > 0) ? 1 : 0;
-			echo '<a href="javascript: Following('.$follower.', '.$id.', '.\Auth::user()->id.');" title="'.(($follower == 0) ? __('tinyissue.following_start') : __('tinyissue.following_stop')).'" ><img id="img_follow_'.$id.'" src="app/assets/images/layout/icon-comments_'.$follower.'.png" align="left" style="min-height:'.$follower.'px " /></a>';
+			echo '<a href="javascript: Following('.$follower.', '.$id.', '.\Auth::user()->id.');" title="'.(($follower == 0) ? __('tinyissue.following_start') : __('tinyissue.following_stop')).'" ><img id="img_follow_'.$id.'" src="'.\URL::home().'app/assets/images/layout/icon-comments_'.$follower.'.png" align="left" style="min-height:'.$follower.'px " /></a>';
 			echo '<li>';
 			echo '<a href="'.$ind.(($NbIssues[$ind] == 0) ? '' : '/issues?tag_id=1').'">'.$Proj[$ind].' </a>';
 			echo '</li>';
@@ -54,12 +54,13 @@
 	function Following(etat, Project, Qui) {
 		var xhttp = new XMLHttpRequest();
 		etat = document.getElementById('img_follow_' + Project).style.minHeight.substr(0,1);
-		var NextPage = 'app/vendor/searchEngine/Following.php?Quoi=2&Qui=' + Qui + '&Project=' + Project + '&Etat=' + etat;
+		var NextPage = '<?php echo \URL::home(); ?>app/application/controllers/ajax/Following.php?Quoi=2&Qui=' + Qui + '&Project=' + Project + '&Etat=' + etat;
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				if (xhttp.responseText != '' ) {
+				//alert(xhttp.responseText);
 				etat = Math.abs(etat-1);
-				document.getElementById('img_follow_' + Project).src = "app/assets/images/layout/icon-comments_" + etat + ".png";
+				document.getElementById('img_follow_' + Project).src = "<?php echo \URL::home(); ?>app/assets/images/layout/icon-comments_" + etat + ".png";
 				document.getElementById('img_follow_' + Project).style.minHeight = etat+"px";
 				}
 			}

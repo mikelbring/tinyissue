@@ -153,7 +153,7 @@ class View implements ArrayAccess {
 		if ($path = $this->exists($view,true)) {
 			return $path;
 		}
-		if (in_array($view, array("ChangeIssue-project","ChangeIssue-project_acti"))) {
+		if (in_array($view, array("ChangeIssue-project","ChangeIssue-project_acti","IssueEdit"))) {
 			return (substr($view, -5) == '_acti') ? "application/views/activity/".substr($view, 0, strlen($view)-5).".php" : "application/views/project/issue/activity/".$view.".php";
 		}
 
