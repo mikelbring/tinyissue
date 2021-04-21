@@ -1,5 +1,6 @@
 <?php
-include_once "FonctionsCommunes.php";
+include_once "db.php";
+
 $retour = 0;
 if ($_GET["Quoi"] == 1) {
 	$tags = $_GET["tags"] ?? 1;

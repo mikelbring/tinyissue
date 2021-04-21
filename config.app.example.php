@@ -103,6 +103,10 @@ return array(
 			'name' => 'Your E-Mail Name',
 			'email' => 'name@domain.com',
 		),
+		'replyTo' => array(
+			'name' => 'Your E-Mail Name',
+			'email' => 'name@domain.com',
+		),
 		/**
 		 * Transport Settings
 		 * Transport settings if using mail or smtp
@@ -136,7 +140,17 @@ return array(
 		* 'text/plain' or 'html'  or 'multipart/mixed' must be lower case
 		*/
 		'plainHTML' => 'multipart/mixed',
-		'linelenght' => 80
+		'linelenght' => 80,
+		
+		/*
+		* Every emails you'll send from here will start by  intro and end by bye
+		* Use those to include the recepient values:
+		*   - {first} for his first name
+		*   - {last} for his last name
+		*   - {full} for his full name  ( first name and last name )
+		*/
+		'intro' => 'Hello {first},',
+		'bye' => 'Bye.'
 	),
 
 	/**  Session key

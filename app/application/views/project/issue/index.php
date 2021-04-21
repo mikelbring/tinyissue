@@ -12,9 +12,9 @@
 		$follower["comment"] = 0;
 	} else {
 		$following =\DB::query("SELECT 1 as 'comment', attached, tags FROM following WHERE project_id = ".Project::current()->id." AND project = 0 AND issue_id = ".Project\Issue::current()->id." AND user_id = ".\Auth::user()->id);
-		$follower["attached"] = $following[0]->attached;
-		$follower["tags"] = $following[0]->tags;
-		$follower["comment"] = $following[0]->comment;
+		$follower["attached"] = $following[0]->attached ?? 0;
+		$follower["tags"] = $following[0]->tags ?? 0;
+		$follower["comment"] = $following[0]->comment ?? 0;
 	}
 ?>
 <h3>
@@ -35,6 +35,7 @@
 <div class="pad">
 
 	<div style="background-color: #ededed; width: 20%; float: right; ">
+		<?php if (isset($follower)) { ?>
 		<div style="width:25%; float:left;">
 			<span style="font-weight: bold; font-size: 125%;"><?php echo __('tinyissue.following'); ?></span>
 			<br />
@@ -51,6 +52,7 @@
 			<input id="input_following_tags" type="checkbox" value="1" <?php echo ($follower["tags"]) ? 'checked' : ''; ?> onclick="Following('tags', this.checked);" />
 			<?php echo __('tinyissue.following_email_tags_tit'); ?>
 		</div>
+		<?php } ?>
 	</div>
 	<div id="issue-tags">
 	<?php
@@ -325,7 +327,7 @@ function Following(Quoi, etat) {
 		document.getElementById('img_following').src = "<?php echo \URL::home();?>app/assets/images/layout/icon-comments_1.png";
 	}
 	var xhttp = new XMLHttpRequest();
-	var NextPage = '<?php echo $url; ?>app/vendor/searchEngine/Following.php?Quoi=1&Qui=<?php echo \Auth::user()->id; ?>&Quel=<?php echo Project\Issue::current()->id; ?>&Project=<?php echo Project::current()->id; ?>&Etat=' + ((etat) ? 0 : 1);
+	var NextPage = '<?php echo $url; ?>app/application/controllers/ajax/Following.php?Quoi=1&Qui=<?php echo \Auth::user()->id; ?>&Quel=<?php echo Project\Issue::current()->id; ?>&Project=<?php echo Project::current()->id; ?>&Etat=' + ((etat) ? 0 : 1);
 	xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			if (xhttp.responseText != '' ) {
@@ -342,15 +344,15 @@ function IMGupload(input) {
 	var ext = fil['name'].substring(fil['name'].lastIndexOf('.') + 1).toLowerCase();
 	var img = "<?php echo $url; ?>app/assets/images/icons/file_01.png?"; 
 	var xhttpCHK = new XMLHttpRequest();
-	var CheckPage = '<?php echo $url; ?>/checkExt?ext=' + ext;
+	var CheckPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/checkExt?ext=' + ext;
 	xhttpCHK.onreadystatechange = function() {
 	   if (this.readyState == 4 && this.status == 200) {
 			var formdata = new FormData();
 			formdata.append("Loading", fil);
 			if (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg") { 
-				img = "<?php echo $url; ?>uploads/" + fil['name'];
+				img = "<?php echo $_SERVER['REQUEST_URI']; ?>uploads/" + fil['name'];
 			} else if (xhttpCHK.responseText == 'yes' ) {
-				img = "<?php echo $url; ?>app/assets/images/upload_type/" + ext + ".png";
+				img = "<?php echo $_SERVER['REQUEST_URI']; ?>app/assets/images/upload_type/" + ext + ".png";
 			}
 			var xhttpUPLD = new XMLHttpRequest();
 			var NextPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/upload?Nom=' + fil['name'];
@@ -404,7 +406,6 @@ function OteTag(Quel) {
 	var xhttpTAG = new XMLHttpRequest();
 	var NextPage = '<?php echo $_SERVER['REQUEST_URI']; ?>/retag?Modif=' + Modif + '&Quel=' + Quel;
 	xhttpTAG.onreadystatechange = function() {
-	alert (this.readyState + " et " +  this.status);
 	if (this.readyState == 4 && this.status == 200) {
 		if (xhttpTAG.responseText != '' ) {
 				var adLi = document.createElement("LI");
