@@ -27,6 +27,7 @@ class Cookie
     protected $path;
     protected $secure;
     protected $httpOnly;
+    protected $sameSite;
 
     /**
      * Constructor.
@@ -70,6 +71,7 @@ class Cookie
         $this->path = empty($path) ? '/' : $path;
         $this->secure = (Boolean) $secure;
         $this->httpOnly = (Boolean) $httpOnly;
+        $this->sameSite = 'strict';
     }
 
     public function __toString()

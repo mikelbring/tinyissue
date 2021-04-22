@@ -59,7 +59,7 @@ class ResponseHeaderBag extends HeaderBag
     {
         $cookies = '';
         foreach ($this->getCookies() as $cookie) {
-            $cookies .= 'Set-Cookie: '.$cookie."\r\n";
+            $cookies .= 'Set-Cookie: SameSite: Strict; '.$cookie."\r\n";
         }
 
         return parent::__toString().$cookies;

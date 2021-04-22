@@ -173,7 +173,7 @@ function CalculonsDates(Quoi) {
 	document.getElementById('input_DateFina').value = yyyy + '-' + mm + '-' + dd;
 }
 function Following(Quel, Project, Qui) {
-	<?php if ($_GET["tag_id"] != 2) { ?> 
+	<?php if (@$_GET["tag_id"] != 2) { ?> 
 	var etat = (document.getElementById('a_following_' + Quel).style.minHeight.substr(0,1) == '0') ? 0 : 1;
 	var xhttp = new XMLHttpRequest();
 	var NextPage = '../../app/application/controllers/ajax/Following.php?Quoi=1&Qui=' + Qui + '&Quel=' + Quel + '&Project=' + Project + '&Etat=' + etat;

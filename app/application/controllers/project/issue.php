@@ -2,7 +2,7 @@
 class Project_Issue_Controller extends Base_Controller {
 
 	public $layout = 'layouts.project';
-	
+
 	public function __construct() {
 		parent::__construct();
 
@@ -22,7 +22,7 @@ class Project_Issue_Controller extends Base_Controller {
 		Asset::add('tag-it-js', '/app/assets/js/tag-it.min.js', array('jquery', 'jquery-ui'));
 		Asset::add('tag-it-css-base', '/app/assets/css/jquery.tagit.css');
 		Asset::add('tag-it-css-zendesk', '/app/assets/css/tagit.ui-zendesk.css');
-		
+
 		return $this->layout->nest('content', 'project.issue.new', array(
 			'project' => Project::current()
 		));
@@ -44,7 +44,7 @@ class Project_Issue_Controller extends Base_Controller {
 
 		//Email to followers
 		$this->Courriel ('Project', true, Project::current()->id, 0, Auth::user()->id, __('tinyissue.following_email_project'), __('tinyissue.following_email_project_tit'));
-		
+
 		return Redirect::to($issue['issue']->to())
 			->with('notice', __('tinyissue.issue_has_been_created'));
 	}
@@ -121,7 +121,7 @@ class Project_Issue_Controller extends Base_Controller {
 			Asset::add('tag-it-js', '/app/assets/js/tag-it.min.js', array('jquery', 'jquery-ui'));
 			Asset::add('tag-it-css-base', '/app/assets/css/jquery.tagit.css');
 			Asset::add('tag-it-css-zendesk', '/app/assets/css/tagit.ui-zendesk.css');
-	
+
 			/* Get tags as string */
 			$issue_tags = '';
 			foreach(Project\Issue::current()->tags as $tag) {
@@ -309,12 +309,12 @@ class Project_Issue_Controller extends Base_Controller {
 			$TagNum = Tag::where('tag', '=', $Quel )->first(array('id','tag','bgcolor'));
 			if (!isset($TagNum) || @$TagNum == '' ) { $Modif = false; $Quel = "xyzxyz"; }
 
-		
+
 			/**
 			 * Edit an issue
 			 * Adding a tag
 			 */
-			if ($Modif == 'AddOneTag' ) {  
+			if ($Modif == 'AddOneTag' ) {
 				$IssueTagNum = \DB::table('projects_issues_tags')->where('issue_id', '=', $Issue)->where('tag_id', '=', $TagNum->attributes['id'], 'AND' )->first(array('id'));
 				$now = date("Y-m-d H:i:s");
 				if ($IssueTagNum == NULL) {
@@ -333,7 +333,7 @@ class Project_Issue_Controller extends Base_Controller {
 			 * Edit an issue
 			 * Taking a tag off
 			 */
-			if ($Modif == 'eraseTag') {	
+			if ($Modif == 'eraseTag') {
 				$IssueTagNum =\DB::table('projects_issues_tags')->where('issue_id','=',$Issue)->where('tag_id','=',$TagNum->id,'AND')->first('id');
 				\DB::table('projects_issues_tags')->delete($IssueTagNum->id);
 				$Action = $Issue;
@@ -344,12 +344,11 @@ class Project_Issue_Controller extends Base_Controller {
 				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, __('tinyissue.following_email_tags'), __('tinyissue.following_email_tags_tit'));
 			}
 
-			
+
 			/**
 			 * Update database
 			 */
 			if ($Show) { \User\Activity::add(6, $Action, $Issue, $TagNum->attributes['id'] ); }
-
 
 			/**
 			 * Show on screen what just happened
@@ -376,7 +375,7 @@ class Project_Issue_Controller extends Base_Controller {
 	 *
 	 * @request ajax
 	 * @return string
-	 */ 
+	 */
 	public function post_upload() {
 		$pref = Config::get('application.attached');
 		$url =\URL::home();
@@ -388,7 +387,7 @@ class Project_Issue_Controller extends Base_Controller {
 		$rep = (substr($pref["directory"], 0, 1) == '/') ? $pref["directory"] : "../".$pref["directory"];
 
 		//Common data for the insertion into database: file's type, date, ect
-		if ($Issue == 1) {		
+		if ($Issue == 1) {
 			//Attach a file to a new issue
 			////We'll keep uploaded files in uploads/New/date directory until the issue will be created 
 			$Issue = 'New/'.$Qui;
@@ -440,16 +439,16 @@ class Project_Issue_Controller extends Base_Controller {
 			return 0;
 		}
 		//Forth step: Store it into database
-		if ($Issue != 'New/'.$Qui) {		
+		if ($Issue != 'New/'.$Qui) {
 			//Modifié le 23 juin 2019, retrait des  "../" imposés dans l'enregistrement de l'adresse
 			\DB::table('projects_issues_attachments')->insert(array('id'=>NULL,'issue_id'=>$Issue,'comment_id'=>$idComment,'uploaded_by'=>$Qui,'filesize'=>$TheFile["size"],'filename'=>str_replace("../", "", $rep).$fileName,'fileextension'=>$_GET["ext"],'upload_token'=>$TheFile["tmp_name"],'created_at'=>$now,'updated_at'=>$now) );
 			$Quel = \DB::table('projects_issues_attachments')->where('issue_id', '=', $Issue)->order_by('id','DESC')->get();
 			if (\User\Activity::add(7, $Project, $Issue, $Quel[0]->id, $fileName )) { $msg = $msg + 1; } else { $msg = $TheFile["error"]; }
 		}
-		
+
 		//Fifth step: Notice the followers
 		$this->Courriel ('Issue', true, Project::current()->id, $Issue, Auth::user()->id, __('tinyissue.following_email_attached'), __('tinyissue.following_email_attached_tit'));
-		
+
 		//Sixth: Show on user's desk
 		if (is_numeric($msg)) {
 			$rep = (substr($rep, 0, 3) == '../') ? substr($rep, 3) : $rep;
@@ -465,7 +464,7 @@ class Project_Issue_Controller extends Base_Controller {
 		}
 		return $msg;
 	}
-	
+
 	private function Courriel ($Type, $SkipUser, $ProjectID, $IssueID, $User, $contenu, $subject) {
 		include_once "../app/application/controllers/ajax/SendMail.php";
 	}
