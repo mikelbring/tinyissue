@@ -24,7 +24,7 @@
 	$query .= "WHERE FAL.project_id = ".$ProjectID." ";
 	if ($Type == 'Issue') {
 		$query .= "AND FAL.project = 0 AND issue_id = ".$IssueID." ";
-//		$query .= ($SkipUser) ? "AND FAL.user_id NOT IN (".$User.") " : "";
+		$query .= ($SkipUser) ? "AND FAL.user_id NOT IN (".$User.") " : "";
 		$query .= "AND FAL.project = 0 ";
 	} else if ($Type == 'Project') {
 		$query .= "AND FAL.project = 1 ";
