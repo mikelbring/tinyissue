@@ -90,24 +90,26 @@ class Comment extends  \Eloquent {
 		$issue->updated_at = date('Y-m-d H:i:s');
 		$issue->updated_by = \Auth::user()->id;
 		$issue->save();
-		if ($input['Pourcentage'] == 100 && \Auth::user()->role_id != 1) {
-			$tags = $issue->tags;
-			$tag_ids = array();
-			foreach($tags as $tag) { $tag_ids[$tag->id] = $tag->id; }
-			$issue->closed_by = \Auth::user()->id;
-			$issue->closed_at = date('Y-m-d H:i:s');
-
-			/* Update tags */
-			$tag_ids[2] = 2;
-			if(isset($tag_ids[1])) { unset($tag_ids[1]); }
-			if(isset($tag_ids[8])) { unset($tag_ids[8]); }
-			if(isset($tag_ids[9])) { unset($tag_ids[9]); }
-
-			/* Add to activity log */
-			\User\Activity::add(3, $issue->project_id, $issue->id);
-			$issue->tags()->sync($tag_ids);
-			$issue->status = 0;
-			$issue->save();
+		if (\Auth::user()->role_id != 1) {
+			if ($input['Pourcentage'] == 100) {
+				$tags = $issue->tags;
+				$tag_ids = array();
+				foreach($tags as $tag) { $tag_ids[$tag->id] = $tag->id; }
+				$issue->closed_by = \Auth::user()->id;
+				$issue->closed_at = date('Y-m-d H:i:s');
+	
+				/* Update tags */
+				$tag_ids[2] = 2;
+				if(isset($tag_ids[1])) { unset($tag_ids[1]); }
+				if(isset($tag_ids[8])) { unset($tag_ids[8]); }
+				if(isset($tag_ids[9])) { unset($tag_ids[9]); }
+	
+				/* Add to activity log */
+				\User\Activity::add(3, $issue->project_id, $issue->id);
+				$issue->tags()->sync($tag_ids);
+				$issue->status = 0;
+				$issue->save();
+			}
 		}
 
 		/*Notifications by email to those who concern */
