@@ -20,7 +20,7 @@
 	while (!feof($RefFichier)) {
 		$MesLignes[$rendu] = fgets($RefFichier);
 		if (strpos($MesLignes[$rendu], "mail' => array") !== false && !isset($NumLigne["mail"])) { $NumLigne["mail"] = $rendu; }  
-		if (strpos($MesLignes[$rendu], "* Final delivery format") !== false) { $NumLigne["forma"] = $rendu; }  
+		if (strpos($MesLignes[$rendu], "* Final delivery format") !== false && @$NumLigne["mail"] > 0 && !isset($NumLigne["forma"])) { $NumLigne["forma"] = $rendu; }  
 		++$rendu;
 	}
 	fclose($RefFichier);
@@ -35,7 +35,6 @@
 	unset( $NumLigne["mail"], $NumLigne["forma"]); 
 
 	//Changement des lignes repérées à la faveur des données soumises par l'usager
-	$posi = 0;
 	foreach ($NumLigne as $ind => $lgn) {
 		$MesLignes[$NumLigne[$ind]] = substr($MesLignes[$NumLigne[$ind]], 0, strpos($MesLignes[$NumLigne[$ind]], "=>") + 3 )."'".str_replace("'", "`",$_GET[$ind])."',
 "; 
