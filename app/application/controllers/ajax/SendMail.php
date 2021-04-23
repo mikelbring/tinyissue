@@ -24,7 +24,7 @@
 	$query .= "WHERE FAL.project_id = ".$ProjectID." ";
 	if ($Type == 'Issue') {
 		$query .= "AND FAL.project = 0 AND issue_id = ".$IssueID." ";
-//		$query .= ($SkipUser) ? "AND FAL.user_id NOT IN (".$User.") " : "";
+		$query .= ($SkipUser) ? "AND FAL.user_id NOT IN (".$User.") " : "";
 		$query .= "AND FAL.project = 0 ";
 	} else if ($Type == 'Project') {
 		$query .= "AND FAL.project = 1 ";
@@ -48,27 +48,23 @@
 				$headers .= 'Content-Type: multipart/mixed; charset="'.$optMail['encoding'].'"; boundary="'.$boundary.'"';
 				$headers .= $passage_ligne;
 				
-				$intro = str_replace('{first}', ucwords($follower["name"]), $optMail['intro']);
-				$intro = str_replace('{last}', ucwords($follower["last"]), $intro);
-				$intro = str_replace('{full}', ucwords($follower["user"]), $intro);
-				$bye = str_replace('{first}', ucwords($follower["name"]), $optMail['bye']);
-				$bye = str_replace('{last}', ucwords($follower["last"]), $bye);
-				$bye = str_replace('{full}', ucwords($follower["user"]), $bye);
-		
 				$body = strip_tags( nl2br(str_replace("</p>", "<br /><br />", $message)));
 				$body .= $passage_ligne; 	
 				$body .= $passage_ligne; 	
 				$body .= '--'.$boundary.''.$passage_ligne;
 				$body .= 'Content-Type: text/html; charset="'.$optMail['encoding'].'"'.$passage_ligne;
 				$body .= $passage_ligne; 	
-				$body .= $intro;
+				$body .= '<p>'.$optMail['intro'].'</p>';
 				$body .= $passage_ligne;
-				$body .= $message;
+				$body .= '<p>'.$message.'</p>';
+//				$body .= $passage_ligne;
 				$body .= $passage_ligne;
-				$body .= $passage_ligne;
-				$body .= $bye;
-				$body .= $passage_ligne;
+				$body .= '<p>'.$optMail['bye'].'</p>';
+//				$body .= $passage_ligne;
 				$body .= $passage_ligne.'';
+				$body = str_replace('{first}', ucwords($follower["name"]), $body);
+				$body = str_replace('{last}', ucwords($follower["last"]), $body);
+				$body = str_replace('{full}', ucwords($follower["user"]), $body);
 				mail($follower["email"], $subject, $body, $headers);
 			} else {
 				$mail = new PHPMailer();
@@ -103,20 +99,29 @@
 						break;
 				}
 		
-				$mail->CharSet = (isset($optMail['encoding'])) ? $optMail['encoding'] : 'windows-1250';
+				$mail->CharSet = $optMail['encoding'] ?? 'windows-1250';
 				$mail->SetFrom ($optMail['from']['email'], $optMail['from']['name']);
 				$mail->Subject = $subject;
-				$mail->ContentType = (isset($optMail['plainHTML'])) ? $optMail['plainHTML'] : 'text/plain';
+				$mail->ContentType = $optMail['plainHTML'] ?? 'text/plain';
+				$body  = $optMail['intro']
+				$body .= '<br /><br />';
+				$body .= $message;
+				$body .= '<br /><br />';
+				$body .= $optMail['bye'];
+				$body = str_replace('{first}', ucwords($follower["name"]), $body);
+				$body = str_replace('{last}', ucwords($follower["last"]), $body);
+				$body = str_replace('{full}', ucwords($follower["user"]), $body);
 				if ($mail->ContentType == 'html') {
 					$mail->IsHTML(true);
 					$mail->WordWrap = (isset($optMail['linelenght'])) ? $optMail['linelenght'] : 80;
-					$mail->Body = $message;
-					$mail->AltBody = strip_tags($message);
+					$mail->Body = $body;
+					$mail->AltBody = strip_tags($body);
 				} else {
 					$mail->IsHTML(false);
-					$mail->Body = strip_tags($message);
+					$mail->Body = strip_tags($body);
 				}
-				$mail->AddAddress ($to);
+//				$mail->AddAddress ($to);
+				$mail->AddAddress ($follower["email"]);
 				$result = $mail->Send() ? "Successfully sent!" : "Mailer Error: " . $mail->ErrorInfo;
 			}
 		} 

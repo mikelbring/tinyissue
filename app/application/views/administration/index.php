@@ -128,55 +128,35 @@
 		<div style="text-align: center;"><input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: AppliquerCourriel();" class="button2"/></div>
 		<br />
 	</div>
+
 </div>
 <script type="text/javascript" >
 	function AppliquerCourriel() {
+		var champs = new Array('input_email_from_name','input_email_from_email','input_email_replyto_name','input_email_replyto_email','input_email_intro','input_email_bye');
 		var compte = 0;
-		if (document.getElementById('input_email_from_name').style.backgroundColor == 'red' ) { return false; }
-		if (document.getElementById('input_email_from_email').style.backgroundColor == 'red' ) { return false; }
-		if (document.getElementById('input_email_replyto_name').style.backgroundColor == 'red' ) { return false; }
-		if (document.getElementById('input_email_replyto_email').style.backgroundColor == 'red' ) { return false; }
-		if (document.getElementById('input_email_intro').style.backgroundColor == 'red' ) { return false; }
-		if (document.getElementById('input_email_bye').style.backgroundColor == 'red' ) { return false; }
-		if (document.getElementById('input_email_from_name').style.backgroundColor == 'yellow' ) { compte = compte + 1; }
-		if (document.getElementById('input_email_from_email').style.backgroundColor == 'yellow' ) { compte = compte + 1; }
-		if (document.getElementById('input_email_replyto_name').style.backgroundColor == 'yellow' ) { compte = compte + 1; }
-		if (document.getElementById('input_email_replyto_email').style.backgroundColor == 'yellow' ) { compte = compte + 1; }
-		if (document.getElementById('input_email_intro').style.backgroundColor == 'yellow' ) { compte = compte + 1; }
-		if (document.getElementById('input_email_bye').style.backgroundColor == 'yellow' ) { compte = compte + 1; }
+		for (x=0; x<champs.length; x++) {
+			if (document.getElementById(champs[x]).style.backgroundColor == 'red' ) { return false; }
+			if (document.getElementById(champs[x]).style.backgroundColor == 'yellow' ) { compte = compte + 1; }
+		}
 		if (compte == 0) { return false; }
-		document.getElementById('input_email_from_name').style.backgroundColor = 'red';
-		document.getElementById('input_email_from_email').style.backgroundColor = 'red';
-		document.getElementById('input_email_replyto_name').style.backgroundColor = 'red';
-		document.getElementById('input_email_replyto_email').style.backgroundColor = 'red';
-		document.getElementById('input_email_intro').style.backgroundColor = 'red';
-		document.getElementById('input_email_bye').style.backgroundColor = 'red';
+		for (x=0; x<champs.length; x++) {
+			document.getElementById(champs[x]).style.backgroundColor = 'red';
+		}
+
 		var xhttp = new XMLHttpRequest();
 		var NextPage = 'app/application/controllers/ajax/ChgConfEmail.php?fName=' + document.getElementById('input_email_from_name').value + '&fMail=' + document.getElementById('input_email_from_email').value + '&rName=' + document.getElementById('input_email_replyto_name').value + '&rMail=' + document.getElementById('input_email_replyto_email').value + '&intro=' + document.getElementById('input_email_intro').value + '&bye='+document.getElementById('input_email_bye').value;
 		xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			if (xhttp.responseText != '' ) {
-				alert(xhttp.responseText);
-				document.getElementById('input_email_from_name').style.backgroundColor = 'green';
-				document.getElementById('input_email_from_email').style.backgroundColor = 'green';
-				document.getElementById('input_email_replyto_name').style.backgroundColor = 'green';
-				document.getElementById('input_email_replyto_email').style.backgroundColor = 'green';
-				document.getElementById('input_email_intro').style.backgroundColor = 'green';
-				document.getElementById('input_email_bye').style.backgroundColor = 'green';
-				var blanc = setTimeout(Blanchit, 5000);
+				//alert(xhttp.responseText);
+				for (x=0; x<champs.length; x++) {
+					document.getElementById(champs[x]).style.backgroundColor = 'green';
+				}
+				var blanc = setTimeout(function() { for (x=0; x<champs.length; x++) { document.getElementById(champs[x]).style.backgroundColor = 'white'; } }, 5000);
 				}
 			}
 		};
 		xhttp.open("GET", NextPage, true);
 		xhttp.send(); 
-	}
-
-	function Blanchit() {
-		document.getElementById('input_email_from_name').style.backgroundColor = 'white';
-		document.getElementById('input_email_from_email').style.backgroundColor = 'white';
-		document.getElementById('input_email_replyto_name').style.backgroundColor = 'white';
-		document.getElementById('input_email_replyto_email').style.backgroundColor = 'white';
-		document.getElementById('input_email_intro').style.backgroundColor = 'white';
-		document.getElementById('input_email_bye').style.backgroundColor = 'white';
 	}
 </script>
