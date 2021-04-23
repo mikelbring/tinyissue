@@ -187,10 +187,7 @@ class Project_Controller extends Base_Controller {
 
 		if($update['success']) {
 			//Email to all of this project's followers
-			$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects PRO ON PRO.id = FAL.project_id WHERE FAL.project_id = ".Project::current()->id." AND FAL.project = 1 ");
-			foreach ($followers as $ind => $follower) { 
-				\Mail::send_email(__('tinyissue.following_email_projectmod')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_projectmod_tit'));
-			} 
+			$this->Courriel ('Project', true, Project::current()->id, 0, \Auth::user()->id, __('tinyissue.following_email_projectmod'), __('tinyissue.following_email_projectmod_tit'));
 			return Redirect::to(Project::current()->to('edit'))
 				->with('notice', __('tinyissue.project_has_been_updated'));
 		}
@@ -199,4 +196,8 @@ class Project_Controller extends Base_Controller {
 			->with_errors($update['errors'])
 			->with('notice-error', __('tinyissue.we_have_some_errors'));
 	}
+	private function Courriel ($Type, $SkipUser, $ProjectID, $IssueID, $User, $contenu, $subject) {
+		include_once "application/controllers/ajax/SendMail.php";
+	}
+
 }

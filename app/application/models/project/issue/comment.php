@@ -30,6 +30,7 @@ class Comment extends  \Eloquent {
 	 */
 	public static function create_comment($input, $project, $issue)
 	{
+		if (trim($input['comment']) == '') { return true; }
 		$config_app = require path('public') . 'config.app.php';
 		if (!isset($config_app['Percent'])) { $config_app['Percent'] = array (100,0,10,80,100); }
 		require "tag.php";
@@ -89,24 +90,26 @@ class Comment extends  \Eloquent {
 		$issue->updated_at = date('Y-m-d H:i:s');
 		$issue->updated_by = \Auth::user()->id;
 		$issue->save();
-		if ($input['Pourcentage'] == 100 && \Auth::user()->role_id != 1) {
-			$tags = $issue->tags;
-			$tag_ids = array();
-			foreach($tags as $tag) { $tag_ids[$tag->id] = $tag->id; }
-			$issue->closed_by = \Auth::user()->id;
-			$issue->closed_at = date('Y-m-d H:i:s');
-
-			/* Update tags */
-			$tag_ids[2] = 2;
-			if(isset($tag_ids[1])) { unset($tag_ids[1]); }
-			if(isset($tag_ids[8])) { unset($tag_ids[8]); }
-			if(isset($tag_ids[9])) { unset($tag_ids[9]); }
-
-			/* Add to activity log */
-			\User\Activity::add(3, $issue->project_id, $issue->id);
-			$issue->tags()->sync($tag_ids);
-			$issue->status = 0;
-			$issue->save();
+		if (\Auth::user()->role_id != 1) {
+			if ($input['Pourcentage'] == 100) {
+				$tags = $issue->tags;
+				$tag_ids = array();
+				foreach($tags as $tag) { $tag_ids[$tag->id] = $tag->id; }
+				$issue->closed_by = \Auth::user()->id;
+				$issue->closed_at = date('Y-m-d H:i:s');
+	
+				/* Update tags */
+				$tag_ids[2] = 2;
+				if(isset($tag_ids[1])) { unset($tag_ids[1]); }
+				if(isset($tag_ids[8])) { unset($tag_ids[8]); }
+				if(isset($tag_ids[9])) { unset($tag_ids[9]); }
+	
+				/* Add to activity log */
+				\User\Activity::add(3, $issue->project_id, $issue->id);
+				$issue->tags()->sync($tag_ids);
+				$issue->status = 0;
+				$issue->save();
+			}
 		}
 
 		/*Notifications by email to those who concern */
@@ -120,14 +123,14 @@ class Comment extends  \Eloquent {
 			));
 
 		/* Notify the person to whom the issue is currently assigned, unless that person is the one making the comment */
-		if($issue->assigned_to && $issue->assigned_to != \Auth::user()->id && (!empty($issue->assigned->email))) {
- 			\Mail::send_email($text, $issue->assigned->email, $subject);
-		}
-
-		/* Notify the person who created the issue, unless that person is the one making the comment */
-		if($issue->created_by && $issue->created_by != \Auth::user()->id  && (!empty($issue->user->email))) {
-			\Mail::send_email($text, $issue->user->email, $subject);
-		}
+		$Type = 'Issue';
+		$SkipUser = true;
+		$ProjectID = $project->id;
+		$IssueID = $issue->id;
+		$User = \Auth::user()->id;
+		$contenu = __('tinyissue.following_email_comment');
+		$subject = __('tinyissue.following_email_comment_tit');
+		include "application/controllers/ajax/SendMail.php";
 
 		return $comment;
 	}
@@ -184,6 +187,10 @@ class Comment extends  \Eloquent {
 		$body = \Sparkdown\Markdown($body);
 		// convert issue numbers into issue url
 		return preg_replace('/((?:' . __('tinyissue.issue') . ')?)(\s*)#(\d+)/i', '<a href="' . \URL::to('/project/0/issue/$3') . '" title="$1 #$3" class="issue-link">$1 #$3</a>', $body);
+	}
+
+	private function Courriel ($Type, $SkipUser, $ProjectID, $IssueID, $User, $contenu, $subject) {
+		include_once "application/controllers/ajax/SendMail.php";
 	}
 
 
