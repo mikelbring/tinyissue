@@ -15,19 +15,24 @@
 	$optMail = $config["mail"];
 	$message = $contenu." « xyz ».";
 
-	//Select email addresses
-	$query  = "SELECT DISTINCT FAL.project, FAL.attached, FAL.tags, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name, TIK.title ";
-	$query .= "FROM following AS FAL ";
-	$query .= "LEFT JOIN users AS USR ON USR.id = FAL.user_id "; 
-	$query .= "LEFT JOIN projects AS PRO ON PRO.id = FAL.project_id ";
-	$query .= "LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.issue_id ";
-	$query .= "WHERE FAL.project_id = ".$ProjectID." ";
-	if ($Type == 'Issue') {
-		$query .= "AND FAL.project = 0 AND issue_id = ".$IssueID." ";
-		$query .= ($SkipUser) ? "AND FAL.user_id NOT IN (".$User.") " : "";
-		$query .= "AND FAL.project = 0 ";
-	} else if ($Type == 'Project') {
-		$query .= "AND FAL.project = 1 ";
+		//Select email addresses
+	if (@$_GET["User"] == 'TestonsSVP') {
+		$query  = "SELECT DISTINCT 0 AS project, 1 AS attached, 1 AS tages, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name, 'Test' AS title ";
+		$query .= "LEFT JOIN users AS USR ON USR.id = ".$UserID; 
+	} else {
+		$query  = "SELECT DISTINCT FAL.project, FAL.attached, FAL.tags, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name, TIK.title ";
+		$query .= "FROM following AS FAL ";
+		$query .= "LEFT JOIN users AS USR ON USR.id = FAL.user_id "; 
+		$query .= "LEFT JOIN projects AS PRO ON PRO.id = FAL.project_id ";
+		$query .= "LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.issue_id ";
+		$query .= "WHERE FAL.project_id = ".$ProjectID." ";
+		if ($Type == 'Issue') {
+			$query .= "AND FAL.project = 0 AND issue_id = ".$IssueID." ";
+			$query .= ($SkipUser) ? "AND FAL.user_id NOT IN (".$User.") " : "";
+			$query .= "AND FAL.project = 0 ";
+		} else if ($Type == 'Project') {
+			$query .= "AND FAL.project = 1 ";
+		}
 	}
 	$followers = mysqli_query ($dataSrc, $query);
 
@@ -103,7 +108,7 @@
 				$mail->SetFrom ($optMail['from']['email'], $optMail['from']['name']);
 				$mail->Subject = $subject;
 				$mail->ContentType = $optMail['plainHTML'] ?? 'text/plain';
-				$body  = $optMail['intro']
+				$body  = $optMail['intro'];
 				$body .= '<br /><br />';
 				$body .= $message;
 				$body .= '<br /><br />';
