@@ -1,45 +1,61 @@
 <?php
-	include "db.php";
-	
+	include_once "db.php";
+
+	$prefixe = "";
+	while (!file_exists($prefixe."config.app.php")) {
+		$prefixe .= "../";
+	}
+	$config = require $prefixe."config.app.php";
+	$dataSrc = mysqli_connect($config['database']['host'], $config['database']['username'], $config['database']['password'], $config['database']['database']);
+
+
 	$Type = $Type ?? 'Issue';
 	$UserID = $User ?? $_GET["User"] ?? Auth::user()->id ?? 1;
 	$resu = mysqli_query ($dataSrc, "SELECT * FROM users WHERE id = ".$UserID);
 	$QuelUser = Fetche($resu);
-	$emailLng = require ("application/language/en/tinyissue.php");
-	if ( file_exists("application/language/".$QuelUser["language"]."/tinyissue.php") && $QuelUser["language"] != 'en') {
-		$Lng = require ("application/language/".$QuelUser["language"]."/tinyissue.php");
+	$emailLng = require ($prefixe."app/application/language/en/tinyissue.php");
+	if ( file_exists($prefixe."app/application/language/".$QuelUser["language"]."/tinyissue.php") && $QuelUser["language"] != 'en') {
+		$Lng = require ($prefixe."app/application/language/".$QuelUser["language"]."/tinyissue.php");
 		$Lng = array_merge($emailLng, $Lng);
 	} else {
 		$Lng = $emailLng;
 	}
 	$optMail = $config["mail"];
-	$message = $contenu." « xyz ».";
+	$message = @$contenu." « xyz ».";
 
-	//Select email addresses
-	$query  = "SELECT DISTINCT FAL.project, FAL.attached, FAL.tags, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name, TIK.title ";
-	$query .= "FROM following AS FAL ";
-	$query .= "LEFT JOIN users AS USR ON USR.id = FAL.user_id "; 
-	$query .= "LEFT JOIN projects AS PRO ON PRO.id = FAL.project_id ";
-	$query .= "LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.issue_id ";
-	$query .= "WHERE FAL.project_id = ".$ProjectID." ";
-	if ($Type == 'Issue') {
-		$query .= "AND FAL.project = 0 AND issue_id = ".$IssueID." ";
-		$query .= ($SkipUser) ? "AND FAL.user_id NOT IN (".$User.") " : "";
-		$query .= "AND FAL.project = 0 ";
-	} else if ($Type == 'Project') {
-		$query .= "AND FAL.project = 1 ";
+		//Select email addresses
+	if (@$_GET["fName"] == 'TestonsSVP') {
+		$query  = "SELECT DISTINCT 0 AS project, 1 AS attached, 1 AS tages, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, 'Testing mail for any project' AS name, 'Test' AS title ";
+		$query .= "FROM users AS USR WHERE USR.id = ".$UserID; 
+		$message = $Lng["email_test"]	;
+		$subject = 'Mail test';
+		echo 'Testing mail is sent'; 
+	} else {
+		$query  = "SELECT DISTINCT FAL.project, FAL.attached, FAL.tags, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name, TIK.title ";
+		$query .= "FROM following AS FAL ";
+		$query .= "LEFT JOIN users AS USR ON USR.id = FAL.user_id "; 
+		$query .= "LEFT JOIN projects AS PRO ON PRO.id = FAL.project_id ";
+		$query .= "LEFT JOIN projects_issues AS TIK ON TIK.id = FAL.issue_id ";
+		$query .= "WHERE FAL.project_id = ".$ProjectID." ";
+		if ($Type == 'Issue') {
+			$query .= "AND FAL.project = 0 AND issue_id = ".$IssueID." ";
+			$query .= ($SkipUser) ? "AND FAL.user_id NOT IN (".$User.") " : "";
+			$query .= "AND FAL.project = 0 ";
+		} else if ($Type == 'Project') {
+			$query .= "AND FAL.project = 1 ";
+		}
 	}
 	$followers = mysqli_query ($dataSrc, $query);
 
 	if (Nombre($followers) > 0) {
-		while ($follower = Fetche($followers)) { 
+		while ($follower = Fetche($followers)) {
 			$passage_ligne = (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $follower["email"])) ? "\r\n" : "\n";
 
-			$message = str_replace('"', "``", $message); 
+			$message = str_replace('"', "``", $message);
 			$message = stripslashes($message);
-			$message = str_replace("'", "`", $message); 
+			$message = str_replace("'", "`", $message);
 			$message = str_replace("xyz", (($Type == 'Issue') ? $follower["title"] : $follower["name"] ), $message);
-		
+
 			if ($optMail['transport'] == 'mail') {
 				$boundary = md5(uniqid(microtime(), TRUE));
 				$headers = 'From: "'.$optMail['from']['name'].'" <'.$optMail['from']['email'].'>'.$passage_ligne;
@@ -47,13 +63,13 @@
 				$headers .= 'Mime-Version: 1.0'.$passage_ligne;
 				$headers .= 'Content-Type: multipart/mixed; charset="'.$optMail['encoding'].'"; boundary="'.$boundary.'"';
 				$headers .= $passage_ligne;
-				
+
 				$body = strip_tags( nl2br(str_replace("</p>", "<br /><br />", $message)));
-				$body .= $passage_ligne; 	
-				$body .= $passage_ligne; 	
+				$body .= $passage_ligne;
+				$body .= $passage_ligne;
 				$body .= '--'.$boundary.''.$passage_ligne;
 				$body .= 'Content-Type: text/html; charset="'.$optMail['encoding'].'"'.$passage_ligne;
-				$body .= $passage_ligne; 	
+				$body .= $passage_ligne;
 				$body .= '<p>'.$optMail['intro'].'</p>';
 				$body .= $passage_ligne;
 				$body .= '<p>'.$message.'</p>';
@@ -62,7 +78,7 @@
 				$body .= '<p>'.$optMail['bye'].'</p>';
 //				$body .= $passage_ligne;
 				$body .= $passage_ligne.'';
-				$body = str_replace('{first}', ucwords($follower["name"]), $body);
+				$body = str_replace('{first}', ucwords($follower["first"]), $body);
 				$body = str_replace('{last}', ucwords($follower["last"]), $body);
 				$body = str_replace('{full}', ucwords($follower["user"]), $body);
 				mail($follower["email"], $subject, $body, $headers);
@@ -98,12 +114,12 @@
 						}
 						break;
 				}
-		
+
 				$mail->CharSet = $optMail['encoding'] ?? 'windows-1250';
 				$mail->SetFrom ($optMail['from']['email'], $optMail['from']['name']);
 				$mail->Subject = $subject;
 				$mail->ContentType = $optMail['plainHTML'] ?? 'text/plain';
-				$body  = $optMail['intro']
+				$body  = $optMail['intro'];
 				$body .= '<br /><br />';
 				$body .= $message;
 				$body .= '<br /><br />';
@@ -124,6 +140,6 @@
 				$mail->AddAddress ($follower["email"]);
 				$result = $mail->Send() ? "Successfully sent!" : "Mailer Error: " . $mail->ErrorInfo;
 			}
-		} 
+		}
 	}
 ?>
