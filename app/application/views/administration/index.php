@@ -163,7 +163,7 @@
 	}
 	function AppliquerTest() {
 		var xhttp = new XMLHttpRequest();
-		var NextPage = 'app/application/controllers/ajax/SendMail.php?fName=TestonsSVP&User=<?php echo Auth::user()->id; ?>';
+		var NextPage = 'app/application/controllers/ajax/SendMail.php?Type=TestonsSVP&User=<?php echo Auth::user()->id; ?>';
 		xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			if (xhttp.responseText != '' ) {

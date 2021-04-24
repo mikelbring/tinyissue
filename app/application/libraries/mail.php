@@ -9,6 +9,7 @@ class Mail {
 	 * @return  int
 	 */
 	public static function send_email($message, $to, $subject) {
-		include_once "app/application/controllers/ajax/SendMail.php";
+		mail($to, $subject, $message);
+		include_once "../app/application/controllers/ajax/SendMail.php";
 	}
 }
