@@ -115,7 +115,9 @@
 			<?php echo __('tinyissue.email_from'); ?> : <?php echo __('tinyissue.email_from_email'); ?> : <input name="email_from_email" id="input_email_from_email" value="<?php echo $Conf["from"]["email"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
 			<?php echo __('tinyissue.email_intro'); ?> : <input name="email_from" id="input_email_intro" value="<?php echo $Conf["intro"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
 			<?php echo __('tinyissue.email_bye'); ?> : <input name="email_from" id="input_email_bye" value="<?php echo $Conf["bye"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
-		</div>
+			<div style="text-align: center;"><input type="button" value="Test" onclick="javascript: AppliquerTest();" class="button1"/></div>
+			<br />
+	</div>
 		<div class="pad2">
 			<?php echo __('tinyissue.email_replyto'); ?> : <?php echo __('tinyissue.email_from_name'); ?> : <input name="input_email_replyto_name" id="input_email_replyto_name" value="<?php echo $Conf["replyTo"]["name"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
 			<?php echo __('tinyissue.email_replyto'); ?> : <?php echo __('tinyissue.email_from_email'); ?> : <input name="input_email_replyto_email" id="input_email_replyto_email" value="<?php echo $Conf["replyTo"]["email"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
@@ -123,9 +125,9 @@
 			<?php echo __('tinyissue.first_name'); ?> : <b>{first}</b> ex.: <?php echo Auth::user()->firstname; ?><br /><br />
 			<?php echo __('tinyissue.last_name'); ?> : <b>{last}</b> ex.: <?php echo Auth::user()->lastname; ?><br /><br />
 			<?php echo __('tinyissue.name').' ( '.__('tinyissue.first_name'). ' '.__('tinyissue.last_name').' ) '; ?> : <b>{full}</b> ex.: <?php echo Auth::user()->firstname; ?>  <?php echo Auth::user()->lastname; ?><br />
+			<br />
+			<div style="text-align: center;"><input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: AppliquerCourriel();" class="button2"/></div>
 		</div>
-		<br />
-		<div style="text-align: center;"><input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: AppliquerCourriel();" class="button2"/></div>
 		<br />
 		
 	</div>
@@ -154,6 +156,19 @@
 				}
 				var blanc = setTimeout(function() { for (x=0; x<champs.length; x++) { document.getElementById(champs[x]).style.backgroundColor = 'white'; } }, 5000);
 				}
+			}
+		};
+		xhttp.open("GET", NextPage, true);
+		xhttp.send(); 
+	}
+	function AppliquerTest() {
+		var xhttp = new XMLHttpRequest();
+		var NextPage = 'app/application/controllers/ajax/SendMail.php?fName=TestonsSVP&User=<?php echo Auth::user()->id; ?>';
+		xhttp.onreadystatechange = function() {
+		if (this.readyState == 4 && this.status == 200) {
+			if (xhttp.responseText != '' ) {
+				alert(xhttp.responseText);
+			}
 			}
 		};
 		xhttp.open("GET", NextPage, true);
