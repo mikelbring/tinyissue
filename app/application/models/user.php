@@ -297,6 +297,15 @@ class User extends Eloquent {
 			'password' => $password
 		));
 
+		$contenu = $view;
+		$Type = 'User';
+		$SkipUser = false;
+		$ProjectID = 0;
+		$IssueID = 0;
+		$User = $info['email'];
+		$subject = __('email.subject_newuser');
+		include "application/controllers/ajax/SendMail.php";
+
 		Mail::send_email($view, $info['email'], __('email.subject_newuser'));
 
 		return array(
