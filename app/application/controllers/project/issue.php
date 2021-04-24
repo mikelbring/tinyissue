@@ -86,7 +86,7 @@ class Project_Issue_Controller extends Base_Controller {
 		$this->Courriel ("Issue", true, Project::current()->id, Project\Issue::current()->id, \Auth::user()->id, __('tinyissue.following_email_comment'), __('tinyissue.following_email_comment_tit'));
 
 		return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
-			->with('notice', __('tinyissue.your_comment_added').((Input::get('status') == 0 || Input::get('Fermons') == 0) ? ' --- '.__('tinyissue.issue_has_been_closed') : ''));
+			->with('notice', __('tinyissue.your_comment_added').(((Input::get('status') == 0 || Input::get('Fermons') == 0) && \Auth::user()->role_id != 1) ? ' --- '.__('tinyissue.issue_has_been_closed') : ''));
 	}
 
 	/**
