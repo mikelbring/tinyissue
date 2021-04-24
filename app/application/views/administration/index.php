@@ -151,12 +151,13 @@
 			</div>
 			<br />
 			<textarea id="txt_contenu" name="contenu">
-				<?php if (file_exists("uploads/attached.html")) {
-							$f = file_get_contents("uploads/attached.html");
-							echo $f;
-						} else { 
-							echo  __('tinyissue.tinyissue.following_email_attached'); 
-						} 
+				<?php 
+				if (file_exists("../uploads/attached.html")) {
+					$f = file_get_contents("../uploads/attached.html");
+					echo $f;
+				} else { 
+					echo  __('tinyissue.tinyissue.following_email_attached'); 
+				} 
 			?></textarea>
 		</details>
 	<br />
