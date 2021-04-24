@@ -45,11 +45,11 @@
 ";
 	$MesLignes[$NumLigne["mail"] + 18] = "		'replyTo'  => array(
 ";
-	$MesLignes[$NumLigne["mail"] + 20] = "			'name' => '".$_GET["rName"]."',
+	$MesLignes[$NumLigne["mail"] + 19] = "			'name' => '".$_GET["rName"]."',
 ";
-	$MesLignes[$NumLigne["mail"] + 21] = "			'email' => '".$_GET["rMail"]."',
+	$MesLignes[$NumLigne["mail"] + 20] = "			'email' => '".$_GET["rMail"]."',
 ";
-	$MesLignes[$NumLigne["mail"] + 22] = "		),
+	$MesLignes[$NumLigne["mail"] + 21] = "		),
 ";
 
 	$MesLignes[$NumLigne["forma"] + 6] = "		'intro' => '".$_GET["intro"]."',
