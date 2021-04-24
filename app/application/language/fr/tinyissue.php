@@ -1,4 +1,3 @@
-
 <?php
 return array(
 	'active_project' => 'Projet actif',

@@ -1,4 +1,3 @@
-
 <?php
 $prefixe = "";
 while (!file_exists($prefixe."config.app.php")) {

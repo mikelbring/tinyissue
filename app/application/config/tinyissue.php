@@ -1,4 +1,3 @@
-
 <?php
 return array(
 	'release_date' => '23-04-2021',

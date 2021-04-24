@@ -146,7 +146,6 @@
 			?>
 			</select>
 			</div>
-			
 			<div class="pad2"style="font-size: 125%; padding-top: 15px;">
 				{first}, {last}, {full}, {project}, {issue}
 			</div>

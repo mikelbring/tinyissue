@@ -30,9 +30,7 @@
 	function AppliquerTest() {
 		var compte = 0;
 		for (x=0; x<champs.length; x++) {
-			if (document.getElementById(champs[x]).style.back
-			
-			groundColor == 'red' ) { return false; }
+			if (document.getElementById(champs[x]).style.backgroundColor == 'red' ) { return false; }
 			if (document.getElementById(champs[x]).style.backgroundColor == 'yellow' ) { compte = compte + 1; }
 		}
 		if (compte > 0) { alert("Vous devez mettre à jour avant de tester"); return false; }
