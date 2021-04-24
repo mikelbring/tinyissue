@@ -1,5 +1,13 @@
 <?php
-	include "db.php";
+	include_once "db.php";
+
+	$prefixe = "";
+	while (!file_exists($prefixe."config.app.php")) {
+		$prefixe .= "../";
+	}
+	$config = require $prefixe."config.app.php";
+	$dataSrc = mysqli_connect($config['database']['host'], $config['database']['username'], $config['database']['password'], $config['database']['database']);
+
 
 	$Type = $Type ?? 'Issue';
 	$UserID = $User ?? $_GET["User"] ?? Auth::user()->id ?? 1;
