@@ -276,6 +276,23 @@ p{
   content: "";
   zoom: 1;
 }
+
+summary, select.sombre {
+	margin-top: 10px;
+	font-size: 125%;
+	font-weight: bold;
+	padding: 10px;
+	background-color: #373e4e; 
+	color: #f8e81c;
+	border-radius: 10px;
+}
+
+select.sombre {
+	background-color: #d8d0cf;
+	color: black;
+	
+}
+
 .tabs:after, .pills:after {
   clear: both;
 }

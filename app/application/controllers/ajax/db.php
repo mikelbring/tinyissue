@@ -1,3 +1,4 @@
+
 <?php
 $prefixe = "";
 while (!file_exists($prefixe."config.app.php")) {
@@ -5,7 +6,7 @@ while (!file_exists($prefixe."config.app.php")) {
 }
 $config = require $prefixe."config.app.php";
 $dataSrc = mysqli_connect($config['database']['host'], $config['database']['username'], $config['database']['password'], $config['database']['database']);
-	
+
 function Explose ($requ) {
 	Global $dataSrc;
 	$resu = Requis($requ, $dataSrc);

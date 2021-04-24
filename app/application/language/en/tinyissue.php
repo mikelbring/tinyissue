@@ -61,6 +61,7 @@ return array(
 	'edit' => 'Edit',
 	'email' => 'Email',
 	'email_head' => 'Configuration for all emails',
+	'email_head2' => 'Main texts of emails',
 	'email_from' => 'From',
 	'email_from_name' => 'name',
 	'email_from_email' => 'email',
@@ -97,7 +98,8 @@ return array(
 	'following_email_projectmod_tit'  => 'Project has changed',
 	'following_email_tags'  => 'The issue you are following has new tags or lost of them.  You can review the changes visiting the issue titled ',
 	'following_email_tags_tit'  => 'Retaged',
-	'following_stand' => 'comment(s)',
+	'following_stan
+	d' => 'comment(s)',
 	'following_start' => 'Begin to follow',
 	'following_stop'  => 'Stop following',
 	'fileupload_button' => 'Attach a file',
