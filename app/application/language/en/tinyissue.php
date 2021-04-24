@@ -67,6 +67,7 @@ return array(
 	'email_replyto' => 'Reply to',
 	'email_intro' => 'Intro to all emails',
 	'email_bye' => 'End of all emails',
+	'email_test' => 'This is a test message to help you appreciate the messages you are sending to your users throught the BUGS system.  Before the actual sentence, you shoud read you `intro` content.  Bellow the actual sentence, you`ll find you `bye` standard sentence.  Please use the administration page to fix your options according to your wishes.  Thanks for using BUGS.',
 	'error404_title_0' => 'We need a map.',
 	'error404_title_1' => 'I think we\'re lost.',
 	'error404_title_2' => 'We took a wrong turn.',
