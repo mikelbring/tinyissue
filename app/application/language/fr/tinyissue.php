@@ -70,6 +70,7 @@ return array(
 	'email_intro' => 'Introduction de tous vos courriels',
 	'email_bye' => 'Conclusion de tous vos courriels',
 	'email_test' => 'Voici le message de test généré à votre demande dans l`outil « administration » de BUGS.  Le paragraphe précédant celui-ci devrait être composé de ce que vous avez inscrit dans la case `intro`.  Le paragraphe suivant le présente phrase devrait quant à lui présenter le contenu du champ `bye`.  Merci d`utiliser BUGS.',
+	'email_test_tit' => 'Message test',
 	'error404_title_0' => 'Mais où sommes-nous ? .',
 	'error404_title_1' => 'Ceci est un chemin de brousse.',
 	'error404_title_2' => 'Un virage improbable a été suivi.',
