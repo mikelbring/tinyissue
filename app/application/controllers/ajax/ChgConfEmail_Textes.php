@@ -3,17 +3,19 @@
 	while (!file_exists($prefixe."config.app.php")) {
 		$prefixe .= "../";
 	}
+	$config = require $prefixe."config.app.php";
+	$dir = $prefixe.$config['attached']['directory']."/";
 
 	//Texte reçu et devant être enregistré
 	if ($_POST["Enreg"]) {
-		$f = fopen($prefixe."uploads/".$_POST["Quel"].".html", "w");
+		$f = fopen($dir.$_POST["Quel"].".html", "w");
 		fputs($f, $_POST["Prec"]);
 		fclose($f);
 	}
 
 	////Texte retourné en sortie
-	if (file_exists($prefixe."uploads/".$_POST["Suiv"].".html")) {
-		$Sortie = file_get_contents($prefixe."uploads/".$_POST["Suiv"].".html");
+	if (file_exists($dir.$_POST["Suiv"].".html")) {
+		$Sortie = file_get_contents($dir.$_POST["Suiv"].".html");
 	} else {
 		$emailLng = require ($prefixe."app/application/language/en/tinyissue.php");
 		if ( file_exists($prefixe."app/application/language/".$_POST["Lang"]."/tinyissue.php") && $_POST["Lang"] != 'en') {
