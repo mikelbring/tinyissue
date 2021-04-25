@@ -107,7 +107,7 @@
 	<br />
 	<div class="pad" style="border-top-style: solid; border-bottom-style: solid; border-color: grey; border-width: 2px;">
 		<?php $Conf = Config::get('application.mail'); ?>
-		<details id="details_email_head" open="open">
+		<details id="details_email_head">
 			<summary><?php echo __('tinyissue.email_head'); ?></summary>
 			<div class="pad2">
 				<?php echo __('tinyissue.email_from'); ?> : <?php echo __('tinyissue.email_from_name'); ?> : <input name="email_from_name" id="input_email_from_name" value="<?php echo $Conf["from"]["name"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
@@ -128,12 +128,12 @@
 				<div style="text-align: center;"><input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: AppliquerCourriel();" class="button2"/></div>
 			</div>
 		</details>
-		<details id="details_email_head2">
+		<details id="details_email_head2" open="open">
 			<summary><?php echo __('tinyissue.email_head2'); ?></summary>
 			<div class="pad2">
 			<select name="ChxTxt" id="select_ChxTxt" onchange="ChangeonsText(this.value);" class="sombre">
 			<?php
-				echo '<option value="attached">'.	__('tinyissue.following_email_attached_tit').'</option>';
+				echo '<option value="attached" selected>'.	__('tinyissue.following_email_attached_tit').'</option>';
 				echo '<option value="assigned">'.	__('tinyissue.following_email_assigned_tit').'</option>';
 				echo '<option value="comment">'. 	__('tinyissue.following_email_comment_tit').'</option>';
 				echo '<option value="issue">'.		__('tinyissue.following_email_issue_tit').'</option>';
@@ -150,15 +150,17 @@
 				{first}, {last}, {full}, {project}, {issue}
 			</div>
 			<br />
-			<textarea id="txt_contenu" name="contenu">
-				<?php 
+			<textarea id="txt_contenu" name="contenu" >
+			<?php
 				if (file_exists("../uploads/attached.html")) {
 					$f = file_get_contents("../uploads/attached.html");
 					echo $f;
-				} else { 
-					echo  __('tinyissue.tinyissue.following_email_attached'); 
-				} 
-			?></textarea>
+				} else {
+					echo  __('tinyissue.tinyissue.following_email_attached');
+				}
+			?>
+			</textarea>
+			<input name="Modifies" type="hidden" id="input_modifies" value="0" />
 		</details>
 	<br />
 	</div>
@@ -169,15 +171,18 @@
 	$wysiwyg = Config::get('application.editor');
 	if (trim(@$wysiwyg['directory']) != '') {
 		if (file_exists($wysiwyg['directory']."/Bugs_code/showeditor.js")) {
-			include_once $wysiwyg['directory']."/Bugs_code/showeditor.js"; 
+			include_once $wysiwyg['directory']."/Bugs_code/showeditor.js";
 			if ($wysiwyg['name'] == 'ckeditor') {
 				echo "
 				setTimeout(function() {
-					showckeditor ('contenu');
+					showckeditor ('contenu', 9);
 				} , 567);
 				";
 			}
-		} 
-	} 
+		}
+	}
+	echo "var Langue = '".\Auth::user()->language."';";
+	echo "var Question = __('tinyissue.following_email');";
 ?>
+
 </script>

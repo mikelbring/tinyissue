@@ -77,6 +77,7 @@ return array(
 	'error404_p1' => 'We couldn\'t find the page you requested on our servers. We\'re really sorry about that. It\'s our fault, not yours. We\'ll work hard to get this page back online as soon as possible.',
 	'error404_p2' => 'Perhaps you would like to go to our',
 	'following'  => 'Follow',
+	'following_email'  => 'Text has been changed.\n\nClick OK to store the changes, or CANCEL to loose them.  Both buttons will bring you to you next text.',
 	'following_email_attached' => 'File has been attached to the ticket ',
 	'following_email_attached_tit' => 'Attached',
 	'following_email_assigned' => 'The assignee has been changed for ',

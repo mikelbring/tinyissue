@@ -137,7 +137,6 @@ function IMGupload(input) {
 	var ext = fil['name'].substring(fil['name'].lastIndexOf('.') + 1).toLowerCase();
 	var img = "app/assets/images/icons/file_01.png?"; 
 	var formdata = new FormData();
-	var formdata = new FormData();
 	formdata.append("Loading", fil);
 	if (ext == "gif" || ext == "png" || ext == "jpeg" || ext == "jpg") { 
 		img = "uploads/New/<?php echo \Auth::user()->id.'/'.date("Ymd").'_'; ?>" + fil['name'];

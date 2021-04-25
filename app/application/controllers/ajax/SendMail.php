@@ -9,9 +9,13 @@
 	$dataSrc = mysqli_connect($config['database']['host'], $config['database']['username'], $config['database']['password'], $config['database']['database']);
 
 
-	$Type = $Type ?? 'Issue';
+	$Type = $Type ?? $_GET["Type"] ?? 'Issue';
 	$UserID = $User ?? $_GET["User"] ?? Auth::user()->id ?? 1;
-	$resu = mysqli_query ($dataSrc, "SELECT * FROM users WHERE id = ".$UserID);
+	if ($Type == 'User') {
+		$resu = mysqli_query ($dataSrc, "SELECT * FROM users WHERE email = '".$UserID."'");
+	} else {
+		$resu = mysqli_query ($dataSrc, "SELECT * FROM users WHERE id = ".$UserID);
+	}
 	$QuelUser = Fetche($resu);
 	$emailLng = require ($prefixe."app/application/language/en/tinyissue.php");
 	if ( file_exists($prefixe."app/application/language/".$QuelUser["language"]."/tinyissue.php") && $QuelUser["language"] != 'en') {
@@ -24,7 +28,10 @@
 	$message = @$contenu." « xyz ».";
 
 		//Select email addresses
-	if (@$_GET["fName"] == 'TestonsSVP') {
+	if ($Type == 'User') {
+		$query  = "SELECT DISTINCT 0 AS project, 1 AS attached, 1 AS tages, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, 'Welcome on BUGS' AS name, 'Welcome' AS title ";
+		$query .= "FROM users AS USR WHERE USR.id = ".$UserID; 
+	} else if ($Type == 'TestonsSVP') {
 		$query  = "SELECT DISTINCT 0 AS project, 1 AS attached, 1 AS tages, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, 'Testing mail for any project' AS name, 'Test' AS title ";
 		$query .= "FROM users AS USR WHERE USR.id = ".$UserID; 
 		$message = $Lng["email_test"]	;

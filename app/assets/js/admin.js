@@ -49,5 +49,29 @@
 	}
 
 	function ChangeonsText(Quel) {
-		alert("Nous afficherons le texte suivant: " + Quel);
+		var texte = CachonsEditor(9);
+		var Enreg = false;
+		if (texte != TexteInital) { Enreg = confirm(Question); }
+		var formdata = new FormData();
+		formdata.append("Quel", Affiche);
+		formdata.append("Enreg", Enreg);
+		formdata.append("Prec", texte);
+		formdata.append("Suiv", Quel);
+		formdata.append("Lang", Langue);
+		var xhttp = new XMLHttpRequest();
+		var NextPage = 'app/application/controllers/ajax/ChgConfEmail_Textes.php';
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				if (xhttp.responseText != '' ) {
+					Affiche = Quel;
+					ChangeonsEditor(9, xhttp.responseText);
+				}
+			}
+		};
+		xhttp.open("POST", NextPage, true);
+		xhttp.send(formdata); 
 	}
+
+	var Affiche = "attached";	
+	var TexteInital = ""
+	setTimeout(function() { TexteInital = CachonsEditor(9); } , 1500);

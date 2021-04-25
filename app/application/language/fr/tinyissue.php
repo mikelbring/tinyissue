@@ -78,6 +78,7 @@ return array(
 	'error404_p1' => 'La page que vous cherchez ne se trouve pas sur le serveur.  Nous sommes désolé.  C`est notre faute, pas la vôtre, mais c`est néanmoins bloqué.  Nous chercherons à régler le problème dès que possible.',
 	'error404_p2' => 'En attendant, nous ne pouvons que vous suggérer d`aller à notre ',
 	'following'  => 'Suivre',
+	'following_email'  => 'Le présent texte a été changé, le texte choisi sera affiché.\n\nCliquez OK pour enregistrer les modifications au présent texte ou ANNULER pour perdre ces modifications.',
 	'following_email_attached' => 'Un fichier a été joint au billet ',
 	'following_email_attached_tit' => 'Fichier joint',
 	'following_email_assigned' => 'On a changé la personne responsable du billet ',
