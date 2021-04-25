@@ -131,7 +131,7 @@
 		<details id="details_email_head2" open="open">
 			<summary><?php echo __('tinyissue.email_head2'); ?></summary>
 			<div class="pad2">
-			<select name="ChxTxt" id="select_ChxTxt" onchange="ChangeonsText(this.value);" class="sombre">
+			<select name="ChxTxt" id="select_ChxTxt" onchange="ChangeonsText(this.value, <?php echo "'".\Auth::user()->language."','".__('tinyissue.following_email')."'"; ?>);" class="sombre">
 			<?php
 				echo '<option value="attached" selected>'.	__('tinyissue.following_email_attached_tit').'</option>';
 				echo '<option value="assigned">'.	__('tinyissue.following_email_assigned_tit').'</option>';
@@ -181,8 +181,6 @@
 			}
 		}
 	}
-	echo "var Langue = '".\Auth::user()->language."';";
-	echo "var Question = __('tinyissue.following_email');";
 ?>
 
 </script>

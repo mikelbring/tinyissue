@@ -48,7 +48,7 @@
 		xhttp.send(); 
 	}
 
-	function ChangeonsText(Quel) {
+	function ChangeonsText(Quel, Langue, Question) {
 		var texte = CachonsEditor(9);
 		var Enreg = false;
 		if (texte != TexteInital) { Enreg = confirm(Question); }
@@ -64,7 +64,8 @@
 			if (this.readyState == 4 && this.status == 200) {
 				if (xhttp.responseText != '' ) {
 					Affiche = Quel;
-					ChangeonsEditor(9, xhttp.responseText);
+					TexteInital = xhttp.responseText;
+					ChangeonsEditor(9, TexteInital);
 				}
 			}
 		};
