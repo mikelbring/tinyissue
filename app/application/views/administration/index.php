@@ -107,7 +107,7 @@
 	<br />
 	<div class="pad" style="border-top-style: solid; border-bottom-style: solid; border-color: grey; border-width: 2px;">
 		<?php $Conf = Config::get('application.mail'); ?>
-		<details id="details_email_head">
+		<details id="details_email_head" open="open">
 			<summary><?php echo __('tinyissue.email_head'); ?></summary>
 			<div class="pad2">
 				<?php echo __('tinyissue.email_from'); ?> : <?php echo __('tinyissue.email_from_name'); ?> : <input name="email_from_name" id="input_email_from_name" value="<?php echo $Conf["from"]["name"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
@@ -128,12 +128,12 @@
 				<div style="text-align: center;"><input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: AppliquerCourriel();" class="button2"/></div>
 			</div>
 		</details>
-		<details id="details_email_head2" open="open">
+		<details id="details_email_head2">
 			<summary><?php echo __('tinyissue.email_head2'); ?></summary>
 			<div class="pad2">
 			<select name="ChxTxt" id="select_ChxTxt" onchange="ChangeonsText(this.value, <?php echo "'".\Auth::user()->language."','".__('tinyissue.following_email')."'"; ?>);" class="sombre">
 			<?php
-				echo '<option value="attached" selected>'.	__('tinyissue.following_email_attached_tit').'</option>';
+				echo '<option value="attached" selected>'.__('tinyissue.following_email_attached_tit').'</option>';
 				echo '<option value="assigned">'.	__('tinyissue.following_email_assigned_tit').'</option>';
 				echo '<option value="comment">'. 	__('tinyissue.following_email_comment_tit').'</option>';
 				echo '<option value="issue">'.		__('tinyissue.following_email_issue_tit').'</option>';
@@ -142,7 +142,8 @@
 				echo '<option value="project">'.		__('tinyissue.following_email_project_tit').'</option>';
 				echo '<option value="projectdel">'.	__('tinyissue.following_email_projectdel_tit').'</option>';
 				echo '<option value="projectmod">'.	__('tinyissue.following_email_projectmod_tit').'</option>';
-				echo '<option value="tags">'.			__('tinyissue.following_email_tags_tit').'</option>';
+				echo '<option value="tagsADD">'.		__('tinyissue.following_email_tagsADD_tit').'</option>';
+				echo '<option value="tagsOTE">'.		__('tinyissue.following_email_tagsOTE_tit').'</option>';
 			?>
 			</select>
 			</div>

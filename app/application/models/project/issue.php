@@ -435,10 +435,6 @@ class Issue extends \Eloquent {
 			}
 
 			\User\Activity::add(6, $this->project_id, $this->id, null, json_encode(array('added_tags' => $added_tags, 'removed_tags' => $removed_tags, 'tag_data' => $tag_data)));
-//			$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects PRO ON PRO.id = FAL.project_id WHERE FAL.project_id = ".\Project::current()->id." AND FAL.project = 1 AND FAL.user_id NOT IN (".$deja.") ");
-//			foreach ($followers as $ind => $follower) {
-//				\Mail::send_email(__('tinyissue.following_email_tags')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_tags_tit')); 
-//			} 
 		}
 	}
 
