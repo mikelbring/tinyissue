@@ -27,7 +27,14 @@ function NumID () {
 }
 
 function Requis($requete) {
-	global $dataSrc;
+	if (!isset($dataSrc)) {
+		$prefixe = "";
+		while (!file_exists($prefixe."config.app.php")) {
+			$prefixe .= "../";
+		}
+		$config = require $prefixe."config.app.php";
+		$dataSrc = mysqli_connect($config['database']['host'], $config['database']['username'], $config['database']['password'], $config['database']['database']);
+	}
 	$result = mysqli_query ($dataSrc, $requete);
 	return $result;
 }

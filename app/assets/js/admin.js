@@ -27,7 +27,7 @@
 		xhttp.send(); 
 	}
 
-	function AppliquerTest() {
+	function AppliquerTest(Qui) {
 		var compte = 0;
 		for (x=0; x<champs.length; x++) {
 			if (document.getElementById(champs[x]).style.backgroundColor == 'red' ) { return false; }
@@ -36,7 +36,7 @@
 		if (compte > 0) { alert("Vous devez mettre à jour avant de tester"); return false; }
 
 		var xhttp = new XMLHttpRequest();
-		var NextPage = 'app/application/controllers/ajax/SendMail.php?fName=TestonsSVP&User=<?php echo Auth::user()->id; ?>';
+		var NextPage = 'app/application/controllers/ajax/SendMail.php?Type=TestonsSVP&User=' + Qui;
 		xhttp.onreadystatechange = function() {
 		if (this.readyState == 4 && this.status == 200) {
 			if (xhttp.responseText != '' ) {

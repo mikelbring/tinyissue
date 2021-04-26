@@ -29,6 +29,7 @@
 	}
 	fclose($RefFichier);
 
+if ($NumLigne["mail"] > 0 ) {
 	$MesLignes[$NumLigne["mail"] - 5] = "	'mail' => array(
 ";
 	$MesLignes[$NumLigne["mail"] - 4] = "		'from' => array(
@@ -47,12 +48,13 @@
 ";
 	$MesLignes[$NumLigne["mail"] + 3] = "		),
 ";
-
+}
+if ($NumLigne["forma"] > 0) {
 	$MesLignes[$NumLigne["forma"] + 0] = "		'intro' => '".$_GET["intro"]."',
 ";
 	$MesLignes[$NumLigne["forma"] + 1] = "		'bye' => '".$_GET["bye"]."',
 ";
-
+}
 	
 	//Enregistrement du nouveau fichier corrigé  
 	$NeoFichier = fopen($NomFichier, "w");
@@ -60,5 +62,5 @@
 		fwrite($NeoFichier, $val);
 	}
 	fclose($NeoFichier);
-	echo 'Nous avons terminé';
+	echo 'Nous avons terminé\n '.$NumLigne["mail"].'\n'.$NumLigne["forma"].'';
 ?>
