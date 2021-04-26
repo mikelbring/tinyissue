@@ -109,12 +109,13 @@
 		<?php $Conf = Config::get('application.mail'); ?>
 		<details id="details_email_head" open="open">
 			<summary><?php echo __('tinyissue.email_head'); ?></summary>
+			<br />
 			<div class="pad2">
 				<?php echo __('tinyissue.email_from'); ?> : <?php echo __('tinyissue.email_from_name'); ?> : <input name="email_from_name" id="input_email_from_name" value="<?php echo $Conf["from"]["name"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
 				<?php echo __('tinyissue.email_from'); ?> : <?php echo __('tinyissue.email_from_email'); ?> : <input name="email_from_email" id="input_email_from_email" value="<?php echo $Conf["from"]["email"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
 				<?php echo __('tinyissue.email_intro'); ?> : <input name="email_from" id="input_email_intro" value="<?php echo $Conf["intro"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
 				<?php echo __('tinyissue.email_bye'); ?> : <input name="email_from" id="input_email_bye" value="<?php echo $Conf["bye"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
-				<div style="text-align: center;"><input type="button" value="Test" onclick="javascript: AppliquerTest();" class="button1"/></div>
+				<div style="text-align: center;"><input type="button" value="Test" onclick="javascript: AppliquerTest(<?php echo Auth::user()->id; ?>);" class="button1"/></div>
 				<br />
 			</div>
 			<div class="pad2">
@@ -130,6 +131,7 @@
 		</details>
 		<details id="details_email_head2">
 			<summary><?php echo __('tinyissue.email_head2'); ?></summary>
+			<br />
 			<div class="pad2">
 			<select name="ChxTxt" id="select_ChxTxt" onchange="ChangeonsText(this.value, <?php echo "'".\Auth::user()->language."','".__('tinyissue.following_email')."'"; ?>);" class="sombre">
 			<?php
