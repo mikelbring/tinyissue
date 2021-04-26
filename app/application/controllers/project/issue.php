@@ -322,7 +322,7 @@ class Project_Issue_Controller extends Base_Controller {
 				$Msg = __('tinyissue.tag_added');
 				$Show = true;
 				//Email to followers --- tags have changed
-				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, array('tags'), array('tinyissue'));
+				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, array('tagsADD'), array('tinyissue'));
 			}
 
 			/**
@@ -336,7 +336,7 @@ class Project_Issue_Controller extends Base_Controller {
 				$Modif = true;
 				$Msg = '<span style="color:#F00;">'.__('tinyissue.tag_removed').'</span>';
 				$Show = true;
-				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, array('tags'), array('tinyissue'));
+				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, array('tagsOTE'), array('tinyissue'));
 			}
 
 
