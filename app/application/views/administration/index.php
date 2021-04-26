@@ -133,7 +133,7 @@
 			<div class="pad2">
 			<select name="ChxTxt" id="select_ChxTxt" onchange="ChangeonsText(this.value, <?php echo "'".\Auth::user()->language."','".__('tinyissue.following_email')."'"; ?>);" class="sombre">
 			<?php
-				echo '<option value="attached" selected>'.	__('tinyissue.following_email_attached_tit').'</option>';
+				echo '<option value="attached" selected>'.__('tinyissue.following_email_attached_tit').'</option>';
 				echo '<option value="assigned">'.	__('tinyissue.following_email_assigned_tit').'</option>';
 				echo '<option value="comment">'. 	__('tinyissue.following_email_comment_tit').'</option>';
 				echo '<option value="issue">'.		__('tinyissue.following_email_issue_tit').'</option>';
@@ -142,9 +142,18 @@
 				echo '<option value="project">'.		__('tinyissue.following_email_project_tit').'</option>';
 				echo '<option value="projectdel">'.	__('tinyissue.following_email_projectdel_tit').'</option>';
 				echo '<option value="projectmod">'.	__('tinyissue.following_email_projectmod_tit').'</option>';
-				echo '<option value="tags">'.			__('tinyissue.following_email_tags_tit').'</option>';
+				echo '<option value="tagsADD">'.		__('tinyissue.following_email_tagsADD_tit').'</option>';
+				echo '<option value="tagsOTE">'.		__('tinyissue.following_email_tagsOTE_tit').'</option>';
 			?>
 			</select>
+			&nbsp;&nbsp;&nbsp;<?php echo __('tinyissue.title'); ?> : <input name="TitreMsg" id="input_TitreMsg" value="<?php
+				if (file_exists("../uploads/attached_tit.html")) {
+					$f = file_get_contents("../uploads/attached_tit.html");
+					echo $f;
+				} else {
+					echo  __('tinyissue.tinyissue.following_email_attached_tit');
+				}
+			?>" size="50" />
 			</div>
 			<div class="pad2"style="font-size: 125%; padding-top: 15px;">
 				{first}, {last}, {full}, {project}, {issue}
@@ -182,5 +191,4 @@
 		}
 	}
 ?>
-
 </script>

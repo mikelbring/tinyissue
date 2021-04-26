@@ -126,6 +126,7 @@ code{
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
+  margin-right: 5px;
 }
 .label.important {
   background-color: #c43c35;
