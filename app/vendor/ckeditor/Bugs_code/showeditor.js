@@ -32,3 +32,11 @@ function AffichonsEditor(id) {
 function CachonsEditor(id) {
 	return AllEditors[id].getData();
 }
+
+function ChangeonsEditor(id, contenu) {
+	return AllEditors[id].setData(contenu);
+}
+
+function SupprimonsEditor(id) {
+	AllEditors[id].destroy();
+}

@@ -1,5 +1,5 @@
 <?php
-
+//This program uses UTF-8 (without BOM) and database utf8_general_ci. Your files must respect this standard.
 return array(
 	/**  URL
 	 * You can define your URL or leave blank to let us figure it out
@@ -141,7 +141,6 @@ return array(
 		*/
 		'plainHTML' => 'multipart/mixed',
 		'linelenght' => 80,
-		
 		/*
 		* Every emails you'll send from here will start by  intro and end by bye
 		* Use those to include the recepient values:
