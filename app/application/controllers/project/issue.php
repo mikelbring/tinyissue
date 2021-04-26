@@ -43,7 +43,7 @@ class Project_Issue_Controller extends Base_Controller {
 		$followers =\DB::query("INSERT INTO following VALUES (NULL, ".Auth::user()->id.", ".Project::current()->id.", ".$issue['issue']->id.", 0, 1, 1)");
 
 		//Email to followers
-		$this->Courriel ('Project', true, Project::current()->id, 0, Auth::user()->id, __('tinyissue.following_email_project'), __('tinyissue.following_email_project_tit'));
+		$this->Courriel ('Project', true, Project::current()->id, 0, \Auth::user()->id, array('project'), array('tinyissue'));
 
 		return Redirect::to($issue['issue']->to())
 			->with('notice', __('tinyissue.issue_has_been_created'));
@@ -61,8 +61,6 @@ class Project_Issue_Controller extends Base_Controller {
 			Project\Issue\Comment::delete_comment(str_replace('comment', '', Input::get('delete')));
 			return true;
 		}
-		//Email to followers
-		//$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, __('tinyissue.following_email_issue'), __('tinyissue.following_email_issue_tit'));
 
 		return $this->layout->nest('content', 'project.issue.index', array(
 			'issue' => Project\Issue::current(),
@@ -83,7 +81,7 @@ class Project_Issue_Controller extends Base_Controller {
 		$comment = \Project\Issue\Comment::create_comment(Input::all(), Project::current(), Project\Issue::current());
 
 		//Email to followers
-		$this->Courriel ("Issue", true, Project::current()->id, Project\Issue::current()->id, \Auth::user()->id, __('tinyissue.following_email_comment'), __('tinyissue.following_email_comment_tit'));
+		$this->Courriel ("Issue", true, Project::current()->id, Project\Issue::current()->id, \Auth::user()->id, array('comment'), array('tinyissue'));
 
 		return Redirect::to(Project\Issue::current()->to() . '#comment' . $comment->id)
 			->with('notice', __('tinyissue.your_comment_added').(((Input::get('status') == 0 || Input::get('Fermons') == 0) && \Auth::user()->role_id != 1) ? ' --- '.__('tinyissue.issue_has_been_closed') : ''));
@@ -113,7 +111,7 @@ class Project_Issue_Controller extends Base_Controller {
 			if (\User\Activity::add(8, intval(Input::get('projetOld')), Input::get('ticketNum'), $NumNew, "From ".Input::get('projetOld')." to ".$NumNew )) { $msg = $msg + 1; } else { $msg = $TheFile["error"]; }
 
 			//Email to followers
-			$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, __('tinyissue.following_email_issueproject'), __('tinyissue.following_email_issueproject_tit'));
+			$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, array('issueproject'), array('tinyissue'));
 
 			return Redirect::to("project/".$NumNew."/issues?tag_id=1");
 
@@ -134,7 +132,7 @@ class Project_Issue_Controller extends Base_Controller {
 			));
 
 			//Email to followers
-			$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, __('tinyissue.following_email_assigned'), __('tinyissue.following_email_assigned_tit'));
+			$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, array('assigned'), array('tinyissue'));
 		}
 	}
 
@@ -196,9 +194,6 @@ class Project_Issue_Controller extends Base_Controller {
 		}
 
 		Project\Issue::current()->change_status($status);
-
-		//Email to followers
-		//$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, $message, $messagetit);
 
 		return Redirect::to(Project\Issue::current()->to())
 			->with('notice', $message);
@@ -273,7 +268,8 @@ class Project_Issue_Controller extends Base_Controller {
 				$text .= "<br />";
 				$text .= __('tinyissue.assigned_to').' '.$WhoName.'.';
 				$text .= "<br /><br />";
-				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, $text, __('tinyissue.following_email_assigned_tit'));
+				//$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, $text, __('tinyissue.following_email_assigned_tit'));
+				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, array('assigned', 'reassigned_by', 'reassigned_to', $WhoName), array('tinyissue', 'email', 'tinyissue', 'variable'));
 			}
 
 			//Show on screen what did just happened
@@ -326,7 +322,7 @@ class Project_Issue_Controller extends Base_Controller {
 				$Msg = __('tinyissue.tag_added');
 				$Show = true;
 				//Email to followers --- tags have changed
-				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, __('tinyissue.following_email_tags'), __('tinyissue.following_email_tags_tit'));
+				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, array('tags'), array('tinyissue'));
 			}
 
 			/**
@@ -340,8 +336,7 @@ class Project_Issue_Controller extends Base_Controller {
 				$Modif = true;
 				$Msg = '<span style="color:#F00;">'.__('tinyissue.tag_removed').'</span>';
 				$Show = true;
-				//Email to followers --- tags have changed
-				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, __('tinyissue.following_email_tags'), __('tinyissue.following_email_tags_tit'));
+				$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, array('tags'), array('tinyissue'));
 			}
 
 
@@ -364,6 +359,7 @@ class Project_Issue_Controller extends Base_Controller {
 				$t = time();
 				$result = $content;
 			}
+
 		return $content;
 	}
 
@@ -447,7 +443,7 @@ class Project_Issue_Controller extends Base_Controller {
 		}
 
 		//Fifth step: Notice the followers
-		$this->Courriel ('Issue', true, Project::current()->id, $Issue, Auth::user()->id, __('tinyissue.following_email_attached'), __('tinyissue.following_email_attached_tit'));
+		$this->Courriel ('Issue', true, Project::current()->id, $Issue, Auth::user()->id, array('attached'), 'tinyissue');
 
 		//Sixth: Show on user's desk
 		if (is_numeric($msg)) {
@@ -465,7 +461,7 @@ class Project_Issue_Controller extends Base_Controller {
 		return $msg;
 	}
 
-	private function Courriel ($Type, $SkipUser, $ProjectID, $IssueID, $User, $contenu, $subject) {
+	private function Courriel ($Type, $SkipUser, $ProjectID, $IssueID, $User, $contenu, $src) {
 		include_once "../app/application/controllers/ajax/SendMail.php";
 	}
 }

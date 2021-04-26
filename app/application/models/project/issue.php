@@ -250,7 +250,7 @@ class Issue extends \Eloquent {
 */
 		//Notify all followers about the new status
 		$text .= __('tinyissue.following_email_assigned');
-		$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, $text, __('tinyissue.following_email_assigned_tit'));
+		$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, array('assigned'), array('tinyissue'));
 
 		add($type_id, $parent_id, $item_id = null, $action_id = null, $data = null);
 		\User\Activity::add(5, $this->project_id, $this->id, $user_id, null);
@@ -263,7 +263,7 @@ class Issue extends \Eloquent {
 	* @return void
 	*/
 	public function change_status($status) {
-		$text = __('tinyissue.following_email_status');
+//		$text = __('tinyissue.following_email_status');
 		/* Retrieve all tags */
 		$tags = $this->tags;
 		$tag_ids = array();
@@ -287,7 +287,8 @@ class Issue extends \Eloquent {
 
 			/* Add to activity log */
 			\User\Activity::add(3, $this->project_id, $this->id);
-			$text = __('tinyissue.following_email_status_bis').__('email.closed').'.<br /><br />'.$text;
+			//$text = __('tinyissue.following_email_status_bis').__('email.closed').'.<br /><br />'.$text;
+			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, array('status','status_bis','closed'), array('tinyissue','tinyssiue','email'));
 		} else {
 			$this->closed_by = NULL;
 			$this->closed_at = NULL;
@@ -300,15 +301,13 @@ class Issue extends \Eloquent {
 
 			/* Add to activity Log */
 			\User\Activity::add(4, $this->project_id, $this->id);
-			$text = __('tinyissue.following_email_status_bis').__('email.reopened').'.<br /><br />'.$text;
+			//$text = __('tinyissue.following_email_status_bis').__('email.reopened').'.<br /><br />'.$text;
+			//Notify all followers about the new status
+			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, array('status','status_bis','reopened'), array('tinyissue','tinyssiue','email'));
 		}
 		$this->tags()->sync($tag_ids);
 		$this->status = $status;
 		$this->save();
-
-		//Notify all followers about the new status
-		$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, $text, __('tinyissue.following_email_status_tit'));
-					
 	}
 
 	/**
@@ -628,8 +627,7 @@ class Issue extends \Eloquent {
 		);
 	}
 
-	private function Courriel ($Type, $SkipUser, $ProjectID, $IssueID, $User, $contenu, $subject) {
+	private function Courriel ($Type, $SkipUser, $ProjectID, $IssueID, $User, $contenu, $src) {
 		include_once "application/controllers/ajax/SendMail.php";
 	}
-
 }

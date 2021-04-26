@@ -169,9 +169,6 @@ class Comment extends  \Eloquent {
 			$row->delete();
 		}
 
-		//$comment->delete();
-//		\DB::table('projects_issues_comments')->delete($IssueTagNum->id);
-
 		return true;
 	}
 
@@ -189,7 +186,7 @@ class Comment extends  \Eloquent {
 		return preg_replace('/((?:' . __('tinyissue.issue') . ')?)(\s*)#(\d+)/i', '<a href="' . \URL::to('/project/0/issue/$3') . '" title="$1 #$3" class="issue-link">$1 #$3</a>', $body);
 	}
 
-	private function Courriel ($Type, $SkipUser, $ProjectID, $IssueID, $User, $contenu, $subject) {
+	private function Courriel ($Type, $SkipUser, $ProjectID, $IssueID, $User, $contenu, $src) {
 		include_once "application/controllers/ajax/SendMail.php";
 	}
 
