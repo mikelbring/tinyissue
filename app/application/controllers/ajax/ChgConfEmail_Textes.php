@@ -11,6 +11,9 @@
 		$f = fopen($dir.$_POST["Quel"].".html", "w");
 		fputs($f, $_POST["Prec"]);
 		fclose($f);
+		$f = fopen($dir.$_POST["Quel"]."_tit.html", "w");
+		fputs($f, $_POST["Titre"]);
+		fclose($f);
 	}
 
 	////Texte retourné en sortie

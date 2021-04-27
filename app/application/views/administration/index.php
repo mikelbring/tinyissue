@@ -172,6 +172,8 @@
 			?>
 			</textarea>
 			<input name="Modifies" type="hidden" id="input_modifies" value="0" />
+			<br />
+			<div style="text-align: center;"><input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: ChangeonsText(document.getElementById('select_ChxTxt').value, '<?php echo \Auth::user()->language; ?>', 'OUI');" class="button2"/></div>
 		</details>
 	<br />
 	</div>

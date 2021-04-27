@@ -49,13 +49,14 @@
 
 	function ChangeonsText(Quel, Langue, Question) {
 		var texte = CachonsEditor(9);
-		var Enreg = false;
-		if (texte != TexteInital) { Enreg = confirm(Question); }
+		var Enreg = (Question == 'OUI') ? true : false;
+		if (texte != TexteInital && Enreg == false) { Enreg = confirm(Question); }
 		var formdata = new FormData();
 		formdata.append("Quel", Affiche);
 		formdata.append("Enreg", Enreg);
 		formdata.append("Prec", texte);
 		formdata.append("Suiv", Quel);
+		formdata.append("Titre", document.getElementById('input_TitreMsg').value);
 		formdata.append("Lang", Langue);
 		var xhttp = new XMLHttpRequest();
 		var NextPage = 'app/application/controllers/ajax/ChgConfEmail_Textes.php';
@@ -63,8 +64,10 @@
 			if (this.readyState == 4 && this.status == 200) {
 				if (xhttp.responseText != '' ) {
 					Affiche = Quel;
+					if (Question == 'OUI') { alert("Mise à jour complétée"); }
 					TexteInital = xhttp.responseText;
 					ChangeonsEditor(9, TexteInital);
+					document.getElementById('input_TitreMsg').value = '';
 				}
 			}
 		};
