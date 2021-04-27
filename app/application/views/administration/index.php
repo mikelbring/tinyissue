@@ -148,6 +148,14 @@
 				echo '<option value="tagsOTE">'.		__('tinyissue.following_email_tagsOTE_tit').'</option>';
 			?>
 			</select>
+			&nbsp;&nbsp;&nbsp;<?php echo __('tinyissue.title'); ?> : <input name="TitreMsg" id="input_TitreMsg" value="<?php
+				if (file_exists("../uploads/attached_tit.html")) {
+					$f = file_get_contents("../uploads/attached_tit.html");
+					echo $f;
+				} else {
+					echo  __('tinyissue.tinyissue.following_email_attached_tit');
+				}
+			?>" size="50" />
 			</div>
 			<div class="pad2"style="font-size: 125%; padding-top: 15px;">
 				{first}, {last}, {full}, {project}, {issue}
@@ -164,6 +172,8 @@
 			?>
 			</textarea>
 			<input name="Modifies" type="hidden" id="input_modifies" value="0" />
+			<br />
+			<div style="text-align: center;"><input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: ChangeonsText(document.getElementById('select_ChxTxt').value, '<?php echo \Auth::user()->language; ?>', 'OUI');" class="button2"/></div>
 		</details>
 	<br />
 	</div>
