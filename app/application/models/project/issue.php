@@ -288,7 +288,7 @@ class Issue extends \Eloquent {
 			/* Add to activity log */
 			\User\Activity::add(3, $this->project_id, $this->id);
 			//$text = __('tinyissue.following_email_status_bis').__('email.closed').'.<br /><br />'.$text;
-			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, array('status','status_bis','closed'), array('tinyissue','tinyssiue','email'));
+			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, array('status','status_bis','closed'), array('tinyissue','tinyissue','tinyissue'));
 		} else {
 			$this->closed_by = NULL;
 			$this->closed_at = NULL;
@@ -301,9 +301,8 @@ class Issue extends \Eloquent {
 
 			/* Add to activity Log */
 			\User\Activity::add(4, $this->project_id, $this->id);
-			//$text = __('tinyissue.following_email_status_bis').__('email.reopened').'.<br /><br />'.$text;
 			//Notify all followers about the new status
-			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, array('status','status_bis','reopened'), array('tinyissue','tinyssiue','email'));
+			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, array('status','status_bis','reopened'), array('tinyissue','tinyissue','tinyissue'));
 		}
 		$this->tags()->sync($tag_ids);
 		$this->status = $status;
@@ -343,7 +342,7 @@ class Issue extends \Eloquent {
 		/* Add to activity log for assignment if changed */
 		if($input['assigned_to'] != $this->assigned_to) {
 			\DB::query("INSERT INTO users_activity VALUES (NULL, ".\Auth::user()->id.", NULL, ".$this->id.", ".$input['assigned_to'].", 5, NULL, NOW(), NOW()) ");
-			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, __('tinyissue.following_email_assigned'), __('tinyissue.following_email_assigned_tit'));
+			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, array('assigned'), array('tinyissue'));
 		}
 
 		$this->fill($fill);
