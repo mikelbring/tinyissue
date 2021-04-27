@@ -13,13 +13,12 @@
 		var xhttp = new XMLHttpRequest();
 		var NextPage = 'app/application/controllers/ajax/ChgConfEmail.php?fName=' + document.getElementById('input_email_from_name').value + '&fMail=' + document.getElementById('input_email_from_email').value + '&rName=' + document.getElementById('input_email_replyto_name').value + '&rMail=' + document.getElementById('input_email_replyto_email').value + '&intro=' + document.getElementById('input_email_intro').value + '&bye='+document.getElementById('input_email_bye').value;
 		xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			if (xhttp.responseText != '' ) {
-				//alert(xhttp.responseText);
-				for (x=0; x<champs.length; x++) {
-					document.getElementById(champs[x]).style.backgroundColor = 'green';
-				}
-				var blanc = setTimeout(function() { for (x=0; x<champs.length; x++) { document.getElementById(champs[x]).style.backgroundColor = 'white'; } }, 5000);
+			if (this.readyState == 4 && this.status == 200) {
+				if (xhttp.responseText != '' ) {
+					for (x=0; x<champs.length; x++) {
+						document.getElementById(champs[x]).style.backgroundColor = 'green';
+					}
+					var blanc = setTimeout(function() { for (x=0; x<champs.length; x++) { document.getElementById(champs[x]).style.backgroundColor = 'white'; } }, 5000);
 				}
 			}
 		};
