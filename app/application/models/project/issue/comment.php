@@ -113,24 +113,23 @@ class Comment extends  \Eloquent {
 		}
 
 		/*Notifications by email to those who concern */
-		$project = \Project::current();
-		$subject = sprintf(__('email.new_comment'), $issue->title, $project->name);
-		$text = \View::make('email.commented_issue', array(
-				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
-				'project' => $project,
-				'issue' => $issue,
-				'comment' => $comment->comment
-			));
-
-		/* Notify the person to whom the issue is currently assigned, unless that person is the one making the comment */
-		$Type = 'Issue';
+		$Type = 'Issue'; 
 		$SkipUser = true;
 		$ProjectID = $project->id;
 		$IssueID = $issue->id;
-		$User = \Auth::user()->id;
-		$contenu = __('tinyissue.following_email_comment');
-		$subject = __('tinyissue.following_email_comment_tit');
-		include "application/controllers/ajax/SendMail.php";
+		$User =  \Auth::user()->id;
+		$contenu = array('comment');
+		$src = array('tinyissue');
+		include_once "application/controllers/ajax/SendMail.php";
+
+//		$project = \Project::current();
+//		$subject = sprintf(__('email.new_comment'), $issue->title, $project->name);
+//		$text = \View::make('email.commented_issue', array(
+//				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
+//				'project' => $project,
+//				'issue' => $issue,
+//				'comment' => $comment->comment
+//			));
 
 		return $comment;
 	}
@@ -185,10 +184,5 @@ class Comment extends  \Eloquent {
 		// convert issue numbers into issue url
 		return preg_replace('/((?:' . __('tinyissue.issue') . ')?)(\s*)#(\d+)/i', '<a href="' . \URL::to('/project/0/issue/$3') . '" title="$1 #$3" class="issue-link">$1 #$3</a>', $body);
 	}
-
-	private function Courriel ($Type, $SkipUser, $ProjectID, $IssueID, $User, $contenu, $src) {
-		include_once "application/controllers/ajax/SendMail.php";
-	}
-
 
 }
