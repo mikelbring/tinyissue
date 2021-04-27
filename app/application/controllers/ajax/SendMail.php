@@ -32,10 +32,10 @@
 	//Titre et corps du message selon les configurations choisies par l'administrateur
 	$message = "";
 	if (is_array(@$contenu)) {
-		$subject = (file_exists($prefixe.$config['attached']['directory'].$src[0].'_'.$contenu[0].'_tit.html')) ? file_get_contents($prefixe.$config['attached']['directory'].$src[0].'_'.$contenu[0].'_tit.html') : $Lng[$src[0]]['following_email_'.$contenu[0].'_tit'];
+		$subject = (file_exists($prefixe.$config['attached']['directory'].$contenu[0].'_tit.html')) ? file_get_contents($prefixe.$config['attached']['directory'].$src[0].'_'.$contenu[0].'_tit.html') : $Lng[$src[0]]['following_email_'.$contenu[0].'_tit'];
 		foreach ($contenu as $ind => $val) {
-			if (file_exists($prefixe.$config['attached']['directory'].$src[$ind].'_'.$val.'.html')) {
-				$message .= file_get_contents($prefixe.$config['attached']['directory'].$src[$ind].'_'.$val.'.html');
+			if (file_exists($prefixe.$config['attached']['directory'].$val.'.html')) {
+				$message .= file_get_contents($prefixe.$config['attached']['directory'].$val.'.html');
 			} else {
 				$message .= $Lng[$src[$ind]]['following_email_'.$val];
 			}
