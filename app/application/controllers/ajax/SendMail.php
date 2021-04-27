@@ -82,7 +82,7 @@
 			if ($optMail['transport'] == 'mail') {
 				$boundary = md5(uniqid(microtime(), TRUE));
 				$headers = 'From: "'.$optMail['from']['name'].'" <'.$optMail['from']['email'].'>'.$passage_ligne;
-				$headers = 'Reply-To: "'.$optMail['replyTo']['name'].'" <'.$optMail['replyTo']['email'].'>'.$passage_ligne;
+				$headers .= 'Reply-To: "'.$optMail['replyTo']['name'].'" <'.$optMail['replyTo']['email'].'>'.$passage_ligne;
 				$headers .= 'Mime-Version: 1.0'.$passage_ligne;
 				$headers .= 'Content-Type: multipart/mixed; charset="'.$optMail['encoding'].'"; boundary="'.$boundary.'"';
 				$headers .= $passage_ligne;
