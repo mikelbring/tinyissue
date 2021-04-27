@@ -65,9 +65,11 @@
 				if (xhttp.responseText != '' ) {
 					Affiche = Quel;
 					if (Question == 'OUI') { alert("Mise à jour complétée"); }
-					TexteInital = xhttp.responseText;
+					var r = xhttp.responseText;
+					var recu = r.split('||');
+					TexteInital = recu[0];
 					ChangeonsEditor(9, TexteInital);
-					document.getElementById('input_TitreMsg').value = '';
+					document.getElementById('input_TitreMsg').value = recu[1];
 				}
 			}
 		};

@@ -19,6 +19,9 @@
 	////Texte retourné en sortie
 	if (file_exists($dir.$_POST["Suiv"].".html")) {
 		$Sortie = file_get_contents($dir.$_POST["Suiv"].".html");
+		if (file_exists($dir.$_POST["Suiv"]."_tit.html")) {
+			$Sortie .= '||'.file_get_contents($dir.$_POST["Suiv"]."_tit.html");
+		}
 	} else {
 		$emailLng = require ($prefixe."app/application/language/en/tinyissue.php");
 		if ( file_exists($prefixe."app/application/language/".$_POST["Lang"]."/tinyissue.php") && $_POST["Lang"] != 'en') {
@@ -27,7 +30,7 @@
 		} else {
 			$Lng = $emailLng;
 		}
-		$Sortie = $Lng["following_email_".$_POST["Suiv"]];
+		$Sortie = $Lng["following_email_".$_POST["Suiv"]].'||'.$Lng["following_email_".$_POST["Suiv"]].'_tit';
 	}
 	
 echo $Sortie;
