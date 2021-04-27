@@ -149,7 +149,7 @@ return array(
 		*   - {full} for his full name  ( first name and last name )
 		*/
 		'intro' => 'Hello {first},',
-		'bye' => 'Bye.'
+		'bye' => 'Bye.',
 	),
 
 	/**  Session key

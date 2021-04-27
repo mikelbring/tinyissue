@@ -1,20 +1,15 @@
 <?php
 	include_once "db.php";
 
-	$prefixe = "";
-	while (!file_exists($prefixe."config.app.php")) {
-		$prefixe .= "../";
-	}
-	$config = require $prefixe."config.app.php";
-	$dataSrc = mysqli_connect($config['database']['host'], $config['database']['username'], $config['database']['password'], $config['database']['database']);
-
 	//Préférences de l'usager
+	$SkipUser = $SkipUser ?? false;
 	$Type = $Type ?? $_GET["Type"] ?? 'Issue';
 	$UserID = $User ?? $_GET["User"] ?? Auth::user()->id ?? 1;
+
 	if ($Type == 'User') {
-		$resu = mysqli_query ($dataSrc, "SELECT * FROM users WHERE email = '".$UserID."'");
+		$resu = Requis("SELECT * FROM users WHERE email = '".$UserID."'");
 	} else {
-		$resu = mysqli_query ($dataSrc, "SELECT * FROM users WHERE id = ".$UserID);
+		$resu = Requis("SELECT * FROM users WHERE id = ".$UserID);
 	}
 	$QuelUser = Fetche($resu);
 	
@@ -37,10 +32,10 @@
 	//Titre et corps du message selon les configurations choisies par l'administrateur
 	$message = "";
 	if (is_array(@$contenu)) {
-		$subject = (file_exists($prefixe.$config['attached']['directory'].$src[0].'_'.$contenu[0].'_tit.html')) ? file_get_contents($prefixe.$config['attached']['directory'].$src[0].'_'.$contenu[0].'_tit.html') : $Lng[$src[0]]['following_email_'.$contenu[0].'_tit'];
+		$subject = (file_exists($prefixe.$config['attached']['directory'].$contenu[0].'_tit.html')) ? file_get_contents($prefixe.$config['attached']['directory'].$src[0].'_'.$contenu[0].'_tit.html') : $Lng[$src[0]]['following_email_'.$contenu[0].'_tit'];
 		foreach ($contenu as $ind => $val) {
-			if (file_exists($prefixe.$config['attached']['directory'].$src[$ind].'_'.$val.'.html')) {
-				$message .= file_get_contents($prefixe.$config['attached']['directory'].$src[$ind].'_'.$val.'.html');
+			if (file_exists($prefixe.$config['attached']['directory'].$val.'.html')) {
+				$message .= file_get_contents($prefixe.$config['attached']['directory'].$val.'.html');
 			} else {
 				$message .= $Lng[$src[$ind]]['following_email_'.$val];
 			}
@@ -56,9 +51,9 @@
 	} else if ($Type == 'TestonsSVP') {
 		$query  = "SELECT DISTINCT 0 AS project, 1 AS attached, 1 AS tages, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, 'Testing mail for any project' AS name, 'Test' AS title ";
 		$query .= "FROM users AS USR WHERE USR.id = ".$UserID; 
-		$message = $Lng["email_test"];
-		$subject = $Lng["email_test_tit"];
-		echo $Lng["email_test_tit"];
+		$message = $Lng['tinyissue']["email_test"].$config['my_bugs_app']['name'].').';
+		$subject = $Lng['tinyissue']["email_test_tit"];
+		echo $Lng['tinyissue']["email_test_tit"];
 	} else {
 		$query  = "SELECT DISTINCT FAL.project, FAL.attached, FAL.tags, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, PRO.name, TIK.title ";
 		$query .= "FROM following AS FAL ";
@@ -68,20 +63,17 @@
 		$query .= "WHERE FAL.project_id = ".$ProjectID." ";
 		if ($Type == 'Issue') {
 			$query .= "AND FAL.project = 0 AND issue_id = ".$IssueID." ";
-			$query .= ($SkipUser) ? "AND FAL.user_id NOT IN (".$User.") " : "";
+			$query .= ($SkipUser) ? "AND FAL.user_id NOT IN (".$UserID.") " : "";
 			$query .= "AND FAL.project = 0 ";
-			//$message = $contenu." {issue}.";
 		} else if ($Type == 'Project') {
 			$query .= "AND FAL.project = 1 ";
-			//$message = $contenu." {project}.";
 		}
 	}
-	$followers = mysqli_query ($dataSrc, $query);
+	$followers = Requis($query);
 
 	if (Nombre($followers) > 0) {
 		while ($follower = Fetche($followers)) {
 			$passage_ligne = (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $follower["email"])) ? "\r\n" : "\n";
-
 			$message = str_replace('"', "``", $message);
 			$message = stripslashes($message);
 			$message = str_replace("'", "`", $message);
@@ -172,7 +164,8 @@
 	
 function wildcards ($body, $follower,$ProjectID, $IssueID) {
 	$link = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on' ? "https" : "http") . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-	$body = str_replace('{first}', ucwords($follower["name"]), $body);
+	$link = substr($link, 0, strrpos($link, "/"));
+	$body = str_replace('{first}', ucwords($follower["first"]), $body);
 	$body = str_replace('{last}', ucwords($follower["last"]), $body);
 	$body = str_replace('{full}', ucwords($follower["user"]), $body);
 	$body = str_replace('{project}', '<a href="'.(str_replace("issue/new", "issues?tag_id=1", $link)).'">'.$follower["name"].'</a>', $body);

@@ -3,8 +3,8 @@
 return array(
 
 	/** new user **/
-	'subject_newuser' => 'Votre compte sur '.Config::get('application.my_bugs_app.name'),
-	'new_user' => 'Un compte a été créé à votre intention sur '.Config::get('application.my_bugs_app.name').' à ',
+//	'subject_newuser' => 'Votre compte sur '.Config::get('application.my_bugs_app.name'),
+//	'new_user' => 'Un compte a été créé à votre intention sur '.Config::get('application.my_bugs_app.name').' à ',
 	'creds' => 'Vous pouvez vous connecter avec les codes d`accès suivant:  courriel: %s;  mot de passe: %s.',
 
 	/** issue updates **/
