@@ -34,10 +34,14 @@
 	if (is_array(@$contenu)) {
 		$subject = (file_exists($prefixe.$config['attached']['directory'].$contenu[0].'_tit.html')) ? file_get_contents($prefixe.$config['attached']['directory'].$src[0].'_'.$contenu[0].'_tit.html') : $Lng[$src[0]]['following_email_'.$contenu[0].'_tit'];
 		foreach ($contenu as $ind => $val) {
-			if (file_exists($prefixe.$config['attached']['directory'].$val.'.html')) {
-				$message .= file_get_contents($prefixe.$config['attached']['directory'].$val.'.html');
+			if ($src[$ind] == 'value') {
+				$message .= $val;
 			} else {
-				$message .= $Lng[$src[$ind]]['following_email_'.$val];
+				if (file_exists($prefixe.$config['attached']['directory'].$val.'.html')) {
+					$message .= file_get_contents($prefixe.$config['attached']['directory'].$val.'.html');
+				} else {
+					$message .= $Lng[$src[$ind]]['following_email_'.$val];
+				}
 			}
 		}
 	} else {
@@ -47,7 +51,8 @@
 		//Select email addresses
 	if ($Type == 'User') {
 		$query  = "SELECT DISTINCT 0 AS project, 1 AS attached, 1 AS tages, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, 'Welcome on BUGS' AS name, 'Welcome' AS title ";
-		$query .= "FROM users AS USR WHERE USR.id = ".$UserID; 
+		$query .= "FROM users AS USR WHERE ";
+		$query .= (is_numeric($UserID)) ? "USR.id = ".$UserID : "USR.email = '".$UserID."' "; 
 	} else if ($Type == 'TestonsSVP') {
 		$query  = "SELECT DISTINCT 0 AS project, 1 AS attached, 1 AS tages, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, 'Testing mail for any project' AS name, 'Test' AS title ";
 		$query .= "FROM users AS USR WHERE USR.id = ".$UserID; 
