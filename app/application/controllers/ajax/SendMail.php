@@ -12,7 +12,7 @@
 		$resu = Requis("SELECT * FROM users WHERE id = ".$UserID);
 	}
 	$QuelUser = Fetche($resu);
-	
+
 	//Chargement des fichiers linguistiques
 	$emailLng = require ($prefixe."app/application/language/en/tinyissue.php");
 	$emailLnE = require ($prefixe."app/application/language/en/email.php");
@@ -33,6 +33,7 @@
 	$message = "";
 	if (is_array(@$contenu)) {
 		$subject = (file_exists($prefixe.$config['attached']['directory'].$contenu[0].'_tit.html')) ? file_get_contents($prefixe.$config['attached']['directory'].$contenu[0].'_tit.html') : $Lng[$src[0]]['following_email_'.$contenu[0].'_tit'];
+echo 'Voici le sujet: '.$subject.'<br />';
 		foreach ($contenu as $ind => $val) {
 			if ($src[$ind] == 'value') {
 				$message .= $val;
@@ -101,10 +102,8 @@
 				$body .= '<p>'.$optMail['intro'].'</p>';
 				$body .= $passage_ligne;
 				$body .= '<p>'.$message.'</p>';
-//				$body .= $passage_ligne;
 				$body .= $passage_ligne;
 				$body .= '<p>'.$optMail['bye'].'</p>';
-//				$body .= $passage_ligne;
 				$body .= $passage_ligne.'';
 				$body = wildcards ($body, $follower,$ProjectID, $IssueID);
 				mail($follower["email"], $subject, $body, $headers);
@@ -160,7 +159,6 @@
 					$mail->IsHTML(false);
 					$mail->Body = strip_tags($body);
 				}
-//				$mail->AddAddress ($to);
 				$mail->AddAddress ($follower["email"]);
 				$result = $mail->Send() ? "Successfully sent!" : "Mailer Error: " . $mail->ErrorInfo;
 			}

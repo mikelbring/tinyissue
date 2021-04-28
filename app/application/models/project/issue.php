@@ -288,7 +288,7 @@ class Issue extends \Eloquent {
 			/* Add to activity log */
 			\User\Activity::add(3, $this->project_id, $this->id);
 			//$text = __('tinyissue.following_email_status_bis').__('email.closed').'.<br /><br />'.$text;
-			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, array('status','status_bis','closed'), array('tinyissue','tinyissue','tinyissue'));
+			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, array('closed','status','status_bis'), array('tinyissue','tinyissue','tinyissue'));
 		} else {
 			$this->closed_by = NULL;
 			$this->closed_at = NULL;
@@ -302,7 +302,7 @@ class Issue extends \Eloquent {
 			/* Add to activity Log */
 			\User\Activity::add(4, $this->project_id, $this->id);
 			//Notify all followers about the new status
-			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, array('status','status_bis','reopened'), array('tinyissue','tinyissue','tinyissue'));
+			$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, array('reopened','status','status_bis'), array('tinyissue','tinyissue','tinyissue'));
 		}
 		$this->tags()->sync($tag_ids);
 		$this->status = $status;

@@ -87,7 +87,7 @@ return array(
 	'following_email_closed'  => 'Le billet « {issue} » a été fermé ',
 	'following_email_closed_tit'  => 'Billet fermé',
 	'following_email_comment_tit'  => 'Commentaire',
-	'following_email_issue'  => 'Un billet que vous suivez a changé de nom.  Voici le nom sous lequel vous le trouverez dorénavant « {issue} »',
+	'following_email_issue'  => 'Un billet que vous suivez a changé de nom.  Voici le nom sous lequel vous le trouverez dorénavant « {issue} »<br /><br />Le billet était précédemment intitulé : ',
 	'following_email_issue_tit'  => 'Billet modifié',
 	'following_email_issueproject'  => 'Le billet « {issue} » a été affecté au projet « {project} ». ',
 	'following_email_issueproject_tit'  => 'Billet déplacé',
