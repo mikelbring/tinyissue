@@ -87,7 +87,7 @@ return array(
 	'following_email_closed_tit'  => 'Closed ticket',
 	'following_email_comment'  => 'A ticket you are following has received a new comment.  This ticket is titled  « {issue} »',
 	'following_email_comment_tit'  => 'New comment',
-	'following_email_issue'  => 'The ticket  « {issue} » you are following has been changed.  Its title is now  « {issue} » ',
+	'following_email_issue'  => 'The ticket  « {issue} » you are following has been changed.  Its title is now  « {issue} ».  <br /><br />Previously, its title was : ',
 	'following_email_issue_tit'  => 'Issue modified',
 	'following_email_issueproject'  => 'The ticket  « {issue} » has been moved to another project :   ',
 	'following_email_issueproject_tit'  => 'Ticket moved',

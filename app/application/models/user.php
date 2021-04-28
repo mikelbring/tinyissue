@@ -15,8 +15,7 @@ class User extends Eloquent {
 	*
 	* @return bool
 	*/
-	public function me()
-	{
+	public function me() {
 		return $this->id == Auth::user()->id;
 	}
 
@@ -26,8 +25,7 @@ class User extends Eloquent {
 	* @param  string  $key
 	* @return bool
 	*/
-	public function permission($key)
-	{
+	public function permission($key) {
 		return (bool) \Role\Permission::has_permission($key, $this->role_id);
 	}
 
@@ -37,20 +35,16 @@ class User extends Eloquent {
 	* @param  int   $project_id
 	* @return bool
 	*/
-	public function project_permission($project_id = null)
-	{
-		if(is_null($project_id))
-		{
+	public function project_permission($project_id = null) {
+		if(is_null($project_id)) {
 			$project_id = Project::current()->id;
 		}
 
-		if($this->permission('project-all'))
-		{
+		if($this->permission('project-all')) {
 			return true;
 		}
 
-		if(Project\User::check_assign($this->id, $project_id))
-		{
+		if(Project\User::check_assign($this->id, $project_id)) {
 			return true;
 		}
 
@@ -211,8 +205,7 @@ class User extends Eloquent {
 	* @param  int    $id
 	* @return array
 	*/
-	public static function update_user($info, $id)
-	{
+	public static function update_user($info, $id) {
 		$rules = array(
 			'firstname' => array('required', 'max:50'),
 			'lastname' => array('required', 'max:50'),
@@ -220,21 +213,19 @@ class User extends Eloquent {
 		);
 
 		/* Validate the password */
-		if($info['password'])
-		{
+		if($info['password']) {
 			$rules['password'] = 'confirmed';
 		}
 
 		$validator = Validator::make($info, $rules);
-
-		if($validator->fails())
-		{
+		if($validator->fails()) {
 			return array(
 				'success' => false,
 				'errors' => $validator->errors
 			);
 		}
-			//Language (below) added
+		
+		//Enregistrement de la modification en bdd
 		$update = array(
 			'email' => $info['email'],
 			'firstname' => $info['firstname'],
@@ -244,8 +235,7 @@ class User extends Eloquent {
 		);
 
 		/* Update the password */
-		if($info['password'])
-		{
+		if($info['password']) {
 			$update['password'] = Hash::make($info['password']);
 		}
 
@@ -270,7 +260,6 @@ class User extends Eloquent {
 		);
 
 		$validator = Validator::make($info, $rules);
-
 		if($validator->fails()) {
 			return array(
 				'success' => false,
@@ -278,7 +267,7 @@ class User extends Eloquent {
 			);
 		}
 
-			//Language (below) added
+		//Inscription du nouveau membre dans la bdd
 		$insert = array(
 			'email' => $info['email'],
 			'firstname' => $info['firstname'],
@@ -291,22 +280,15 @@ class User extends Eloquent {
 		$user = new User;
 		$user->fill($insert)->save();
 
-		/* Send Activation email */
-		$view = View::make('email.new_user', array(
-			'email' => $info['email'],
-			'password' => $password
-		));
-
-		$contenu = $view;
+		//Émission d'un courriel à l'adresse du nouveau membre
+		$contenu = array('useradded',$password);
+		$src = array('email', 'value');
 		$Type = 'User';
 		$SkipUser = false;
 		$ProjectID = 0;
 		$IssueID = 0;
 		$User = $info['email'];
-		$subject = __('email.subject_newuser');
 		include "application/controllers/ajax/SendMail.php";
-
-		Mail::send_email($view, $info['email'], __('email.subject_newuser'));
 
 		return array(
 			'success' => true,
@@ -332,5 +314,4 @@ class User extends Eloquent {
 
 		return true;
 	}
-
 }

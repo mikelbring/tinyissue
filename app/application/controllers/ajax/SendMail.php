@@ -12,7 +12,7 @@
 		$resu = Requis("SELECT * FROM users WHERE id = ".$UserID);
 	}
 	$QuelUser = Fetche($resu);
-	
+
 	//Chargement des fichiers linguistiques
 	$emailLng = require ($prefixe."app/application/language/en/tinyissue.php");
 	$emailLnE = require ($prefixe."app/application/language/en/email.php");
@@ -28,16 +28,20 @@
 	$optMail = $config["mail"];
 	$ProjectID = $ProjectID ?? 0;
 	$IssueID = $IssueID ?? 0;
-	
+
 	//Titre et corps du message selon les configurations choisies par l'administrateur
 	$message = "";
 	if (is_array(@$contenu)) {
-		$subject = (file_exists($prefixe.$config['attached']['directory'].$contenu[0].'_tit.html')) ? file_get_contents($prefixe.$config['attached']['directory'].$src[0].'_'.$contenu[0].'_tit.html') : $Lng[$src[0]]['following_email_'.$contenu[0].'_tit'];
+		$subject = (file_exists($prefixe.$config['attached']['directory'].$contenu[0].'_tit.html')) ? file_get_contents($prefixe.$config['attached']['directory'].$contenu[0].'_tit.html') : $Lng[$src[0]]['following_email_'.$contenu[0].'_tit'];
 		foreach ($contenu as $ind => $val) {
-			if (file_exists($prefixe.$config['attached']['directory'].$val.'.html')) {
-				$message .= file_get_contents($prefixe.$config['attached']['directory'].$val.'.html');
+			if ($src[$ind] == 'value') {
+				$message .= $val;
 			} else {
-				$message .= $Lng[$src[$ind]]['following_email_'.$val];
+				if (file_exists($prefixe.$config['attached']['directory'].$val.'.html')) {
+					$message .= file_get_contents($prefixe.$config['attached']['directory'].$val.'.html');
+				} else {
+					$message .= $Lng[$src[$ind]]['following_email_'.$val];
+				}
 			}
 		}
 	} else {
@@ -47,7 +51,8 @@
 		//Select email addresses
 	if ($Type == 'User') {
 		$query  = "SELECT DISTINCT 0 AS project, 1 AS attached, 1 AS tages, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, 'Welcome on BUGS' AS name, 'Welcome' AS title ";
-		$query .= "FROM users AS USR WHERE USR.id = ".$UserID; 
+		$query .= "FROM users AS USR WHERE ";
+		$query .= (is_numeric($UserID)) ? "USR.id = ".$UserID : "USR.email = '".$UserID."' "; 
 	} else if ($Type == 'TestonsSVP') {
 		$query  = "SELECT DISTINCT 0 AS project, 1 AS attached, 1 AS tages, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, 'Testing mail for any project' AS name, 'Test' AS title ";
 		$query .= "FROM users AS USR WHERE USR.id = ".$UserID; 
@@ -77,12 +82,11 @@
 			$message = str_replace('"', "``", $message);
 			$message = stripslashes($message);
 			$message = str_replace("'", "`", $message);
-//			$message = str_replace("xyz", (($Type == 'Issue') ? $follower["title"] : $follower["name"] ), $message);
 
 			if ($optMail['transport'] == 'mail') {
 				$boundary = md5(uniqid(microtime(), TRUE));
 				$headers = 'From: "'.$optMail['from']['name'].'" <'.$optMail['from']['email'].'>'.$passage_ligne;
-				$headers = 'Reply-To: "'.$optMail['replyTo']['name'].'" <'.$optMail['replyTo']['email'].'>'.$passage_ligne;
+				$headers .= 'Reply-To: "'.$optMail['replyTo']['name'].'" <'.$optMail['replyTo']['email'].'>'.$passage_ligne;
 				$headers .= 'Mime-Version: 1.0'.$passage_ligne;
 				$headers .= 'Content-Type: multipart/mixed; charset="'.$optMail['encoding'].'"; boundary="'.$boundary.'"';
 				$headers .= $passage_ligne;
@@ -96,10 +100,8 @@
 				$body .= '<p>'.$optMail['intro'].'</p>';
 				$body .= $passage_ligne;
 				$body .= '<p>'.$message.'</p>';
-//				$body .= $passage_ligne;
 				$body .= $passage_ligne;
 				$body .= '<p>'.$optMail['bye'].'</p>';
-//				$body .= $passage_ligne;
 				$body .= $passage_ligne.'';
 				$body = wildcards ($body, $follower,$ProjectID, $IssueID);
 				mail($follower["email"], $subject, $body, $headers);
@@ -155,7 +157,6 @@
 					$mail->IsHTML(false);
 					$mail->Body = strip_tags($body);
 				}
-//				$mail->AddAddress ($to);
 				$mail->AddAddress ($follower["email"]);
 				$result = $mail->Send() ? "Successfully sent!" : "Mailer Error: " . $mail->ErrorInfo;
 			}
@@ -172,4 +173,5 @@ function wildcards ($body, $follower,$ProjectID, $IssueID) {
 	$body = str_replace('{issue}', '<a href="'.(str_replace("issue/new", "issue/".$IssueID, $link)).'">'.$follower["title"].'</a>', $body);
 	return $body;
 }
+
 ?>
