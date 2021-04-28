@@ -173,4 +173,5 @@ function wildcards ($body, $follower,$ProjectID, $IssueID) {
 	$body = str_replace('{issue}', '<a href="'.(str_replace("issue/new", "issue/".$IssueID, $link)).'">'.$follower["title"].'</a>', $body);
 	return $body;
 }
+
 ?>
