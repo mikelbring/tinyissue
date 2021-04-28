@@ -22,8 +22,8 @@
 	////Boucle de lecture
 	while (!feof($RefFichier)) {
 		$MesLignes[$rendu] = fgets($RefFichier);
-		if (strpos($MesLignes[$rendu], "'replyTo'  =>") !== false && !isset($NumLigne["mail"])	 ) { $NumLigne["mail"] = $rendu; }  
-		if (strpos($MesLignes[$rendu], "'intro' =>") 	!== false && !isset($NumLigne["forma"]) )	{ $NumLigne["forma"] = $rendu; }  
+		if (strpos($MesLignes[$rendu], "'replyTo'") 	!== false && !isset($NumLigne["mail"])	 ) { $NumLigne["mail"] = $rendu; }  
+		if (strpos($MesLignes[$rendu], "'intro' =>") !== false && !isset($NumLigne["forma"]) )	{ $NumLigne["forma"] = $rendu; }  
 		++$rendu;
 	}
 	fclose($RefFichier);

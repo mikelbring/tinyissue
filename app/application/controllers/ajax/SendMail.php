@@ -33,7 +33,6 @@
 	$message = "";
 	if (is_array(@$contenu)) {
 		$subject = (file_exists($prefixe.$config['attached']['directory'].$contenu[0].'_tit.html')) ? file_get_contents($prefixe.$config['attached']['directory'].$contenu[0].'_tit.html') : $Lng[$src[0]]['following_email_'.$contenu[0].'_tit'];
-echo 'Voici le sujet: '.$subject.'<br />';
 		foreach ($contenu as $ind => $val) {
 			if ($src[$ind] == 'value') {
 				$message .= $val;
@@ -83,7 +82,6 @@ echo 'Voici le sujet: '.$subject.'<br />';
 			$message = str_replace('"', "``", $message);
 			$message = stripslashes($message);
 			$message = str_replace("'", "`", $message);
-//			$message = str_replace("xyz", (($Type == 'Issue') ? $follower["title"] : $follower["name"] ), $message);
 
 			if ($optMail['transport'] == 'mail') {
 				$boundary = md5(uniqid(microtime(), TRUE));
@@ -175,4 +173,5 @@ function wildcards ($body, $follower,$ProjectID, $IssueID) {
 	$body = str_replace('{issue}', '<a href="'.(str_replace("issue/new", "issue/".$IssueID, $link)).'">'.$follower["title"].'</a>', $body);
 	return $body;
 }
+
 ?>

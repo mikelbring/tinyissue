@@ -33,5 +33,5 @@
 		$Sortie = $Lng["following_email_".$_POST["Suiv"]].'||'.$Lng["following_email_".$_POST["Suiv"]].'_tit';
 	}
 	
-echo $Sortie;
+	echo $Sortie;
 ?>
