@@ -79,7 +79,7 @@
 
 	if (Nombre($followers) > 0) {
 		while ($follower = Fetche($followers)) {
-			$subject = wildcards($subject, $follower,$ProjectID, $IssueID)
+			$subject = wildcards($subject, $follower,$ProjectID, $IssueID);
 			$passage_ligne = (!preg_match("#^[a-z0-9._-]+@(hotmail|live|msn).[a-z]{2,4}$#", $follower["email"])) ? "\r\n" : "\n";
 			$message = str_replace('"', "``", $message);
 			$message = stripslashes($message);
