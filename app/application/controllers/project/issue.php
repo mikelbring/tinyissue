@@ -136,7 +136,10 @@ class Project_Issue_Controller extends Base_Controller {
 		}
 	}
 
+	/**Update an issue
+	*/
 	public function post_edit() {
+		$avant = Project\Issue::current()->title;
 		$update = Project\Issue::current()->update_issue(Input::all());
 
 		if(!$update['success']) {
@@ -145,6 +148,9 @@ class Project_Issue_Controller extends Base_Controller {
 				->with_errors($update['errors'])
 				->with('notice-error', __('tinyissue.we_have_some_errors'));
 		}
+
+		//Email to followers
+		$this->Courriel ('Issue', true, Project::current()->id, Project\Issue::current()->id, Auth::user()->id, array('issue', $avant), array('tinyissue', 'value'));
 
 		return Redirect::to(Project\Issue::current()->to())
 			->with('notice', __('tinyissue.issue_has_been_updated'));
