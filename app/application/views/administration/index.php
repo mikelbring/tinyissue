@@ -61,11 +61,11 @@
 				</td>
 			</tr>
 			<tr>
-				<th><a href="https://github.com/pixeline/bugs/" target="_blank"><?php echo __('tinyissue.version'); ?></a>
+				<th><a href="https://github.com/pixeline/bugs/" target="_blank"><?php echo $LngSRV["version"]; ?></a>
 					<div class="adminListe">
-					<?php echo __('tinyissue.version'); ?><br />
-					<?php echo __('tinyissue.version_release_numb'); ?><br />
-					<?php echo __('tinyissue.version_release_date'); ?><br />
+					<?php echo $LngSRV["version"]; ?><br />
+					<?php echo $LngSRV["version_release_numb"]; ?><br />
+					<?php echo $LngSRV["version_release_date"]; ?><br />
 					</div>
 				</th>
 				<td>
@@ -81,30 +81,30 @@
 		<br />
 		<?php
 			include "application/libraries/checkVersion.php";
-			echo '<h4><b>'.__('tinyissue.version_check').'</b> : ';
+			echo '<h4><b>'.$LngSRV["version_check"].'</b> : ';
 			echo '<br /><br />';
-			echo __('tinyissue.version_actuelle');
-			echo ' : '.$verActu.'<br />'.__('tinyissue.version_release_numb').' : '.Config::get('tinyissue.release');
+			echo $LngSRV["version_actuelle"];
+			echo ' : '.$verActu.'<br />'.$LngSRV["version_release_numb"].' : '.Config::get('tinyissue.release');
 			echo '<br /><br />';
 			if ($verActu == $verNum) {
-				echo '<a name="Apprécions">'.__('tinyissue.version_good').'!</a>';
+				echo '<a name="Apprécions">'.$LngSRV["version_good"].'!</a>';
 				echo '<br /></h4>';
 			} else if ($verNum == 0) {
-				echo __('tinyissue.version_offline');
+				echo $LngSRV["version_offline"];
 				echo '<br /></h4>';
 				echo '<a href="https://github.com/pixeline/bugs/" target="_blank">https://github.com/pixeline/bugs/</a>';
 			} else if ($verNum < $verActu) {
-				echo '<h4><b>'.__('tinyissue.version_ahead').'</b></h4>';
-				echo __('tinyissue.version_disp').' : '.$verNum.'<br />';
-				echo __('tinyissue.version_commit').' : '.$verCommit.'<br />';
+				echo '<h4><b>'.$LngSRV["version_ahead"].'</b></h4>';
+				echo $LngSRV["version_disp"].' : '.$verNum.'<br />';
+				echo $LngSRV["version_commit"].' : '.$verCommit.'<br />';
 				echo '<br />';
-				echo '<a href="https://github.com/pixeline/bugs/releases" target="_blank">'.__('tinyissue.version_details').'</a> <br />';
+				echo '<a href="https://github.com/pixeline/bugs/releases" target="_blank">'.$LngSRV["version_details"].'</a> <br />';
 			} else {
-				echo '<h4><a href="javascript: agissons.submit();">'.__('tinyissue.version_need').'.</a></h4>';
+				echo '<h4><a href="javascript: agissons.submit();">'.$LngSRV["version_need"].'.</a></h4>';
 				echo __('tinyissue.release_disp').' : '.$verNum.'<br />';
-				echo __('tinyissue.version_commit').' : '.$verCommit.'<br /><br />';
-				echo __('tinyissue.version_disp').' : '.$verCod.'<br />';
-				echo '<a href="https://github.com/pixeline/bugs/releases" target="_blank">'.__('tinyissue.version_details').'</a> <br />';
+				echo $LngSRV["version_commit"].' : '.$verCommit.'<br /><br />';
+				echo $LngSRV["version_disp"].' : '.$verCod.'<br />';
+				echo '<a href="https://github.com/pixeline/bugs/releases" target="_blank">'.$LngSRV["version_details"].'</a> <br />';
 				echo '<form action="'.URL::to('administration/update').'" method="post" id="agissons">';
 				echo '<input type="hidden" name="Etape" value="1" />';
 				echo '<input type="hidden" name="versionYour" value="'.$verActu.'" />';
@@ -146,7 +146,7 @@
 		<details id="details_email_head2">
 			<summary><?php echo __('tinyissue.email_head2'); ?></summary>
 			<br />
-			<div class="pad2">
+			<div>
 			<select name="ChxTxt" id="select_ChxTxt" onchange="ChangeonsText(this.value, <?php echo "'".\Auth::user()->language."','".__('tinyissue.following_email')."'"; ?>);" class="sombre">
 			<?php
 				$LesOptions = array(
@@ -168,16 +168,18 @@
 				}
 			?>
 			</select>
-			&nbsp;&nbsp;&nbsp;<?php echo __('tinyissue.title'); ?> : <input name="TitreMsg" id="input_TitreMsg" value="<?php
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			<?php echo __('tinyissue.title'); ?> : <input name="TitreMsg" id="input_TitreMsg" value="<?php
 				if (file_exists("../uploads/attached_tit.html")) {
 					$f = file_get_contents("../uploads/attached_tit.html");
 					echo $f;
 				} else {
 					echo  __('tinyissue.tinyissue.following_email_attached_tit');
 				}
-			?>" size="50" />
-			</div>
-			<div class="pad2"style="font-size: 125%; padding-top: 15px;">
+			?>" size="40" />
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;&nbsp;
 				{first}, {last}, {full}, {project}, {issue}
 			</div>
 			<br />
@@ -220,7 +222,7 @@
 				<?php echo $LngSRV["Email_username"]; ?> : <input name="email_username" id="input_email_username" value="<?php echo $Conf["smtp"]["username"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
 				<?php echo $LngSRV["Email_password"]; ?> : <input name="email_password" id="input_email_password" value="<?php echo $Conf["smtp"]["password"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
 				<br />
-				<input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: AppliquerCourriel();" class="button2"/>
+				<input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: AppliquerServeur();" class="button2"/>
 			</div>
 		</details>
 	<br />

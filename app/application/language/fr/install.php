@@ -53,4 +53,17 @@ return array(
 	'Time_Local' => 'Local',
 	'Time_Timezone' => 'Fuseau horaire',
 	'UpdateConfigFile' => 'Configurations du serveur de courriel',
+	'version' => 'Version',
+	'version_actuelle' => 'Votre version active',
+	'version_ahead' => 'Votre version est plus avancée que celle du serveur',
+	'version_check' => 'État du logiciel',
+	'version_commit' => 'Code du plus récent « git commit »  disponible',
+	'version_details' => 'Voir les modifications sur le site github',
+	'version_disp' => 'Dernier correctif disponible',
+	'version_good' => 'Tout est à jour, félicitations',
+	'version_need' => 'Besoin de mise à niveau',
+	'version_offline' => 'Nous ne pouvons pas vérifier la version disponible, <br />car les fichiers en ligne ne sont pas accessibles.<br /><br />Veuillez vous référer au dépôt git ci-bas:',
+	'version_release_date' => 'Date de lancement',
+	'version_release_numb' => 'Correctif',
+	'version_your' => 'Votre version actuelle'
 );
