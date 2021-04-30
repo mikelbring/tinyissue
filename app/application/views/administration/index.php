@@ -113,8 +113,8 @@
 			<div class="pad2">
 				<?php echo __('tinyissue.email_from'); ?> : <?php echo __('tinyissue.email_from_name'); ?> : <input name="email_from_name" id="input_email_from_name" value="<?php echo $Conf["from"]["name"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
 				<?php echo __('tinyissue.email_from'); ?> : <?php echo __('tinyissue.email_from_email'); ?> : <input name="email_from_email" id="input_email_from_email" value="<?php echo $Conf["from"]["email"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
-				<?php echo __('tinyissue.email_intro'); ?> : <input name="email_from" id="input_email_intro" value="<?php echo $Conf["intro"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
-				<?php echo __('tinyissue.email_bye'); ?> : <input name="email_from" id="input_email_bye" value="<?php echo $Conf["bye"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
+				<?php echo __('tinyissue.email_intro'); ?> : <input name="email_from" id="input_email_intro" value="<?php echo addslashes($Conf["intro"]); ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
+				<?php echo __('tinyissue.email_bye'); ?> : <input name="email_from" id="input_email_bye" value="<?php echo addslashes($Conf["bye"]); ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
 				<div style="text-align: center;"><input type="button" value="Test" onclick="javascript: AppliquerTest(<?php echo Auth::user()->id; ?>);" class="button1"/></div>
 				<br />
 			</div>

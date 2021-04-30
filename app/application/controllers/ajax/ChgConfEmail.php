@@ -49,9 +49,9 @@ if ($NumLigne["mail"] > 0 ) {
 ";
 }
 if ($NumLigne["forma"] > 0) {
-	$MesLignes[$NumLigne["forma"] + 0] = "		'intro' => '".$_GET["intro"]."',
+	$MesLignes[$NumLigne["forma"] + 0] = "		'intro' => '".stripslashes($_GET["intro"])."',
 ";
-	$MesLignes[$NumLigne["forma"] + 1] = "		'bye' => '".$_GET["bye"]."',
+	$MesLignes[$NumLigne["forma"] + 1] = "		'bye' => '".stripslashes($_GET["bye"])."',
 ";
 }
 	
