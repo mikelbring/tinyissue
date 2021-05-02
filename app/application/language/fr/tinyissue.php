@@ -61,7 +61,7 @@ return array(
 	'edit_tag' => 'Modifier une étiquette',
 	'edit' => 'Modifier',
 	'email' => 'Courriel',
-	'email_head' => 'Configuration de vos courriels',
+	'email_head' => 'Mise en forme globale de vos courriels',
 	'email_head2' => 'Contenu des courriels automatiques',
 	'email_from' => 'Adresse d`orgine affichée',
 	'email_from_name' => 'Nom',

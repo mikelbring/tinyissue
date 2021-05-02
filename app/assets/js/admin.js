@@ -40,20 +40,21 @@
 
 		var xhttp = new XMLHttpRequest();
 		var formdata = new FormData();
-		formdata.append("transport", document.getElementById('select_Email_transport').value;
-		formdata.append("sendmail_path", document.getElementById('input_email_sendmail_path').value;
-		formdata.append("plainHTML", document.getElementById('select_Email_plainHTML').value;
-		formdata.append("encoding", document.getElementById('input_email_encoding').value;
-		formdata.append("linelenght", document.getElementById('input_email_linelenght').value;
-		formdata.append("server", document.getElementById('input_email_server').value;
-		formdata.append("port", document.getElementById('input_email_port').value;
-		formdata.append("encryption", document.getElementById('input_email_encryption').value;
-		formdata.append("username", document.getElementById('input_email_username').value;
-		formdata.append("password", document.getElementById('input_email_password').value;
+		formdata.append("transport", document.getElementById('select_Email_transport').value);
+		//formdata.append("sendmail_path", document.getElementById('input_email_sendmail_path').value);
+		formdata.append("plainHTML", document.getElementById('select_Email_plainHTML').value);
+		formdata.append("encoding", document.getElementById('input_email_encoding').value);
+		formdata.append("linelenght", document.getElementById('input_email_linelenght').value);
+		formdata.append("server", document.getElementById('input_email_server').value);
+		formdata.append("port", document.getElementById('input_email_port').value);
+		formdata.append("encryption", document.getElementById('input_email_encryption').value);
+		formdata.append("username", document.getElementById('input_email_username').value);
+		formdata.append("password", document.getElementById('input_email_password').value);
 		var NextPage = 'app/application/controllers/ajax/ChgConfEmail_Server.php';
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				if (xhttp.responseText != '' ) {
+					//alert(xhttp.responseText);
 					for (x=0; x<champs.length; x++) {
 						document.getElementById(champs[x]).style.backgroundColor = 'green';
 					}

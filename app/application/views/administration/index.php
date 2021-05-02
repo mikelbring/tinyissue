@@ -1,4 +1,4 @@
-<?php 
+f<?php 
 	$prefixe = "";
 	while (!file_exists($prefixe."config.app.php")) {
 		$prefixe .= "../";
@@ -197,15 +197,21 @@
 			<br />
 			<div style="text-align: center;"><input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: ChangeonsText(document.getElementById('select_ChxTxt').value, '<?php echo \Auth::user()->language; ?>', 'OUI');" class="button2"/></div>
 		</details>
-		<details id="details_emailserver_head" open>
+		<details id="details_emailserver_head">
 			<summary><?php echo $LngSRV['UpdateConfigFile']; ?></summary>
 			<br />
+			<div class="pad2">
+				<?php echo $LngSRV["Email_server"]; ?> : <input name="email_server" id="input_email_server" value="<?php echo $Conf["smtp"]["server"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["Email_port"]; ?> : <input name="email_port" id="input_email_port" value="<?php echo $Conf["smtp"]["port"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["Email_encryption"]; ?> : <input name="email_encryption" id="input_email_encryption" value="<?php echo $Conf["smtp"]["encryption"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["Email_username"]; ?> : <input name="email_username" id="input_email_username" value="<?php echo $Conf["smtp"]["username"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["Email_password"]; ?> : <input name="email_password" id="input_email_password" value="<?php echo $Conf["smtp"]["password"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+			</div>
 			<div class="pad2">
 				<?php echo $LngSRV["Email_transport"]; ?> : <select name="Email_transport" id="select_Email_transport">
 					<option value="smtp" <?php echo ($Conf['transport'] == 'smtp') ? 'selected="selected"' : ''; ?>>smtp</option>
 					<option value="mail" <?php echo ($Conf['transport'] != 'smtp') ? 'selected="selected"' : ''; ?>>mail</option>
 					</select> <br />
-				<?php echo $LngSRV["Email_sendmail_path"]; ?> : <input name="email_sendmail_path" id="input_email_sendmail_path" value="<?php echo $Conf["sendmail"]["path"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
 				<?php echo $LngSRV["Email_plainHTML"]; ?> : <select name="Email_plainHTML" id="select_Email_plainHTML">
 					<option value="text/plain" <?php echo ($Conf['plainHTML'] == 'text/plain') ? 'selected="selected"' : ''; ?>>text/plain</option>
 					<option value="html" <?php echo ($Conf['plainHTML'] == 'html') ? 'selected="selected"' : ''; ?>>html</option>
@@ -214,16 +220,28 @@
 				<?php echo $LngSRV["Email_encoding"]; ?> : <input name="email_encoding" id="input_email_encoding" value="<?php echo $Conf["encoding"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
 				<?php echo $LngSRV["Email_linelenght"]; ?> : <input name="email_linelenght" id="input_email_linelenght" type="number" max="1000" min="25" size="6" value="<?php echo $Conf["linelenght"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
 				<br />
-			</div>
-			<div class="pad2">
-				<?php echo $LngSRV["Email_server"]; ?> : <input name="email_server" id="input_email_server" value="<?php echo $Conf["smtp"]["server"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
-				<?php echo $LngSRV["Email_port"]; ?> : <input name="email_port" id="input_email_port" value="<?php echo $Conf["smtp"]["port"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
-				<?php echo $LngSRV["Email_encryption"]; ?> : <input name="email_encryption" id="input_email_encryption" value="<?php echo $Conf["smtp"]["encryption"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
-				<?php echo $LngSRV["Email_username"]; ?> : <input name="email_username" id="input_email_username" value="<?php echo $Conf["smtp"]["username"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
-				<?php echo $LngSRV["Email_password"]; ?> : <input name="email_password" id="input_email_password" value="<?php echo $Conf["smtp"]["password"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
-				<br />
 				<input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: AppliquerServeur();" class="button2"/>
 			</div>
+		</details>
+		<details id="details_preferences_head">
+			<summary><?php echo $LngSRV['preferences_gen']; ?></summary>
+				<br />
+				<?php 
+					$config_app = require path('public') . 'config.app.php';
+					$Conf = $config_app['PriorityColors'];
+				 ?>
+				<?php echo $LngSRV["preferences_coula"]; ?> : <input name="coula" id="input_coula" value="<?php echo $Conf[1]; ?>" type="color" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_coulb"]; ?> : <input name="coulb" id="input_coulb" value="<?php echo $Conf[2]; ?>" type="color" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_coulc"]; ?> : <input name="coulc" id="input_coulc" value="<?php echo $Conf[3]; ?>" type="color" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_could"]; ?> : <input name="could" id="input_could" value="<?php echo $Conf[4]; ?>" type="color" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_coule"]; ?> : <input name="coule" id="input_coule" value="<?php echo $Conf[5]; ?>" type="color" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_coulo"]; ?> : <input name="coulo" id="input_coulo" value="<?php echo $Conf[0]; ?>" type="color" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<br />
+				<?php echo $LngSRV["preferences_duree"]; ?> : <input name="duree" id="input_duree" value="<?php echo $config_app['duration']; ?>" size="4" type="number" max="365" min="2" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<br />
+				<?php $Conf = $config_app['Percent']; ?>
+				<?php echo $LngSRV["preferences_pct_prog"]; ?> : <input name="prog" id="input_prog" value="<?php echo $Conf[2]; ?>" type="number" size="3" min="2" max="85" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_pct_test"]; ?> : <input name="test" id="input_test" value="<?php echo $Conf[3]; ?>" type="number" size="3" min="55" max="99" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
 		</details>
 	<br />
 	</div>
