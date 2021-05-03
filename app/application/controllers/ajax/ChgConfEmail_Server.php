@@ -16,6 +16,7 @@
 	//Sauvegarde du fichier original
 	$SavFichier = "config.app.".date("Ymdhis").".php";
 	copy ($prefixe."config.app.php", $prefixe.$SavFichier);
+
 	//Lecture du fichier de configuration
 	////Ouvrons le fichier de configuration
 	$RefFichier = fopen($NomFichier, "r");
