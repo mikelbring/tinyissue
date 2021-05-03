@@ -3,6 +3,9 @@ f<?php
 	while (!file_exists($prefixe."config.app.php")) {
 		$prefixe .= "../";
 	}
+	$config = require $prefixe."config.app.php";
+	$dir = $prefixe.$config['attached']['directory']."/";
+
 	$Lng = require_once($prefixe."app/application/language/en/install.php"); 
 	if ( file_exists($prefixe."app/application/language/".\Auth::user()->language."/install.php") && \Auth::user()->language != 'en') {
 		$LnT = require_once ($prefixe."app/application/language/".\Auth::user()->language."/install.php");
@@ -127,12 +130,7 @@ f<?php
 			<div class="pad2">
 				<?php echo __('tinyissue.email_from').' : '.__('tinyissue.email_from_name'); ?> :<input name="email_from_name" id="input_email_from_name" value="<?php echo $Conf["from"]["name"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
 				<?php echo __('tinyissue.email_from').' : '.__('tinyissue.email_from_email'); ?> : <input name="email_from_email" id="input_email_from_email" value="<?php echo $Conf["from"]["email"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
-				<?php echo __('tinyissue.email_intro'); ?> : <input name="email_from" id="input_email_intro" value="<?php echo $Conf["intro"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
-				<?php echo __('tinyissue.email_bye'); ?> : <input name="email_from" id="input_email_bye" value="<?php echo $Conf["bye"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
-				<div style="text-align: center;"><input type="button" value="Test" onclick="javascript: AppliquerTest(<?php echo Auth::user()->id; ?>);" class="button1"/></div>
 				<br />
-			</div>
-			<div class="pad2">
 				<?php echo __('tinyissue.email_replyto').' : '.__('tinyissue.email_from_name'); ?> : <input name="input_email_replyto_name" id="input_email_replyto_name" value="<?php echo $Conf["replyTo"]["name"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
 				<?php echo __('tinyissue.email_replyto').' : '.__('tinyissue.email_from_email'); ?> : <input name="input_email_replyto_email" id="input_email_replyto_email" value="<?php echo $Conf["replyTo"]["email"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
 				<br />
@@ -140,7 +138,41 @@ f<?php
 				<?php echo __('tinyissue.last_name'); ?> : <b>{last}</b> ex.: <?php echo Auth::user()->lastname; ?><br /><br />
 				<?php echo __('tinyissue.name').' ( '.__('tinyissue.first_name'). ' '.__('tinyissue.last_name').' ) '; ?> : <b>{full}</b> ex.: <?php echo Auth::user()->firstname; ?>  <?php echo Auth::user()->lastname; ?><br />
 				<br />
-				<div style="text-align: center;"><input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: AppliquerCourriel();" class="button2"/></div>
+				<br /><br />
+				<br /><br />
+				<br /><br />
+				<br /><br />
+				<div style="text-align: center;">
+					<input type="button" value="Test" onclick="javascript: AppliquerTest(<?php echo Auth::user()->id; ?>);" class="button1"/>
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					&nbsp;&nbsp;&nbsp;&nbsp;
+					<input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: AppliquerCourriel();" class="button2"/>
+				</div>
+			</div>
+			<div class="pad2">
+				<?php echo __('tinyissue.email_intro'); ?> : 
+					<textarea name="email_intro" id="select_email_intro">
+					<?php
+						if (file_exists($dir."intro.html")) {
+							$f = file_get_contents($dir."intro.html");
+							echo $f;
+						} else {
+							echo  $Conf["intro"];
+						}
+					?>
+					</textarea>
+				<br /><br />
+				<?php echo __('tinyissue.email_bye'); ?> : 
+					<textarea name="email_bye" id="select_email_bye">
+					<?php
+						if (file_exists($dir."bye.html")) {
+							$f = file_get_contents($dir."bye.html");
+							echo $f;
+						} else {
+							echo  $Conf["bye"];
+						}
+					?>
+					</textarea>
 			</div>
 		</details>
 		<details id="details_email_head2">
@@ -170,8 +202,8 @@ f<?php
 			</select>
 			&nbsp;&nbsp;&nbsp;&nbsp;
 			<?php echo __('tinyissue.title'); ?> : <input name="TitreMsg" id="input_TitreMsg" value="<?php
-				if (file_exists("../uploads/attached_tit.html")) {
-					$f = file_get_contents("../uploads/attached_tit.html");
+				if (file_exists($dir."attached_tit.html")) {
+					$f = file_get_contents($dir."/attached_tit.html");
 					echo $f;
 				} else {
 					echo  __('tinyissue.tinyissue.following_email_attached_tit');
@@ -185,8 +217,8 @@ f<?php
 			<br />
 			<textarea id="txt_contenu" name="contenu" >
 			<?php
-				if (file_exists("../uploads/attached.html")) {
-					$f = file_get_contents("../uploads/attached.html");
+				if (file_exists($dir."attached.html")) {
+					$f = file_get_contents($dir."attached.html");
 					echo $f;
 				} else {
 					echo  __('tinyissue.tinyissue.following_email_attached');
@@ -256,6 +288,8 @@ f<?php
 			if ($wysiwyg['name'] == 'ckeditor') {
 				echo "
 				setTimeout(function() {
+					showckeditor ('email_intro', 7);
+					showckeditor ('email_bye', 8);
 					showckeditor ('contenu', 9);
 				} , 567);
 				";
