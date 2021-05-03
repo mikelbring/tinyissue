@@ -449,7 +449,7 @@ class Project_Issue_Controller extends Base_Controller {
 		}
 
 		//Fifth step: Notice the followers
-		$this->Courriel ('Issue', true, Project::current()->id, $Issue, Auth::user()->id, array('attached'), 'tinyissue');
+		$this->Courriel ('Issue', true, Project::current()->id, $Issue, Auth::user()->id, array('attached'), array('tinyissue'));
 
 		//Sixth: Show on user's desk
 		if (is_numeric($msg)) {

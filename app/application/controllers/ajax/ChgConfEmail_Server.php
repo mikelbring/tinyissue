@@ -6,7 +6,7 @@
 	//Définition des variables
 	$MesLignes = array();
 	$NumLigne = array();
-	$NumLignes["repere"] = 0;
+	$repere = 0;
 	$NomFichier = $prefixe."config.app.php";
 	$rendu = 0;
 	foreach ($_POST AS $ind => $val) {
@@ -23,16 +23,16 @@
 	////Boucle de lecture
 	while (!feof($RefFichier)) {
 		$MesLignes[$rendu] = fgets($RefFichier);
-		if ($NumLignes["repere"] > 0) {
-			foreach($_POST as $ind = $val) {
-				if (strpos($MesLignes[$rendu], "'".$ind."'")  	!== false && !isset($NumLigne[$ind])  { 
+		if ($repere > 0) {
+			foreach($_POST as $ind => $val) {
+				if (strpos($MesLignes[$rendu], "'".$ind."'") !== false && !isset($NumLigne[$ind]))  { 
 					$NumLigne[$ind] = $rendu; 
 					$MesLignes[$rendu] = substr($MesLignes[$rendu], 0, strpos($MesLignes[$rendu], '=>')+2)." '".$val."',
 ";
 				}
 			}
 		} else {
-			if (strpos($MesLignes[$rendu], "/**  Mail") 	!== false )) { $NumLigne["repere"] = $rendu; }
+			if (strpos($MesLignes[$rendu], "/**  Mail") !== false ) { $repere = $rendu; }
 		}
 		++$rendu;
 	}
@@ -44,5 +44,5 @@
 		fwrite($NeoFichier, $val);
 	}
 	fclose($NeoFichier);
-	echo 'Nous avons terminé\n '.$NumLigne["mail"].'\n'.$NumLigne["forma"].'';
+	echo 'Nous avons terminé';
 ?>

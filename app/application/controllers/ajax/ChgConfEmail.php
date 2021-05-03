@@ -13,7 +13,7 @@
 	}
 
 	//Sauvegarde du fichier original
-	$SavFichier = "config.app.".date("Ymd").".php";
+	$SavFichier = "config.app.".date("Ymdhis").".php";
 	copy ($prefixe."config.app.php", $prefixe.$SavFichier);
 
 	//Lecture du fichier de configuration
