@@ -27,7 +27,7 @@
 	}
 
 	function AppliquerServeur() {
-		champs = new Array('input_email_sendmail_path','input_email_encoding','input_email_linelenght','input_email_server','input_email_port','input_email_encryption','input_email_username','input_email_password');
+		champs = new Array('input_email_sendmail_path','input_email_encoding','input_email_linelenght','input_email_server','input_email_port','input_email_encryption','input_email_username','input_email_password','select_Email_transport','select_Email_plainHTML');
 		var compte = 0;
 		for (x=0; x<champs.length; x++) {
 			if (document.getElementById(champs[x]).style.backgroundColor == 'red' ) { return false; }
@@ -120,7 +120,7 @@
 	var Affiche = "attached";	
 	var TexteInital = ""
 	setTimeout(function() { TexteInital = CachonsEditor(9); } , 1500);
-	var champs = new Array('input_email_from_name','input_email_from_email','input_email_replyto_name','input_email_replyto_email','input_email_intro','input_email_bye');
+	var champs = new Array('input_email_from_name','input_email_from_email','input_email_replyto_name','input_email_replyto_email','input_email_intro','input_email_bye','input_email_linelenght','select_Email_transport');
 	function AppliquerCourriel() {
 		var compte = 0;
 		for (x=0; x<champs.length; x++) {
@@ -197,6 +197,9 @@
 		};
 		xhttp.open("POST", NextPage, true);
 		xhttp.send(formdata); 
+	}
+	
+	function AppliquerPrefGen() {
 	}
 
 	var Affiche = "attached";	

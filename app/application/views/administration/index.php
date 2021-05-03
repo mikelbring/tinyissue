@@ -208,17 +208,17 @@ f<?php
 				<?php echo $LngSRV["Email_password"]; ?> : <input name="email_password" id="input_email_password" value="<?php echo $Conf["smtp"]["password"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
 			</div>
 			<div class="pad2">
-				<?php echo $LngSRV["Email_transport"]; ?> : <select name="Email_transport" id="select_Email_transport">
+				<?php echo $LngSRV["Email_transport"]; ?> : <select name="Email_transport" id="select_Email_transport" onchange="this.style.backgroundColor = 'yellow';">
 					<option value="smtp" <?php echo ($Conf['transport'] == 'smtp') ? 'selected="selected"' : ''; ?>>smtp</option>
 					<option value="mail" <?php echo ($Conf['transport'] != 'smtp') ? 'selected="selected"' : ''; ?>>mail</option>
 					</select> <br />
-				<?php echo $LngSRV["Email_plainHTML"]; ?> : <select name="Email_plainHTML" id="select_Email_plainHTML">
+				<?php echo $LngSRV["Email_plainHTML"]; ?> : <select name="Email_plainHTML" id="select_Email_plainHTML" onchange="this.style.backgroundColor = 'yellow';">
 					<option value="text/plain" <?php echo ($Conf['plainHTML'] == 'text/plain') ? 'selected="selected"' : ''; ?>>text/plain</option>
 					<option value="html" <?php echo ($Conf['plainHTML'] == 'html') ? 'selected="selected"' : ''; ?>>html</option>
 					<option value="multipart/mixed" <?php echo ($Conf['plainHTML'] == 'multipart/mixed') ? 'selected="selected"' : ''; ?>>multipart/mixed</option>
 					</select> <br />
 				<?php echo $LngSRV["Email_encoding"]; ?> : <input name="email_encoding" id="input_email_encoding" value="<?php echo $Conf["encoding"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
-				<?php echo $LngSRV["Email_linelenght"]; ?> : <input name="email_linelenght" id="input_email_linelenght" type="number" max="1000" min="25" size="6" value="<?php echo $Conf["linelenght"]; ?>" onkeyup="this.style.backgroundColor = 'yellow';" /><br /><br />
+				<?php echo $LngSRV["Email_linelenght"]; ?> : <input name="email_linelenght" id="input_email_linelenght" type="number" max="1000" min="25" size="6" value="<?php echo $Conf["linelenght"]; ?>" onchange="this.style.backgroundColor = 'yellow';" /><br /><br />
 				<br />
 				<input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: AppliquerServeur();" class="button2"/>
 			</div>
@@ -240,6 +240,7 @@ f<?php
 				<?php echo $LngSRV["preferences_duree"]; ?> : <input name="duree" id="input_duree" value="<?php echo $config_app['duration']; ?>" size="4" type="number" max="365" min="2" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
 				<br />
 				<?php $Conf = $config_app['Percent']; ?>
+				<span style="float: right; vertical-align: middle;">				<input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: AppliquerPrefGen();" class="button2"/></span>
 				<?php echo $LngSRV["preferences_pct_prog"]; ?> : <input name="prog" id="input_prog" value="<?php echo $Conf[2]; ?>" type="number" size="3" min="2" max="85" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
 				<?php echo $LngSRV["preferences_pct_test"]; ?> : <input name="test" id="input_test" value="<?php echo $Conf[3]; ?>" type="number" size="3" min="55" max="99" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
 		</details>
