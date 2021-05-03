@@ -1,5 +1,5 @@
-	var champs = new Array('input_email_from_name','input_email_from_email','input_email_replyto_name','input_email_replyto_email');
 	function AppliquerCourriel() {
+		var champs = new Array('input_email_from_name','input_email_from_email','input_email_replyto_name','input_email_replyto_email');
 		var compte = 0;
 		var intro = CachonsEditor(7);
 		var bye = CachonsEditor(8);
@@ -81,6 +81,7 @@
 	}
 
 	function AppliquerTest(Qui) {
+		var champs = new Array('input_email_from_name','input_email_from_email','input_email_replyto_name','input_email_replyto_email');
 		var compte = 0;
 		for (x=0; x<champs.length; x++) {
 			if (document.getElementById(champs[x]).style.backgroundColor == 'red' ) { return false; }
