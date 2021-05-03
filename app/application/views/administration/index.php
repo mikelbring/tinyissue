@@ -260,19 +260,19 @@ f<?php
 					$config_app = require path('public') . 'config.app.php';
 					$Conf = $config_app['PriorityColors'];
 				 ?>
-				<?php echo $LngSRV["preferences_coula"]; ?> : <input name="coula" id="input_coula" value="<?php echo $Conf[1]; ?>" type="color" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
-				<?php echo $LngSRV["preferences_coulb"]; ?> : <input name="coulb" id="input_coulb" value="<?php echo $Conf[2]; ?>" type="color" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
-				<?php echo $LngSRV["preferences_coulc"]; ?> : <input name="coulc" id="input_coulc" value="<?php echo $Conf[3]; ?>" type="color" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
-				<?php echo $LngSRV["preferences_could"]; ?> : <input name="could" id="input_could" value="<?php echo $Conf[4]; ?>" type="color" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
-				<?php echo $LngSRV["preferences_coule"]; ?> : <input name="coule" id="input_coule" value="<?php echo $Conf[5]; ?>" type="color" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
-				<?php echo $LngSRV["preferences_coulo"]; ?> : <input name="coulo" id="input_coulo" value="<?php echo $Conf[0]; ?>" type="color" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_coula"]; ?> : <input name="coula" id="input_coula" value="<?php echo $Conf[1]; ?>" type="color" onchange="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_coulb"]; ?> : <input name="coulb" id="input_coulb" value="<?php echo $Conf[2]; ?>" type="color" onchange="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_coulc"]; ?> : <input name="coulc" id="input_coulc" value="<?php echo $Conf[3]; ?>" type="color" onchange="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_could"]; ?> : <input name="could" id="input_could" value="<?php echo $Conf[4]; ?>" type="color" onchange="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_coule"]; ?> : <input name="coule" id="input_coule" value="<?php echo $Conf[5]; ?>" type="color" onchange="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_coulo"]; ?> : <input name="coulo" id="input_coulo" value="<?php echo $Conf[0]; ?>" type="color" onchange="this.style.backgroundColor = 'yellow';" /><br />
 				<br />
-				<?php echo $LngSRV["preferences_duree"]; ?> : <input name="duree" id="input_duree" value="<?php echo $config_app['duration']; ?>" size="4" type="number" max="365" min="2" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_duree"]; ?> : <input name="duree" id="input_duree" value="<?php echo $config_app['duration']; ?>" size="4" type="number" max="365" min="2" onchange="this.style.backgroundColor = 'yellow';" /><br />
 				<br />
 				<?php $Conf = $config_app['Percent']; ?>
 				<span style="float: right; vertical-align: middle;">				<input type="button" value="<?php echo __('tinyissue.updating'); ?>" onclick="javascript: AppliquerPrefGen();" class="button2"/></span>
-				<?php echo $LngSRV["preferences_pct_prog"]; ?> : <input name="prog" id="input_prog" value="<?php echo $Conf[2]; ?>" type="number" size="3" min="2" max="85" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
-				<?php echo $LngSRV["preferences_pct_test"]; ?> : <input name="test" id="input_test" value="<?php echo $Conf[3]; ?>" type="number" size="3" min="55" max="99" onkeyup="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_pct_prog"]; ?> : <input name="prog" id="input_prog" value="<?php echo $Conf[2]; ?>" type="number" size="3" min="2" max="85" onchange="this.style.backgroundColor = 'yellow';" /><br />
+				<?php echo $LngSRV["preferences_pct_test"]; ?> : <input name="test" id="input_test" value="<?php echo $Conf[3]; ?>" type="number" size="3" min="55" max="99" onchange="this.style.backgroundColor = 'yellow';" /><br />
 		</details>
 	<br />
 	</div>
