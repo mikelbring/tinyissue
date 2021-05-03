@@ -1,8 +1,6 @@
 <?php
 	$prefixe = "";
-	while (!file_exists($prefixe."config.app.php")) {
-		$prefixe .= "../";
-	}
+	while (!file_exists($prefixe."config.app.php")) { $prefixe .= "../"; }
 	$config = require $prefixe."config.app.php";
 	$dir = $prefixe.$config['attached']['directory']."/";
 
@@ -25,8 +23,8 @@
 	////Boucle de lecture
 	while (!feof($RefFichier)) {
 		$MesLignes[$rendu] = fgets($RefFichier);
-		if (strpos($MesLignes[$rendu], "'replyTo'") 	!== false && !isset($NumLigne["mail"])	 ) { $NumLigne["mail"] = $rendu; }  
-		if (strpos($MesLignes[$rendu], "'intro' =>") !== false && !isset($NumLigne["forma"]) )	{ $NumLigne["forma"] = $rendu; }  
+		if (strpos($MesLignes[$rendu], "'replyTo'") 	!== false && !isset($NumLigne["mail"])	 ) { $NumLigne["mail"] = $rendu; }
+		if (strpos($MesLignes[$rendu], "'intro' =>") !== false && !isset($NumLigne["forma"]) )	{ $NumLigne["forma"] = $rendu; }
 		++$rendu;
 	}
 	fclose($RefFichier);
@@ -68,7 +66,7 @@ if ($NumLigne["forma"] > 0) {
 		fclose($f);
 //	}
 
-	//Enregistrement du nouveau fichier corrigé  
+	//Enregistrement du nouveau fichier corrigé
 	$NeoFichier = fopen($NomFichier, "w");
 	foreach ($MesLignes as $ind => $val) {
 		fwrite($NeoFichier, $val);

@@ -1,6 +1,5 @@
 <?php
 	include_once "db.php";
-
 	//Préférences de l'usager
 	$dir = $prefixe.$config['attached']['directory'];
 	$SkipUser = $SkipUser ?? false;

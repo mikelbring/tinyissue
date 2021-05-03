@@ -1,8 +1,6 @@
 f<?php 
 	$prefixe = "";
-	while (!file_exists($prefixe."config.app.php")) {
-		$prefixe .= "../";
-	}
+	while (!file_exists($prefixe."config.app.php")) { $prefixe .= "../"; }
 	$config = require $prefixe."config.app.php";
 	$dir = $prefixe.$config['attached']['directory']."/";
 

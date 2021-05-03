@@ -46,6 +46,46 @@
 			if (document.getElementById(champs[x]).style.backgroundColor == 'red' ) { return false; }
 			if (document.getElementById(champs[x]).style.backgroundColor == 'yellow' ) { compte = compte + 1; }
 		}
+		if (compte == 0 && intro == IntroInital && bye == TxByeInital) { return false; }
+		for (x=0; x<champs.length; x++) {
+			document.getElementById(champs[x]).style.backgroundColor = 'red';
+		}
+
+		var xhttp = new XMLHttpRequest();
+		var formdata = new FormData();
+		formdata.append("fName", document.getElementById('input_email_from_name').value);
+		formdata.append("fMail", document.getElementById('input_email_from_email').value);
+		formdata.append("rName", document.getElementById('input_email_replyto_name').value);
+		formdata.append("rMail", document.getElementById('input_email_replyto_email').value);
+		formdata.append("intro", document.getElementById('input_email_replyto_email').value);
+		formdata.append("intro", intro);
+		formdata.append("bye", bye);
+		var NextPage = 'app/application/controllers/ajax/ChgConfEmail.php';
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				if (xhttp.responseText != '' ) {
+					//alert(xhttp.responseText);
+					for (x=0; x<champs.length; x++) {
+						document.getElementById(champs[x]).style.backgroundColor = 'green';
+					}
+					IntroInital = intro; 
+					TxByeInital = bye;
+					var blanc = setTimeout(function() { for (x=0; x<champs.length; x++) { document.getElementById(champs[x]).style.backgroundColor = 'white'; } }, 5000);
+				}
+			}
+		};
+		xhttp.open("POST", NextPage, true);
+		xhttp.send(formdata); 
+	}
+
+	function AppliquerServeur() {
+		champs = new Array('input_email_encoding','input_email_linelenght','input_email_server','input_email_port','input_email_encryption','input_email_username','input_email_password');
+		var compte = 0;
+		for (x=0; x<champs.length; x++) {
+
+			if (document.getElementById(champs[x]).style.backgroundColor == 'red' ) { return false; }
+			if (document.getElementById(champs[x]).style.backgroundColor == 'yellow' ) { compte = compte + 1; }
+		}
 		if (compte == 0) { return false; }
 		for (x=0; x<champs.length; x++) {
 			document.getElementById(champs[x]).style.backgroundColor = 'red';
