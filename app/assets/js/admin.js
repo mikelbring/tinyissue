@@ -26,36 +26,44 @@
 			if (this.readyState == 4 && this.status == 200) {
 				if (xhttp.responseText != '' ) {
 					//alert(xhttp.responseText);
-					for (x=0; x<champs.length; x++) {
-						document.getElementById(champs[x]).style.backgroundColor = 'green';
-					}
 					IntroInital = intro; 
 					TxByeInital = bye;
-					var blanc = setTimeout(function() { for (x=0; x<champs.length; x++) { document.getElementById(champs[x]).style.backgroundColor = 'white'; } }, 5000);
+					Verdissons(champs);
 				}
 			}
 		};
 		xhttp.open("POST", NextPage, true);
 		xhttp.send(formdata); 
 	}
-
-	function AppliquerServeur() {
-		champs = new Array('input_email_encoding','input_email_linelenght','input_email_server','input_email_port','input_email_encryption','input_email_username','input_email_password');
-		var compte = 0;
-		for (x=0; x<champs.length; x++) {
-
-			if (document.getElementById(champs[x]).style.backgroundColor == 'red' ) { return false; }
-			if (document.getElementById(champs[x]).style.backgroundColor == 'yellow' ) { compte = compte + 1; }
-		}
-		if (compte == 0) { return false; }
-		for (x=0; x<champs.length; x++) {
-			document.getElementById(champs[x]).style.backgroundColor = 'red';
-		}
+	
+	function AppliquerPrefGen() {
+		champs = new Array('input_coula','input_coulb','input_coulc','input_could','input_coule','input_coulo','input_duree','input_prog','input_test');
+		if (!VerifChamps(champs)) { return false; }
 
 		var xhttp = new XMLHttpRequest();
 		var formdata = new FormData();
+		for(x=0; x<champs.length; x++) {
+			formdata.append(champs[x].substr(6) , document.getElementById(champs[x]).value);
+		}
+		var NextPage = 'app/application/controllers/ajax/ChgPrefGen.php';
+		xhttp.onreadystatechange = function() {
+			if (this.readyState == 4 && this.status == 200) {
+				if (xhttp.responseText != '' ) {
+					//alert(xhttp.responseText);
+					Verdissons(champs);
+				}
+			}
+		};
+		xhttp.open("POST", NextPage, true);
+		xhttp.send(formdata); 
+	}
+	
+	function AppliquerServeur() {
+		champs = new Array('input_email_encoding','input_email_linelenght','input_email_server','input_email_port','input_email_encryption','input_email_username','input_email_password');
+		if (!VerifChamps(champs)) { return false; }
+		var xhttp = new XMLHttpRequest();
+		var formdata = new FormData();
 		formdata.append("transport", document.getElementById('select_Email_transport').value);
-		//formdata.append("sendmail_path", document.getElementById('input_email_sendmail_path').value);
 		formdata.append("plainHTML", document.getElementById('select_Email_plainHTML').value);
 		formdata.append("encoding", document.getElementById('input_email_encoding').value);
 		formdata.append("linelenght", document.getElementById('input_email_linelenght').value);
@@ -69,10 +77,7 @@
 			if (this.readyState == 4 && this.status == 200) {
 				if (xhttp.responseText != '' ) {
 					//alert(xhttp.responseText);
-					for (x=0; x<champs.length; x++) {
-						document.getElementById(champs[x]).style.backgroundColor = 'green';
-					}
-					var blanc = setTimeout(function() { for (x=0; x<champs.length; x++) { document.getElementById(champs[x]).style.backgroundColor = 'white'; } }, 5000);
+					Verdissons(champs);
 				}
 			}
 		};
@@ -92,10 +97,10 @@
 		var xhttp = new XMLHttpRequest();
 		var NextPage = 'app/application/controllers/ajax/SendMail.php?Type=TestonsSVP&User=' + Qui;
 		xhttp.onreadystatechange = function() {
-		if (this.readyState == 4 && this.status == 200) {
-			if (xhttp.responseText != '' ) {
-				alert(xhttp.responseText);
-			}
+			if (this.readyState == 4 && this.status == 200) {
+				if (xhttp.responseText != '' ) {
+					alert(xhttp.responseText);
+				}
 			}
 		};
 		xhttp.open("GET", NextPage, true);
@@ -130,6 +135,26 @@
 		};
 		xhttp.open("POST", NextPage, true);
 		xhttp.send(formdata); 
+	}
+	
+	function Verdissons(champs) {
+		for (x=0; x<champs.length; x++) {
+			document.getElementById(champs[x]).style.backgroundColor = 'green';
+		}
+		var blanc = setTimeout(function() { for (x=0; x<champs.length; x++) { document.getElementById(champs[x]).style.backgroundColor = 'white'; } }, 5000);
+	}
+
+	function VerifChamps(champs) {
+		var compte = 0;
+		for (x=0; x<champs.length; x++) {
+			if (document.getElementById(champs[x]).style.backgroundColor == 'red' ) { return false; }
+			if (document.getElementById(champs[x]).style.backgroundColor == 'yellow' ) { compte = compte + 1; }
+		}
+		if (compte == 0) { return false; }
+		for (x=0; x<champs.length; x++) {
+			document.getElementById(champs[x]).style.backgroundColor = 'red';
+		}
+		return true;
 	}
 
 	var Affiche = "attached";	

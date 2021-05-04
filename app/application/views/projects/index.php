@@ -1,6 +1,8 @@
 <h3>
-	<?php echo __('tinyissue.projects');?>
-	<span><?php echo __('tinyissue.projects_description');?></span>
+<?php 
+echo __('tinyissue.projects');
+echo '<span>'.__('tinyissue.projects_description').'</span>';
+?>
 </h3>
 
 <div class="pad">
