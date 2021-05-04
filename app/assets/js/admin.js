@@ -29,10 +29,6 @@
 					IntroInital = intro; 
 					TxByeInital = bye;
 					Verdissons(champs);
-//					for (x=0; x<champs.length; x++) {
-//						document.getElementById(champs[x]).style.backgroundColor = 'green';
-//					}
-//					var blanc = setTimeout(function() { for (x=0; x<champs.length; x++) { document.getElementById(champs[x]).style.backgroundColor = 'white'; } }, 5000);
 				}
 			}
 		};
@@ -53,7 +49,7 @@
 		xhttp.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				if (xhttp.responseText != '' ) {
-					alert(xhttp.responseText);
+					//alert(xhttp.responseText);
 					Verdissons(champs);
 				}
 			}
@@ -82,10 +78,6 @@
 				if (xhttp.responseText != '' ) {
 					//alert(xhttp.responseText);
 					Verdissons(champs);
-//					for (x=0; x<champs.length; x++) {
-//						document.getElementById(champs[x]).style.backgroundColor = 'green';
-//					}
-//					var blanc = setTimeout(function() { for (x=0; x<champs.length; x++) { document.getElementById(champs[x]).style.backgroundColor = 'white'; } }, 5000);
 				}
 			}
 		};
