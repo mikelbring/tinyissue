@@ -50,12 +50,15 @@ class Comment extends  \Eloquent {
 
 		if (\Auth::user()->role_id != 1) {
 			$vide = true;
-			$Val = ($input['Pourcentage'] > $config_app['Percent'][3]) ? 8: (($input['Pourcentage'] == 100 ) ? 2: 9);
-			if(!empty($issue->tags)):
-				foreach($issue->tags()->order_by('tag', 'ASC')->get() as $tag):
+			$Val = 1;
+			$Val = ($input['Pourcentage'] > $config_app['Percent'][2]) ? 9: $Val;
+			$Val = ($input['Pourcentage'] > $config_app['Percent'][3]) ? 8: $Val;
+			$Val = ($input['Pourcentage'] >= 100) ? 2 : $Val;
+			if(!empty($issue->tags)) {
+				foreach($issue->tags()->order_by('tag', 'ASC')->get() as $tag) {
 					if ($Val == $tag->id) { $vide = false; }
-				endforeach;
-			endif;
+				}
+			}
 			if ($vide) { Tag::addNew_tags($issue->id, $Val); }
 	
 			/* Add attachments to issue */
