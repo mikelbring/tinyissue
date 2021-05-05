@@ -59,7 +59,7 @@
 	}
 	
 	function AppliquerServeur() {
-		champs = new Array('input_email_encoding','input_email_linelenght','input_email_server','input_email_port','input_email_encryption','input_email_username','input_email_password');
+		champs = new Array('input_email_encoding','input_email_linelenght','input_email_server','input_email_port','input_email_encryption','input_email_username','input_email_password','select_Email_transport','select_Email_plainHTML');
 		if (!VerifChamps(champs)) { return false; }
 		var xhttp = new XMLHttpRequest();
 		var formdata = new FormData();
