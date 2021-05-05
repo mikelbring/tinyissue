@@ -28,10 +28,21 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Remove some buttons provided by the standard plugins, which are
 	// not needed in the Standard(s) toolbar.
-	config.extraPlugins = 'horizontalrule';
+	config.extraPlugins = 'horizontalrule,language,linkayt',
 	config.removeButtons = 'Underline,Subscript,Superscript';
 	// Set the most common block elements.
 	config.format_tags = 'p;h1;h2;h3;pre';
+	config.filebrowserImageBrowseUrl = '<?php echo require path('public'); ?>app/vendor/ckeditor/ckeditor_ChoisirImage.php', 
+	config.filebrowserImageUploadUrl = '<?php echo require path('public'); ?>app/vendor/ckeditor/ckeditor_RecevoirImage.php',
+	config.language_list =[ 'fr-ca:French:Canada', 'en:English', 'es:Spanish' ],
+	config.protectedSource.push( /<\?[\s\S]*?\?>/g ),
+	config.scayt_autoStartup = true,
+	config.scayt_ignoreDomainNames = true,
+	config.scayt_multiLanguageMode = true,
+	config.scayt_multiLanguageStyles = {'fr': 'color: yellow', 'en': 'color: red', 'es': 'color: purple'},
+	config.scayt_sLang = 'fr_CA',
+	config.shiftEnterMode = CKEDITOR.ENTER_P,
+	config.wsc_lang = 'fr_CA',
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
