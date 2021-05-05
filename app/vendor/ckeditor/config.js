@@ -32,6 +32,14 @@ CKEDITOR.editorConfig = function( config ) {
 	config.removeButtons = 'Underline,Subscript,Superscript';
 	// Set the most common block elements.
 	config.format_tags = 'p;h1;h2;h3;pre';
+	config.filebrowserImageBrowseUrl = 'app/vendor/ckeditor/ckeditor_ChoisirImage.php', 
+	config.filebrowserImageUploadUrl = 'vendor/ckeditor/ckeditor_RecevoirImage.php',
+	config.language_list =[ 'fr-ca:French:Canada', 'en:English', 'es:Spanish' ],
+	config.protectedSource.push( /<\?[\s\S]*?\?>/g ),
+	config.scayt_multiLanguageStyles = {'fr': 'color: yellow', 'en': 'color: red', 'es': 'color: purple'},
+	config.scayt_sLang = 'fr_CA',
+	config.shiftEnterMode = CKEDITOR.ENTER_P,
+	config.wsc_lang = 'fr_CA',
 
 	// Simplify the dialog windows.
 	config.removeDialogTabs = 'image:advanced;link:advanced';

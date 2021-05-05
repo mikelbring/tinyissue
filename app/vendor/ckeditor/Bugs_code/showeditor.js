@@ -14,7 +14,7 @@ function showckeditor (Quel, id) {
 			{ name: 'FaireDefaire', items: ['Undo','Redo','-','Find','Replace','-','SelectAll']},
 			{ name: 'Polices', items: ['Bold','Italic','Underline','TextColor']},
 			{ name: 'ListeDec', items: ['horizontalrule','table','JustifyLeft','JustifyCenter','JustifyRight','Outdent','Indent','Blockquote']},
-			{ name: 'Liens', items: ['NumberedList','BulletedList','-','Link','Unlink']}
+			{ name: 'Liens', items: ['Image', 'NumberedList','BulletedList','-','Link','Unlink']}
 		]
 	} );
 }
