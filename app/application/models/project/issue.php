@@ -88,13 +88,8 @@ class Issue extends \Eloquent {
 			}
 		}
 
-
-
-
 		/* Loop through the projects and activity again, building the views for each activity */
 		$return = array();
-
-
 		foreach($activities as $row) {
 			switch($row->type_id) {
 				case 2:
@@ -218,36 +213,11 @@ class Issue extends \Eloquent {
 	* @return void
 	*/
 	public function reassign($user_id) {
-//		$text  = __('tinyissue.following_email_assigned_a');
-//		$text .= __('tinyissue.following_email_assigned_b');
-//		$text .= __('tinyissue.following_email_assigned_c');
 		$old_assignee = $this->assigned_to;
 
 		$this->assigned_to = $user_id;
 		$this->save();
 
-		/* Notify the person being assigned to unless that person is doing the actual assignment */
-/*		if($this->assigned_to && $this->assigned_to != \Auth::user()->id) {
-			$project_id = $this->project_id;
-			$project = \Project::find($project_id);
-
-			$subject = sprintf(__('email.reassignment'),$this->title,$project->name);
-			$text = \View::make('email.reassigned_issue', array(
-				'actor' => \Auth::user()->firstname . ' ' . \Auth::user()->lastname,
-				'project' => $project,
-				'issue' => $this
-			));
-
-			\Mail::send_email($text, $this->assigned->email, $subject);
-		}
-
-		//Notify all followers about the change of assignation
-		$followers =\DB::query("SELECT USR.email, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, TIK.title FROM following AS FAL LEFT JOIN users AS USR ON USR.id = FAL.user_id LEFT JOIN projects_issues TIK ON TIK.id = FAL.issue_id WHERE FAL.project_id = ".$project->id." AND FAL.project = 0 AND FAL.issue_id = ".$this->id." ");
-		foreach ($followers as $ind => $follower) { 
-			\Mail::send_mail(__('tinyissue.following_email_comment')." « ".$follower->title." ».", $follower->email, __('tinyissue.following_email_comment_tit'));
-			//mail($follower->email, __('tinyissue.following_email_assigned_tit'), __('tinyissue.following_email_assigned')." « ".$follower->title." ».");
-		} 
-*/
 		//Notify all followers about the new status
 		$text .= __('tinyissue.following_email_assigned');
 		$this->Courriel ('Issue', true, \Project::current()->id, $this->id, \Auth::user()->id, array('assigned'), array('tinyissue'));
@@ -263,7 +233,6 @@ class Issue extends \Eloquent {
 	* @return void
 	*/
 	public function change_status($status) {
-//		$text = __('tinyissue.following_email_status');
 		/* Retrieve all tags */
 		$tags = $this->tags;
 		$tag_ids = array();
