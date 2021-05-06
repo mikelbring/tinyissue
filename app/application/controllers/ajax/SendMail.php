@@ -30,7 +30,7 @@
 	$IssueID = $IssueID ?? 0;
 
 	//Titre et corps du message selon les configurations choisies par l'administrateur
-	$message = "";
+	$message  = (file_exists($dir."intro.html")) ? file_get_contents($dir."intro.html") : $config['mail']['intro']; 
 	if (is_array(@$contenu)) {
 		$subject = (file_exists($dir.$contenu[0].'_tit.html')) ? file_get_contents($dir.$contenu[0].'_tit.html') : $Lng[$src[0]]['following_email_'.$contenu[0].'_tit'];
 		foreach ($contenu as $ind => $val) {
@@ -44,9 +44,12 @@
 				}
 			}
 		}
+	} else if ($Type == 'TestonsSVP') {
+		$message .= $Lng['tinyissue']["email_test"].$config['my_bugs_app']['name'].').';
 	} else {
 		$message = @$contenu;
 	}
+	$message .= (file_exists($dir."bye.html")) ? file_get_contents($dir."bye.html") : $config['mail']['bye']; 
 	$subject = $subject ?? 'BUGS';
 
 		//Select email addresses
@@ -57,9 +60,6 @@
 	} else if ($Type == 'TestonsSVP') {
 		$query  = "SELECT DISTINCT 0 AS project, 1 AS attached, 1 AS tages, USR.email, USR.firstname AS first, USR.lastname as last, CONCAT(USR.firstname, ' ', USR.lastname) AS user, USR.language, 'Testing mail for any project' AS name, 'Test' AS title ";
 		$query .= "FROM users AS USR WHERE USR.id = ".$UserID;
-		$message  = (file_exists($dir."intro.html")) ? file_get_contents($dir."intro.html") : $config['mail']['intro']; 
-		$message .= $Lng['tinyissue']["email_test"].$config['my_bugs_app']['name'].').';
-		$message .= (file_exists($dir."bye.html")) ? file_get_contents($dir."bye.html") : $config['mail']['bye']; 
 		$subject = $Lng['tinyissue']["email_test_tit"];
 		echo $Lng['tinyissue']["email_test_tit"];
 	} else {
