@@ -110,36 +110,34 @@
 				$body = wildcards ($body, $follower,$ProjectID, $IssueID);
 				mail($follower["email"], $subject, $body, $headers);
 			} else {
-				$mail = new PHPMailer();
-				$mail->Mailer = $optMail['transport'];
 				switch ($optMail['transport']) {
-						//Please submit your code
-						//On March 14th, 2017 I had no time to go further on these different types ( case 'PHP', 'sendmail', 'gmail', 'POP3' ) 
 					case 'PHP':
-						require_once  'application/libraries/PHPmailer/class.phpmailer.php';
+						require_once  $prefixe.'application/libraries/PHPmailer/class.phpmailer.php';
 						break;
 					case 'sendmail':
-						require_once '/application/libraries/PHPmailer/class.phpmaileroauth.php';
+						require_once $prefixe.'/application/libraries/PHPmailer/class.phpmaileroauth.php';
 						break;
 					case 'gmail':
-						require_once '/application/libraries/PHPmailer/class.phpmaileroauthgoogle.php';
+						require_once $prefixe.'/application/libraries/PHPmailer/class.phpmaileroauthgoogle.php';
 						break;
 					case 'POP3':
-						require_once '/application/libraries/PHPmailer/class.pop3.php';
+						require_once $prefixe.'/application/libraries/PHPmailer/class.pop3.php';
 						break;
 					default:																		//smtp is the second default value after "mail" which has its own code up
-						require_once '/application/libraries/PHPmailer/class.smtp.php';
-						$mail->SMTPDebug = 1;												// 0 = no output, 1 = errors and messages, 2 = messages only.
-						if ($optMail['smtp']['encryption'] != '') {
-							$mail->SMTPSecure = $optMail['smtp']['encryption'];	// sets the prefix to the server
-						}
-						$mail->SMTPAuth = true;											// enable SMTP authentication
-						$mail->Host = $optMail['smtp']['server'];
-						$mail->Port = $optMail['smtp']['port'];
-						$mail->Username = $optMail['smtp']['username'];
-						$mail->Password = $optMail['smtp']['password'];
+						require_once $prefixe.'/application/libraries/PHPmailer/class.smtp.php';
 						break;
 				}
+				$mail = new PHPMailer();
+				$mail->Mailer = $optMail['transport'];
+				$mail->SMTPDebug = 1;												// 0 = no output, 1 = errors and messages, 2 = messages only.
+				if ($optMail['smtp']['encryption'] != '') {
+					$mail->SMTPSecure = $optMail['smtp']['encryption'];	// sets the prefix to the server
+				}
+				$mail->SMTPAuth = true;											// enable SMTP authentication
+				$mail->Host = $optMail['smtp']['server'];
+				$mail->Port = $optMail['smtp']['port'];
+				$mail->Username = $optMail['smtp']['username'];
+				$mail->Password = $optMail['smtp']['password'];
 
 				$mail->CharSet = $optMail['encoding'] ?? 'windows-1250';
 				$mail->SetFrom ($optMail['from']['email'], $optMail['from']['name']);
