@@ -130,15 +130,15 @@
 					default:																		//smtp is the second default value after "mail" which has its own code up
 						require_once '/application/libraries/PHPmailer/class.smtp.php';
 						$mail->SMTPDebug = 1;												// 0 = no output, 1 = errors and messages, 2 = messages only.
-						if ($optMail['smtp']['encryption'] == '') {
-						} else {
+//						if ($optMail['smtp']['encryption'] == '') {
+//						} else {
 							$mail->SMTPAuth = true;											// enable SMTP authentication
 							$mail->SMTPSecure = $optMail['smtp']['encryption'];	// sets the prefix to the server
 							$mail->Host = $optMail['smtp']['server'];
 							$mail->Port = $optMail['smtp']['port'];
 							$mail->Username = $optMail['smtp']['username'];
 							$mail->Password = $optMail['smtp']['password'];
-						}
+//						}
 						break;
 				}
 
