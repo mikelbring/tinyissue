@@ -85,7 +85,7 @@ class Crypter {
 	 * @return string
 	 */
 	protected static function unpad($value) {
-		if (Str::length($value) > 1) { 
+		if (Str::length(trim($value)) > 0) { 
 			$pad = ord($value[($length = Str::length($value)) - 1]);
 	
 			if ($pad and $pad < static::$block) {
