@@ -1028,7 +1028,8 @@ class PHPMailer
         $this->FromName = $name;
         if ($auto) {
             if (empty($this->Sender)) {
-                $this->Sender = '"".$name."' <'.$address.'>';
+                //$this->Sender = '"".$name."' <'.$address.'>';
+                $this->Sender = '"'.$name.'" <'.$address.'>';
             }
         }
         return true;

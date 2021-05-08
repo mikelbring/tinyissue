@@ -240,12 +240,13 @@ f<?php
 			<div class="pad2">
 				<?php echo $LngSRV["Email_transport"]; ?> : 
 					<select name="Email_transport" id="select_Email_transport" onchange="this.style.backgroundColor = 'yellow';">
-						<option value="gmail" <?php echo ($Conf['transport'] != 'gmail') ? 'selected="selected"' : ''; ?>>gmail</option>
-						<option value="mail" <?php echo ($Conf['transport'] != 'mail') ? 'selected="selected"' : ''; ?>>mail</option>
-						<option value="PHP" <?php echo ($Conf['transport'] != 'PHP') ? 'selected="selected"' : ''; ?>>PHP</option>
-						<option value="POP3" <?php echo ($Conf['transport'] != 'POP3') ? 'selected="selected"' : ''; ?>>POP3</option>
-						<option value="sendmail" <?php echo ($Conf['transport'] != 'sendmail') ? 'selected="selected"' : ''; ?>>sendmail</option>
-						<option value="smtp" <?php echo ($Conf['transport'] == 'smtp') ? 'selected="selected"' : ''; ?>>smtp</option>
+						<?php
+							$transp = array("gmail","mail","PHP","POP3","sendmail","smtp");
+							asort($transp);
+							foreach ($transp as $ind => $val) {
+								echo '<option value="'.$val.'" '.(($Conf['transport'] == $val) ? 'selected="selected"' : '').'>'.$val.'</option>';
+							} 
+						?>
 					</select> <br />
 				<?php echo $LngSRV["Email_plainHTML"]; ?> : 
 					<select name="Email_plainHTML" id="select_Email_plainHTML" onchange="this.style.backgroundColor = 'yellow';">

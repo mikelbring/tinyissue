@@ -110,21 +110,22 @@
 				$body = wildcards ($body, $follower,$ProjectID, $IssueID);
 				mail($follower["email"], $subject, $body, $headers);
 			} else {
+				require_once 'application/libraries/PHPmailer/class.phpmailer.php';
 				switch ($optMail['transport']) {
 					case 'PHP':
-						require_once  $prefixe.'application/libraries/PHPmailer/class.phpmailer.php';
+						require_once  'application/libraries/PHPmailer/class.phpmailer.php';
 						break;
 					case 'sendmail':
-						require_once $prefixe.'/application/libraries/PHPmailer/class.phpmaileroauth.php';
+						require_once 'application/libraries/PHPmailer/class.phpmaileroauth.php';
 						break;
 					case 'gmail':
-						require_once $prefixe.'/application/libraries/PHPmailer/class.phpmaileroauthgoogle.php';
+						require_once 'application/libraries/PHPmailer/class.phpmaileroauthgoogle.php';
 						break;
 					case 'POP3':
-						require_once $prefixe.'/application/libraries/PHPmailer/class.pop3.php';
+						require_once 'application/libraries/PHPmailer/class.pop3.php';
 						break;
 					default:																		//smtp is the second default value after "mail" which has its own code up
-						require_once $prefixe.'/application/libraries/PHPmailer/class.smtp.php';
+						require_once 'application/libraries/PHPmailer/class.smtp.php';
 						break;
 				}
 				$mail = new PHPMailer();
