@@ -22,8 +22,7 @@ class Cookie {
 	 * @param  string  $name
 	 * @return bool
 	 */
-	public static function has($name)
-	{
+	public static function has($name) {
 		return ! is_null(static::get($name));
 	}
 
@@ -42,12 +41,10 @@ class Cookie {
 	 * @param  mixed   $default
 	 * @return string
 	 */
-	public static function get($name, $default = null)
-	{
+	public static function get($name, $default = null) {
 		if (isset(static::$jar[$name])) return static::parse(static::$jar[$name]['value']);
 
-		if ( ! is_null($value = Request::foundation()->cookies->get($name)))
-		{
+		if ( ! is_null($value = Request::foundation()->cookies->get($name))) {
 			return static::parse($value);
 		}
 
@@ -73,24 +70,24 @@ class Cookie {
 	 * @param  bool    $secure
 	 * @return void
 	 */
-	public static function put($name, $value, $expiration = 0, $path = '/', $domain = null, $secure = false)
-	{
-		if ($expiration !== 0)
-		{
-			$expiration = time() + ($expiration * 60);
-		}
-
+	public static function put($name, $value, $val) {
 		$value = static::hash($value).'+'.$value;
+		$expiration = isset($val[0]) ? $val[0] : 0; 
+		$expiration =  ($expiration !== 0) ? time() + ($expiration * 60) : 0;
+		$path = 		isset($val[1]) ? $val[1] : '/'; 
+		$domain = 	isset($val[2]) ? $val[2] : null; 
+		$secure = 	isset($val[3]) ? $val[3] : false;
+		$httponly = isset($val[4]) ? $val[4] : true;
+		$samesite = isset($val[5]) ? $val[5] : 'strict';
 
 		// If the secure option is set to true, yet the request is not over HTTPS
 		// we'll throw an exception to let the developer know that they are
 		// attempting to send a secure cookie over the insecure HTTP.
-		if ($secure and ! Request::secure())
-		{
+		if ($secure and ! Request::secure()) {
 			throw new \Exception("Attempting to set secure cookie over HTTP.");
 		}
 
-		static::$jar[$name] = compact('name', 'value', 'expiration', 'path', 'domain', 'secure');
+		static::$jar[$name] = compact('name', 'value', 'expiration', 'path', 'domain', 'secure', 'httponly');
 	}
 
 	/**
@@ -108,9 +105,8 @@ class Cookie {
 	 * @param  bool    $secure
 	 * @return bool
 	 */
-	public static function forever($name, $value, $path = '/', $domain = null, $secure = false)
-	{
-		return static::put($name, $value, static::forever, $path, $domain, $secure);
+	public static function forever($name, $value, $path = '/', $domain = null, $secure = false) {
+		return static::put($name, $value, static::forever, $path, $domain, $secure, true, 'static');
 	}
 
 	/**
@@ -122,8 +118,7 @@ class Cookie {
 	 * @param  bool    $secure
 	 * @return bool
 	 */
-	public static function forget($name, $path = '/', $domain = null, $secure = false)
-	{
+	public static function forget($name, $path = '/', $domain = null, $secure = false) {
 		return static::put($name, null, -2000, $path, $domain, $secure);
 	}
 
@@ -133,8 +128,7 @@ class Cookie {
 	 * @param  string  $value
 	 * @return string
 	 */
-	public static function hash($value)
-	{
+	public static function hash($value) {
 		return hash_hmac('sha1', $value, Config::get('application.key'));
 	}
 
@@ -144,15 +138,13 @@ class Cookie {
 	 * @param  string  $value
 	 * @return string
 	 */
-	protected static function parse($value)
-	{
+	protected static function parse($value) {
 		$segments = explode('+', $value);
 
 		// First we will make sure the cookie actually has enough segments to even
 		// be valid as being set by the application. If it does not we will go
 		// ahead and throw exceptions now since there the cookie is invalid.
-		if ( ! (count($segments) >= 2))
-		{
+		if ( ! (count($segments) >= 2)) {
 			return null;
 		}
 
@@ -161,8 +153,7 @@ class Cookie {
 		// Now we will check if the SHA-1 hash present in the first segment matches
 		// the ShA-1 hash of the rest of the cookie value, since the hash should
 		// have been set when the cookie was first created by the application.
-		if ($segments[0] == static::hash($value))
-		{
+		if ($segments[0] == static::hash($value)) {
 			return $value;
 		}
 

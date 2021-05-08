@@ -26,8 +26,8 @@ class Cookie
     protected $expire;
     protected $path;
     protected $secure;
-    protected $httpOnly;
-    protected $sameSite;
+    protected $httponly;
+    protected $samesite;
 
     /**
      * Constructor.
@@ -70,8 +70,8 @@ class Cookie
         $this->expire = $expire;
         $this->path = empty($path) ? '/' : $path;
         $this->secure = (Boolean) $secure;
-        $this->httpOnly = (Boolean) $httpOnly;
-        $this->sameSite = 'strict';
+        $this->httponly = (Boolean) $httpOnly;
+        $this->samesite = 'strict';
     }
 
     public function __toString()
@@ -188,9 +188,14 @@ class Cookie
      */
     public function isHttpOnly()
     {
-        return $this->httpOnly;
+        //return $this->httpOnly;
+        return true;
     }
 
+    public function isSameSite()
+    {
+        return 'strict';
+    }
     /**
      * Whether this cookie is about to be cleared
      *

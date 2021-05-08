@@ -264,7 +264,7 @@ class NativeSessionStorage implements SessionStorageInterface
         foreach ($options as $key => $value) {
             if (in_array($key, array(
                 'auto_start', 'cache_limiter', 'cookie_domain', 'cookie_httponly',
-                'cookie_lifetime', 'cookie_path', 'cookie_secure',
+                'cookie_lifetime', 'cookie_path', 'cookie_secure', 'samesite',
                 'entropy_file', 'entropy_length', 'gc_divisor',
                 'gc_maxlifetime', 'gc_probability', 'hash_bits_per_character',
                 'hash_function', 'name', 'referer_check',

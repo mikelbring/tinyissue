@@ -264,7 +264,8 @@ p{
   margin: 0 0 18px;
   padding: 0;
   list-style: none;
-  zoom: 1;
+  width: 100%;
+  height: 100%;
 }
 .tabs:before,
 .pills:before,
@@ -272,7 +273,7 @@ p{
 .pills:after {
   display: table;
   content: "";
-  zoom: 1;
+  width: 100%;
 }
 
 summary, select.sombre {
