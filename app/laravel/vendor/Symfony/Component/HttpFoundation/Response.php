@@ -262,7 +262,7 @@ class Response
 
         // cookies
         foreach ($this->headers->getCookies() as $cookie) {
-            setcookie($cookie->getName(), $cookie->getValue(), $cookie->getExpiresTime(), $cookie->getPath(), $cookie->getDomain(), $cookie->isSecure(), $cookie->isHttpOnly().'; SameSite=Strict');
+            setcookie($cookie->getName(), $cookie->getValue(), ['expires' => $cookie->getExpiresTime(), 'path' => $cookie->getPath(), 'domain' => $cookie->getDomain(), 'secure' => $cookie->isSecure(), 'httponly' => true, 'samesite' => 'Strict']);
         }
 
         return $this;

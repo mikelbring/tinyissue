@@ -187,7 +187,8 @@ abstract class Driver {
 
 		extract($config);
 
-		Cookie::put($name, $value, $minutes, $path, $domain, $secure);
+		//Cookie::put($name, $value, $minutes, $path, $domain, $secure);
+		Cookie::put($name, $value, ['expires' => $minutes,'path' => $path,'domain' => $domain,'secure' => $secure,'httponly' => true,'samesite' => 'strict',]);
 	}
 
 	/**

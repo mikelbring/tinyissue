@@ -348,7 +348,9 @@ class Payload {
 
 		$minutes = ( ! $expire_on_close) ? $lifetime : 0;
 
-		Cookie::put($cookie, $this->session['id'], $minutes, $path, $domain, $secure);	
+//		Cookie::put($cookie, $this->session['id'], $minutes, $path, $domain, $secure);
+		Cookie::put($cookie, $this->session['id'], ['expires' => $minutes,'path' => $path,'domain' => $domain,'secure' => $secure,'httponly' => true,'samesite' => 'strict',]);
+	
 	}
 
 }
