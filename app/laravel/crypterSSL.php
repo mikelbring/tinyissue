@@ -85,20 +85,22 @@ class Crypter {
 	 * @return string
 	 */
 	protected static function unpad($value) {
-		$pad = ord($value[($length = Str::length($value)) - 1]);
-
-		if ($pad and $pad < static::$block) {
-
-			// If the correct padding is present on the string, we will remove
-			// it and return the value. Otherwise, we'll throw an exception
-			// as the padding appears to have been changed.
-			if (strpos($value, '|')) {
-				return substr($value, 0, strpos($value, '|'));
-			} else {
-				// If the padding characters do not match the expected padding
-				// for the value we'll bomb out with an exception since the
-				// encrypted value seems to have been changed.
-				throw new \Exception("Decryption error. Padding is invalid.");
+		if (Str::length($value) > 1) { 
+			$pad = ord($value[($length = Str::length($value)) - 1]);
+	
+			if ($pad and $pad < static::$block) {
+	
+				// If the correct padding is present on the string, we will remove
+				// it and return the value. Otherwise, we'll throw an exception
+				// as the padding appears to have been changed.
+				if (strpos($value, '|')) {
+					return substr($value, 0, strpos($value, '|'));
+				} else {
+					// If the padding characters do not match the expected padding
+					// for the value we'll bomb out with an exception since the
+					// encrypted value seems to have been changed.
+					throw new \Exception("Decryption error. Padding is invalid.");
+				}
 			}
 		}
 		return $value;
