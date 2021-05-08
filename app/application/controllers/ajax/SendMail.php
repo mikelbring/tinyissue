@@ -6,7 +6,7 @@
 	$Type = isset($_GET["Type"]) ? $_GET["Type"] : 'Issue';
 	$Type = isset($Type) ? $Type : $Type;
 	$UserID = 1;
-	$UserID = isset(Auth::user()->id) ? Auth::user()->id : $UserID;
+//	$UserID = isset(Auth::user()->id) ? Auth::user()->id : $UserID;
 	$UserID = isset($_GET["User"]) ? $_GET["User"] : $UserID;
 	$UserID = isset($User) ? $User : $UserID;
 

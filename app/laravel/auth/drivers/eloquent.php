@@ -17,6 +17,8 @@ class Eloquent extends Driver {
 			return $this->model()->find($token);
 		} else if (is_null($token) && phpversion() > 7.0 ) {
 			return NULL;
+//		} else if (is_string($token) ) {
+//			return NULL;
 		} else if (get_class($token) == Config::get('auth.model')) {
 			return $token;
 		}
