@@ -2,9 +2,13 @@
 	include_once "db.php";
 	//Préférences de l'usager
 	$dir = $prefixe.$config['attached']['directory'];
-	$SkipUser = $SkipUser ?? false;
-	$Type = $Type ?? $_GET["Type"] ?? 'Issue';
-	$UserID = $User ?? $_GET["User"] ?? Auth::user()->id ?? 1;
+	$SkipUser = isset($SkipUser) ? $SkipUser : false;
+	$Type = isset($_GET["Type"]) ? $_GET["Type"] : 'Issue';
+	$Type = isset($Type) ? $Type : $Type;
+	$UserID = 1;
+	$UserID = isset(Auth::user()->id) ? Auth::user()->id : $UserID;
+	$UserID = isset($_GET["User"]) ? $_GET["User"] : $UserID;
+	$UserID = isset($User) ? $User : $UserID;
 
 	if ($Type == 'User') {
 		$resu = Requis("SELECT * FROM users WHERE email = '".$UserID."'");
@@ -26,8 +30,8 @@
 		$Lng['email'] = $emailLnE;
 	}
 	$optMail = $config["mail"];
-	$ProjectID = $ProjectID ?? 0;
-	$IssueID = $IssueID ?? 0;
+	$ProjectID = isset($ProjectID) ? $ProjectID : 0;
+	$IssueID = isset($IssueID) ? $IssueID : 0;
 
 	//Titre et corps du message selon les configurations choisies par l'administrateur
 	$message  = (file_exists($dir."intro.html")) ? file_get_contents($dir."intro.html") : $config['mail']['intro']; 
@@ -50,7 +54,7 @@
 		$message = @$contenu;
 	}
 	$message .= (file_exists($dir."bye.html")) ? file_get_contents($dir."bye.html") : $config['mail']['bye']; 
-	$subject = $subject ?? 'BUGS';
+	$subject = isset($subject) ? $subject : 'BUGS';
 
 		//Select email addresses
 	if ($Type == 'User') {
@@ -131,7 +135,7 @@
 				$mail = new PHPMailer();
 				$mail->Mailer = $optMail['transport'];
 				$mail->SMTPDebug = 1;											// 0 = no output, 1 = errors and messages, 2 = messages only.
-				if ($optMail['smtp']['encryption'] != '') {
+				if (trim($optMail['smtp']['encryption']) != '') {
 					$mail->SMTPSecure = $optMail['smtp']['encryption'];// sets the prefix to the server
 				}
 				$mail->SMTPAuth = true;											// enable SMTP authentication
@@ -140,10 +144,10 @@
 				$mail->Username = $optMail['smtp']['username'];
 				$mail->Password = $optMail['smtp']['password'];
 
-				$mail->CharSet = $optMail['encoding'] ?? 'windows-1250';
+				$mail->CharSet = isset($optMail['encoding']) ? $optMail['encoding'] : 'UTF-8';
 				$mail->SetFrom ($optMail['from']['email'], $optMail['from']['name']);
 				$mail->Subject = $subject;
-				$mail->ContentType = $optMail['plainHTML'] ?? 'text/plain';
+				$mail->ContentType = isset($optMail['plainHTML']) ? $optMail['plainHTML'] : 'text/plain';
 				$body  = $optMail['intro'];
 				$body .= '<br /><br />';
 				$body .= $message;
@@ -160,7 +164,8 @@
 					$mail->Body = strip_tags($body);
 				}
 				$mail->AddAddress ($follower["email"]);
-				$result = $mail->Send() ? "Successfully sent!" : "Mailer Error: " . $mail->ErrorInfo;
+				//$result = $mail->Send() ? "Successfully sent!" : "Mailer Error: " . $mail->ErrorInfo;
+				echo ($mail->Send()) ? "Successfully sent!" : "Mailer Error: " . $mail->ErrorInfo;
 			}
 		}
 	}
