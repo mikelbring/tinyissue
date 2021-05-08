@@ -1248,6 +1248,9 @@ class PHPMailer
                 if (empty($this->$address_kind)) {
                     continue;
                 }
+					if (strpos($this->$address_kind, "<") > 0) {
+						$this->$address_kind = substr($this->$address_kind, strpos($this->$address_kind, "<")+1, strpos($this->$address_kind, ">")- strpos($this->$address_kind, "<")-1); 
+					}
                 $this->$address_kind = $this->punyencodeAddress($this->$address_kind);
                 if (!$this->validateAddress($this->$address_kind)) {
                     $error_message = $this->lang('invalid_address') . ' (punyEncode) ' . $this->$address_kind;
